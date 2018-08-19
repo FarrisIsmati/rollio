@@ -1,0 +1,39 @@
+{
+  "name": "dc-mobile-vendor-node",
+  "version": "0.0.1",
+  "description": "Core API to DC Mobile Vendor Tracker (Name TBD)",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FarrisIsmati/dc-mobile-vendor-node.git"
+  },
+  "keywords": [
+    "node",
+    "express",
+    "tdd",
+    "socketio"
+  ],
+  "author": "Farris Ismati",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FarrisIsmati/dc-mobile-vendor-node/issues"
+  },
+  "homepage": "https://github.com/FarrisIsmati/dc-mobile-vendor-node#readme",
+  "devDependencies": {
+    "dotenv": "^6.0.0"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "chai": "^4.1.2",
+    "chai-http": "^4.0.0",
+    "config": "^2.0.1",
+    "express": "^4.16.3",
+    "mocha": "^5.2.0",
+    "mongoose": "^5.2.9",
+    "morgan": "^1.9.0",
+    "socket.io": "^2.1.1"
+  }
+}
