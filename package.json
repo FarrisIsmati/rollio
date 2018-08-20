@@ -3,8 +3,12 @@
   "version": "0.0.1",
   "description": "Core API to DC Mobile Vendor Tracker (Name TBD)",
   "main": "server.js",
+  "directories": {
+    "test": "test"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon server.js",
+    "test": "mocha --timeout 10000"
   },
   "repository": {
     "type": "git",
@@ -30,6 +34,7 @@
     "chai": "^4.1.2",
     "chai-http": "^4.0.0",
     "config": "^2.0.1",
+    "cors": "^2.8.4",
     "express": "^4.16.3",
     "mocha": "^5.2.0",
     "mongoose": "^5.2.9",
