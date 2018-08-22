@@ -1,5 +1,42 @@
 //DEPENDENCIES
-const mongoose     = require('../connection.js')
+const mongoose     = require('../connection');
+
+//MENU SCHEMA
+const MenuSchema = new mongoose.Schema({
+  section : { type: String, required: true },
+  items : {
+    type: [
+      {
+        name : { type: String, required: true },
+        price: { type: String, required: false }
+      }
+    ],
+    required: true
+  }
+});
+
+const coordArrLimit = (val) => val.length <= 2;
+
+//COORDINATES SCHEMA
+const CoordinatesSchema = new mongoose.Schema({
+  coordinatesDate: { type: Date, default: Date.now, required: true },
+  coordinates: {
+    type: [ { type: Number, required: true } ],
+    validate: [coordArrLimit, '{PATH} exceeds the limit of 2'],
+    required: true
+  }
+})
+
+//TWEET SCHEMA
+const TweetSchema = new mongoose.Schema({
+  tweetID : { type: String, required: true },
+  createdAt : { type: Date, required: true },
+  text : { type: String, required: true },
+  userID : { type: String, required: true },
+  userName : { type: String, required: true },
+  userScreenName : { type: String, required: true },
+  geolocation : { type: CoordinatesSchema, required: false }
+})
 
 //VENDOR SCHEMA
 const VendorSchema = new mongoose.Schema({
@@ -32,46 +69,13 @@ const VendorSchema = new mongoose.Schema({
   consecutiveDaysInactive : { type: Number, required: false },
   categories : { type: [ { type: String, required: true }], required: true },
   price : { type: String, required: true },
-  regionID : { type: ObjectId, required: true },
+  regionID : { type: mongoose.Schema.Types.ObjectId, required: true },
   objCreatedAt : { type: Date, default: Date.now }
 });
 
-const MenuSchema = new mongoose.Schema({
-  section : { type: String, required: true },
-  items : {
-    type: [
-      {
-        name : { type: String, required: true },
-        price: { type: String, required: false }
-      }
-    ],
-    required: false
-  }
-});
-
-const TweetSchema = new mongoose.Schema({
-  tweetID : { type: String, required: true },
-  createdAt : { type: Date, required: true },
-  text : { type: String, required: true },
-  userID : { type: String, required: true },
-  userName : { type: String, required: true },
-  userScreenName : { type: String, required: true },
-  geolocation : { type: CoordinatesSchema, required: false }
-})
-
-const CoordinatesSchema = new mongoose.Schema({
-  coordinatesDate: { type: Date, default: Date.now, required: true }
-  coordinates: {
-    type: [ { type: Number, required: true } ],
-    validate: [coordArrLimit, '{PATH} exceeds the limit of 2'],
-    required: true
-  }
-})
-
-const coordArrLimit = (val) => val.length <= 2;
-
-mongoose.model('Vendor', VendorSchema);
-mongoose.model('Menu', MenuSchema);
-mongoose.model('Tweet', TweetSchema);
-
-module.exports = mongoose;
+module.exports = {
+  VendorSchema,
+  MenuSchema,
+  TweetSchema,
+  CoordinatesSchema
+};

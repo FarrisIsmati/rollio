@@ -11,17 +11,17 @@ const options = {
 
 //SET DB ENVIROMENT
 switch (process.env.NODE_ENV) {
-    case 'development':
+    case 'DEVELOPMENT':
         mongoose.connect("mongodb://localhost:27017/DCMOBILEVENDOR_DEV", options)
         .then(res=>console.log('Connected to DEV DB'))
         .catch(err=>console.log(err));
         break;
-    case 'test':
+    case 'TEST':
         mongoose.connect("mongodb://localhost:27017/DCMOBILEVENDOR_TEST", options)
         .then(res=>console.log('Connected to TEST DB'))
         .catch(err=>console.log(err));
         break;
-    case 'production':
+    case 'PRODUCTION':
         mongoose.connect(process.env.MLAB_URL, options)
         .then(res=>console.log('Connected to PRODUCTION DB'))
         .catch(err=>console.log(err));

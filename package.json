@@ -8,7 +8,8 @@
   },
   "scripts": {
     "start": "nodemon server.js",
-    "test": "mocha --timeout 10000"
+    "test": "mocha --timeout 10000",
+    "seeddev": "node controllers/db/seeds/developmentSeed.js"
   },
   "repository": {
     "type": "git",
