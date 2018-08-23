@@ -3,12 +3,9 @@
   "version": "0.0.1",
   "description": "Core API to DC Mobile Vendor Tracker (Name TBD)",
   "main": "server.js",
-  "directories": {
-    "test": "test"
-  },
   "scripts": {
     "start": "nodemon server.js",
-    "test": "mocha --timeout 10000",
+    "test": "mocha ./test/**/*spec.js --timeout 10000",
     "seeddev": "node controllers/db/seeds/developmentSeed.js"
   },
   "repository": {
@@ -40,6 +37,7 @@
     "mocha": "^5.2.0",
     "mongoose": "^5.2.9",
     "morgan": "^1.9.0",
+    "sinon": "^6.1.5",
     "socket.io": "^2.1.1"
   }
 }
