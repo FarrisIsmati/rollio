@@ -8,22 +8,6 @@ const Region      = mongoose.model('Region');
 
 //TESTS
 describe('Region schema', function() {
-    it('should be invalid if name is empty', done => {
-        const region = new Region();
-        region.validate(err => {
-            expect(err.errors.name).to.exist;
-            done();
-        });
-    });
-
-    it('should be invalid if timezone is empty', done => {
-        const region = new Region();
-        region.validate(err => {
-            expect(err.errors.timezone).to.exist;
-            done();
-        });
-    });
-
     it('should be invalid if timezone is not within schema timezone enum', done => {
         const fakeTimezone = 'FAKETEST'
         const region = new Region({ timezone: fakeTimezone});
@@ -34,5 +18,7 @@ describe('Region schema', function() {
             done();
         });
     });
-    //https://codeutopia.net/blog/2016/06/10/mongoose-models-and-unit-tests-the-definitive-guide/
 });
+
+//HELPING RESOURCE
+  //https://codeutopia.net/blog/2016/06/10/mongoose-models-and-unit-tests-the-definitive-guide/

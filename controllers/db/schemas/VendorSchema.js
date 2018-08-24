@@ -8,21 +8,20 @@ const MenuSchema = new mongoose.Schema({
     type: [
       {
         name : { type: String, required: true },
-        price: { type: String, required: false }
+        price: { type: String, required: false },
+        currency: { type: String, required: true }
       }
     ],
     required: true
   }
 });
 
-const coordArrLimit = (val) => val.length <= 2;
-
 //COORDINATES SCHEMA
 const CoordinatesSchema = new mongoose.Schema({
   coordinatesDate: { type: Date, default: Date.now, required: true },
   coordinates: {
     type: [ { type: Number, required: true } ],
-    validate: [coordArrLimit, '{PATH} exceeds the limit of 2'],
+    validate: [(val) => val.length <= 2, '{PATH} exceeds the limit of 2'],
     required: true
   }
 })
@@ -47,7 +46,7 @@ const VendorSchema = new mongoose.Schema({
   description : { type: String, required: true },
   menu : {
     type: [MenuSchema],
-    required: true
+    required: false
   },
   facebookRating : { type: String, required: false },
   yelpRating : { type: String, required: false },
