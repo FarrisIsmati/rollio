@@ -45,7 +45,8 @@ module.exports = {
   ],
   regions: [
     {
-      "name": "Washington, D.C.",
+      "name": "WASHINGTONDC",
+      "location": "Washington, D.C.",
       "timezone": "EST"
     }
   ]
