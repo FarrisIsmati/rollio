@@ -1,4 +1,4 @@
-//DEPENDCIES
+//DEPENDENCIES
 const mongoose      = require('../schemas/AllSchemas');
 const util          = require('util');
 
@@ -14,7 +14,8 @@ const seedObj = {
   emptyRegionsCollection : function() {
     return Region.deleteMany({})
     .then(() => {
-      console.log(`Emptied Region collection in ${process.env.NODE_ENV} enviroment`);
+      if (process.env.NODE_ENV != 'TEST')
+        console.log(`Emptied Region collection in ${process.env.NODE_ENV} enviroment`);
     })
     .catch((err) => {
       console.log(err);
@@ -23,7 +24,8 @@ const seedObj = {
   seedRegions : function() {
     return Region.collection.insertMany(regionsData)
     .then(res => {
-      console.log(`Seeded regions in Region collection in ${process.env.NODE_ENV} enviroment`);
+      if (process.env.NODE_ENV != 'TEST')
+        console.log(`Seeded regions in Region collection in ${process.env.NODE_ENV} enviroment`);
     })
     .catch(err => {
       console.log(err);
@@ -32,7 +34,8 @@ const seedObj = {
   emptyVendors : function() {
     return Vendor.deleteMany({})
     .then(() => {
-      console.log(`Emptied Vendor collection in ${process.env.NODE_ENV} enviroment`);
+      if (process.env.NODE_ENV != 'TEST')
+        console.log(`Emptied Vendor collection in ${process.env.NODE_ENV} enviroment`);
     })
     .catch(err => {
       console.log(err);
@@ -46,22 +49,20 @@ const seedObj = {
     const vendorsUpdatedRegionID = vendorsData.map(vendor => { return { ...vendor, regionID } } );
     return Vendor.collection.insertMany(vendorsUpdatedRegionID)
     .then(res => {
-      console.log(`Seeded vendors in Vendor collection in ${process.env.NODE_ENV} enviroment`);
+      if (process.env.NODE_ENV != 'TEST')
+        console.log(`Seeded vendors in Vendor collection in ${process.env.NODE_ENV} enviroment`);
     })
     .catch(err => {
       console.log(err);
     })
   },
   runSeed : function() {
-    this.emptyRegionsCollection()
+    return this.emptyRegionsCollection()
     .then(() => this.seedRegions())
     .then(() => this.emptyVendors())
-    .then(() => this.seedVendors("WASHINGTONDC"))
-    .then(() => process.exit());
+    .then(() => this.seedVendors("WASHINGTONDC"));
   }
 };
 
-seedObj.runSeed();
-
 //EXPORT TO TEST
-module.export = seedObj;
+module.exports = seedObj;
