@@ -11,7 +11,7 @@ const Vendor              = mongoose.model('Vendor');
 const seed                = require('../../controllers/db/seeds/developmentSeed');
 
 //TESTS
-describe('Testing DB to the Seed File', function() {
+describe('Testing Seed file with the TEST DB', function() {
   before(function (done) {
     seed.runSeed().then(() => done());
   });
@@ -72,8 +72,18 @@ describe('Testing DB to the Seed File', function() {
         done();
       });
 
-      it('should have vendor menu', function(done) {
-        expect(vendor.menu).to.exist;
+      it('should have vendor recentCoordinates', function(done) {
+        expect(vendor.recentCoordinates).to.exist;
+        done();
+      });
+
+      it('should have vendor coordinatesHistory', function(done) {
+        expect(vendor.coordinatesHistory).to.exist;
+        done();
+      });
+
+      it('should have vendor categories', function(done) {
+        expect(vendor.categories).to.exist;
         done();
       });
     })

@@ -18,7 +18,6 @@ switch (process.env.NODE_ENV) {
         break;
     case 'TEST':
         mongoose.connect("mongodb://localhost:27017/DCMOBILEVENDOR_TEST", options)
-        .then(res=>console.log('Connected to TEST DB'))
         .catch(err=>console.log(err));
         break;
     case 'PRODUCTION':

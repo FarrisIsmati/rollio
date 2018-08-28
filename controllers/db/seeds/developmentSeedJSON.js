@@ -25,7 +25,7 @@ module.exports = {
           }
         }
       ],
-      "coordinates": {
+      "recentCoordinates": {
         "coordinatesDate": new Date("2018-04-12T12:10:00Z"),
         "coordinates": [4.123, 1.522]
       },

@@ -55,7 +55,7 @@ const VendorSchema = new mongoose.Schema({
     type: [TweetSchema],
     required: false
   },
-  coordinates : {
+  recentCoordinates : {
     type: CoordinatesSchema,
     required: false
   },
