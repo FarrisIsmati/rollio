@@ -8,7 +8,6 @@ const Region              = mongoose.model('Region');
 const Coordinates         = mongoose.model('Coordinates');
 const Vendor              = mongoose.model('Vendor');
 
-
 //TESTS
 describe('Schemas', function() {
   describe('Region schema', function() {
