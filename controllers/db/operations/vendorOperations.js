@@ -6,8 +6,18 @@ const Vendor              = mongoose.model('Vendor');
 
 //DB VENDOR OPERATIONS
 const vendorOperations = {
-  getVendor: function(id) {
-    return Vendor.findById(id)
+  getVendors: function(regionID) {
+    return Vendor.find({
+      "regionID": regionID
+    })
+    .then( vendors => vendors )
+    .catch( err => err );
+  },
+  getVendor: function(regionID, vendorID) {
+    return Vendor.findOne({
+      "regionID": regionID,
+      "_id": vendorID
+    })
     .then( vendor => vendor )
     .catch( err => err );
   }
