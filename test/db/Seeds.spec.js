@@ -72,13 +72,15 @@ describe('Testing Seed file with the TEST DB', function() {
         done();
       });
 
-      it('should have vendor recentCoordinates', function(done) {
-        expect(vendor.recentCoordinates).to.exist;
+      it('should have vendor tweetsDaily', function(done) {
+        expect(vendor.tweetsDaily).to.exist;
+        expect(vendor.tweetsDaily).to.be.array();
         done();
       });
 
       it('should have vendor coordinatesHistory', function(done) {
         expect(vendor.coordinatesHistory).to.exist;
+        expect(vendor.coordinatesHistory).to.be.array();
         done();
       });
 

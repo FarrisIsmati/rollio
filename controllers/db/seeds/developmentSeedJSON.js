@@ -12,7 +12,7 @@ module.exports = {
       "facebookRating": "9",
       "yelpRating": "10",
       "twitterID": "abcx92n0dj2mmd9008284",
-      "tweets": [
+      "tweetsDaily": [
         {
           "tweetID": "laks3n",
           "createdAt": new Date("2016-05-18T16:00:00Z"),
@@ -25,10 +25,6 @@ module.exports = {
           }
         }
       ],
-      "recentCoordinates": {
-        "coordinatesDate": new Date("2018-04-12T12:10:00Z"),
-        "coordinates": [4.123, 1.522]
-      },
       "coordinatesHistory": [
         {
           "coordinatesDate": new Date("2018-04-12T12:10:00Z"),

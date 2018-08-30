@@ -51,12 +51,8 @@ const VendorSchema = new mongoose.Schema({
   facebookRating : { type: String, required: false },
   yelpRating : { type: String, required: false },
   twitterID : { type: String, required: true },
-  tweets : {
+  tweetsDaily : {
     type: [TweetSchema],
-    required: false
-  },
-  recentCoordinates : {
-    type: CoordinatesSchema,
     required: false
   },
   coordinatesHistory : {
