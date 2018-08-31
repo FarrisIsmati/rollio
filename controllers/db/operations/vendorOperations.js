@@ -4,6 +4,10 @@ const mongoose            = require('../schemas/AllSchemas');
 //SCHEMA
 const Vendor              = mongoose.model('Vendor');
 
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!
+//NEXT STEP REFACTOR FUNCTION PRAMERTIERS IF MORE THAN 2 TO TAKE IN AN OBJECT RATHER THAN MULTIPLE PARAMETERS
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 //DB VENDOR OPERATIONS
 const vendorOperations = {
   //Gets all vendors given a regionID
@@ -30,6 +34,17 @@ const vendorOperations = {
       "_id": vendorID
     }, {
       $push: { [field]: payload }
+    })
+    .then( res => res )
+    .catch( err => err );
+  },
+  //Empties a vendors tweetsDaily collection given a regionID and vendorID
+  emptyVendorTweets: async function(regionID, vendorID, ) {
+    return Vendor.update({
+      "regionID": regionID,
+      "_id": vendorID
+    }, {
+      $set: { 'tweetsDaily': [] }
     })
     .then( res => res )
     .catch( err => err );
