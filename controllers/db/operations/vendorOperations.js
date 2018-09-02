@@ -4,10 +4,6 @@ const mongoose            = require('../schemas/AllSchemas');
 //SCHEMA
 const Vendor              = mongoose.model('Vendor');
 
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!
-//NEXT STEP REFACTOR FUNCTION PRAMERTIERS IF MORE THAN 2 TO TAKE IN AN OBJECT RATHER THAN MULTIPLE PARAMETERS
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!
-
 //DB VENDOR OPERATIONS
 const vendorOperations = {
   //Gets all vendors given a regionID
@@ -27,8 +23,21 @@ const vendorOperations = {
     .then( vendor => vendor )
     .catch( err => err );
   },
+  //Sets data to a field given a regionID, vendorID, field, and data
+  updateVendorSet: function(params) {
+    const { regionID, vendorID, field, data } = params;
+    return Vendor.update({
+      "regionID": regionID,
+      "_id": vendorID
+    }, {
+      $set: { [field]: data }
+    })
+    .then( res => res )
+    .catch( err => err );
+  },
   //Pushes a payload to a field of type Array given a regionID, vendorID, field, and payload
-  updateVendorPush: async function(regionID, vendorID, field, payload) {
+  updateVendorPush: function(params) {
+    const { regionID, vendorID, field, payload } = params;
     return Vendor.update({
       "regionID": regionID,
       "_id": vendorID
@@ -39,12 +48,23 @@ const vendorOperations = {
     .catch( err => err );
   },
   //Empties a vendors tweetsDaily collection given a regionID and vendorID
-  emptyVendorTweets: async function(regionID, vendorID, ) {
+  emptyVendorTweets: function(regionID, vendorID) {
     return Vendor.update({
       "regionID": regionID,
       "_id": vendorID
     }, {
       $set: { 'tweetsDaily': [] }
+    })
+    .then( res => res )
+    .catch( err => err );
+  },
+  //Increments a vendors consecutiveDaysInactive field by 1 given a regionID and vendorID
+  incrementVendorConsecutiveDaysInactive: function(regionID, vendorID) {
+    return Vendor.update({
+      "regionID": regionID,
+      "_id": vendorID
+    }, {
+      $inc: { 'consecutiveDaysInactive': 1 }
     })
     .then( res => res )
     .catch( err => err );

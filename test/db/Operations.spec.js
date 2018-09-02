@@ -82,7 +82,8 @@ describe('DB Operations', function() {
         const prevCoordHist = await Vendor.collection.findOne({ "_id": testVendorObj._id })
         .then(vendor => vendor.coordinatesHistory);
 
-        const updateCoordHistRes = await vendorOperations.updateVendorPush(regionID, testVendorObj._id, 'coordinatesHistory',  coordinatesPayload)
+        const params = { regionID, vendorID: testVendorObj._id, field: 'coordinatesHistory',  payload: coordinatesPayload };
+        const updateCoordHistRes = await vendorOperations.updateVendorPush(params)
         .then(res => res);
 
         const updatedCoordHist = await Vendor.collection.findOne({ "_id": testVendorObj._id })
@@ -110,7 +111,8 @@ describe('DB Operations', function() {
         const prevDailyTweets = await Vendor.collection.findOne({ "_id": testVendorObj._id })
         .then(vendor => vendor.tweetsDaily);
 
-        const updateDailyTweetsRes = await vendorOperations.updateVendorPush(regionID, testVendorObj._id, 'tweetsDaily',  tweetPayload)
+        const params = { regionID, vendorID: testVendorObj._id, field: 'tweetsDaily',  payload: tweetPayload };
+        const updateDailyTweetsRes = await vendorOperations.updateVendorPush(params)
         .then(res => res);
 
         const updatedDailyTweets = await Vendor.collection.findOne({ "_id": testVendorObj._id })
@@ -135,6 +137,87 @@ describe('DB Operations', function() {
 
         expect(updateDailyTweetsRes.nModified).to.equal(1);
         expect(updatedDailyTweets.length).to.equal(0);
+      });
+
+      it('should set dailyActive from false to true', async function() {
+        const prevDailyActive = await Vendor.collection.findOne({ "_id": testVendorObj._id })
+        .then(vendor => vendor.dailyActive);
+
+        const params = { regionID, vendorID: testVendorObj._id, field: 'dailyActive',  data: true };
+        const updateDailyActiveRes = await vendorOperations.updateVendorSet(params)
+        .then(res => res);
+
+        const updatedDailyActive = await Vendor.collection.findOne({ "_id": testVendorObj._id })
+        .then(vendor => vendor.dailyActive);
+
+        expect(prevDailyActive).to.be.false;
+        expect(updateDailyActiveRes.nModified).to.equal(1);
+        expect(updatedDailyActive).to.be.true;
+      });
+
+      it('should update consecutiveDaysInactive by incrementing value by one', async function() {
+        const prevConsecutiveDaysInactive = await Vendor.collection.findOne({ "_id": testVendorObj._id })
+        .then(vendor => vendor.consecutiveDaysInactive);
+
+        const updateConsecutiveDaysInactiveRes = await vendorOperations.incrementVendorConsecutiveDaysInactive(regionID, testVendorObj._id)
+        .then(res => res);
+
+        const updatedConsecutiveDaysInactive = await Vendor.collection.findOne({ "_id": testVendorObj._id })
+        .then(vendor => vendor.consecutiveDaysInactive);
+
+        expect(updateConsecutiveDaysInactiveRes.nModified).to.equal(1);
+        expect(updatedConsecutiveDaysInactive).to.be.equal(prevConsecutiveDaysInactive + 1);
+      });
+
+      it('should reset consecutiveDaysInactive to 0', async function() {
+        const incrementConsecutiveDaysInactiveRes = await vendorOperations.incrementVendorConsecutiveDaysInactive(regionID, testVendorObj._id)
+        .then(res => res);
+
+        const prevConsecutiveDaysInactive = await Vendor.collection.findOne({ "_id": testVendorObj._id })
+        .then(vendor => vendor.consecutiveDaysInactive);
+
+        const params = { regionID, vendorID: testVendorObj._id, field: 'consecutiveDaysInactive',  data: 0 };
+        const updateConsecutiveDaysInactiveRes = await vendorOperations.updateVendorSet(params)
+        .then(res => res);
+
+        const updatedConsecutiveDaysInactive = await Vendor.collection.findOne({ "_id": testVendorObj._id })
+        .then(vendor => vendor.consecutiveDaysInactive);
+
+        expect(prevConsecutiveDaysInactive).to.be.equal(1);
+        expect(updateConsecutiveDaysInactiveRes.nModified).to.equal(1);
+        expect(updatedConsecutiveDaysInactive).to.be.equal(0);
+      });
+
+      it('should update Facebook rating of Vendor', async function() {
+        const prevFacebookRating = await Vendor.collection.findOne({ "_id": testVendorObj._id })
+        .then(vendor => vendor.facebookRating);
+
+        const params = { regionID, vendorID: testVendorObj._id, field: 'facebookRating',  data: 10 };
+        const updateFacebookRatingRes = await vendorOperations.updateVendorSet(params)
+        .then(res => res);
+
+        const updatedFacebookRating = await Vendor.collection.findOne({ "_id": testVendorObj._id })
+        .then(vendor => vendor.facebookRating);
+
+        expect(prevFacebookRating).to.be.equal('8');
+        expect(updateFacebookRatingRes.nModified).to.equal(1);
+        expect(updatedFacebookRating).to.be.equal('10');
+      });
+
+      it('should update Yelp rating of Vendor', async function() {
+        const prevYelpRating = await Vendor.collection.findOne({ "_id": testVendorObj._id })
+        .then(vendor => vendor.yelpRating);
+
+        const params = { regionID, vendorID: testVendorObj._id, field: 'yelpRating',  data: 10 };
+        const updateYelpRatingRes = await vendorOperations.updateVendorSet(params)
+        .then(res => res);
+
+        const updatedYelpRating = await Vendor.collection.findOne({ "_id": testVendorObj._id })
+        .then(vendor => vendor.yelpRating);
+
+        expect(prevYelpRating).to.be.equal('8');
+        expect(updateYelpRatingRes.nModified).to.equal(1);
+        expect(updatedYelpRating).to.be.equal('10');
       });
 
       afterEach(function(done) {

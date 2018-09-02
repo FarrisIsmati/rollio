@@ -9,8 +9,8 @@ module.exports = {
         "section": "Meat",
         "items": [{"name": "Kabob", "price": "200", "currency": "USD"}]
       }],
-      "facebookRating": "9",
-      "yelpRating": "10",
+      "facebookRating": "8",
+      "yelpRating": "8",
       "twitterID": "abcx92n0dj2mmd9008284",
       "tweetsDaily": [
         {
@@ -31,7 +31,7 @@ module.exports = {
           "coordinates": [4.123, 1.522]
         }
       ],
-      "dailyActive": true,
+      "dailyActive": false,
       "address": "28 Ist",
       "consecutiveDaysInactive": 0,
       "categories": ["Meat", "Yummy", "American South West"],
