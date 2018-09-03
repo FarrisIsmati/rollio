@@ -19,6 +19,7 @@ const MenuSchema = new mongoose.Schema({
 //COORDINATES SCHEMA
 const CoordinatesSchema = new mongoose.Schema({
   coordinatesDate: { type: Date, default: Date.now, required: true },
+  address : { type: String, required: false },
   coordinates: {
     type: [ { type: Number, required: true } ],
     validate: [(val) => val.length <= 2, '{PATH} exceeds the limit of 2'],
@@ -60,7 +61,6 @@ const VendorSchema = new mongoose.Schema({
     required: false
   },
   dailyActive : { type: Boolean, required: true },
-  address : { type: String, required: false },
   consecutiveDaysInactive : { type: Number, required: false },
   categories : { type: [ { type: String, required: true }], required: true },
   price : { type: String, required: true },

@@ -89,6 +89,48 @@ describe('Testing Seed file with the TEST DB', function() {
         done();
       });
     })
+
+    describe('Sammies', function() {
+      before(function(done) {
+        Vendor.collection.findOne({ name: 'Sammies'})
+        .then(sammies => {
+          vendor = sammies;
+          done();
+        })
+      })
+
+      it('should exist', function(done) {
+        expect(vendor).to.exist;
+        done();
+      })
+
+      it('should have vendor name Sammies', function(done) {
+        expect(vendor.name).to.equal('Sammies');
+        done();
+      });
+
+      it('should have vendor menu', function(done) {
+        expect(vendor.menu).to.exist;
+        done();
+      });
+
+      it('should have vendor tweetsDaily', function(done) {
+        expect(vendor.tweetsDaily).to.exist;
+        expect(vendor.tweetsDaily).to.be.array();
+        done();
+      });
+
+      it('should have vendor coordinatesHistory', function(done) {
+        expect(vendor.coordinatesHistory).to.exist;
+        expect(vendor.coordinatesHistory).to.be.array();
+        done();
+      });
+
+      it('should have vendor categories', function(done) {
+        expect(vendor.categories).to.exist;
+        done();
+      });
+    })
   });
 
   after(function(done) {

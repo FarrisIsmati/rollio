@@ -10,6 +10,11 @@ const socketIO        = require('socket.io');
 const http            = require('http');
 const server          = require('http').createServer(app);
 
+//ROUTES
+const region          = require('./controllers/routes/region');
+const vendor          = require('./controllers/routes/vendor');
+
+
 //SET LOGGER
 switch (process.env.NODE_ENV) {
     case 'DEVELOPMENT':
@@ -34,6 +39,10 @@ app.set('port', process.env.PORT || 3001);
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(cors());
+
+//ROUTES
+app.use('/region', region);
+app.use('/vendor', vendor);
 
 //START SERVER
 server.listen(app.get('port'), () => {

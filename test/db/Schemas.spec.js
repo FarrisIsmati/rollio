@@ -43,12 +43,11 @@ describe('Schemas', function() {
 
         vendor.validate(err => {
             expect(err.errors.type).to.exist;
-            expect(err.errors.type.properties.message).to.equal(`\`${fakeVendorType}\` is not a valid enum value for path \`type\`.`)
+            expect(err.errors.type.properties.message).to.equal(`\`${fakeVendorType}\` is not a valid enum value for path \`type\`.`);
             done();
         });
     });
   });
 });
 
-//HELPING RESOURCE
 //https://codeutopia.net/blog/2016/06/10/mongoose-models-and-unit-tests-the-definitive-guide/

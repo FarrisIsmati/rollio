@@ -23,6 +23,12 @@ const vendorOperations = {
     .then( vendor => vendor )
     .catch( err => err );
   },
+  //Gets all vendors given a set of Queries
+  getVendorsByQuery: function(params) {
+    return Vendor.find(params)
+    .then( vendors => vendors )
+    .catch( err => err );
+  },
   //Sets data to a field given a regionID, vendorID, field, and data
   updateVendorSet: function(params) {
     const { regionID, vendorID, field, data } = params;
