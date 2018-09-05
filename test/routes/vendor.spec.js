@@ -20,38 +20,51 @@ describe('Vendor Routes', function() {
   let regionID;
   let vendor;
 
-  beforeEach(function(done){
+  before(function(done){
     seed.runSeed().then(async () => {
       regionID = await Region.collection.findOne().then(region => region._id);
       vendor = await Vendor.collection.findOne({"regionID": await regionID});
-
-      const test = await Vendor.collection.findOne({
-        "regionID": regionID
-      }).then(yes => console.log(yes));
-
       done();
     });
   });
 
   describe('GET', function() {
-      it('should get /vendors', function(done) {
+    it('should get /vendor/:regionID', function(done) {
+      chai.request(server)
+        .get(`/vendor/${regionID}`)
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          expect(res.body).to.be.a('array');
+          expect(res.body.length).to.be.equal(2);
+          done();
+        });
+    });
 
-//NEXT TIME FIGURE OUT WHY THIS ISN"T WORKING
+    it('should get /vendor/:regionID with a complicated query string', function(done) {
+      chai.request(server)
+        .get(`/vendor/${regionID}/?price=$$$$&categories[]=Mexican&categories[]=Chinese`)
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          expect(res.body).to.be.a('array');
+          expect(res.body[0].categories).to.include('Mexican');
+          expect(res.body.length).to.be.equal(1);
+          done();
+        });
+    });
 
-
-
-        chai.request(server)
-          .get('/vendor')
-          .end((err, res) => {
-            expect(res).to.have.status(200);
-            expect(res.body).to.be.a('array');
-            expect(res.body.length).to.be.equal(2);
-            done();
-          });
-      });
+    it('should get /vendor/:regionID/:vendorID', function(done) {
+      chai.request(server)
+        .get(`/vendor/${regionID}/${vendor._id}`)
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          expect(res.body).to.be.a('object');
+          expect(res.body._id).to.have.same.id(vendor._id);
+          done();
+        });
+    });
   });
 
-  afterEach(function(done) {
+  after(function(done) {
     seed.emptyRegionsCollection()
     .then(() => seed.emptyVendors())
     .then(() => done());

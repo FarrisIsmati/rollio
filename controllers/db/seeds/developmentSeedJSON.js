@@ -71,7 +71,7 @@ module.exports = {
           ],
           "dailyActive": false,
           "consecutiveDaysInactive": 0,
-          "categories": ["Meat", "Mexican", "American South West"],
+          "categories": ["Meat", "Mexican", "Chinese", "American South West"],
           "price": "$$$$",
           "regionID": null
         }

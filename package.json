@@ -38,6 +38,7 @@
     "cors": "^2.8.4",
     "express": "^4.16.3",
     "mocha": "^5.2.0",
+    "mongo-querystring": "^4.1.1",
     "mongoose": "^5.2.9",
     "morgan": "^1.9.0",
     "sinon": "^6.1.5",

@@ -41,7 +41,7 @@ describe('DB Operations', function() {
         vendorOperations.getVendors(regionID)
         .then(res => {
           expect(res).to.be.array();
-          expect(res[0].regionID).have.same.id(regionID);
+          expect(res[0].regionID).to.have.same.id(regionID);
           done();
         })
         .catch(err => console.log(err));
@@ -50,7 +50,7 @@ describe('DB Operations', function() {
       it('should return a vendor given a regionID and a objectID', function(done) {
         vendorOperations.getVendor(regionID, vendor._id)
         .then(res => {
-          expect(res).have.same.id(vendor)
+          expect(res).to.have.same.id(vendor)
           done();
         })
         .catch(err => console.log(err));
@@ -279,7 +279,7 @@ describe('DB Operations', function() {
       it('should return a region given a regionID', function(done) {
         regionOperations.getRegion(regionID)
         .then(res => {
-          expect(res._id).have.same.id(regionID);
+          expect(res._id).to.have.same.id(regionID);
           done();
         })
         .catch(err => console.log(err));
