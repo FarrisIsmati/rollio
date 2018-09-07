@@ -40,13 +40,14 @@ describe('Vendor Routes', function() {
         });
     });
 
-    it('should get /vendor/:regionID with a complicated query string', function(done) {
+    it('should get /vendor/:regionID/?price=$$$$&categories[]=Mexican&categories[]=Chinese', function(done) {
       chai.request(server)
         .get(`/vendor/${regionID}/?price=$$$$&categories[]=Mexican&categories[]=Chinese`)
         .end((err, res) => {
           expect(res).to.have.status(200);
           expect(res.body).to.be.a('array');
           expect(res.body[0].categories).to.include('Mexican');
+          expect(res.body[0].categories).to.include('Chinese');
           expect(res.body.length).to.be.equal(1);
           done();
         });

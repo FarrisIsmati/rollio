@@ -69,6 +69,7 @@ module.exports = {
               "coordinates": [4.223, 1.512]
             }
           ],
+          "municipality": "Alexandria",
           "dailyActive": false,
           "consecutiveDaysInactive": 0,
           "categories": ["Meat", "Mexican", "Chinese", "American South West"],
@@ -79,6 +80,11 @@ module.exports = {
   regions: [
     {
       "name": "WASHINGTONDC",
+      "coordinates": {
+        "coordinatesDate": new Date("2018-04-12T12:10:00Z"),
+        "address": "Washington, D.C.",
+        "coordinates": [38.9072, 77.0369]
+      },
       "location": "Washington, D.C.",
       "timezone": "EST"
     }

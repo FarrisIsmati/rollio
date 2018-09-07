@@ -58,8 +58,9 @@ const VendorSchema = new mongoose.Schema({
   },
   coordinatesHistory : {
     type: [CoordinatesSchema],
-    required: false
+    required: true
   },
+  municipality : { type: String, required: false },
   dailyActive : { type: Boolean, required: true },
   consecutiveDaysInactive : { type: Number, required: false },
   categories : { type: [ { type: String, required: true }], required: true },

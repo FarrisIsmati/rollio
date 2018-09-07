@@ -28,6 +28,7 @@ describe('Schemas', function() {
         const coordinates = new Coordinates({
           coordinates: [3.42424, -42.1414, 3.4114]
         });
+        
         coordinates.validate(err => {
           expect(err.errors.coordinates).to.exist;
           expect(err.errors.coordinates.message).to.equal('coordinates exceeds the limit of 2');
