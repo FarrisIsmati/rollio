@@ -25,7 +25,7 @@ const CoordinatesSchema = new mongoose.Schema({
     validate: [(val) => val.length <= 2, '{PATH} exceeds the limit of 2'],
     required: true
   }
-})
+});
 
 //TWEET SCHEMA
 const TweetSchema = new mongoose.Schema({
@@ -36,6 +36,11 @@ const TweetSchema = new mongoose.Schema({
   userName : { type: String, required: true },
   userScreenName : { type: String, required: true },
   geolocation : { type: CoordinatesSchema, required: false }
+});
+
+const LocationAccuracyCommentSchema = new mongoose.Schema({
+  commentDate: { type: Date, default: Date.now, required: true },
+  text: { type: String, required: true, maxlength: 255, minLength: 5 }
 })
 
 //VENDOR SCHEMA
@@ -60,6 +65,11 @@ const VendorSchema = new mongoose.Schema({
     type: [CoordinatesSchema],
     required: true
   },
+  locationAccuracy : { type: Number, required: true },
+  locationAccuracyComments : {
+    type: [LocationAccuracyCommentSchema],
+    required: false
+  },
   municipality : { type: String, required: false },
   dailyActive : { type: Boolean, required: true },
   consecutiveDaysInactive : { type: Number, required: false },
@@ -73,5 +83,6 @@ module.exports = {
   VendorSchema,
   MenuSchema,
   TweetSchema,
+  LocationAccuracyCommentSchema,
   CoordinatesSchema
 };

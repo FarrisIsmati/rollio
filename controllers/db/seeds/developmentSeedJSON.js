@@ -32,6 +32,14 @@ module.exports = {
           "coordinates": [4.123, 1.522]
         }
       ],
+      "locationAccuracy": 0,
+      "locationAccuracyComments": [
+        {
+          "commentDate": new Date("2018-04-12T12:10:00Z"),
+          "text": "Hello this is very accurate"
+        }
+      ],
+      "municipality": "Tysons",
       "dailyActive": false,
       "consecutiveDaysInactive": 0,
       "categories": ["Meat", "Yummy", "American South West"],
@@ -67,6 +75,13 @@ module.exports = {
               "coordinatesDate": new Date("2018-04-12T12:10:00Z"),
               "address": "22nd Ist",
               "coordinates": [4.223, 1.512]
+            }
+          ],
+          "locationAccuracy": 0,
+          "locationAccuracyComments": [
+            {
+              "commentDate": new Date("2018-04-12T12:10:00Z"),
+              "text": "Hello this is very accurate"
             }
           ],
           "municipality": "Alexandria",
