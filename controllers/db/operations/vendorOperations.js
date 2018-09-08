@@ -53,6 +53,28 @@ const vendorOperations = {
     .then( res => res )
     .catch( err => err );
   },
+  //Increments a vendors locationAccuracy by one given a regionID and vendorID
+  incrementLocationAccuracy: function(regionID, vendorID) {
+    return Vendor.update({
+      "regionID": regionID,
+      "_id": vendorID
+    }, {
+      $inc: { 'locationAccuracy', 1 }
+    })
+    .then( res => res )
+    .catch( err => err );
+  },
+  //Decrement a vendors locationAccuracy by one given a regionID and vendorID
+  decrementLocationAccuracy: function(regionID, vendorID) {
+    return Vendor.update({
+      "regionID": regionID,
+      "_id": vendorID
+    }, {
+      $dec: { 'locationAccuracy', -1 }
+    })
+    .then( res => res )
+    .catch( err => err );
+  },
   //Empties a vendors tweetsDaily collection given a regionID and vendorID
   emptyVendorTweets: function(regionID, vendorID) {
     return Vendor.update({

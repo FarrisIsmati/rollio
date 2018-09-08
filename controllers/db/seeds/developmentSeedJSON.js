@@ -33,7 +33,7 @@ module.exports = {
         }
       ],
       "locationAccuracy": 0,
-      "locationAccuracyComments": [
+      "Comments": [
         {
           "commentDate": new Date("2018-04-12T12:10:00Z"),
           "text": "Hello this is very accurate"
@@ -78,7 +78,7 @@ module.exports = {
             }
           ],
           "locationAccuracy": 0,
-          "locationAccuracyComments": [
+          "Comments": [
             {
               "commentDate": new Date("2018-04-12T12:10:00Z"),
               "text": "Hello this is very accurate"

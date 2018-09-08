@@ -1,12 +1,13 @@
 //DEPENDENCIES
-const mongoose            = require('../../controllers/db/schemas/AllSchemas');
-const chai                = require('chai');
-const expect              = chai.expect;
+const mongoose                  = require('../../controllers/db/schemas/AllSchemas');
+const chai                      = require('chai');
+const expect                    = chai.expect;
 
 //SCHEMAS
-const Region              = mongoose.model('Region');
-const Coordinates         = mongoose.model('Coordinates');
-const Vendor              = mongoose.model('Vendor');
+const Comment                   = mongoose.model('Comment');
+const Region                    = mongoose.model('Region');
+const Coordinates               = mongoose.model('Coordinates');
+const Vendor                    = mongoose.model('Vendor');
 
 //TESTS
 describe('Schemas', function() {
@@ -28,10 +29,34 @@ describe('Schemas', function() {
         const coordinates = new Coordinates({
           coordinates: [3.42424, -42.1414, 3.4114]
         });
-        
+
         coordinates.validate(err => {
           expect(err.errors.coordinates).to.exist;
           expect(err.errors.coordinates.message).to.equal('coordinates exceeds the limit of 2');
+          done();
+        });
+    });
+  });
+
+  describe('Comment Schema', function() {
+    it('should be invalid if the comment length is under 5 characters long', done => {
+        const text = 'four';
+        const comment = new Comment({text});
+
+        comment.validate(err => {
+          expect(err.errors).to.exist;
+          expect(err.errors.text.properties.message).to.equal(`Path \`text\` (\`${text}\`) is shorter than the minimum allowed length (5).`);
+          done();
+        });
+    });
+
+    it('should be invalid if the comment length is over 255 characters long', done => {
+        const text = 'test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test t';
+        const comment = new Comment({text});
+
+        comment.validate(err => {
+          expect(err.errors).to.exist;
+          expect(err.errors.text.properties.message).to.equal(`Path \`text\` (\`${text}\`) is longer than the maximum allowed length (255).`);
           done();
         });
     });

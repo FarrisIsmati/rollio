@@ -1,15 +1,17 @@
 //DEPENDENCIES
-const mongoose     = require('../connection');
+const mongoose                        = require('../connection');
 
 //IMPORT ALL SCHEMAS
-const VendorSchema        = require('./VendorSchema').VendorSchema;
-const MenuSchema          = require('./VendorSchema').MenuSchema;
-const TweetSchema         = require('./VendorSchema').TweetSchema;
-const CoordinatesSchema   = require('./VendorSchema').CoordinatesSchema;
-const RegionSchema        = require('./RegionSchema');
+const CommentSchema                   = require('./VendorSchema').CommentSchema;
+const VendorSchema                    = require('./VendorSchema').VendorSchema;
+const MenuSchema                      = require('./VendorSchema').MenuSchema;
+const TweetSchema                     = require('./VendorSchema').TweetSchema;
+const CoordinatesSchema               = require('./VendorSchema').CoordinatesSchema;
+const RegionSchema                    = require('./RegionSchema');
 
 //ATTACH ALL SCHEMAS TO MONGOOSE
 mongoose.model('Vendor', VendorSchema);
+mongoose.model('Comment', CommentSchema);
 mongoose.model('Menu', MenuSchema);
 mongoose.model('Tweet', TweetSchema);
 mongoose.model('Coordinates', CoordinatesSchema);

@@ -38,9 +38,9 @@ const TweetSchema = new mongoose.Schema({
   geolocation : { type: CoordinatesSchema, required: false }
 });
 
-const LocationAccuracyCommentSchema = new mongoose.Schema({
+const CommentSchema = new mongoose.Schema({
   commentDate: { type: Date, default: Date.now, required: true },
-  text: { type: String, required: true, maxlength: 255, minLength: 5 }
+  text: { type: String, required: true, minlength: 5, maxlength: 255 }
 })
 
 //VENDOR SCHEMA
@@ -66,8 +66,8 @@ const VendorSchema = new mongoose.Schema({
     required: true
   },
   locationAccuracy : { type: Number, required: true },
-  locationAccuracyComments : {
-    type: [LocationAccuracyCommentSchema],
+  Comments : {
+    type: [CommentSchema],
     required: false
   },
   municipality : { type: String, required: false },
@@ -83,6 +83,6 @@ module.exports = {
   VendorSchema,
   MenuSchema,
   TweetSchema,
-  LocationAccuracyCommentSchema,
+  CommentSchema,
   CoordinatesSchema
 };
