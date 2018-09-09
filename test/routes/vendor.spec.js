@@ -20,7 +20,7 @@ describe('Vendor Routes', function() {
   let regionID;
   let vendor;
 
-  before(function(done){
+  beforeEach(function(done){
     seed.runSeed().then(async () => {
       regionID = await Region.collection.findOne().then(region => region._id);
       vendor = await Vendor.collection.findOne({"regionID": await regionID});
@@ -65,7 +65,45 @@ describe('Vendor Routes', function() {
     });
   });
 
-  after(function(done) {
+  describe('PUT', function() {
+    it('should put /vendor/:regionID/:vendorID/locationaccuracy vendor locationAccuracy increased by 1', async function() {
+      const prevLocationAccuracy = await Vendor.collection.findOne({ "_id": vendor._id })
+      .then(vendor => vendor.locationAccuracy);
+
+      const res = await chai.request(server)
+        .put(`/vendor/${regionID}/${vendor._id}/locationaccuracy`)
+        .send({
+          "amount": 1
+        });
+
+      const updatedLocationAccuracy = await Vendor.collection.findOne({ "_id": vendor._id })
+      .then(vendor => vendor.locationAccuracy);
+
+      expect(updatedLocationAccuracy).to.be.equal(prevLocationAccuracy + 1);
+      expect(res.body.nModified).to.be.equal(1);
+      expect(res).to.have.status(200);
+    });
+
+    it('should put /vendor/:regionID/:vendorID/locationaccuracy vendor locationAccuracy decreased by 1', async function() {
+      const prevLocationAccuracy = await Vendor.collection.findOne({ "_id": vendor._id })
+      .then(vendor => vendor.locationAccuracy);
+
+      const res = await chai.request(server)
+        .put(`/vendor/${regionID}/${vendor._id}/locationaccuracy`)
+        .send({
+          "amount": -1
+        });
+
+      const updatedLocationAccuracy = await Vendor.collection.findOne({ "_id": vendor._id })
+      .then(vendor => vendor.locationAccuracy);
+
+      expect(updatedLocationAccuracy).to.be.equal(prevLocationAccuracy - 1);
+      expect(res.body.nModified).to.be.equal(1);
+      expect(res).to.have.status(200);
+    });
+  });
+
+  afterEach(function(done) {
     seed.emptyRegionsCollection()
     .then(() => seed.emptyVendors())
     .then(() => done());

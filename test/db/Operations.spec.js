@@ -172,6 +172,32 @@ describe('DB Operations', function() {
         expect(updatedDailyActive).to.be.true;
       });
 
+      it('should update locationAccuracy by incrementing value by one', async function() {
+        const prevLocationAccuracy = await Vendor.collection.findOne({ "_id": vendor._id })
+        .then(vendor => vendor.locationAccuracy);
+
+        const updateLocationAccuracy = await vendorOperations.updateLocationAccuracy(regionID, vendor._id, 1);
+
+        const updatedLocationAccuracy = await Vendor.collection.findOne({"_id": vendor._id})
+        .then(vendor => vendor.locationAccuracy);
+
+        expect(updateLocationAccuracy.nModified).to.equal(1);
+        expect(updatedLocationAccuracy).to.equal(prevLocationAccuracy + 1);
+      });
+
+      it('should update locationAccuracy by decrementing value by one', async function() {
+        const prevLocationAccuracy = await Vendor.collection.findOne({ "_id": vendor._id })
+        .then(vendor => vendor.locationAccuracy);
+
+        const updateLocationAccuracy = await vendorOperations.updateLocationAccuracy(regionID, vendor._id, -1);
+
+        const updatedLocationAccuracy = await Vendor.collection.findOne({"_id": vendor._id})
+        .then(vendor => vendor.locationAccuracy);
+
+        expect(updateLocationAccuracy.nModified).to.equal(1);
+        expect(updatedLocationAccuracy).to.equal(prevLocationAccuracy - 1);
+      });
+
       it('should update consecutiveDaysInactive by incrementing value by one', async function() {
         const prevConsecutiveDaysInactive = await Vendor.collection.findOne({ "_id": vendor._id })
         .then(vendor => vendor.consecutiveDaysInactive);

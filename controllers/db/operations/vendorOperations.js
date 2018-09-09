@@ -53,24 +53,19 @@ const vendorOperations = {
     .then( res => res )
     .catch( err => err );
   },
+
+  //CREATE TESTS FOR INCREMENTLOCATION ACCURACY
+  //CREATE ROUTES FOR INCREMENT LOCATION ACCURACY
+  //CREATE ROUTES FOR PUSH COMMENT
+  //CREATE TEST FOR BOTH ROUTES
+
   //Increments a vendors locationAccuracy by one given a regionID and vendorID
-  incrementLocationAccuracy: function(regionID, vendorID) {
+  updateLocationAccuracy: function(regionID, vendorID, amount) {
     return Vendor.update({
       "regionID": regionID,
       "_id": vendorID
     }, {
-      $inc: { 'locationAccuracy', 1 }
-    })
-    .then( res => res )
-    .catch( err => err );
-  },
-  //Decrement a vendors locationAccuracy by one given a regionID and vendorID
-  decrementLocationAccuracy: function(regionID, vendorID) {
-    return Vendor.update({
-      "regionID": regionID,
-      "_id": vendorID
-    }, {
-      $dec: { 'locationAccuracy', -1 }
+      $inc: { 'locationAccuracy': amount }
     })
     .then( res => res )
     .catch( err => err );
