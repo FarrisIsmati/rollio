@@ -3,6 +3,8 @@ require('dotenv').config();
 
 //DEPENDENCIES
 const app             = require('express')();
+// only if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
+app.enable("trust proxy");
 const bodyParser      = require('body-parser');
 const morgan          = require('morgan');
 const cors            = require('cors');
@@ -13,7 +15,6 @@ const server          = require('http').createServer(app);
 //ROUTES
 const region          = require('./controllers/routes/region');
 const vendor          = require('./controllers/routes/vendor');
-
 
 //SET LOGGER
 switch (process.env.NODE_ENV) {
