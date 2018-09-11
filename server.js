@@ -3,8 +3,7 @@ require('dotenv').config();
 
 //DEPENDENCIES
 const app             = require('express')();
-// only if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
-app.enable("trust proxy");
+      app.enable("trust proxy"); // only if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
 const bodyParser      = require('body-parser');
 const morgan          = require('morgan');
 const cors            = require('cors');

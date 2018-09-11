@@ -66,7 +66,7 @@ describe('Vendor Routes', function() {
   });
 
   describe('PUT', function() {
-    it('should put /vendor/:regionID/:vendorID/locationaccuracy vendor locationAccuracy increased by 1', async function() {
+    it('should put /vendor/:regionID/:vendorID/locationaccuracy expect vendor locationAccuracy to be increased by 1', async function() {
       const prevLocationAccuracy = await Vendor.collection.findOne({ "_id": vendor._id })
       .then(vendor => vendor.locationAccuracy);
 
@@ -84,7 +84,7 @@ describe('Vendor Routes', function() {
       expect(res).to.have.status(200);
     });
 
-    it('should put /vendor/:regionID/:vendorID/locationaccuracy vendor locationAccuracy decreased by 1', async function() {
+    it('should put /vendor/:regionID/:vendorID/locationaccuracy expect vendor locationAccuracy to be decreased by 1', async function() {
       const prevLocationAccuracy = await Vendor.collection.findOne({ "_id": vendor._id })
       .then(vendor => vendor.locationAccuracy);
 
