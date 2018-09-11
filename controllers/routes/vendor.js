@@ -31,6 +31,12 @@ router.get('/:regionID', async (req, res) => {
 router.get('/:regionID/:vendorID', (req, res) => getVendor(req.params.regionID, req.params.vendorID).then(vendor => res.status(200).json(vendor)));
 
 //PUT
-router.put('/:regionID/:vendorID/locationaccuracy', async (req, res) => updateLocationAccuracy(req.params.regionID, req.params.vendorID, req.body.amount).then(update => res.status(200).json(update)));
+//A vendor's locationAccuracy by amount
+router.put('/:regionID/:vendorID/locationaccuracy',
+async (req, res) => updateLocationAccuracy({regionID: req.params.regionID, vendorID: req.params.vendorID, amount: req.body.amount})
+.then(update => res.status(200).json(update)));
+
+//WORK ON THIS
+// router.put('/:regionID/:vendorID/comments', async (req, res) => updateVendorPush(req.params.regionID, req.params.vendorID, req.body.amount).then(update => res.status(200).json(update)));
 
 module.exports = router;

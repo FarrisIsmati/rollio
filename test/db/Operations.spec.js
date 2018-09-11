@@ -176,7 +176,7 @@ describe('DB Operations', function() {
         const prevLocationAccuracy = await Vendor.collection.findOne({ "_id": vendor._id })
         .then(vendor => vendor.locationAccuracy);
 
-        const updateLocationAccuracy = await vendorOperations.updateLocationAccuracy(regionID, vendor._id, 1);
+        const updateLocationAccuracy = await vendorOperations.updateLocationAccuracy({regionID, vendorID: vendor._id, amount: 1});
 
         const updatedLocationAccuracy = await Vendor.collection.findOne({"_id": vendor._id})
         .then(vendor => vendor.locationAccuracy);
@@ -189,7 +189,7 @@ describe('DB Operations', function() {
         const prevLocationAccuracy = await Vendor.collection.findOne({ "_id": vendor._id })
         .then(vendor => vendor.locationAccuracy);
 
-        const updateLocationAccuracy = await vendorOperations.updateLocationAccuracy(regionID, vendor._id, -1);
+        const updateLocationAccuracy = await vendorOperations.updateLocationAccuracy({regionID, vendorID: vendor._id, amount: -1});
 
         const updatedLocationAccuracy = await Vendor.collection.findOne({"_id": vendor._id})
         .then(vendor => vendor.locationAccuracy);

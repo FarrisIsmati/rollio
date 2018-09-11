@@ -60,15 +60,22 @@ const vendorOperations = {
   //CREATE TEST FOR BOTH ROUTES *
 
   //Increments a vendors locationAccuracy by one given a regionID and vendorID
-  updateLocationAccuracy: function(regionID, vendorID, amount) {
-    return Vendor.update({
-      "regionID": regionID,
-      "_id": vendorID
-    }, {
-      $inc: { 'locationAccuracy': amount }
-    })
-    .then( res => res )
-    .catch( err => err );
+  updateLocationAccuracy: function(params) {
+    const { regionID, vendorID, amount } = params;
+
+    //Amount can only be 1 or -1
+    if (amount === 1 || amount === -1) {
+      return Vendor.update({
+        "regionID": regionID,
+        "_id": vendorID
+      }, {
+        $inc: { 'locationAccuracy': amount }
+      })
+      .then( res => res )
+      .catch( err => err );
+    } else {
+      return Promise.reject(new Error('Amount must be either 1 or -1'));
+    }
   },
   //Empties a vendors tweetsDaily collection given a regionID and vendorID
   emptyVendorTweets: function(regionID, vendorID) {
