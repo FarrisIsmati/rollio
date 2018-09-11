@@ -66,7 +66,7 @@ const VendorSchema = new mongoose.Schema({
     required: true
   },
   locationAccuracy : { type: Number, required: true },
-  Comments : {
+  comments : {
     type: [CommentSchema],
     required: false
   },
