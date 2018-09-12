@@ -132,16 +132,18 @@ describe('Vendor Routes', function() {
         .then(vendor => vendor.comments);
       });
 
-      it('Expect vendor comments length to be increased by 1', function() {
+      it('Expect vendor comments length to be increased by 1', function(done) {
         expect(updatedComments.length).to.be.equal(prevComments.length + 1);
         expect(res.body.nModified).to.be.equal(1);
         expect(res).to.have.status(200);
+        done();
       });
 
-      it(`Expect new comment in vendor to be '${commentText}'`, async function() {
+      it(`Expect new comment in vendor to be '${commentText}'`, function(done) {
         expect(updatedComments[1].text).to.be.equal(commentText);
         expect(res.body.nModified).to.be.equal(1);
         expect(res).to.have.status(200);
+        done();
       });
     });
   });
