@@ -26,7 +26,8 @@ describe('Region Routes', function() {
   });
 
   describe('GET', function() {
-      it('should get /region/:id', function(done) {
+    describe('/region/:id', function() {
+      it('Expect to get a region', function(done) {
         chai.request(server)
           .get('/region/' + regionID)
           .end((err, res) => {
@@ -35,6 +36,7 @@ describe('Region Routes', function() {
             done();
           });
       });
+    });
   });
 
   after(function(done) {

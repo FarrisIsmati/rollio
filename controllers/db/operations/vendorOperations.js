@@ -53,12 +53,6 @@ const vendorOperations = {
     .then( res => res )
     .catch( err => err );
   },
-
-  //CREATE TESTS FOR INCREMENTLOCATION ACCURACY **
-  //CREATE ROUTES FOR INCREMENT LOCATION ACCURACY **
-  //CREATE ROUTES FOR PUSH COMMENT
-  //CREATE TEST FOR BOTH ROUTES *
-
   //Increments a vendors locationAccuracy by one given a regionID and vendorID
   updateLocationAccuracy: function(params) {
     const { regionID, vendorID, amount } = params;

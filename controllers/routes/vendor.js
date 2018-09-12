@@ -8,7 +8,8 @@ const {
   getVendors,
   getVendor,
   getVendorsByQuery,
-  updateLocationAccuracy
+  updateLocationAccuracy,
+  updateVendorPush
 }                                    = require('../db/operations/vendorOperations');
 
 //MongoQS takes req.query and converts it into MongoQuery
@@ -31,12 +32,11 @@ router.get('/:regionID', async (req, res) => {
 router.get('/:regionID/:vendorID', (req, res) => getVendor(req.params.regionID, req.params.vendorID).then(vendor => res.status(200).json(vendor)));
 
 //PUT
-//A vendor's locationAccuracy by amount
+//Update a Vendor's locationAccuracy by amount (1 or -1)
 router.put('/:regionID/:vendorID/locationaccuracy',
 async (req, res) => updateLocationAccuracy({regionID: req.params.regionID, vendorID: req.params.vendorID, amount: req.body.amount})
 .then(update => res.status(200).json(update)));
-
-//WORK ON THIS
-// router.put('/:regionID/:vendorID/comments', async (req, res) => updateVendorPush(req.params.regionID, req.params.vendorID, req.body.amount).then(update => res.status(200).json(update)));
+//Update push a comment to a Vendor
+router.put('/:regionID/:vendorID/comments', async (req, res) => updateVendorPush({regionID: req.params.regionID, vendorID: req.params.vendorID, field: req.body.field, payload: req.body.payload}).then(update => res.status(200).json(update)));
 
 module.exports = router;
