@@ -71,7 +71,7 @@ const VendorSchema = new mongoose.Schema({
     required: false
   },
   municipality : { type: String, required: false },
-  dailyActive : { type: Boolean, required: true },
+  dailyActive : { type: Boolean, required: true }, //Means truck was active at some point in the current day
   consecutiveDaysInactive : { type: Number, required: false },
   categories : { type: [ { type: String, required: true }], required: true },
   price : { type: String, required: true },
