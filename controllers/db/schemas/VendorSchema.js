@@ -48,7 +48,7 @@ const VendorSchema = new mongoose.Schema({
   name : { type: String, required: true },
   type : { type: String, required: true, enum: ['mobileTruck', 'fixedTruck', 'cart', 'airstream'] },
   establishedDate : { type: Date, required: true },
-  closedDate : { type: Date, required: false },
+  closedDate : { type: Date, required: false }, //Future use case (If exists will not partake in any automated operations)
   description : { type: String, required: true },
   menu : {
     type: [MenuSchema],
