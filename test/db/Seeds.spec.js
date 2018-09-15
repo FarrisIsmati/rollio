@@ -28,17 +28,24 @@ describe('Testing Seed file with the TEST DB', function() {
         })
       })
 
-      it('should exist', function(done) {
+      it('Expect region to exist', function(done) {
         expect(region).to.exist;
         done();
       });
 
-      it('should have region name WASHINGTONDC', function(done) {
+      it('Expect region name to be \'WASHINGTONDC\'', function(done) {
         expect(region.name).to.equal('WASHINGTONDC');
         done();
       });
 
-      it('should have timezone EST', function(done) {
+      it('Expect totalDailyActive to be 2', function(done) {
+        expect(region.totalDailyActive).to.exist
+        expect(region.totalDailyActive).to.equal(2);
+        done();
+      });
+
+      it('Expect timezone to equal \'EST\'', function(done) {
+        expect(region.timezone).to.exist;
         expect(region.timezone).to.equal('EST');
         done();
       });
@@ -57,34 +64,35 @@ describe('Testing Seed file with the TEST DB', function() {
         })
       })
 
-      it('should exist', function(done) {
+      it('Expect Vendor Yummies to exist', function(done) {
         expect(vendor).to.exist;
         done();
       })
 
-      it('should have vendor name Yummies', function(done) {
+      it('Expect Vendor Yummies to have name \'Yummies\'', function(done) {
+        expect(vendor.name).to.exist;
         expect(vendor.name).to.equal('Yummies');
         done();
       });
 
-      it('should have vendor menu', function(done) {
+      it('Expect Vendor to have a menu', function(done) {
         expect(vendor.menu).to.exist;
         done();
       });
 
-      it('should have vendor tweetsDaily', function(done) {
+      it('Expect vendor to have tweets daily', function(done) {
         expect(vendor.tweetsDaily).to.exist;
         expect(vendor.tweetsDaily).to.be.array();
         done();
       });
 
-      it('should have vendor coordinatesHistory', function(done) {
+      it('Expect vendor coordinatesHistory to be an array', function(done) {
         expect(vendor.coordinatesHistory).to.exist;
         expect(vendor.coordinatesHistory).to.be.array();
         done();
       });
 
-      it('should have vendor categories', function(done) {
+      it('Expect vendor categories to exist', function(done) {
         expect(vendor.categories).to.exist;
         done();
       });

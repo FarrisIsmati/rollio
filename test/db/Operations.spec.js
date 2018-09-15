@@ -59,13 +59,13 @@ describe('DB Operations', function() {
       it('should return a vendor given an object with a set of mongo query parameters', function(done) {
         const params = {
           regionID,
-          facebookRating: { $gt: 7 }
+          yelpRating: { $gt: 7 }
         }
         vendorOperations.getVendorsByQuery(params)
         .then(res => {
           expect(res.length).to.be.equal(1);
           for (let i = 0; i < res.length; i++) {
-            expect(parseInt(res[i].facebookRating)).to.be.above(7);
+            expect(parseInt(res[i].yelpRating)).to.be.above(7);
           }
           done();
         })
@@ -231,20 +231,20 @@ describe('DB Operations', function() {
         expect(updatedConsecutiveDaysInactive).to.be.equal(0);
       });
 
-      it('should update Facebook rating of Vendor', async function() {
-        const prevFacebookRating = await Vendor.collection.findOne({ "_id": vendor._id })
-        .then(vendor => vendor.facebookRating);
+      it('should update Yelp rating of Vendor to 10', async function() {
+        const prevYelpRating = await Vendor.collection.findOne({ "_id": vendor._id })
+        .then(vendor => vendor.yelpRating);
 
-        const params = { regionID, vendorID: vendor._id, field: 'facebookRating',  data: 10 };
-        const updateFacebookRatingRes = await vendorOperations.updateVendorSet(params)
+        const params = { regionID, vendorID: vendor._id, field: 'yelpRating',  data: 10 };
+        const updateYelpRatingRes = await vendorOperations.updateVendorSet(params)
         .then(res => res);
 
-        const updatedFacebookRating = await Vendor.collection.findOne({ "_id": vendor._id })
-        .then(vendor => vendor.facebookRating);
+        const updatedYelpRating = await Vendor.collection.findOne({ "_id": vendor._id })
+        .then(vendor => vendor.yelpRating);
 
-        expect(prevFacebookRating).to.be.equal('8');
-        expect(updateFacebookRatingRes.nModified).to.equal(1);
-        expect(updatedFacebookRating).to.be.equal('10');
+        expect(prevYelpRating).to.be.equal('8');
+        expect(updateYelpRatingRes.nModified).to.equal(1);
+        expect(updatedYelpRating).to.be.equal('10');
       });
 
       it('should update Yelp rating of Vendor', async function() {

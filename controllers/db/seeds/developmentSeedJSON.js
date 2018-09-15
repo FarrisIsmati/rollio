@@ -9,7 +9,6 @@ module.exports = {
         "section": "Meat",
         "items": [{"name": "Kabob", "price": "200", "currency": "USD"}]
       }],
-      "facebookRating": "8",
       "yelpRating": "8",
       "twitterID": "abcx92n0dj2mmd9008284",
       "tweetsDaily": [
@@ -54,7 +53,6 @@ module.exports = {
             "section": "Meat",
             "items": [{"name": "Kabob", "price": "200", "currency": "USD"}]
           }],
-          "facebookRating": "5",
           "yelpRating": "5",
           "twitterID": "a2cx92nzdj2mmd9008284",
           "tweetsDaily": [
@@ -95,6 +93,7 @@ module.exports = {
   regions: [
     {
       "name": "WASHINGTONDC",
+      "totalDailyActive": 2,
       "coordinates": {
         "coordinatesDate": new Date("2018-04-12T12:10:00Z"),
         "address": "Washington, D.C.",

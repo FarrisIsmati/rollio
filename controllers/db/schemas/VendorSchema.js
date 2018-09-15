@@ -54,7 +54,6 @@ const VendorSchema = new mongoose.Schema({
     type: [MenuSchema],
     required: false
   },
-  facebookRating : { type: String, required: false },
   yelpRating : { type: String, required: false },
   twitterID : { type: String, required: true },
   tweetsDaily : {
