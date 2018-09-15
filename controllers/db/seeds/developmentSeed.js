@@ -46,6 +46,10 @@ const seedObj = {
       { name: regionName }
     );
     const regionID = await region._id;
+
+    //ADD IF YELPID GET YELP DATA IN
+    //MAKE SEPERATE FUNTION AND TEST IT
+    
     const vendorsUpdatedRegionID = vendorsData.map(vendor => { return { ...vendor, regionID } } );
     return Vendor.collection.insertMany(vendorsUpdatedRegionID)
     .then(res => {

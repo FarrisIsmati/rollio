@@ -10,7 +10,7 @@ module.exports = {
         "items": [{"name": "Kabob", "price": "200", "currency": "USD"}]
       }],
       "yelpRating": "8",
-      "twitterID": "abcx92n0dj2mmd9008284",
+      "twitterId": "abcx92n0dj2mmd9008284",
       "tweetsDaily": [
         {
           "tweetID": "laks3n",
@@ -38,57 +38,59 @@ module.exports = {
           "text": "Hello this is very accurate"
         }
       ],
+      "creditCard": "n",
       "municipality": "Tysons",
       "dailyActive": false,
       "consecutiveDaysInactive": 0,
       "categories": ["Meat", "Yummy", "American South West"],
       "price": "$$",
       "regionID": null
-    },    {
-          "name": "Sammies",
-          "type": "mobileTruck",
-          "establishedDate": new Date("2017-05-18T16:00:00Z"),
-          "description": "A sammies food truck",
-          "menu": [{
-            "section": "Meat",
-            "items": [{"name": "Kabob", "price": "200", "currency": "USD"}]
-          }],
-          "yelpRating": "5",
-          "twitterID": "a2cx92nzdj2mmd9008284",
-          "tweetsDaily": [
-            {
-              "tweetID": "cP3459s",
-              "createdAt": new Date("2018-05-18T16:00:00Z"),
-              "text": "We are at Michigan Square",
-              "userID": "SammiesMobile",
-              "userScreenName": "SammiesMobile",
-              "geolocation": {
-                "coordinatesDate": new Date("2018-02-12T12:10:00Z"),
-                "coordinates": [2.4123, 1.522]
-              }
-            }
-          ],
-          "coordinatesHistory": [
-            {
-              "coordinatesDate": new Date("2018-04-12T12:10:00Z"),
-              "address": "22nd Ist",
-              "coordinates": [4.223, 1.512]
-            }
-          ],
-          "locationAccuracy": 0,
-          "comments": [
-            {
-              "commentDate": new Date("2018-04-12T12:10:00Z"),
-              "text": "Hello this is very accurate"
-            }
-          ],
-          "municipality": "Alexandria",
-          "dailyActive": false,
-          "consecutiveDaysInactive": 0,
-          "categories": ["Meat", "Mexican", "Chinese", "American South West"],
-          "price": "$$$$",
-          "regionID": null
+    }, {
+      "name": "Sammies",
+      "type": "mobileTruck",
+      "establishedDate": new Date("2017-05-18T16:00:00Z"),
+      "description": "A sammies food truck",
+      "menu": [{
+        "section": "Meat",
+        "items": [{"name": "Kabob", "price": "200", "currency": "USD"}]
+      }],
+      "yelpRating": "5",
+      "twitterId": "a2cx92nzdj2mmd9008284",
+      "tweetsDaily": [
+        {
+          "tweetID": "cP3459s",
+          "createdAt": new Date("2018-05-18T16:00:00Z"),
+          "text": "We are at Michigan Square",
+          "userID": "SammiesMobile",
+          "userScreenName": "SammiesMobile",
+          "geolocation": {
+            "coordinatesDate": new Date("2018-02-12T12:10:00Z"),
+            "coordinates": [2.4123, 1.522]
+          }
         }
+      ],
+      "coordinatesHistory": [
+        {
+          "coordinatesDate": new Date("2018-04-12T12:10:00Z"),
+          "address": "22nd Ist",
+          "coordinates": [4.223, 1.512]
+        }
+      ],
+      "locationAccuracy": 0,
+      "comments": [
+        {
+          "commentDate": new Date("2018-04-12T12:10:00Z"),
+          "text": "Hello this is very accurate"
+        }
+      ],
+      "creditCard": "y",
+      "municipality": "Alexandria",
+      "dailyActive": false,
+      "consecutiveDaysInactive": 0,
+      "categories": ["Meat", "Mexican", "Chinese", "American South West"],
+      "price": "$$$$",
+      "regionID": null
+    }
   ],
   regions: [
     {

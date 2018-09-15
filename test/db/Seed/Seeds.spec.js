@@ -1,5 +1,5 @@
 //DEPENDENCIES
-const mongoose            = require('../../controllers/db/schemas/AllSchemas');
+const mongoose            = require('../../../controllers/db/schemas/AllSchemas');
 const chai                = require('chai');
 const expect              = chai.expect;
 
@@ -8,7 +8,9 @@ const Region              = mongoose.model('Region');
 const Vendor              = mongoose.model('Vendor');
 
 //SEED
-const seed                = require('../../controllers/db/seeds/developmentSeed');
+const seed                = require('../../../controllers/db/seeds/developmentSeed');
+
+//Tests of various seed data to check if they properly seeded into the testDB
 
 //TESTS
 describe('Testing Seed file with the TEST DB', function() {

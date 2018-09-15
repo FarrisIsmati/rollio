@@ -63,13 +63,24 @@ describe('Schemas', function() {
   });
 
   describe('Vendor Schema', function() {
-    it('should be invalid if type is not within schema timezone enum', done => {
+    it('Expect to be invalid if type is not within schema timezone enum', done => {
         const fakeVendorType = 'mobileTrucks'
         const vendor = new Vendor({ type: fakeVendorType});
 
         vendor.validate(err => {
             expect(err.errors.type).to.exist;
             expect(err.errors.type.properties.message).to.equal(`\`${fakeVendorType}\` is not a valid enum value for path \`type\`.`);
+            done();
+        });
+    });
+
+    it('Expect to be invalid if creditCard is not within schema creditCard enum', done => {
+        const creditCard = 'x'
+        const vendor = new Vendor({ creditCard });
+
+        vendor.validate(err => {
+            expect(err.errors.creditCard).to.exist;
+            expect(err.errors.creditCard.properties.message).to.equal(`\`${creditCard}\` is not a valid enum value for path \`creditCard\`.`);
             done();
         });
     });

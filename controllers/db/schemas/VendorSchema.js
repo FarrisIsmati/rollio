@@ -47,15 +47,21 @@ const CommentSchema = new mongoose.Schema({
 const VendorSchema = new mongoose.Schema({
   name : { type: String, required: true },
   type : { type: String, required: true, enum: ['mobileTruck', 'fixedTruck', 'cart', 'airstream'] },
-  establishedDate : { type: Date, required: true },
-  closedDate : { type: Date, required: false }, //Future use case (If exists will not partake in any automated operations)
   description : { type: String, required: true },
+  establishedDate : { type: Date, required: false },
+  closedDate : { type: Date, required: false }, //Future use case (If exists will not partake in any automated operations)
+  creditCard : { type: String, required: true, enum: ['y','n','u'] },
+  email : { type: String, required: false },
+  website : { type: String, required: false },
+  phoneNumber : { type: String, required: false }, //Make it so phone number must be in XXX-XXX-XXXX format
   menu : {
     type: [MenuSchema],
     required: false
   },
+  price : { type: String, required: true },
+  yelpId : { type: String, required: false },
   yelpRating : { type: String, required: false },
-  twitterID : { type: String, required: true },
+  twitterId : { type: String, required: false },
   tweetsDaily : {
     type: [TweetSchema],
     required: false
@@ -65,15 +71,14 @@ const VendorSchema = new mongoose.Schema({
     required: true
   },
   locationAccuracy : { type: Number, required: true },
+  municipality : { type: String, required: false },
   comments : {
     type: [CommentSchema],
     required: false
   },
-  municipality : { type: String, required: false },
   dailyActive : { type: Boolean, required: true }, //Means truck was active at some point in the current day
-  consecutiveDaysInactive : { type: Number, required: false },
-  categories : { type: [ { type: String, required: true }], required: true },
-  price : { type: String, required: true },
+  consecutiveDaysInactive : { type: Number, required: true },
+  categories : { type: [ { type: String, required: true }], required: true }, //YOU NEED TO DEFINE HOW YOU DEFINE CATEGORIES
   regionID : { type: mongoose.Schema.Types.ObjectId, required: true },
   objCreatedAt : { type: Date, default: Date.now }
 });
