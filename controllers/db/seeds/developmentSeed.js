@@ -2,6 +2,11 @@
 const mongoose      = require('../schemas/AllSchemas');
 const util          = require('util');
 
+//APIS
+const yelp          = require('yelp-fusion');
+const yelpAPIKey    = process.env.YELP_API_KEY;
+const yelpClient    = yelp.client(yelpAPIKey);
+
 //SCHEMAS
 const Vendor        = mongoose.model('Vendor');
 const Region        = mongoose.model('Region');
@@ -9,6 +14,7 @@ const Region        = mongoose.model('Region');
 //DATA
 const vendorsData   = require('./developmentSeedJSON').vendors;
 const regionsData   = require('./developmentSeedJSON').regions;
+
 
 const seedObj = {
   emptyRegionsCollection : function() {
@@ -47,18 +53,33 @@ const seedObj = {
     );
     const regionID = await region._id;
 
-    //ADD IF YELPID GET YELP DATA IN
-    //MAKE SEPERATE FUNTION AND TEST IT
-    
-    const vendorsUpdatedRegionID = vendorsData.map(vendor => { return { ...vendor, regionID } } );
-    return Vendor.collection.insertMany(vendorsUpdatedRegionID)
-    .then(res => {
-      if (process.env.NODE_ENV != 'TEST')
-        console.log(`Seeded vendors in Vendor collection in ${process.env.NODE_ENV} enviroment`);
-    })
-    .catch(err => {
-      console.log(err);
-    })
+    const vendorsAsyncUpdated = vendorsData.map(async vendor => await this.asyncUpdateVendor(vendor, regionID));
+
+    const vendorsAsyncUpdatedResolved = await Promise.all(vendorsAsyncUpdated);
+
+    return await Vendor.collection.insertMany(vendorsAsyncUpdatedResolved)
+      .then(res => {
+        if (process.env.NODE_ENV != 'TEST')
+          console.log(`Seeded vendors in Vendor collection in ${process.env.NODE_ENV} enviroment`);
+      })
+      .catch(err => {
+        console.log(err);
+      })
+  },
+  asyncUpdateVendor : async function(vendor, regionID) {
+    const payload = { ...vendor, regionID }
+
+    if (vendor.yelpId && process.env.NODE_ENV !== 'TEST'){
+      const yelpDataRaw = await yelpClient.business(vendor.yelpId).then(res => res.body);
+      const yelpData = JSON.parse(yelpDataRaw);
+      payload.yelpRating = yelpData.rating;
+      payload.price = yelpData.price;
+    } else {
+      payload.yelpRating = '8';
+      payload.price = '$$';
+    }
+
+    return payload
   },
   runSeed : function() {
     return this.emptyRegionsCollection()

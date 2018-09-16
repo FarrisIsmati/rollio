@@ -59,7 +59,7 @@ const VendorSchema = new mongoose.Schema({
     required: false
   },
   price : { type: String, required: true },
-  yelpId : { type: String, required: false },
+  yelpId : { type: String, required: false }, //Use Yelp API to search and find the ID
   yelpRating : { type: String, required: false },
   twitterId : { type: String, required: false },
   tweetsDaily : {

@@ -36,7 +36,7 @@ describe('Vendor Routes', function() {
           .end((err, res) => {
             expect(res).to.have.status(200);
             expect(res.body).to.be.a('array');
-            expect(res.body.length).to.be.equal(2);
+            expect(res.body.length).to.be.equal(3);
             done();
           });
       });

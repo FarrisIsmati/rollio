@@ -56,14 +56,14 @@ describe('DB Operations', function() {
         .catch(err => console.log(err));
       });
 
-      it('should return a vendor given an object with a set of mongo query parameters', function(done) {
+      it('expect a vendor given an object with a set of mongo query parameters', function(done) {
         const params = {
           regionID,
-          yelpRating: { $gt: 7 }
+          name: { $gt: 7 }
         }
         vendorOperations.getVendorsByQuery(params)
         .then(res => {
-          expect(res.length).to.be.equal(1);
+          expect(res.length).to.be.equal(3);
           for (let i = 0; i < res.length; i++) {
             expect(parseInt(res[i].yelpRating)).to.be.above(7);
           }
@@ -232,22 +232,6 @@ describe('DB Operations', function() {
       });
 
       it('should update Yelp rating of Vendor to 10', async function() {
-        const prevYelpRating = await Vendor.collection.findOne({ "_id": vendor._id })
-        .then(vendor => vendor.yelpRating);
-
-        const params = { regionID, vendorID: vendor._id, field: 'yelpRating',  data: 10 };
-        const updateYelpRatingRes = await vendorOperations.updateVendorSet(params)
-        .then(res => res);
-
-        const updatedYelpRating = await Vendor.collection.findOne({ "_id": vendor._id })
-        .then(vendor => vendor.yelpRating);
-
-        expect(prevYelpRating).to.be.equal('8');
-        expect(updateYelpRatingRes.nModified).to.equal(1);
-        expect(updatedYelpRating).to.be.equal('10');
-      });
-
-      it('should update Yelp rating of Vendor', async function() {
         const prevYelpRating = await Vendor.collection.findOne({ "_id": vendor._id })
         .then(vendor => vendor.yelpRating);
 
