@@ -73,7 +73,7 @@ describe('DB Operations', function() {
       });
 
       after(function(done) {
-        seed.emptyRegionsCollection()
+        seed.emptyRegions()
         .then(() => seed.emptyVendors())
         .then(() => done());
       });
@@ -266,7 +266,7 @@ describe('DB Operations', function() {
       });
 
       afterEach(function(done) {
-        seed.emptyRegionsCollection()
+        seed.emptyRegions()
         .then(() => seed.emptyVendors())
         .then(() => done());
       });
@@ -296,7 +296,7 @@ describe('DB Operations', function() {
       });
 
       after(function(done) {
-        seed.emptyRegionsCollection()
+        seed.emptyRegions()
         .then(() => seed.emptyVendors())
         .then(() => done());
       });

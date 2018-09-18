@@ -40,7 +40,7 @@ describe('Region Routes', function() {
   });
 
   after(function(done) {
-    seed.emptyRegionsCollection()
+    seed.emptyRegions()
     .then(() => seed.emptyVendors())
     .then(() => done());
   });

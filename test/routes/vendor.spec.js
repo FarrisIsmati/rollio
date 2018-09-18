@@ -149,7 +149,7 @@ describe('Vendor Routes', function() {
   });
 
   afterEach(function(done) {
-    seed.emptyRegionsCollection()
+    seed.emptyRegions()
     .then(() => seed.emptyVendors())
     .then(() => done());
   });

@@ -17,7 +17,7 @@ const regionsData   = require('./developmentSeedJSON').regions;
 
 
 const seedObj = {
-  emptyRegionsCollection : function() {
+  emptyRegions : function() {
     return Region.deleteMany({})
     .then(() => {
       if (process.env.NODE_ENV != 'TEST')
@@ -53,10 +53,15 @@ const seedObj = {
     );
     const regionID = await region._id;
 
-    const vendorsAsyncUpdated = vendorsData.map(async vendor => await this.asyncUpdateVendor(vendor, regionID));
+    const isTestEnv = process.env.NODE_ENV === 'TEST';
 
+    //Run all async operations on seed data (collect data from various api's per vendor)
+    const vendorsAsyncUpdated = vendorsData.map(async vendor => await this.asyncUpdateVendor({vendor, regionID, isTestEnv}));
+
+    //Resolve all promises within vendorsAsyncUpdated
     const vendorsAsyncUpdatedResolved = await Promise.all(vendorsAsyncUpdated);
 
+    //Seed all vendors into collection
     return await Vendor.collection.insertMany(vendorsAsyncUpdatedResolved)
       .then(res => {
         if (process.env.NODE_ENV != 'TEST')
@@ -66,12 +71,14 @@ const seedObj = {
         console.log(err);
       })
   },
-  asyncUpdateVendor : async function(vendor, regionID) {
-    const payload = { ...vendor, regionID }
+  asyncUpdateVendor : async function(params) {
+    const { vendor, regionID, isTestEnv } = params;
+    const payload = { ...vendor, regionID };
 
-    if (vendor.yelpId && process.env.NODE_ENV !== 'TEST'){
-      const yelpDataRaw = await yelpClient.business(vendor.yelpId).then(res => res.body);
-      const yelpData = JSON.parse(yelpDataRaw);
+    //If running tests, dont make calls to the Yelp API to preserve 5,000 daily limit
+    if (vendor.yelpId && !isTestEnv){
+      const yelpDataString = await yelpClient.business(vendor.yelpId).then(res => res.body);
+      const yelpData = JSON.parse(yelpDataString);
       payload.yelpRating = yelpData.rating;
       payload.price = yelpData.price;
     } else {
@@ -82,7 +89,7 @@ const seedObj = {
     return payload
   },
   runSeed : function() {
-    return this.emptyRegionsCollection()
+    return this.emptyRegions()
     .then(() => this.seedRegions())
     .then(() => this.emptyVendors())
     .then(() => this.seedVendors("WASHINGTONDC"));
