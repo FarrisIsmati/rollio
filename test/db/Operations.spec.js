@@ -59,13 +59,14 @@ describe('DB Operations', function() {
       it('expect a vendor given an object with a set of mongo query parameters', function(done) {
         const params = {
           regionID,
-          name: { $gt: 7 }
+          consecutiveDaysInactive: 0
         }
         vendorOperations.getVendorsByQuery(params)
         .then(res => {
+          console.log(res);
           expect(res.length).to.be.equal(3);
           for (let i = 0; i < res.length; i++) {
-            expect(parseInt(res[i].yelpRating)).to.be.above(7);
+            expect(parseInt(res[i].consecutiveDaysInactive)).to.be.equal(0);
           }
           done();
         })
@@ -231,20 +232,19 @@ describe('DB Operations', function() {
         expect(updatedConsecutiveDaysInactive).to.be.equal(0);
       });
 
-      it('should update Yelp rating of Vendor to 10', async function() {
-        const prevYelpRating = await Vendor.collection.findOne({ "_id": vendor._id })
-        .then(vendor => vendor.yelpRating);
+      it('should update name of Vendor to Lobster Town', async function() {
+        const prevName = await Vendor.collection.findOne({ "_id": vendor._id })
+        .then(vendor => vendor.name);
 
-        const params = { regionID, vendorID: vendor._id, field: 'yelpRating',  data: 10 };
-        const updateYelpRatingRes = await vendorOperations.updateVendorSet(params)
+        const params = { regionID, vendorID: vendor._id, field: 'name',  data: 'Lobster Town' };
+        const updateNameRes = await vendorOperations.updateVendorSet(params)
         .then(res => res);
 
-        const updatedYelpRating = await Vendor.collection.findOne({ "_id": vendor._id })
-        .then(vendor => vendor.yelpRating);
+        const updatedName = await Vendor.collection.findOne({ "_id": vendor._id })
+        .then(vendor => vendor.name);
 
-        expect(prevYelpRating).to.be.equal('8');
-        expect(updateYelpRatingRes.nModified).to.equal(1);
-        expect(updatedYelpRating).to.be.equal('10');
+        expect(updateNameRes.nModified).to.equal(1);
+        expect(updatedName).to.be.equal('Lobster Town');
       });
 
       it('should update closedDate of Vendor', async function() {

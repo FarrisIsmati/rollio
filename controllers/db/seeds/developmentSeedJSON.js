@@ -9,7 +9,6 @@ module.exports = {
         "section": "Meat",
         "items": [{"name": "Kabob", "price": "200", "currency": "USD"}]
       }],
-      "yelpRating": "8",
       "twitterId": "abcx92n0dj2mmd9008284",
       "tweetsDaily": [
         {
@@ -43,7 +42,6 @@ module.exports = {
       "dailyActive": false,
       "consecutiveDaysInactive": 0,
       "categories": ["Meat", "Yummy", "American South West"],
-      "price": "$$",
       "regionID": null
     }, {
       "name": "Sammies",
@@ -54,7 +52,6 @@ module.exports = {
         "section": "Meat",
         "items": [{"name": "Kabob", "price": "200", "currency": "USD"}]
       }],
-      "yelpRating": "5",
       "twitterId": "a2cx92nzdj2mmd9008284",
       "tweetsDaily": [
         {
@@ -98,7 +95,6 @@ module.exports = {
       "email": "events@pepethefoodtruck.com",
       "website": "https://www.joseandrescatering.com/pepe/",
       "phoneNumber": "202-638-0202",
-      "price": "$$",
       "yelpId": "xF5cphbxvMKNdMRNSWAzkQ",
       "twitterId": "https://twitter.com/pepefoodtruck?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor",//Dont know what it is yet!
       "tweetsDaily": [],

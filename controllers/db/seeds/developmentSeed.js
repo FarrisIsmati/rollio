@@ -76,15 +76,13 @@ const seedObj = {
     const payload = { ...vendor, regionID };
 
     //If running tests, dont make calls to the Yelp API to preserve 5,000 daily limit
+    //Also set as a param and not checking actual ENV for when you want to test this function alone
     if (vendor.yelpId && !isTestEnv){
       const yelpDataString = await yelpClient.business(vendor.yelpId).then(res => res.body);
       const yelpData = JSON.parse(yelpDataString);
       payload.yelpRating = yelpData.rating;
       payload.price = yelpData.price;
-    } else {
-      payload.yelpRating = '8';
-      payload.price = '$$';
-    }
+    } 
 
     return payload
   },

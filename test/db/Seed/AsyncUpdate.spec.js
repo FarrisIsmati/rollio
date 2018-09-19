@@ -22,7 +22,6 @@ describe('Asynchronous Vendor Update Operations', function() {
       regionID = await Region.collection.findOne({name: 'WASHINGTONDC'}).then(res => res._id);
     });
 
-
     it('Expect asyncUpdateVendor to return yelp rating, and yelp price in payload', async function() {
       //PEPE FOODTRUCK ID
       const vendor = {name: "PEPE", yelpId: "xF5cphbxvMKNdMRNSWAzkQ"};
