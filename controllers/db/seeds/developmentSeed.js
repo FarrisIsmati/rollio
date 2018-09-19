@@ -28,7 +28,7 @@ const seedObj = {
     });
   },
   seedRegions : function() {
-    return Region.collection.insertMany(regionsData)
+    return Region.insertMany(regionsData)
     .then(res => {
       if (process.env.NODE_ENV != 'TEST')
         console.log(`Seeded regions in Region collection in ${process.env.NODE_ENV} enviroment`);
@@ -48,7 +48,7 @@ const seedObj = {
     });
   },
   seedVendors : async function(regionName) {
-    const region = await Region.collection.findOne(
+    const region = await Region.findOne(
       { name: regionName }
     );
     const regionID = await region._id;
@@ -62,7 +62,7 @@ const seedObj = {
     const vendorsAsyncUpdatedResolved = await Promise.all(vendorsAsyncUpdated);
 
     //Seed all vendors into collection
-    return await Vendor.collection.insertMany(vendorsAsyncUpdatedResolved)
+    return await Vendor.insertMany(vendorsAsyncUpdatedResolved)
       .then(res => {
         if (process.env.NODE_ENV != 'TEST')
           console.log(`Seeded vendors in Vendor collection in ${process.env.NODE_ENV} enviroment`);
@@ -82,7 +82,7 @@ const seedObj = {
       const yelpData = JSON.parse(yelpDataString);
       payload.yelpRating = yelpData.rating;
       payload.price = yelpData.price;
-    } 
+    }
 
     return payload
   },

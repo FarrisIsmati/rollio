@@ -22,8 +22,8 @@ describe('Vendor Routes', function() {
 
   beforeEach(function(done){
     seed.runSeed().then(async () => {
-      regionID = await Region.collection.findOne().then(region => region._id);
-      vendor = await Vendor.collection.findOne({"regionID": await regionID});
+      regionID = await Region.findOne().then(region => region._id);
+      vendor = await Vendor.findOne({"regionID": await regionID});
       done();
     });
   });
@@ -74,7 +74,7 @@ describe('Vendor Routes', function() {
   describe('PUT', function() {
     describe('/vendor/:regionID/:vendorID/locationaccuracy', function() {
       it('Expect vendor locationAccuracy to be increased by 1', async function() {
-        const prevLocationAccuracy = await Vendor.collection.findOne({ "_id": vendor._id })
+        const prevLocationAccuracy = await Vendor.findOne({ "_id": vendor._id })
         .then(vendor => vendor.locationAccuracy);
 
         const res = await chai.request(server)
@@ -83,7 +83,7 @@ describe('Vendor Routes', function() {
             "amount": 1
           });
 
-        const updatedLocationAccuracy = await Vendor.collection.findOne({ "_id": vendor._id })
+        const updatedLocationAccuracy = await Vendor.findOne({ "_id": vendor._id })
         .then(vendor => vendor.locationAccuracy);
 
         expect(updatedLocationAccuracy).to.be.equal(prevLocationAccuracy + 1);
@@ -92,7 +92,7 @@ describe('Vendor Routes', function() {
       });
 
       it('Expect vendor locationAccuracy to be decreased by 1', async function() {
-        const prevLocationAccuracy = await Vendor.collection.findOne({ "_id": vendor._id })
+        const prevLocationAccuracy = await Vendor.findOne({ "_id": vendor._id })
         .then(vendor => vendor.locationAccuracy);
 
         const res = await chai.request(server)
@@ -101,7 +101,7 @@ describe('Vendor Routes', function() {
             "amount": -1
           });
 
-        const updatedLocationAccuracy = await Vendor.collection.findOne({ "_id": vendor._id })
+        const updatedLocationAccuracy = await Vendor.findOne({ "_id": vendor._id })
         .then(vendor => vendor.locationAccuracy);
 
         expect(updatedLocationAccuracy).to.be.equal(prevLocationAccuracy - 1);
@@ -117,7 +117,7 @@ describe('Vendor Routes', function() {
       const commentText = 'new comment';
 
       beforeEach(async function() {
-        prevComments = await Vendor.collection.findOne({ "_id": vendor._id })
+        prevComments = await Vendor.findOne({ "_id": vendor._id })
         .then(vendor => vendor.comments);
         res = await chai.request(server)
           .put(`/vendor/${regionID}/${vendor._id}/comments`)
@@ -128,7 +128,7 @@ describe('Vendor Routes', function() {
               "text": commentText
             }
           });
-        updatedComments = await Vendor.collection.findOne({ "_id": vendor._id })
+        updatedComments = await Vendor.findOne({ "_id": vendor._id })
         .then(vendor => vendor.comments);
       });
 

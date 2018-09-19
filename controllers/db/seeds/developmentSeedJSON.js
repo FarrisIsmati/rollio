@@ -16,6 +16,7 @@ module.exports = {
           "createdAt": new Date("2016-05-18T16:00:00Z"),
           "text": "We are at Farragut Square",
           "userID": "YummiesMobile",
+          "userName": "Yummies Mobile",
           "userScreenName": "YummiesMobile",
           "geolocation": {
             "coordinatesDate": new Date("2018-04-12T12:10:00Z"),
@@ -38,6 +39,7 @@ module.exports = {
         }
       ],
       "creditCard": "n",
+      "phoneNumber": "+1202-638-0202",
       "municipality": "Tysons",
       "dailyActive": false,
       "consecutiveDaysInactive": 0,
@@ -59,6 +61,7 @@ module.exports = {
           "createdAt": new Date("2018-05-18T16:00:00Z"),
           "text": "We are at Michigan Square",
           "userID": "SammiesMobile",
+          "userName": "Sammies Mobile",
           "userScreenName": "SammiesMobile",
           "geolocation": {
             "coordinatesDate": new Date("2018-02-12T12:10:00Z"),
@@ -81,6 +84,7 @@ module.exports = {
         }
       ],
       "creditCard": "y",
+      "phoneNumber": "+1703-628-0202",
       "municipality": "Alexandria",
       "dailyActive": false,
       "consecutiveDaysInactive": 0,
@@ -94,7 +98,7 @@ module.exports = {
       "creditCard": "y",
       "email": "events@pepethefoodtruck.com",
       "website": "https://www.joseandrescatering.com/pepe/",
-      "phoneNumber": "202-638-0202",
+      "phoneNumber": "+1202-638-0202",
       "yelpId": "xF5cphbxvMKNdMRNSWAzkQ",
       "twitterId": "https://twitter.com/pepefoodtruck?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor",//Dont know what it is yet!
       "tweetsDaily": [],

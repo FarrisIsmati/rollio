@@ -20,7 +20,7 @@ describe('Region Routes', function() {
 
   before(function(done){
     seed.runSeed().then(async () => {
-      regionID = await Region.collection.findOne().then(region => region._id);
+      regionID = await Region.findOne().then(region => region._id);
       done();
     });
   });

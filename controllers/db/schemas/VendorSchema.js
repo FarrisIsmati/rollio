@@ -1,5 +1,6 @@
 //DEPENDENCIES
-const mongoose     = require('../connection');
+const mongoose          = require('../connection');
+const validationUtil    = require('./ValidationUtils');
 
 //MENU SCHEMA
 const MenuSchema = new mongoose.Schema({
@@ -53,12 +54,16 @@ const VendorSchema = new mongoose.Schema({
   creditCard : { type: String, required: true, enum: ['y','n','u'] },
   email : { type: String, required: false },
   website : { type: String, required: false },
-  phoneNumber : { type: String, required: false }, //Make it so phone number must be in XXX-XXX-XXXX format
+  phoneNumber: {
+    type: String,
+    validate: [number => validationUtil.phoneNumberValidate(number), 'Not a valid phone number.'],
+    required: true
+  },
   menu : {
     type: [MenuSchema],
     required: false
   },
-  price : { type: String, required: true },
+  price : { type: String, required: false },
   yelpId : { type: String, required: false }, //Use Yelp API to search and find the ID
   yelpRating : { type: String, required: false },
   twitterId : { type: String, required: false },
@@ -82,6 +87,7 @@ const VendorSchema = new mongoose.Schema({
   regionID : { type: mongoose.Schema.Types.ObjectId, required: true },
   objCreatedAt : { type: Date, default: Date.now }
 });
+
 
 module.exports = {
   VendorSchema,

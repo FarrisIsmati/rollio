@@ -31,8 +31,8 @@ describe('DB Operations', function() {
 
       before(function(done){
         seed.runSeed().then(async () => {
-          regionID = await Region.collection.findOne().then(region => region._id);
-          vendor = await Vendor.collection.findOne({"regionID": await regionID});
+          regionID = await Region.findOne().then(region => region._id);
+          vendor = await Vendor.findOne({"regionID": await regionID});
           done();
         });
       });
@@ -63,7 +63,6 @@ describe('DB Operations', function() {
         }
         vendorOperations.getVendorsByQuery(params)
         .then(res => {
-          console.log(res);
           expect(res.length).to.be.equal(3);
           for (let i = 0; i < res.length; i++) {
             expect(parseInt(res[i].consecutiveDaysInactive)).to.be.equal(0);
@@ -87,8 +86,8 @@ describe('DB Operations', function() {
 
       beforeEach(function(done){
         seed.runSeed().then(async () => {
-          regionID = await Region.collection.findOne().then(region => region._id);
-          vendor = await Vendor.collection.findOne({"regionID": await regionID});
+          regionID = await Region.findOne().then(region => region._id);
+          vendor = await Vendor.findOne({"regionID": await regionID});
           done();
         });
       });
@@ -96,14 +95,14 @@ describe('DB Operations', function() {
       it('should push new coordinate object into coordinatesHistory', async function() {
         const coordinatesPayload = { coordinatesDate: new Date("2018-02-18T16:22:00Z"), address: "28 Ist", coordinates:[1.123,4.523] };
 
-        const prevCoordHist = await Vendor.collection.findOne({ "_id": vendor._id })
+        const prevCoordHist = await Vendor.findOne({ "_id": vendor._id })
         .then(vendor => vendor.coordinatesHistory);
 
         const params = { regionID, vendorID: vendor._id, field: 'coordinatesHistory',  payload: coordinatesPayload };
         const updateCoordHistRes = await vendorOperations.updateVendorPush(params)
         .then(res => res);
 
-        const updatedCoordHist = await Vendor.collection.findOne({ "_id": vendor._id })
+        const updatedCoordHist = await Vendor.findOne({ "_id": vendor._id })
         .then(vendor => vendor.coordinatesHistory);
 
         expect(updateCoordHistRes.nModified).to.equal(1);
@@ -126,14 +125,14 @@ describe('DB Operations', function() {
           }
         };
 
-        const prevDailyTweets = await Vendor.collection.findOne({ "_id": vendor._id })
+        const prevDailyTweets = await Vendor.findOne({ "_id": vendor._id })
         .then(vendor => vendor.tweetsDaily);
 
         const params = { regionID, vendorID: vendor._id, field: 'tweetsDaily',  payload: tweetPayload };
         const updateDailyTweetsRes = await vendorOperations.updateVendorPush(params)
         .then(res => res);
 
-        const updatedDailyTweets = await Vendor.collection.findOne({ "_id": vendor._id })
+        const updatedDailyTweets = await Vendor.findOne({ "_id": vendor._id })
         .then(vendor => vendor.tweetsDaily);
 
         expect(updateDailyTweetsRes.nModified).to.equal(1);
@@ -144,13 +143,13 @@ describe('DB Operations', function() {
       });
 
       it('should empty tweetsDaily collection', async function() {
-        const prevDailyTweets = await Vendor.collection.findOne({ "_id": vendor._id })
+        const prevDailyTweets = await Vendor.findOne({ "_id": vendor._id })
         .then(vendor => vendor.tweetsDaily);
 
         const updateDailyTweetsRes = await vendorOperations.emptyVendorTweets(regionID, vendor._id)
         .then(res => res);
 
-        const updatedDailyTweets = await Vendor.collection.findOne({ "_id": vendor._id })
+        const updatedDailyTweets = await Vendor.findOne({ "_id": vendor._id })
         .then(vendor => vendor.tweetsDaily);
 
         expect(updateDailyTweetsRes.nModified).to.equal(1);
@@ -158,14 +157,14 @@ describe('DB Operations', function() {
       });
 
       it('should set dailyActive from false to true', async function() {
-        const prevDailyActive = await Vendor.collection.findOne({ "_id": vendor._id })
+        const prevDailyActive = await Vendor.findOne({ "_id": vendor._id })
         .then(vendor => vendor.dailyActive);
 
         const params = { regionID, vendorID: vendor._id, field: 'dailyActive',  data: true };
         const updateDailyActiveRes = await vendorOperations.updateVendorSet(params)
         .then(res => res);
 
-        const updatedDailyActive = await Vendor.collection.findOne({ "_id": vendor._id })
+        const updatedDailyActive = await Vendor.findOne({ "_id": vendor._id })
         .then(vendor => vendor.dailyActive);
 
         expect(prevDailyActive).to.be.false;
@@ -174,12 +173,12 @@ describe('DB Operations', function() {
       });
 
       it('should update locationAccuracy by incrementing value by one', async function() {
-        const prevLocationAccuracy = await Vendor.collection.findOne({ "_id": vendor._id })
+        const prevLocationAccuracy = await Vendor.findOne({ "_id": vendor._id })
         .then(vendor => vendor.locationAccuracy);
 
         const updateLocationAccuracy = await vendorOperations.updateLocationAccuracy({regionID, vendorID: vendor._id, amount: 1});
 
-        const updatedLocationAccuracy = await Vendor.collection.findOne({"_id": vendor._id})
+        const updatedLocationAccuracy = await Vendor.findOne({"_id": vendor._id})
         .then(vendor => vendor.locationAccuracy);
 
         expect(updateLocationAccuracy.nModified).to.equal(1);
@@ -187,12 +186,12 @@ describe('DB Operations', function() {
       });
 
       it('should update locationAccuracy by decrementing value by one', async function() {
-        const prevLocationAccuracy = await Vendor.collection.findOne({ "_id": vendor._id })
+        const prevLocationAccuracy = await Vendor.findOne({ "_id": vendor._id })
         .then(vendor => vendor.locationAccuracy);
 
         const updateLocationAccuracy = await vendorOperations.updateLocationAccuracy({regionID, vendorID: vendor._id, amount: -1});
 
-        const updatedLocationAccuracy = await Vendor.collection.findOne({"_id": vendor._id})
+        const updatedLocationAccuracy = await Vendor.findOne({"_id": vendor._id})
         .then(vendor => vendor.locationAccuracy);
 
         expect(updateLocationAccuracy.nModified).to.equal(1);
@@ -200,13 +199,13 @@ describe('DB Operations', function() {
       });
 
       it('should update consecutiveDaysInactive by incrementing value by one', async function() {
-        const prevConsecutiveDaysInactive = await Vendor.collection.findOne({ "_id": vendor._id })
+        const prevConsecutiveDaysInactive = await Vendor.findOne({ "_id": vendor._id })
         .then(vendor => vendor.consecutiveDaysInactive);
 
         const updateConsecutiveDaysInactiveRes = await vendorOperations.incrementVendorConsecutiveDaysInactive(regionID, vendor._id)
         .then(res => res);
 
-        const updatedConsecutiveDaysInactive = await Vendor.collection.findOne({ "_id": vendor._id })
+        const updatedConsecutiveDaysInactive = await Vendor.findOne({ "_id": vendor._id })
         .then(vendor => vendor.consecutiveDaysInactive);
 
         expect(updateConsecutiveDaysInactiveRes.nModified).to.equal(1);
@@ -217,14 +216,14 @@ describe('DB Operations', function() {
         const incrementConsecutiveDaysInactiveRes = await vendorOperations.incrementVendorConsecutiveDaysInactive(regionID, vendor._id)
         .then(res => res);
 
-        const prevConsecutiveDaysInactive = await Vendor.collection.findOne({ "_id": vendor._id })
+        const prevConsecutiveDaysInactive = await Vendor.findOne({ "_id": vendor._id })
         .then(vendor => vendor.consecutiveDaysInactive);
 
         const params = { regionID, vendorID: vendor._id, field: 'consecutiveDaysInactive',  data: 0 };
         const updateConsecutiveDaysInactiveRes = await vendorOperations.updateVendorSet(params)
         .then(res => res);
 
-        const updatedConsecutiveDaysInactive = await Vendor.collection.findOne({ "_id": vendor._id })
+        const updatedConsecutiveDaysInactive = await Vendor.findOne({ "_id": vendor._id })
         .then(vendor => vendor.consecutiveDaysInactive);
 
         expect(prevConsecutiveDaysInactive).to.be.equal(1);
@@ -233,14 +232,14 @@ describe('DB Operations', function() {
       });
 
       it('should update name of Vendor to Lobster Town', async function() {
-        const prevName = await Vendor.collection.findOne({ "_id": vendor._id })
+        const prevName = await Vendor.findOne({ "_id": vendor._id })
         .then(vendor => vendor.name);
 
         const params = { regionID, vendorID: vendor._id, field: 'name',  data: 'Lobster Town' };
         const updateNameRes = await vendorOperations.updateVendorSet(params)
         .then(res => res);
 
-        const updatedName = await Vendor.collection.findOne({ "_id": vendor._id })
+        const updatedName = await Vendor.findOne({ "_id": vendor._id })
         .then(vendor => vendor.name);
 
         expect(updateNameRes.nModified).to.equal(1);
@@ -250,14 +249,14 @@ describe('DB Operations', function() {
       it('should update closedDate of Vendor', async function() {
         const date = new Date("2018-02-18T16:22:00Z");
 
-        const prevClosedDate = await Vendor.collection.findOne({ "_id": vendor._id })
+        const prevClosedDate = await Vendor.findOne({ "_id": vendor._id })
         .then(vendor => vendor.closedDate);
 
         const params = { regionID, vendorID: vendor._id, field: 'closedDate',  data: date };
         const updateClosedDateRes = await vendorOperations.updateVendorSet(params)
         .then(res => res);
 
-        const updatedClosedDate = await Vendor.collection.findOne({ "_id": vendor._id })
+        const updatedClosedDate = await Vendor.findOne({ "_id": vendor._id })
         .then(vendor => vendor.closedDate);
 
         expect(prevClosedDate).to.be.an('undefined');
@@ -281,7 +280,7 @@ describe('DB Operations', function() {
 
       before(function(done){
         seed.runSeed().then(async () => {
-          regionID = await Region.collection.findOne().then(region => region._id);
+          regionID = await Region.findOne().then(region => region._id);
           done();
         });
       });

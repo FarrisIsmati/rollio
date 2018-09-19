@@ -56,7 +56,7 @@ describe('Development Seed Operations', function() {
 
     before(async () => {
       await seed.seedRegions();
-      regionID = await Region.collection.findOne({name: 'WASHINGTONDC'}).then(res => res._id);
+      regionID = await Region.findOne({name: 'WASHINGTONDC'}).then(res => res._id);
     });
 
     it('Expect vendors in WASHINGTONDC to be length to be equal to 3', async function() {

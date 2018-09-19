@@ -19,7 +19,7 @@ describe('Asynchronous Vendor Update Operations', function() {
 
     before(async () => {
       await seed.seedRegions();
-      regionID = await Region.collection.findOne({name: 'WASHINGTONDC'}).then(res => res._id);
+      regionID = await Region.findOne({name: 'WASHINGTONDC'}).then(res => res._id);
     });
 
     it('Expect asyncUpdateVendor to return yelp rating, and yelp price in payload', async function() {
