@@ -7,7 +7,7 @@ module.exports = {
       "creditCard": "y",
       "email": "events@pepethefoodtruck.com",
       "website": "https://www.joseandrescatering.com/pepe/",
-      "phoneNumber": "202-638-0202",
+      "phoneNumber": "+1202-638-0202",
       "price": "$$",
       "yelpId": "xF5cphbxvMKNdMRNSWAzkQ",
       "twitterId": "https://twitter.com/pepefoodtruck?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor",//Dont know what it is yet!
