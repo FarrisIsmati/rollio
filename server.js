@@ -33,8 +33,11 @@ switch (process.env.NODE_ENV) {
         console.log('No enviroment set using DEVELOPMENT');
 }
 
+
 //APP
 app.set('port', process.env.PORT || 3001);
+if (process.env.NODE_ENV === 'PRODUCTION')
+  app.enable("trust proxy");// only if behind a reversed proxy (AWS is the goal)
 
 //FIXED WINDOW RATE LIMITING
 const generalRateLimit = rateLimit({
