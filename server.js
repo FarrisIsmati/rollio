@@ -11,6 +11,12 @@ const socketIO        = require('socket.io');
 const http            = require('http');
 const server          = require('http').createServer(app);
 
+//REDIS AND RATE LIMITER
+// const client          = require("redis");
+// const redisClient     = client.createClient();
+// const rateLimit       = require('express-rate-limit');
+// const RedisStore      = require('rate-limit-redis');
+
 //ROUTES
 const region          = require('./controllers/routes/region');
 const vendor          = require('./controllers/routes/vendor');
@@ -32,8 +38,11 @@ switch (process.env.NODE_ENV) {
         console.log('No enviroment set using DEVELOPMENT');
 }
 
+
 //APP
 app.set('port', process.env.PORT || 3001);
+if (process.env.NODE_ENV === 'PRODUCTION')
+  app.enable("trust proxy");// only if behind a reversed proxy (AWS is the goal)
 
 //MIDDLEWARE
 app.use(bodyParser.urlencoded({extended: true}));

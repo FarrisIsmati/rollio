@@ -27,10 +27,15 @@ const vendorMw = {
       }
       return result;
     },
-  getRegionVendorId: (req, res) => getVendor(req.params.regionID, req.params.vendorID).then(vendor => res.status(200).json(vendor)),
+
+  getRegionVendorId: (req, res) => getVendor(req.params.regionID, req.params.vendorID)
+  .then(vendor => res.status(200).json(vendor)),
+
   putRegionIdVendorIdLocationAccuracy: async (req, res) => updateLocationAccuracy({regionID: req.params.regionID, vendorID: req.params.vendorID, amount: req.body.amount})
   .then(update => res.status(200).json(update)),
-  putRegionIdVendorIdComments: async (req, res) => updateVendorPush({regionID: req.params.regionID, vendorID: req.params.vendorID, field: req.body.field, payload: req.body.payload}).then(update => res.status(200).json(update))
+
+  putRegionIdVendorIdComments: async (req, res) => updateVendorPush({regionID: req.params.regionID, vendorID: req.params.vendorID, field: req.body.field, payload: req.body.payload})
+  .then(update => res.status(200).json(update))
 }
 
 //GET
