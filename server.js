@@ -8,6 +8,7 @@ const bodyParser      = require('body-parser');
 const morgan          = require('morgan');
 const cors            = require('cors');
 const socketIO        = require('socket.io');
+const rateLimit       = require('express-rate-limit');
 const http            = require('http');
 const server          = require('http').createServer(app);
 
@@ -35,7 +36,17 @@ switch (process.env.NODE_ENV) {
 //APP
 app.set('port', process.env.PORT || 3001);
 
+//FIXED WINDOW RATE LIMITING
+const generalRateLimit = rateLimit({
+  windowMs: 30 * 1000, // 30 seconds
+  max: 15,
+  handler: function(req,res){
+    res.status(429).send("You exceeded the rate limit")
+  },
+});
+
 //MIDDLEWARE
+app.use(generalRateLimit);
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(cors());
