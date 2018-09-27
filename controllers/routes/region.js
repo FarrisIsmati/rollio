@@ -1,17 +1,12 @@
 //DEPENDENCIES
-const mongoose              = require('mongoose');
-const router                = require('express').Router();
+const mongoose                       = require('mongoose');
+const router                         = require('express').Router();
 
-//OPERATIONS
-const { getRegion }      = require('../db/operations/regionOperations');
-
-//Region Route Middleware
-const regionMw = {
-  getRegionId: (req, res) => getRegion(req.params.id).then(region => res.status(200).json(region))
-}
+//MIDDLEWARE
+const { regionRouteOperations }      = require('./middleware/db-operations');
 
 //GET
 //Get a region given an ID
-router.get('/:id', regionMw.getRegionId);
+router.get('/:id', regionRouteOperations.getRegionId);
 
 module.exports = router;
