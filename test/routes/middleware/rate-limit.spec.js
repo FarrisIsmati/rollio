@@ -11,11 +11,6 @@ const { routeLimitVendorOp }          = require('../../../controllers/routes/mid
 
 chai.use(sinonChai);
 
-//YOU"RE NOT DOING THIS RIGHT. FIGURE OUTHOW TO MOCK THIS TEST AND RETURN 1 FOR THAT FUNCTIOn
-//THEN FIGURE OUT HOW TO MAKE IT FAIL ONEC YOU DID TOO many
-//AND FIGURE OUT HOW TO DEL REMOVE THAT DAMN ERROR
-
-
 //TESTS
 describe('Rate Limit Middleware', function() {
   const body = {
