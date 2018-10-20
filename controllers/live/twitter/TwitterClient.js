@@ -19,6 +19,7 @@ class TwitterClient {
     });
   }
 
+  //Get userIDs from DB
   async getUserIds(regionName) {
     const regionID = await Region.findOne({
       "regionName": regionName
@@ -31,8 +32,15 @@ class TwitterClient {
     return userIDs
   }
 
-  async streamClient() {
-    const userIDs = await this.getUserIds(this.regionName);
+  //Pass in a set of tstIDs for testing (test db env wont have any data)
+  async streamClient(tstIDs) {
+    let userIDs;
+
+    if (process.env.NODE_ENV === 'TEST') {
+      userIDs = tstIDs;
+    } else {
+      userIDs = await this.getUserIds(this.regionName);
+    }
 
     const stream = this.client.stream('statuses/filter', {follow: userIDs});
 

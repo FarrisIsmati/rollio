@@ -11,9 +11,7 @@ const socketIO        = require('socket.io');
 const rateLimit       = require('express-rate-limit');
 const http            = require('http');
 const server          = require('http').createServer(app);
-
-//TESTING
-const TwitterClient   = require('./controllers/live/twitter/TwitterClient');
+const DataOperations  = require('./controllers/live/operations/DataOperations');
 
 //ROUTES
 const region          = require('./controllers/routes/region');
@@ -35,7 +33,6 @@ switch (process.env.NODE_ENV) {
     default:
         console.log('No enviroment set using DEVELOPMENT');
 }
-
 
 //APP
 app.set('port', process.env.PORT || 3001);
@@ -61,15 +58,8 @@ app.use(cors());
 app.use('/region', region);
 app.use('/vendor', vendor);
 
-//TEST
-const twitter = new TwitterClient({
-  c_key: process.env.TWITTER_CONSUMER_KEY,
-  c_secret: process.env.TWITTER_CONSUMER_SECRET,
-  a_key: process.env.TWITTER_ACCESS_TOKEN,
-  a_secret: process.env.TWITTER_ACCESS_SECRET,
-  regionID: 'WASHINGTONDC'
-});
-twitter.streamClient();
+//DATA OPERATIONS
+const dataOperations = new DataOperations();
 
 //START SERVER
 server.listen(app.get('port'), () => {
