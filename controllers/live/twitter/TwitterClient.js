@@ -33,7 +33,7 @@ class TwitterClient {
   }
 
   //Pass in a set of tstIDs for testing (test db env wont have any data)
-  async streamClient(event, tstIDs) {
+  async streamClient(event, tstIDs='1053649707493404678') {
     let userIDs;
 
     if (process.env.NODE_ENV === 'TEST') {
