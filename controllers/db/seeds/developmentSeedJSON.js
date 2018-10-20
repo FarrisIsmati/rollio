@@ -1,7 +1,7 @@
 module.exports = {
   vendors: [
     {
-      "name": "Yummies",
+      "name": "Dosi Rock DC",
       "type": "mobileTruck",
       "establishedDate": new Date("2016-05-18T16:00:00Z"),
       "description": "A yummy food truck",
@@ -9,7 +9,7 @@ module.exports = {
         "section": "Meat",
         "items": [{"name": "Kabob", "price": "200", "currency": "USD"}]
       }],
-      "twitterId": "abcx92n0dj2mmd9008284",
+      "twitterID": "879045609973583873",
       "tweetsDaily": [
         {
           "tweetID": "laks3n",
@@ -46,7 +46,7 @@ module.exports = {
       "categories": ["Meat", "Yummy", "American South West"],
       "regionID": null
     }, {
-      "name": "Sammies",
+      "name": "CapitalCW",
       "type": "mobileTruck",
       "establishedDate": new Date("2017-05-18T16:00:00Z"),
       "description": "A sammies food truck",
@@ -54,7 +54,7 @@ module.exports = {
         "section": "Meat",
         "items": [{"name": "Kabob", "price": "200", "currency": "USD"}]
       }],
-      "twitterId": "a2cx92nzdj2mmd9008284",
+      "twitterID": "836024018",
       "tweetsDaily": [
         {
           "tweetID": "cP3459s",
@@ -100,7 +100,7 @@ module.exports = {
       "website": "https://www.joseandrescatering.com/pepe/",
       "phoneNumber": "+1202-638-0202",
       "yelpId": "xF5cphbxvMKNdMRNSWAzkQ",
-      "twitterId": "https://twitter.com/pepefoodtruck?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor",//Dont know what it is yet!
+      "twitterID": "472280764",
       "tweetsDaily": [],
       "coordinatesHistory": [],
       "locationAccuracy": 0,

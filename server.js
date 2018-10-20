@@ -12,6 +12,9 @@ const rateLimit       = require('express-rate-limit');
 const http            = require('http');
 const server          = require('http').createServer(app);
 
+//TESTING
+const TwitterClient   = require('./controllers/live/twitter/TwitterClient');
+
 //ROUTES
 const region          = require('./controllers/routes/region');
 const vendor          = require('./controllers/routes/vendor');
@@ -57,6 +60,16 @@ app.use(cors());
 //ROUTES
 app.use('/region', region);
 app.use('/vendor', vendor);
+
+//TEST
+const twitter = new TwitterClient({
+  c_key: process.env.TWITTER_CONSUMER_KEY,
+  c_secret: process.env.TWITTER_CONSUMER_SECRET,
+  a_key: process.env.TWITTER_ACCESS_TOKEN,
+  a_secret: process.env.TWITTER_ACCESS_SECRET,
+  regionID: 'WASHINGTONDC'
+});
+twitter.streamClient();
 
 //START SERVER
 server.listen(app.get('port'), () => {
