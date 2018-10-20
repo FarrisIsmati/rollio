@@ -15,7 +15,9 @@ class DataOperations {
   }
 
   runOperations() {
-    this.twitterClient.streamClient();
+    this.twitterClient.streamClient(event => {
+      console.log(event.text);
+    });
   }
 }
 

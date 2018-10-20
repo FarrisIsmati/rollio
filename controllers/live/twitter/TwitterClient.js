@@ -33,7 +33,7 @@ class TwitterClient {
   }
 
   //Pass in a set of tstIDs for testing (test db env wont have any data)
-  async streamClient(tstIDs) {
+  async streamClient(event, tstIDs) {
     let userIDs;
 
     if (process.env.NODE_ENV === 'TEST') {
@@ -44,8 +44,8 @@ class TwitterClient {
 
     const stream = this.client.stream('statuses/filter', {follow: userIDs});
 
-    stream.on('data', event => {
-      console.log(event);
+    stream.on('data', e => {
+      event(e);
     })
 
     stream.on('error', err => {
