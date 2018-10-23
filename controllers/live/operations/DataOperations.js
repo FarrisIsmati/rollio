@@ -8,7 +8,7 @@ class DataOperations {
       c_secret: process.env.TWITTER_CONSUMER_SECRET,
       a_key: process.env.TWITTER_ACCESS_TOKEN,
       a_secret: process.env.TWITTER_ACCESS_SECRET,
-      regionID: 'WASHINGTONDC'
+      regionName: 'WASHINGTONDC'
     });
 
     this.runOperations();
