@@ -22,10 +22,10 @@ class TwitterClient {
   //Get userIDs from DB
   async getUserIds(regionName) {
     const regionID = await Region.findOne({
-      "regionName": regionName
+      "name": regionName
     }).then(res => res._id);
 
-    const vendors = await Vendor.find({regionID}).then(res => res);
+    const vendors = await Vendor.find({regionID});
 
     const userIDs = vendors.map(vendor => vendor.twitterID).join(',');
 

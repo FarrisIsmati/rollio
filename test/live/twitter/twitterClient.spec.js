@@ -3,6 +3,7 @@ const mongoose            = require('../../../controllers/db/schemas/AllSchemas'
 const chai                = require('chai');
 const expect              = chai.expect;
 const TwitterClient       = require('../../../controllers/live/twitter/TwitterClient');
+const seed                = require('../../../controllers/db/seeds/developmentSeed');
 
 //SCHEMAS
 const Region              = mongoose.model('Region');
@@ -38,22 +39,27 @@ describe('Twitter Client', function() {
   });
 
   describe('getUserIds', function() {
-    before(async function(done) {
-      //SEED MOCK DATA INTO TEST DB
-      // twitterClient.getUserIds('WASHINGTONDC');
-      done();
+    let ids;
+    let length;
+
+    before(function(done){
+      seed.runSeed().then(async () => {
+        ids = await twitterClient.getUserIds('WASHINGTONDC');
+        length = await Vendor.countDocuments();
+        done();
+      });
     });
 
-    it('Expect getUserIds to be a string', function(done) {
+    it('Expect getUserIds to be a string with a length as long as the collection count', function(done) {
+      expect(ids).to.be.a('string');
+      expect(ids.split(',').length).to.be.equal(length);
       done();
     });
 
     after(function(done) {
-      //REMOVE DATA FROM TEST DB
-    })
+      seed.emptyRegions()
+      .then(() => seed.emptyVendors())
+      .then(() => done());
+    });
   });
-  //
-  // describe('streamClient', function() {
-  //
-  // });
 });
