@@ -1,7 +1,7 @@
 module.exports = {
   vendors: [
     {
-      "name": "Dosi Rock DC",
+      "name": "DCMoblieVendor1",
       "type": "mobileTruck",
       "establishedDate": new Date("2016-05-18T16:00:00Z"),
       "description": "A yummy food truck",
@@ -9,7 +9,7 @@ module.exports = {
         "section": "Meat",
         "items": [{"name": "Kabob", "price": "200", "currency": "USD"}]
       }],
-      "twitterID": "879045609973583873",
+      "twitterID": "1053649707493404678",
       "tweetsDaily": [
         {
           "tweetID": "laks3n",
