@@ -56,7 +56,17 @@ describe('DB Operations', function() {
         .catch(err => console.log(err));
       });
 
-      it('expect a vendor given an object with a set of mongo query parameters', function(done) {
+      // it('Expect to return a vendor given a regionID and a vendor twitterID', function(done) {
+      //   const regionID = await regionOperations.getRegionByName(this.regionName);
+      //   vendorOperations.getVendorByTwitterID(regionID, '1053649707493404678') //dcfoodtrucks1 id
+      //   .then(res => {
+      //     expect(res).to.have.same.id(vendor)
+      //     done();
+      //   })
+      //   .catch(err => console.log(err));
+      // });
+
+      it('Expect a vendor given an object with a set of mongo query parameters', function(done) {
         const params = {
           regionID,
           consecutiveDaysInactive: 0
@@ -285,7 +295,7 @@ describe('DB Operations', function() {
         });
       });
 
-      it('should return a region given a regionID', function(done) {
+      it('Expect getRegion to return a region given a regionID', function(done) {
         regionOperations.getRegion(regionID)
         .then(res => {
           expect(res._id).to.have.same.id(regionID);
@@ -293,6 +303,15 @@ describe('DB Operations', function() {
         })
         .catch(err => console.log(err));
       });
+
+      it('Expect getRegionByName to return a region with the name WASHINGTONDC', function(done) {
+        regionOperations.getRegionByName('WASHINGTONDC')
+        .then(res => {
+          expect(res.name).to.be.equal('WASHINGTONDC');
+          done();
+        })
+        .catch(err => console.log(err));
+      })
 
       after(function(done) {
         seed.emptyRegions()

@@ -23,6 +23,15 @@ const vendorOperations = {
     .then( vendor => vendor )
     .catch( err => err );
   },
+  //Gets a single vendor given a regionID and vendor twitterID
+  getVendorByTwitterID: function(regionID, twitterID) {
+    return Vendor.findOne({
+      "regionID": regionID,
+      "twitterID": twitterID
+    })
+    .then( vendor => vendor )
+    .catch( err => err );
+  },
   //Gets all vendors given a set of Queries
   getVendorsByQuery: function(params) {
     return Vendor.find(params)

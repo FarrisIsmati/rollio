@@ -10,9 +10,14 @@ const regionOperations = {
     return Region.findOne({
       "_id": regionID
     })
-    .then( region => region )
     .catch( err => err);
-  }
+  },
+  getRegionByName: function(name) {
+    return Region.findOne({
+      "name": name
+    })
+    .catch(err => err);
+  },
 }
 
 //EXPORT
