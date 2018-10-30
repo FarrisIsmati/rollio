@@ -1,5 +1,6 @@
 //DEPENDENCIES
 const Twitter             = require('../twitter/TwitterClient');
+var NodeGeocoder          = require('node-geocoder');
 
 //OPERATIONS
 const regionOperations     = require('../../db/operations/regionOperations');
@@ -15,6 +16,12 @@ class DataOperations {
       a_secret: process.env.TWITTER_ACCESS_SECRET,
       regionName: this.regionName
     });
+    this.geocoder = NodeGeocoder({
+      provider: 'google',
+      httpAdapter: 'https',
+      apiKey: process.env.GOOGLE_MAPS_API_KEY,
+      formatter: null
+    });
 
     this.runOperations();
   }
@@ -28,28 +35,32 @@ class DataOperations {
   async vendorTweetUpdate(e) {
     const region = await regionOperations.getRegionByName(this.regionName);
     const vendor = await vendorOperations.getVendorByTwitterID(region._id, e.user.id_str);
-    // const payload = {
-    //   tweetID: e.id_str,
-    //   createdAt: e.created_at,
-    //   text : e.text,
-    //   userID: e.user.id_str,
-    //   userName: e.user.name,
-    //   userScreenName: e.user.screen_name,
-    // }
-    //
-    // let geo = null;
-    // if (e.geo !== null) {
-    //   geo = {
-    //     coordinatesDate: e.created_at,
-    //     address: 'temp',//https://www.npmjs.com/package/node-geocoder THIRD REVERSE GEOCODE
-    //     coordinates: [...geo.coordinates]
-    //   }
-    //
-    //   payload.geo = geo;
-    // }
-    //
-    // await vendorOperations.updateVendorPush({ regionID, vendorID, field: 'tweetsDaily', payload}); //FOURTH PASS IN NEW REGIONID AND VENDORID
-    //
+    const payload = {
+      tweetID: e.id_str,
+      createdAt: e.created_at,
+      text : e.text,
+      userID: e.user.id_str,
+      userName: e.user.name,
+      userScreenName: e.user.screen_name
+    }
+
+    let place = null;
+    if (e.place !== null) {
+      let place = {...e.place};
+    }
+
+    if (e.geo !== null) {
+      const reverseGeocode = await this.geocoder.reverse({lat: geo.coordinates[0], lon:geo.coordinates[1]});
+      let geo = {
+        coordinatesDate: e.created_at,
+        address: reverseGeocode.formattedAddress,
+        coordinates: [...e.geo.coordinates]
+      }
+      payload.geo = geo;
+    }
+
+    await vendorOperations.updateVendorPush({ regionID: region._id, vendorID: vendor._id, field: 'tweetsDaily', payload});
+
     // return geo;
   }
 }
