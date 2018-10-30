@@ -56,15 +56,12 @@ describe('DB Operations', function() {
         .catch(err => console.log(err));
       });
 
-      // it('Expect to return a vendor given a regionID and a vendor twitterID', function(done) {
-      //   const regionID = await regionOperations.getRegionByName(this.regionName);
-      //   vendorOperations.getVendorByTwitterID(regionID, '1053649707493404678') //dcfoodtrucks1 id
-      //   .then(res => {
-      //     expect(res).to.have.same.id(vendor)
-      //     done();
-      //   })
-      //   .catch(err => console.log(err));
-      // });
+      it('Expect to return a vendor given a regionID and a vendor twitterID', async function() {
+        const dcfoodtrucks1ID = '1053649707493404678';
+        const region = await regionOperations.getRegionByName('WASHINGTONDC');
+        const vendor = await vendorOperations.getVendorByTwitterID(region._id, dcfoodtrucks1ID); //dcfoodtrucks1 id
+        expect(vendor.twitterID).to.equal(dcfoodtrucks1ID);
+      });
 
       it('Expect a vendor given an object with a set of mongo query parameters', function(done) {
         const params = {
