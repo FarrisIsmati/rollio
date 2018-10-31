@@ -27,8 +27,9 @@ class DataOperations {
   }
 
   runOperations() {
-    this.twitterClient.streamClient(e => {
-      this.vendorTweetUpdate(e);
+    this.twitterClient.streamClient(async e => {
+      const vendorTweetResponse = await this.vendorTweetUpdate(e);
+      console.log(vendorTweetResponse);
     });
   }
 
@@ -46,14 +47,14 @@ class DataOperations {
 
     let place = null;
     if (e.place !== null) {
-      let place = {...e.place};
+      place = {...e.place};
     }
 
     if (e.geo !== null) {
-      const reverseGeocode = await this.geocoder.reverse({lat: geo.coordinates[0], lon:geo.coordinates[1]});
+      const reverseGeocode = await this.geocoder.reverse({lat: e.geo.coordinates[0], lon: e.geo.coordinates[1]});
       let geo = {
         coordinatesDate: e.created_at,
-        address: reverseGeocode.formattedAddress,
+        address: reverseGeocode[0].formattedAddress,
         coordinates: [...e.geo.coordinates]
       }
       payload.geo = geo;
@@ -61,7 +62,7 @@ class DataOperations {
 
     await vendorOperations.updateVendorPush({ regionID: region._id, vendorID: vendor._id, field: 'tweetsDaily', payload});
 
-    // return geo;
+    return {...payload, place};
   }
 }
 
