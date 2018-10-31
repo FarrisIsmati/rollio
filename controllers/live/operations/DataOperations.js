@@ -52,12 +52,12 @@ class DataOperations {
 
     if (e.geo !== null) {
       const reverseGeocode = await this.geocoder.reverse({lat: e.geo.coordinates[0], lon: e.geo.coordinates[1]});
-      let geo = {
+      let geolocation = {
         coordinatesDate: e.created_at,
         address: reverseGeocode[0].formattedAddress,
         coordinates: [...e.geo.coordinates]
       }
-      payload.geo = geo;
+      payload.geolocation = geolocation;
     }
 
     await vendorOperations.updateVendorPush({ regionID: region._id, vendorID: vendor._id, field: 'tweetsDaily', payload});
