@@ -62,6 +62,8 @@ class DataOperations {
 
     await vendorOperations.updateVendorPush({ regionID: region._id, vendorID: vendor._id, field: 'tweetsDaily', payload});
 
+    //WEBSOCKETS FUNTIONALITY HERE
+
     return {...payload, place};
   }
 }

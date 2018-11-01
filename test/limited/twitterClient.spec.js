@@ -1,9 +1,9 @@
 //DEPENDENCIES
-const mongoose            = require('../../../controllers/db/schemas/AllSchemas');
+const mongoose            = require('../../controllers/db/schemas/AllSchemas');
 const chai                = require('chai');
 const expect              = chai.expect;
-const TwitterClient       = require('../../../controllers/live/twitter/TwitterClient');
-const seed                = require('../../../controllers/db/seeds/developmentSeed');
+const TwitterClient       = require('../../controllers/live/twitter/TwitterClient');
+const seed                = require('../../controllers/db/seeds/developmentSeed');
 
 //SCHEMAS
 const Region              = mongoose.model('Region');
@@ -60,6 +60,22 @@ describe('Twitter Client', function() {
       seed.emptyRegions()
       .then(() => seed.emptyVendors())
       .then(() => done());
+    });
+  });
+
+  describe('streamClient', function() {
+    let streamRes;
+
+    before(async function() {
+      streamRes = await twitterClient.streamClient(()=>null);
+    })
+
+    it('Expect streamClient to be an object', async function() {
+      expect(streamRes).to.be.an('object');
+    });
+
+    it('Expect streamClient to have two connected streams', async function() {
+      expect(streamRes._eventsCount).to.be.equal(2);
     });
   });
 });

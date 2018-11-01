@@ -51,6 +51,8 @@ class TwitterClient {
     stream.on('error', err => {
       throw err;
     })
+
+    return stream;
   }
 }
 

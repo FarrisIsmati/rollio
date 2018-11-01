@@ -59,7 +59,9 @@ app.use('/region', region);
 app.use('/vendor', vendor);
 
 //DATA OPERATIONS on WASHINGTONDC region
-const dataOperations = new DataOperations('WASHINGTONDC');
+if (process.env.NODE_ENV !== 'TEST') {
+  const dataOperations = new DataOperations('WASHINGTONDC');
+}
 
 //START SERVER
 server.listen(app.get('port'), () => {

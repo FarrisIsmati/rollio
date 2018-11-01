@@ -32,6 +32,7 @@ describe('Rate Limit Middleware', function() {
 
   it('Expect routeLimitVendorOp to successfully add an IP to a path', async function() {
     const result = await routeLimitVendorOp(req, res);
+    console.log(result);
     expect(result).to.be.equal(1);
   });
 
