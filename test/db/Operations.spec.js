@@ -29,11 +29,10 @@ describe('DB Operations', function() {
       let regionID;
       let vendor;
 
-      before(function(done){
-        seed.runSeed().then(async () => {
+      before(async function(){
+        await seed.runSeed().then(async () => {
           regionID = await Region.findOne().then(region => region._id);
           vendor = await Vendor.findOne({"regionID": await regionID});
-          done();
         });
       });
 

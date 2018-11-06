@@ -51,20 +51,23 @@ class DataOperations {
     }
 
     if (e.geo !== null) {
-      const reverseGeocode = await this.geocoder.reverse({lat: e.geo.coordinates[0], lon: e.geo.coordinates[1]});
-      let geolocation = {
-        coordinatesDate: e.created_at,
-        address: reverseGeocode[0].formattedAddress,
-        coordinates: [...e.geo.coordinates]
-      }
-      payload.geolocation = geolocation;
+      payload.geolocation = await this.getGeolocation(e);
     }
 
     await vendorOperations.updateVendorPush({ regionID: region._id, vendorID: vendor._id, field: 'tweetsDaily', payload});
 
     //WEBSOCKETS FUNTIONALITY HERE
-
     return {...payload, place};
+  }
+
+  async getGeolocation(e) {
+    const reverseGeocode = await this.geocoder.reverse({lat: e.geo.coordinates[0], lon: e.geo.coordinates[1]});
+    let geolocation = {
+      coordinatesDate: e.created_at,
+      address: reverseGeocode[0].formattedAddress,
+      coordinates: [...e.geo.coordinates]
+    }
+    return geolocation
   }
 }
 
