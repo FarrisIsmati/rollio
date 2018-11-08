@@ -10,7 +10,7 @@ const MenuSchema = new mongoose.Schema({
       {
         name : { type: String, required: true },
         price: { type: String, required: false },
-        currency: { type: String, required: true }
+        currency: { type: String, required: true, enum: ['USD'] }
       }
     ],
     required: true
@@ -20,7 +20,8 @@ const MenuSchema = new mongoose.Schema({
 //COORDINATES SCHEMA
 const CoordinatesSchema = new mongoose.Schema({
   coordinatesDate: { type: Date, default: Date.now, required: true },
-  address : { type: String, required: false },
+  address: { type: String, required: false },
+  submunicipality: { type: String, required: false },
   coordinates: {
     type: [ { type: Number, required: true } ],
     validate: [(val) => val.length <= 2, '{PATH} exceeds the limit of 2'],
@@ -63,7 +64,7 @@ const VendorSchema = new mongoose.Schema({
     type: [MenuSchema],
     required: false
   },
-  price : { type: String, required: false },
+  price : { type: String, required: false },//$$$
   yelpId : { type: String, required: false }, //Use Yelp API to search and find the ID
   yelpRating : { type: String, required: false },
   twitterID : { type: String, required: false },

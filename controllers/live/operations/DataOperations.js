@@ -28,8 +28,8 @@ class DataOperations {
 
   runOperations() {
     this.twitterClient.streamClient(async e => {
-      const vendorTweetResponse = await this.vendorTweetUpdate(e);
-      console.log(vendorTweetResponse);
+      const vendorTweet = await this.vendorTweetUpdate(e);
+      console.log(vendorTweet);
     });
   }
 
