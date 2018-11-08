@@ -19,14 +19,14 @@ module.exports = {
           "userName": "Yummies Mobile",
           "userScreenName": "YummiesMobile",
           "geolocation": {
-            "coordinatesDate": new Date("2018-04-12T12:10:00Z"),
+            "locationDate": new Date("2018-04-12T12:10:00Z"),
             "coordinates": [4.123, 1.522]
           }
         }
       ],
-      "coordinatesHistory": [
+      "locationHistory": [
         {
-          "coordinatesDate": new Date("2018-04-12T12:10:00Z"),
+          "locationDate": new Date("2018-04-12T12:10:00Z"),
           "address": "28 Ist",
           "coordinates": [4.123, 1.522]
         }
@@ -64,14 +64,14 @@ module.exports = {
           "userName": "Sammies Mobile",
           "userScreenName": "SammiesMobile",
           "geolocation": {
-            "coordinatesDate": new Date("2018-02-12T12:10:00Z"),
+            "locationDate": new Date("2018-02-12T12:10:00Z"),
             "coordinates": [2.4123, 1.522]
           }
         }
       ],
-      "coordinatesHistory": [
+      "locationHistory": [
         {
-          "coordinatesDate": new Date("2018-04-12T12:10:00Z"),
+          "locationDate": new Date("2018-04-12T12:10:00Z"),
           "address": "22nd Ist",
           "coordinates": [4.223, 1.512]
         }
@@ -102,7 +102,7 @@ module.exports = {
       "yelpId": "xF5cphbxvMKNdMRNSWAzkQ",
       "twitterID": "472280764",
       "tweetsDaily": [],
-      "coordinatesHistory": [],
+      "locationHistory": [],
       "locationAccuracy": 0,
       "comments": [],
       "dailyActive": false,
@@ -116,7 +116,7 @@ module.exports = {
       "name": "WASHINGTONDC",
       "totalDailyActive": 2,
       "coordinates": {
-        "coordinatesDate": new Date("2018-04-12T12:10:00Z"),
+        "locationDate": new Date("2018-04-12T12:10:00Z"),
         "address": "Washington, D.C.",
         "coordinates": [38.9072, 77.0369]
       },

@@ -18,9 +18,10 @@ const MenuSchema = new mongoose.Schema({
 });
 
 //COORDINATES SCHEMA
-const CoordinatesSchema = new mongoose.Schema({
-  coordinatesDate: { type: Date, default: Date.now, required: true },
+const LocationSchema = new mongoose.Schema({
+  locationDate: { type: Date, default: Date.now, required: true },
   address: { type: String, required: false },
+  municipality: { type: String, required: false },
   submunicipality: { type: String, required: false },
   coordinates: {
     type: [ { type: Number, required: true } ],
@@ -37,7 +38,7 @@ const TweetSchema = new mongoose.Schema({
   userID : { type: String, required: true },
   userName : { type: String, required: true },
   userScreenName : { type: String, required: true },
-  geolocation : { type: CoordinatesSchema, required: false }
+  geolocation : { type: LocationSchema, required: false }
 });
 
 const CommentSchema = new mongoose.Schema({
@@ -72,8 +73,8 @@ const VendorSchema = new mongoose.Schema({
     type: [TweetSchema],
     required: false
   },
-  coordinatesHistory : {
-    type: [CoordinatesSchema],
+  locationHistory : {
+    type: [LocationSchema],
     required: true
   },
   locationAccuracy : { type: Number, required: true },
@@ -95,5 +96,5 @@ module.exports = {
   MenuSchema,
   TweetSchema,
   CommentSchema,
-  CoordinatesSchema
+  LocationSchema
 };

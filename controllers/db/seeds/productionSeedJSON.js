@@ -12,7 +12,7 @@ module.exports = {
       "yelpId": "xF5cphbxvMKNdMRNSWAzkQ",
       "twitterID": "https://twitter.com/pepefoodtruck?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor",//Dont know what it is yet!
       "tweetsDaily": [],
-      "coordinatesHistory": [],
+      "locationHistory": [],
       "locationAccuracy": 0,
       "comments": [],
       "dailyActive": false,
@@ -26,7 +26,7 @@ module.exports = {
       "name": "washingtonDc",
       "totalDailyActive": 0,
       "coordinates": {
-        "coordinatesDate": new Date(""),
+        "locationDate": new Date(""),
         "address": "",
         "coordinates": []
       },

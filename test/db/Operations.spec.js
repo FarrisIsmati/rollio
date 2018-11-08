@@ -98,21 +98,21 @@ describe('DB Operations', function() {
         });
       });
 
-      it('should push new coordinate object into coordinatesHistory', async function() {
-        const coordinatesPayload = { coordinatesDate: new Date("2018-02-18T16:22:00Z"), address: "28 Ist", coordinates:[1.123,4.523] };
+      it('should push new coordinate object into locationHistory', async function() {
+        const coordinatesPayload = { locationDate: new Date("2018-02-18T16:22:00Z"), address: "28 Ist", coordinates:[1.123,4.523] };
 
         const prevCoordHist = await Vendor.findOne({ "_id": vendor._id })
-        .then(vendor => vendor.coordinatesHistory);
+        .then(vendor => vendor.locationHistory);
 
-        const params = { regionID, vendorID: vendor._id, field: 'coordinatesHistory',  payload: coordinatesPayload };
+        const params = { regionID, vendorID: vendor._id, field: 'locationHistory',  payload: coordinatesPayload };
         const updateCoordHistRes = await vendorOperations.updateVendorPush(params)
         .then(res => res);
 
         const updatedCoordHist = await Vendor.findOne({ "_id": vendor._id })
-        .then(vendor => vendor.coordinatesHistory);
+        .then(vendor => vendor.locationHistory);
 
         expect(updateCoordHistRes.nModified).to.equal(1);
-        expect(updatedCoordHist[updatedCoordHist.length - 1].coordinatesDate).to.equalDate(coordinatesPayload.coordinatesDate);
+        expect(updatedCoordHist[updatedCoordHist.length - 1].locationDate).to.equalDate(coordinatesPayload.locationDate);
         expect(updatedCoordHist[updatedCoordHist.length - 1].address).to.deep.equal(coordinatesPayload.address);
         expect(updatedCoordHist[updatedCoordHist.length - 1].coordinates).to.deep.equal(coordinatesPayload.coordinates);
         expect(updatedCoordHist.length).to.equal(prevCoordHist.length + 1);
@@ -126,7 +126,7 @@ describe('DB Operations', function() {
           "userID": "Khlav Kalash",
           "userScreenName": "Khlav Kalash Crab Juice",
           "geolocation": {
-            "coordinatesDate": new Date("2017-02-18T08:20:00Z"),
+            "locationDate": new Date("2017-02-18T08:20:00Z"),
             "coordinates": [38.24561, -77.86542]
           }
         };
@@ -144,7 +144,7 @@ describe('DB Operations', function() {
         expect(updateDailyTweetsRes.nModified).to.equal(1);
         expect(updatedDailyTweets[updatedDailyTweets.length - 1].tweetID).to.equal(tweetPayload.tweetID);
         expect(updatedDailyTweets[updatedDailyTweets.length - 1].createdAt).to.equalDate(tweetPayload.createdAt);
-        expect(updatedDailyTweets[updatedDailyTweets.length - 1].geolocation.coordinatesDate).to.deep.equal(tweetPayload.geolocation.coordinatesDate);
+        expect(updatedDailyTweets[updatedDailyTweets.length - 1].geolocation.locationDate).to.deep.equal(tweetPayload.geolocation.locationDate);
         expect(updatedDailyTweets.length).to.equal(prevDailyTweets.length + 1);
       });
 

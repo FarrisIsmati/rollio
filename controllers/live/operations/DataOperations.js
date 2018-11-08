@@ -63,7 +63,7 @@ class DataOperations {
   async getGeolocation(e) {
     const reverseGeocode = await this.geocoder.reverse({lat: e.geo.coordinates[0], lon: e.geo.coordinates[1]});
     let geolocation = {
-      coordinatesDate: e.created_at,
+      locationDate: e.created_at,
       address: reverseGeocode[0].formattedAddress,
       coordinates: [...e.geo.coordinates]
     }

@@ -33,7 +33,7 @@ describe('DataOperations', function() {
   }
 
   const twitterOutputGeo = {
-    coordinatesDate: 'Tue Nov 06 01:56:36 +0000 2018',
+    locationDate: 'Tue Nov 06 01:56:36 +0000 2018',
     address: '3114 10th St N, Arlington, VA 22201, USA',
     coordinates: [38.88441446,-77.09551149]
   }
