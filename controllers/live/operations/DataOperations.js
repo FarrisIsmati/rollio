@@ -22,11 +22,10 @@ class DataOperations {
       apiKey: process.env.GOOGLE_MAPS_API_KEY,
       formatter: null
     });
-
-    this.runOperations();
   }
 
   runOperations() {
+    console.log('connected :)');
     this.twitterClient.streamClient(async e => {
       const vendorTweet = await this.vendorTweetUpdate(e);
       console.log(vendorTweet);

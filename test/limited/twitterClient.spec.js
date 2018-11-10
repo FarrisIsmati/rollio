@@ -67,7 +67,7 @@ describe('Twitter Client', function() {
     let streamRes;
 
     before(async function() {
-      streamRes = await twitterClient.streamClient(()=>null);
+      streamRes = await twitterClient.streamClient();
     })
 
     it('Expect streamClient to be an object', async function() {

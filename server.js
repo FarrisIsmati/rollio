@@ -61,6 +61,7 @@ app.use('/vendor', vendor);
 //DATA OPERATIONS on WASHINGTONDC region
 if (process.env.NODE_ENV !== 'TEST') {
   const dataOperations = new DataOperations('WASHINGTONDC');
+  dataOperations.runOperations();
 }
 
 //START SERVER
