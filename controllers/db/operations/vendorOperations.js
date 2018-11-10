@@ -64,15 +64,17 @@ const vendorOperations = {
   },
   //Increments a vendors locationAccuracy by one given a regionID and vendorID
   updateLocationAccuracy: function(params) {
-    const { regionID, vendorID, amount } = params;
-
+    const { regionID, vendorID, type, locationID, amount } = params;
+    const locationIDQuery = type + "._id";
+    const updateString = type + ".$.accuracy";
     //Amount can only be 1 or -1
     if (amount === 1 || amount === -1) {
       return Vendor.update({
         "regionID": regionID,
-        "_id": vendorID
+        "_id": vendorID,
+        [locationIDQuery]: locationID
       }, {
-        $inc: { 'locationAccuracy': amount }
+        $inc: { [updateString]: amount }
       })
       .then( res => res )
       .catch( err => err );

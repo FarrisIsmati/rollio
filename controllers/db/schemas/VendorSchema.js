@@ -20,13 +20,14 @@ const MenuSchema = new mongoose.Schema({
 //COORDINATES SCHEMA
 const LocationSchema = new mongoose.Schema({
   locationDate: { type: Date, default: Date.now, required: true },
-  address: { type: String, required: false },
+  accuracy : { type: Number, default: 0, required: true },
+  address: { type: String, required: true },
   municipality: { type: String, required: false },
   submunicipality: { type: String, required: false },
   coordinates: {
     type: [ { type: Number, required: true } ],
     validate: [(val) => val.length <= 2, '{PATH} exceeds the limit of 2'],
-    required: true
+    required: false
   }
 });
 
@@ -77,8 +78,10 @@ const VendorSchema = new mongoose.Schema({
     type: [LocationSchema],
     required: true
   },
-  locationAccuracy : { type: Number, required: true },
-  municipality : { type: String, required: false },
+  userLocationHistory : {
+    type: [LocationSchema],
+    required: true
+  },
   comments : {
     type: [CommentSchema],
     required: false

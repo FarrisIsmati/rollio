@@ -14,7 +14,7 @@ const Region        = mongoose.model('Region');
 //DATA
 const vendorsData   = require('./developmentSeedJSON').vendors;
 const regionsData   = require('./developmentSeedJSON').regions;
-
+const locationsData = require('./developmentSeedJSON').locations;
 
 const seedObj = {
   emptyRegions : function() {

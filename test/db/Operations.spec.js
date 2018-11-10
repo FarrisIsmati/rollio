@@ -89,11 +89,15 @@ describe('DB Operations', function() {
     describe('Update Vendor Operations', function() {
       let vendor;
       let regionID;
+      let locationID;;
+      let userLocationID
 
       beforeEach(function(done){
         seed.runSeed().then(async () => {
           regionID = await Region.findOne().then(region => region._id);
           vendor = await Vendor.findOne({"regionID": await regionID});
+          locationID = vendor.locationHistory[0]._id
+          userLocationID = vendor.userLocationHistory[0]._id
           done();
         });
       });
@@ -178,30 +182,44 @@ describe('DB Operations', function() {
         expect(updatedDailyActive).to.be.true;
       });
 
-      it('should update locationAccuracy by incrementing value by one', async function() {
+      it('Expect location accuracy to be incremented by 1', async function() {
         const prevLocationAccuracy = await Vendor.findOne({ "_id": vendor._id })
-        .then(vendor => vendor.locationAccuracy);
+        .then(vendor => vendor.locationHistory[0].accuracy);
 
-        const updateLocationAccuracy = await vendorOperations.updateLocationAccuracy({regionID, vendorID: vendor._id, amount: 1});
+        const updateLocationAccuracy = await vendorOperations.updateLocationAccuracy({regionID, vendorID: vendor._id, type: "locationHistory", locationID, amount: 1});
 
-        const updatedLocationAccuracy = await Vendor.findOne({"_id": vendor._id})
-        .then(vendor => vendor.locationAccuracy);
+        const updatedLocationAccuracy = await Vendor.findOne({ "_id": vendor._id })
+        .then(vendor => vendor.locationHistory[0].accuracy);
 
         expect(updateLocationAccuracy.nModified).to.equal(1);
         expect(updatedLocationAccuracy).to.equal(prevLocationAccuracy + 1);
       });
 
-      it('should update locationAccuracy by decrementing value by one', async function() {
+      it('Expect location accuracy to be decremented by 1', async function() {
         const prevLocationAccuracy = await Vendor.findOne({ "_id": vendor._id })
-        .then(vendor => vendor.locationAccuracy);
+        .then(vendor => vendor.locationHistory[0].accuracy);
 
-        const updateLocationAccuracy = await vendorOperations.updateLocationAccuracy({regionID, vendorID: vendor._id, amount: -1});
+        const updateLocationAccuracy = await vendorOperations.updateLocationAccuracy({regionID, vendorID: vendor._id, type: "locationHistory", locationID, amount: -1});
 
-        const updatedLocationAccuracy = await Vendor.findOne({"_id": vendor._id})
-        .then(vendor => vendor.locationAccuracy);
+        const updatedLocationAccuracy = await Vendor.findOne({ "_id": vendor._id })
+        .then(vendor => vendor.locationHistory[0].accuracy);
 
         expect(updateLocationAccuracy.nModified).to.equal(1);
         expect(updatedLocationAccuracy).to.equal(prevLocationAccuracy - 1);
+      });
+
+      it('Expect user location accuracy to be incremented by 1', async function() {
+        console.log(userLocationID);
+        const prevLocationAccuracy = await Vendor.findOne({ "_id": vendor._id })
+        .then(vendor => vendor.userLocationHistory[0].accuracy);
+
+        const updateLocationAccuracy = await vendorOperations.updateLocationAccuracy({regionID, vendorID: vendor._id, type: "userLocationHistory", locationID: userLocationID, amount: 1});
+
+        const updatedLocationAccuracy = await Vendor.findOne({ "_id": vendor._id })
+        .then(vendor => vendor.userLocationHistory[0].accuracy);
+
+        expect(updateLocationAccuracy.nModified).to.equal(1);
+        expect(updatedLocationAccuracy).to.equal(prevLocationAccuracy + 1);
       });
 
       it('should update consecutiveDaysInactive by incrementing value by one', async function() {

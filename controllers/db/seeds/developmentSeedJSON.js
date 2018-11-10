@@ -20,6 +20,10 @@ module.exports = {
           "userScreenName": "YummiesMobile",
           "geolocation": {
             "locationDate": new Date("2018-04-12T12:10:00Z"),
+            "accuracy": 3,
+            "address": "28 Ist",
+            "municipality": "Washington, DC",
+            "submunicipality": "Farragut Square",
             "coordinates": [4.123, 1.522]
           }
         }
@@ -27,11 +31,23 @@ module.exports = {
       "locationHistory": [
         {
           "locationDate": new Date("2018-04-12T12:10:00Z"),
+          "accuracy": 3,
           "address": "28 Ist",
+          "municipality": "Washington, DC",
+          "submunicipality": "Farragut Square",
           "coordinates": [4.123, 1.522]
         }
       ],
-      "locationAccuracy": 0,
+      "userLocationHistory": [
+        {
+          "locationDate": new Date("2018-04-12T12:10:00Z"),
+          "accuracy": -4,
+          "address": "Lol Ist",
+          "municipality": "Tysons, DC",
+          "submunicipality": "Farragut Triangle",
+          "coordinates": [4.123, 1.5222]
+        }
+      ],
       "comments": [
         {
           "commentDate": new Date("2018-04-12T12:10:00Z"),
@@ -64,18 +80,17 @@ module.exports = {
           "userName": "Sammies Mobile",
           "userScreenName": "SammiesMobile",
           "geolocation": {
-            "locationDate": new Date("2018-02-12T12:10:00Z"),
-            "coordinates": [2.4123, 1.522]
+            "locationDate": new Date("2018-04-12T12:10:00Z"),
+            "accuracy": 3,
+            "address": "28 Ist",
+            "municipality": "Washington, DC",
+            "submunicipality": "Farragut Square",
+            "coordinates": [4.123, 1.522]
           }
         }
       ],
-      "locationHistory": [
-        {
-          "locationDate": new Date("2018-04-12T12:10:00Z"),
-          "address": "22nd Ist",
-          "coordinates": [4.223, 1.512]
-        }
-      ],
+      "locationHistory": [],
+      "userLocationHistory": [],
       "locationAccuracy": 0,
       "comments": [
         {
@@ -85,7 +100,6 @@ module.exports = {
       ],
       "creditCard": "y",
       "phoneNumber": "+1703-628-0202",
-      "municipality": "Alexandria",
       "dailyActive": false,
       "consecutiveDaysInactive": 0,
       "categories": ["Meat", "Mexican", "Chinese", "American South West"],
@@ -103,6 +117,7 @@ module.exports = {
       "twitterID": "472280764",
       "tweetsDaily": [],
       "locationHistory": [],
+      "userLocationHistory": [],
       "locationAccuracy": 0,
       "comments": [],
       "dailyActive": false,

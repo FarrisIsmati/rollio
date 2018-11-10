@@ -19,11 +19,15 @@ chai.use(chaiHttp);
 describe('Vendor Routes', function() {
   let regionID;
   let vendor;
+  let locationID;
+  let userLocationID
 
   beforeEach(function(done){
     seed.runSeed().then(async () => {
       regionID = await Region.findOne().then(region => region._id);
       vendor = await Vendor.findOne({"regionID": await regionID});
+      locationID = vendor.locationHistory[0]._id;
+      userLocationID = vendor.userLocationHistory[0]._id;
       done();
     });
   });
@@ -73,38 +77,62 @@ describe('Vendor Routes', function() {
 
   describe('PUT', function() {
     describe('/vendor/:regionID/:vendorID/locationaccuracy', function() {
-      it('Expect vendor locationAccuracy to be increased by 1', async function() {
+      it('Expect a vendor locationHistory instance\'s accuracy to be increased by 1', async function() {
         const prevLocationAccuracy = await Vendor.findOne({ "_id": vendor._id })
-        .then(vendor => vendor.locationAccuracy);
+        .then(vendor => vendor.locationHistory[0].accuracy);
 
         const res = await chai.request(server)
           .put(`/vendor/${regionID}/${vendor._id}/locationaccuracy`)
           .send({
+            "type": "locationHistory",
+            "locationID": locationID,
             "amount": 1
           });
 
         const updatedLocationAccuracy = await Vendor.findOne({ "_id": vendor._id })
-        .then(vendor => vendor.locationAccuracy);
+        .then(vendor => vendor.locationHistory[0].accuracy);
 
         expect(updatedLocationAccuracy).to.be.equal(prevLocationAccuracy + 1);
         expect(res.body.nModified).to.be.equal(1);
         expect(res).to.have.status(200);
       });
 
-      it('Expect vendor locationAccuracy to be decreased by 1', async function() {
+      it('Expect a vendor locationHistory instance\'s accuracy to be decreased by 1', async function() {
         const prevLocationAccuracy = await Vendor.findOne({ "_id": vendor._id })
-        .then(vendor => vendor.locationAccuracy);
+        .then(vendor => vendor.locationHistory[0].accuracy);
 
         const res = await chai.request(server)
           .put(`/vendor/${regionID}/${vendor._id}/locationaccuracy`)
           .send({
+            "type": "locationHistory",
+            "locationID": locationID,
             "amount": -1
           });
 
         const updatedLocationAccuracy = await Vendor.findOne({ "_id": vendor._id })
-        .then(vendor => vendor.locationAccuracy);
+        .then(vendor => vendor.locationHistory[0].accuracy);
 
         expect(updatedLocationAccuracy).to.be.equal(prevLocationAccuracy - 1);
+        expect(res.body.nModified).to.be.equal(1);
+        expect(res).to.have.status(200);
+      });
+
+      it('Expect a vendor userLocationHistory instance\'s accuracy to be increased by 1', async function() {
+        const prevLocationAccuracy = await Vendor.findOne({ "_id": vendor._id })
+        .then(vendor => vendor.userLocationHistory[0].accuracy);
+
+        const res = await chai.request(server)
+          .put(`/vendor/${regionID}/${vendor._id}/locationaccuracy`)
+          .send({
+            "type": "userLocationHistory",
+            "locationID": userLocationID,
+            "amount": 1
+          });
+
+        const updatedLocationAccuracy = await Vendor.findOne({ "_id": vendor._id })
+        .then(vendor => vendor.userLocationHistory[0].accuracy);
+
+        expect(updatedLocationAccuracy).to.be.equal(prevLocationAccuracy + 1);
         expect(res.body.nModified).to.be.equal(1);
         expect(res).to.have.status(200);
       });
