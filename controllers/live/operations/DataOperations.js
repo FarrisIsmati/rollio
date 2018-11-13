@@ -1,5 +1,6 @@
 //DEPENDENCIES
 const Twitter             = require('../twitter/TwitterClient');
+const TweetParser         = require('../twitter/tweetParser');
 var NodeGeocoder          = require('node-geocoder');
 
 //OPERATIONS
@@ -16,6 +17,7 @@ class DataOperations {
       a_secret: process.env.TWITTER_ACCESS_SECRET,
       regionName: this.regionName
     });
+    this.tweetParser = new TweetParser();
     this.geocoder = NodeGeocoder({
       provider: 'google',
       httpAdapter: 'https',
@@ -25,10 +27,10 @@ class DataOperations {
   }
 
   runOperations() {
-    console.log('connected :)');
+    const self = this;
     this.twitterClient.streamClient(async e => {
       const vendorTweet = await this.vendorTweetUpdate(e);
-      console.log(vendorTweet);
+      this.tweetParser.scanAddress(vendorTweet);
     });
   }
 
