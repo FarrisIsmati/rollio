@@ -1,3 +1,6 @@
+//DEPENDENCIES
+const knownLocations = require('../data/knownLocations');
+
 class TweetParser {
   scanAddress(payload) {
     let result = {
@@ -18,13 +21,16 @@ class TweetParser {
         locationDate: payload.createdAt,
         accuracy: 0,
         address: payload.geolocation.address,
-        city: 'tbd', //reverse search
-        neighborhood: 'tbd', //reverse search
+        city: payload.geolocation.city, //confirm this matches up with city/neighborhood checker
+        neighborhood: payload.geolocation.neighborhood, //confirm this matches up with city/neighborhood checker
         coordinates: payload.geolocation.coordinates
       }
-      console.log(result);
       return result;
     }
+
+  }
+
+  getKnownLocations(input) {
 
   }
 }
