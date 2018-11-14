@@ -22,8 +22,8 @@ module.exports = {
             "locationDate": new Date("2018-04-12T12:10:00Z"),
             "accuracy": 3,
             "address": "28 Ist",
-            "municipality": "Washington, DC",
-            "submunicipality": "Farragut Square",
+            "city": "Washington, DC",
+            "neighborhood": "Farragut Square",
             "coordinates": [4.123, 1.522]
           }
         }
@@ -33,8 +33,8 @@ module.exports = {
           "locationDate": new Date("2018-04-12T12:10:00Z"),
           "accuracy": 3,
           "address": "28 Ist",
-          "municipality": "Washington, DC",
-          "submunicipality": "Farragut Square",
+          "city": "Washington, DC",
+          "neighborhood": "Farragut Square",
           "coordinates": [4.123, 1.522]
         }
       ],
@@ -43,8 +43,8 @@ module.exports = {
           "locationDate": new Date("2018-04-12T12:10:00Z"),
           "accuracy": -4,
           "address": "Lol Ist",
-          "municipality": "Tysons, DC",
-          "submunicipality": "Farragut Triangle",
+          "city": "Tysons, DC",
+          "neighborhood": "Farragut Triangle",
           "coordinates": [4.123, 1.5222]
         }
       ],
@@ -56,7 +56,7 @@ module.exports = {
       ],
       "creditCard": "n",
       "phoneNumber": "+1202-638-0202",
-      "municipality": "Tysons",
+      "city": "Tysons",
       "dailyActive": false,
       "consecutiveDaysInactive": 0,
       "categories": ["Meat", "Yummy", "American South West"],
@@ -83,8 +83,8 @@ module.exports = {
             "locationDate": new Date("2018-04-12T12:10:00Z"),
             "accuracy": 3,
             "address": "28 Ist",
-            "municipality": "Washington, DC",
-            "submunicipality": "Farragut Square",
+            "city": "Washington, DC",
+            "neighborhood": "Farragut Square",
             "coordinates": [4.123, 1.522]
           }
         }

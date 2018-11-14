@@ -22,8 +22,8 @@ const LocationSchema = new mongoose.Schema({
   locationDate: { type: Date, default: Date.now, required: true },
   accuracy : { type: Number, default: 0, required: true },
   address: { type: String, required: true },
-  municipality: { type: String, required: false },
-  submunicipality: { type: String, required: false },
+  city: { type: String, required: false },
+  neighborhood: { type: String, required: false },
   coordinates: {
     type: [ { type: Number, required: true } ],
     validate: [(val) => val.length <= 2, '{PATH} exceeds the limit of 2'],

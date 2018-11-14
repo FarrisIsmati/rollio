@@ -1,8 +1,9 @@
 class TweetParser {
   scanAddress(payload) {
     let result = {
-      match: null,
-      method: ''
+      match: false,
+      method: '',
+      location: {}
     };
     let place = null;
     let geolocation = null;
@@ -11,15 +12,20 @@ class TweetParser {
       place = payload.place;
     if (payload.geolocation) {
       geolocation = payload.geolocation;
-      result.match = geolocation;
-      result.method = 'Geolocation';
-      //Figure out a proper format for a result (I say full tweet with a modified address obj (dont use place or geolocation))
+      result.match = true;
+      result.method = 'Tweet Geolocation';
+      result.location = {
+        locationDate: payload.createdAt,
+        accuracy: 0,
+        address: payload.geolocation.address,
+        city: 'tbd', //reverse search
+        neighborhood: 'tbd', //reverse search
+        coordinates: payload.geolocation.coordinates
+      }
+      console.log(result);
       return result;
     }
 
-
-    console.log(place);
-    console.log(geolocation);
   }
 }
 

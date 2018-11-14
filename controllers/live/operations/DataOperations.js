@@ -30,7 +30,9 @@ class DataOperations {
     const self = this;
     this.twitterClient.streamClient(async e => {
       const vendorTweet = await this.vendorTweetUpdate(e);
-      this.tweetParser.scanAddress(vendorTweet);
+      const tweetAddress = this.tweetParser.scanAddress(vendorTweet);
+      //if tweetAddress.match != null
+        //vendorAddressUpdate();
     });
   }
 
@@ -63,6 +65,7 @@ class DataOperations {
 
   async getGeolocation(e) {
     const reverseGeocode = await this.geocoder.reverse({lat: e.geo.coordinates[0], lon: e.geo.coordinates[1]});
+    console.log(reverseGeocode);
     let geolocation = {
       locationDate: e.created_at,
       address: reverseGeocode[0].formattedAddress,
