@@ -1,6 +1,6 @@
 //DEPENDENCIES
 const Twitter             = require('../twitter/TwitterClient');
-const TweetParser         = require('../twitter/tweetParser');
+const tweetParser         = require('../twitter/tweetParser');
 var NodeGeocoder          = require('node-geocoder');
 
 //OPERATIONS
@@ -17,7 +17,6 @@ class DataOperations {
       a_secret: process.env.TWITTER_ACCESS_SECRET,
       regionName: this.regionName
     });
-    this.tweetParser = new TweetParser();
     this.geocoder = NodeGeocoder({
       provider: 'google',
       httpAdapter: 'https',
@@ -27,13 +26,21 @@ class DataOperations {
   }
 
   runOperations() {
-    const self = this;
-    this.twitterClient.streamClient(async e => {
-      const vendorTweet = await this.vendorTweetUpdate(e);
-      const tweetAddress = this.tweetParser.scanAddress(vendorTweet);
-      //if tweetAddress.match != null
-        //vendorAddressUpdate();
-    });
+    // const self = this;
+    // this.twitterClient.streamClient(async e => {
+    //   const vendorTweet = await this.vendorTweetUpdate(e);
+    //   const tweetAddress = tweetParser.scanAddress(vendorTweet);
+    // });
+
+    //While testing tweetParser to the sampleData comment out above code in this method
+    //Match one word locations e.g(ballston, union station, etc.)
+    const sampleData = require('../data/sampledata');
+    for ( let i = 0; i < sampleData.length; i++ ) {
+      let tweet = sampleData[i].text;
+      //Setup regex to scan the tweet for the key words
+      console.log(tweet);
+      console.log();
+    }
   }
 
   async vendorTweetUpdate(e) {

@@ -1,8 +1,8 @@
 //DEPENDENCIES
 const knownLocations = require('../data/knownLocations');
 
-class TweetParser {
-  scanAddress(payload) {
+const tweetParser = {
+  scanAddress: payload => {
     let result = {
       match: false,
       method: '',
@@ -27,12 +27,10 @@ class TweetParser {
       }
       return result;
     }
-
-  }
-
-  getKnownLocations(input) {
+  },
+  getKnownLocations: input => {
 
   }
 }
 
-module.exports = TweetParser;
+module.exports = tweetParser;
