@@ -36,10 +36,8 @@ class DataOperations {
     //Match one word locations e.g(ballston, union station, etc.)
     const sampleData = require('../data/sampledata');
     for ( let i = 0; i < sampleData.length; i++ ) {
-      let tweet = sampleData[i].text;
-      //Setup regex to scan the tweet for the key words
-      console.log(tweet);
-      console.log();
+      let tweet = sampleData[i];
+      tweetParser.scanAddress(tweet);
     }
   }
 
