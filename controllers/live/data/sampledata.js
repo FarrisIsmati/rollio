@@ -167,4 +167,76 @@ module.exports = [
     "userName": "BBQ Bus",
     "userScreenName": "bbqbusdc",
   },
+  {
+    "tweetID": "yv1",
+    "createdAt": new Date("2016-05-18T16:00:00Z"),
+    "text": "At the Chinatown station (Verizon center). Dumpling. Seafood, tofu bibimbap. Spicy pork. Japchae bap. Gimbap.",
+    "userID": "yellowvendor",
+    "userName": "Yellow Vendor",
+    "userScreenName": "yellowvendor"
+  },
+  {
+    "tweetID": "yv2",
+    "createdAt": new Date("2016-05-18T16:00:00Z"),
+    "text": "At the Metro Center Station. Dumpling. Seafood, tofu bibimbap. Spicy pork. Japchae bap. Gimbap.",
+    "userID": "yellowvendor",
+    "userName": "Yellow Vendor",
+    "userScreenName": "yellowvendor"
+  },
+  {
+    "tweetID": "yv3",
+    "createdAt": new Date("2016-05-18T16:00:00Z"),
+    "text": "At the Union Station. Dumpling. Seafood, tofu bibimbap. Spicy pork. Japchae bap. Gimbap.",
+    "userID": "yellowvendor",
+    "userName": "Yellow Vendor",
+    "userScreenName": "yellowvendor"
+  },
+  {
+    "tweetID": "yv4",
+    "createdAt": new Date("2016-05-18T16:00:00Z"),
+    "text": "At the Farragut square. Dumpling. Seafood, tofu bibimbap. Spicy pork. Japchae bap. Gimbap.",
+    "userID": "yellowvendor",
+    "userName": "Yellow Vendor",
+    "userScreenName": "yellowvendor"
+  },
+  {
+    "tweetID": "yv5",
+    "createdAt": new Date("2016-05-18T16:00:00Z"),
+    "text": "At the L’Enfant plaza station. Dumpling. Seafood, tofu bibimbap. Spicy pork. Japchae bap. Gimbap.",
+    "userID": "yellowvendor",
+    "userName": "Yellow Vendor",
+    "userScreenName": "yellowvendor"
+  },
+  {
+    "tweetID": "yv6",
+    "createdAt": new Date("2016-05-18T16:00:00Z"),
+    "text": "At the Noma (Starbucks coffees). Dumpling. Seafood, tofu bibimbap. Spicy pork. Japchae bap. Gimbap.",
+    "userID": "yellowvendor",
+    "userName": "Yellow Vendor",
+    "userScreenName": "yellowvendor"
+  },
+  {
+    "tweetID": "wjc",
+    "createdAt": new Date("2016-05-18T16:00:00Z"),
+    "text": "Good morning Jammin family.  We are at Verizon Center/Capital One Arena/China Town/Gallery Place today.",
+    "userID": "wejamminc",
+    "userName": "We Jammin Catering",
+    "userScreenName": "wejamminc"
+  },
+  {
+    "tweetID": "wjc1",
+    "createdAt": new Date("2016-05-18T16:00:00Z"),
+    "text": "Good morning Jammin family.  We are at L’Enfant Plaza today on 6th Street by 6th & Maryland.",
+    "userID": "wejamminc",
+    "userName": "We Jammin Catering",
+    "userScreenName": "wejamminc"
+  },
+  {
+    "tweetID": "wjc2",
+    "createdAt": new Date("2016-05-18T16:00:00Z"),
+    "text": "Good morning Jammin family.  We are at Franklin Square today (13th & K, NW) on K St.  see you soon",
+    "userID": "wejamminc",
+    "userName": "We Jammin Catering",
+    "userScreenName": "wejamminc"
+  },
 ]
