@@ -1,5 +1,6 @@
 //DEPENDENCIES
-const knownLocations = require('../data/knownLocations');
+const knownLocations    = require('../data/knownLocations');
+const tweetPhrases           = require('../data/phrases');
 
 const tweetParser = {
   scanAddress: payload => {
@@ -37,7 +38,7 @@ const tweetParser = {
       let city = knownLocations[key];
       for (let i = 0; i < city.length; i++) {
         let curNbhd = city[i];
-        let rgx = city[i].regex;
+        let rgx = curNbhd.regex;
         if (rgx && rgx.exec(tweet) !== null) {
           result = {
             ...result,
@@ -56,15 +57,23 @@ const tweetParser = {
         }
       }
     }
+    //console.log(result);
 
-    console.log(result);
     //step 2. Pre/Post Address Identifier Phrases
+
+    for (let i = 0; i < tweetPhrases.length; i++) {
+      let rgx = tweetPhrases[i].regex;
+      //Prefix
+      if (tweetPhrases[i].prefix) {
+        if (rgx && rgx.exec(payload.text) !== null) {
+          console.log(result.tweet);
+          console.log(rgx.exec(payload.text));
+          console.log(rgx.lastIndex);
+        }
+      }
+    }
     console.log();
   },
-
-  getKnownLocations: input => {
-
-  }
 }
 
 module.exports = tweetParser;
