@@ -23,5 +23,11 @@ module.exports = [
     prefix: true,
     postfix: false,
     negation: false
+  }, {
+    phrase: 'tomorrow',
+    regex: /(tomorrow|tmrw|2mrw|2morrow|tmrow)/i,
+    prefix: true,
+    postfix: true,
+    negation: true
   }
 ]

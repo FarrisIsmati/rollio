@@ -3,23 +3,20 @@ const knownLocations    = require('../data/knownLocations');
 const tweetPhrases           = require('../data/phrases');
 
 const tweetParser = {
-  scanAddress: payload => {
+  scanAddress: function(payload) {
     let result = {
       match: false,
-      method: '',
+      rgxMatch: '',
+      matchMethod: '',
       tweet: payload.text,
       location: {}
     };
-    let place = null;
-    let geolocation = null;
-    let tweet = payload.text;
-
-    if (payload.place)
-      place = payload.place;
+    // if (payload.place) Currently not using this data
+    //   let place = payload.place;
     if (payload.geolocation) {
-      geolocation = payload.geolocation;
+      let geolocation = payload.geolocation;
       result.match = true;
-      result.method = 'Tweet Geolocation';
+      result.matchMethod = 'Tweet Geolocation';
       result.location = {
         locationDate: payload.createdAt,
         accuracy: 0,
@@ -31,21 +28,30 @@ const tweetParser = {
       return result;
     }
 
-    //step 1. Cross Reference known locations
+    result = this.phraseMatch(this.knownLocationMatch(result));
+    if (result.match) {
+      result.location.locationDate = payload.createdAt;
+    }
+    console.log(result);
+    console.log();
+  },
+  knownLocationMatch: function(result) {
+    //Match known locations
     for (let key in knownLocations) {
       if (result.match)
         break;
       let city = knownLocations[key];
       for (let i = 0; i < city.length; i++) {
         let curNbhd = city[i];
-        let rgx = curNbhd.regex;
-        if (rgx && rgx.exec(tweet) !== null) {
+        let rgxMatchNbhd = curNbhd.regex.exec(result.tweet);
+        if (rgxMatchNbhd !== null) {
           result = {
             ...result,
             match: true,
-            method: 'Regex known location match',
+            rgxMatch: rgxMatchNbhd[0],
+            matchMethod: 'Regex known location match',
             location: {
-              locationDate: payload.createdAt,
+              locationDate: '',
               accuracy: 0,
               address: curNbhd.location.address,
               city: key,
@@ -57,23 +63,36 @@ const tweetParser = {
         }
       }
     }
-    //console.log(result);
-
-    //step 2. Pre/Post Address Identifier Phrases
-
+    return result;
+  },
+  phraseMatch: function(result) {
+    //Pre/Post Address Phrases
+    let rgxMatchPhraseFull = '';
     for (let i = 0; i < tweetPhrases.length; i++) {
-      let rgx = tweetPhrases[i].regex;
-      //Prefix
-      if (tweetPhrases[i].prefix) {
-        if (rgx && rgx.exec(payload.text) !== null) {
-          console.log(result.tweet);
-          console.log(rgx.exec(payload.text));
-          console.log(rgx.lastIndex);
+      let rgxMatchPhrase = tweetPhrases[i].regex.exec(result.tweet);
+      if (rgxMatchPhrase && result.rgxMatch) {
+        let rgxPrefixMatch = new RegExp(`((${rgxMatchPhrase[0]}).{0,3}\\s*(${result.rgxMatch}))`, 'i').exec(result.tweet);
+        let rgxPostfixMatch = new RegExp(`((${result.rgxMatch}).{0,3}\\s*(${rgxMatchPhrase[0]}))`, 'i').exec(result.tweet);
+        //Prefix
+        if (tweetPhrases[i].prefix && rgxPrefixMatch) {
+          result.rgxMatch = rgxPrefixMatch[0];
+          if (tweetPhrases[i].negation) {
+            result.match = false;
+          }
+          return result;
+        }
+        //Postfix
+        if (tweetPhrases[i].postfix && rgxPostfixMatch) {
+          result.rgxMatch = rgxPostfixMatch[0];
+          if (tweetPhrases[i].negation) {
+            result.match = false;
+          }
+          return result;
         }
       }
     }
-    console.log();
-  },
+    return result;
+  }
 }
 
 module.exports = tweetParser;
