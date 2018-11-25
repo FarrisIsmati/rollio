@@ -3,7 +3,7 @@ module.exports = {
     {
       'neighborhood': 'ballston',
       'alias': ['virginia square'],
-      'regex': /(ballston|balston|balllston|blstn)|((virginia|virgina|virgina|vrgina)\s*(square|sqre|squar|sqr|sqre))/i,
+      'regex': /(ballston|balston|balllston|blston|blstn)|((virginia|virgina|virgina|vrgina)\s*(square|sqre|squar|sqr|sqre))/i,
       'location': {
         'coordinates': [38.881831, -77.111292],
         'address': 'Virginia Square Arlington, VA 22201'

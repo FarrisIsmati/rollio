@@ -30,8 +30,8 @@ const tweetParser = {
     if (result.match) {
       result.location.locationDate = payload.createdAt;
     }
-    console.log(result);
-    console.log();
+    // console.log(result);
+    // console.log();
     return result;
   },
   matchKnownLocation: function(result) {
@@ -84,7 +84,7 @@ const tweetParser = {
         if ((rgxPrefixMatch || rgxPostfixMatch) && tweetPhrases[i].negation) {
           result.match = false;
           result.certainty = 'certain';
-          delete result.location;
+          result.location = {};
         }
         break;
       }
