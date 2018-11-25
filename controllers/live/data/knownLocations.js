@@ -27,7 +27,7 @@ module.exports = {
       }
     }, {
       'neighborhood': 'lenfant plaza',
-      'regex': /(l('|"|’)*enfant|l('|"|’)*fnt|l('|"|’)*enfan|l('|"|’)*enfnt|l('|"|’)*nfnt)/i,
+      'regex': /((l('|"|’)*enfant|l('|"|’)*fnt|l('|"|’)*enfan|l('|"|’)*enfnt|l('|"|’)*nfnt)\s*(plaza|pl|plza|plz)*)/i,
       'location': {
         'coordinates': [38.884200, -77.025811],
         'address': '10th St SW, Washington, DC 20024'

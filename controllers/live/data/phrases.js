@@ -29,5 +29,11 @@ module.exports = [
     prefix: true,
     postfix: true,
     negation: true
+  }, {
+    phrase: 'today',
+    regex: /(today|2day|todayy|twoday|tuhday|taday)/i,
+    prefix: true,
+    postfix: true,
+    negation: false
   }
 ]

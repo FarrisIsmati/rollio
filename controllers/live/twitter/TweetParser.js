@@ -1,7 +1,3 @@
-//DEPENDENCIES
-const knownLocations    = require('../data/knownLocations');
-const tweetPhrases           = require('../data/phrases');
-
 const tweetParser = {
   scanAddress: function(payload) {
     let result = {
@@ -36,8 +32,10 @@ const tweetParser = {
     }
     console.log(result);
     console.log();
+    return result;
   },
   matchKnownLocation: function(result) {
+    const knownLocations = require('../data/knownLocations');
     //Match known locations
     for (let key in knownLocations) {
       if (result.match)
@@ -69,6 +67,7 @@ const tweetParser = {
     return result;
   },
   matchPhrase: function(result) { //Think through this logic and break it out
+    const tweetPhrases = require('../data/phrases');
     //Pre/Post Address Phrases
     let rgxMatchPhraseFull = '';
     for (let i = 0; i < tweetPhrases.length; i++) {
