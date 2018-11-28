@@ -1,6 +1,7 @@
 const tweetParser = {
   scanAddress: function(payload) {
     let result = {
+      userID: payload.userID,
       match: false,
       certainty: 'none',
       rgxMatch: '',

@@ -30,6 +30,7 @@ class DataOperations {
     // this.twitterClient.streamClient(async e => {
     //   const vendorTweet = await this.vendorTweetUpdate(e);
     //   const tweetAddress = tweetParser.scanAddress(vendorTweet);
+    //   vendorAddressUpdate(tweetAddress);
     // });
 
     //While testing tweetParser to the sampleData comment out above code in this method
@@ -37,7 +38,8 @@ class DataOperations {
     const sampleData = require('../data/sampledata');
     for ( let i = 0; i < sampleData.length; i++ ) {
       let tweet = sampleData[i];
-      tweetParser.scanAddress(tweet);
+      let tweetAddress = tweetParser.scanAddress(tweet);
+      this.vendorAddressUpdate(tweetAddress);
     }
   }
 
@@ -78,6 +80,28 @@ class DataOperations {
       coordinates: [...e.geo.coordinates]
     }
     return geolocation
+  }
+
+  async vendorAddressUpdate(payload) {
+    if (payload.match) {
+      //before you can run any of this code you need to actually add the sample data trucks into the devseed db
+      // const region = await regionOperations.getRegionByName(this.regionName);
+      // const vendor = await vendorOperations.getVendorByTwitterID(region._id, payload.userID);
+      // await vendorOperations.updateVendorSet()
+    }
+    // Set Vendor dailyActive to true
+    // Set Vendor locationAccuracy to 0
+    // Set Vendor  comments to [ ]
+    // Set Vendor consecutiveDaysInactive to -1
+    // Push new coordinates to Vendor coordinatesHistory
+    // Update Region total dailyActive
+    // Does the Redis Key exist in the db
+    //   REDIS KEY (SADD) <- Saved as a set
+    //   vendor/comment/(truckid): 127.0.0.1, 198.23,1.9
+    //   vendor/locationAccuracy/(truckid): 127.0.0.1, 198.23,1.9
+    //   Yes
+    //     Delete the key
+
   }
 }
 

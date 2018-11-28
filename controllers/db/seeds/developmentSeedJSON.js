@@ -1,5 +1,17 @@
 module.exports = {
   vendors: [
+    // {
+    //   "name": "Arepa Crew",
+    //   "type": "mobileTruck",
+    //   "description": "A taste of Venezuela for the Washington Metropolitan area!",
+    //   "establishedDate": new Date("2015-04-01T12:00:00Z"),
+    //   "creditCard": "y",
+    //   "phoneNumber": "+17037255602",
+    //   "price": "$$$",
+    //   "yelpId": "arepa-crew-arlington", //after done look this shit up
+    //   "yelpRating": "", //after done look up what it returns
+    //   3183153867
+    // }
     {
       "name": "DCMoblieVendor1",
       "type": "mobileTruck",
