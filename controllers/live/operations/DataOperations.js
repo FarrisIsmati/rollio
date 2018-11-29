@@ -84,6 +84,7 @@ class DataOperations {
 
   async vendorAddressUpdate(payload) {
     if (payload.match) {
+      console.log(payload);
       //before you can run any of this code you need to actually add the sample data trucks into the devseed db
       // const region = await regionOperations.getRegionByName(this.regionName);
       // const vendor = await vendorOperations.getVendorByTwitterID(region._id, payload.userID);

@@ -60,7 +60,7 @@ const VendorSchema = new mongoose.Schema({
   phoneNumber: {
     type: String,
     validate: [number => validationUtil.phoneNumberValidate(number), 'Not a valid phone number.'],
-    required: true
+    required: false
   },
   menu : {
     type: [MenuSchema],

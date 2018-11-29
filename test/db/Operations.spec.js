@@ -56,10 +56,10 @@ describe('DB Operations', function() {
       });
 
       it('Expect to return a vendor given a regionID and a vendor twitterID', async function() {
-        const dcfoodtrucks1ID = '1053649707493404678';
+        const arepaCrewTwitterID = '3183153867';
         const region = await regionOperations.getRegionByName('WASHINGTONDC');
-        const vendor = await vendorOperations.getVendorByTwitterID(region._id, dcfoodtrucks1ID); //dcfoodtrucks1 id
-        expect(vendor.twitterID).to.equal(dcfoodtrucks1ID);
+        const vendor = await vendorOperations.getVendorByTwitterID(region._id, arepaCrewTwitterID); //Arepa Crew id
+        expect(vendor.twitterID).to.equal(arepaCrewTwitterID);
       });
 
       it('Expect a vendor given an object with a set of mongo query parameters', function(done) {
@@ -69,7 +69,7 @@ describe('DB Operations', function() {
         }
         vendorOperations.getVendorsByQuery(params)
         .then(res => {
-          expect(res.length).to.be.equal(3);
+          expect(res.length).to.be.equal(5);
           for (let i = 0; i < res.length; i++) {
             expect(parseInt(res[i].consecutiveDaysInactive)).to.be.equal(0);
           }
@@ -102,7 +102,7 @@ describe('DB Operations', function() {
         });
       });
 
-      it('should push new coordinate object into locationHistory', async function() {
+      it('Expect new coordinate object pushed into locationHistory', async function() {
         const coordinatesPayload = { locationDate: new Date("2018-02-18T16:22:00Z"), address: "28 Ist", coordinates:[1.123,4.523] };
 
         const prevCoordHist = await Vendor.findOne({ "_id": vendor._id })
@@ -209,7 +209,6 @@ describe('DB Operations', function() {
       });
 
       it('Expect user location accuracy to be incremented by 1', async function() {
-        console.log(userLocationID);
         const prevLocationAccuracy = await Vendor.findOne({ "_id": vendor._id })
         .then(vendor => vendor.userLocationHistory[0].accuracy);
 
