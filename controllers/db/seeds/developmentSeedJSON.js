@@ -19,7 +19,6 @@ module.exports = {
           "tweetID": "laks3n",
           "createdAt": new Date("2016-05-18T16:00:00Z"),
           "text": "We are at Farragut Square",
-          "userID": "YummiesMobile",
           "userName": "Yummies Mobile",
           "userScreenName": "YummiesMobile",
           "geolocation": {

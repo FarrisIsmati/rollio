@@ -36,7 +36,6 @@ const TweetSchema = new mongoose.Schema({
   tweetID : { type: String, required: true },
   createdAt : { type: Date, required: true },
   text : { type: String, required: true },
-  userID : { type: String, required: true },
   userName : { type: String, required: true },
   userScreenName : { type: String, required: true },
   geolocation : { type: LocationSchema, required: false }

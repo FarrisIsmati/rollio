@@ -29,6 +29,7 @@ class DataOperations {
     // const self = this;
     // this.twitterClient.streamClient(async e => {
     //   const vendorTweet = await this.vendorTweetUpdate(e);
+    //   console.log(e);
     //   const tweetAddress = tweetParser.scanAddress(vendorTweet);
     //   vendorAddressUpdate(tweetAddress);
     // });
@@ -46,11 +47,11 @@ class DataOperations {
   async vendorTweetUpdate(e) {
     const region = await regionOperations.getRegionByName(this.regionName);
     const vendor = await vendorOperations.getVendorByTwitterID(region._id, e.user.id_str);
-    const payload = {
+    let payload = {
       tweetID: e.id_str,
       createdAt: e.created_at,
       text : e.text,
-      userID: e.user.id_str,
+      screenName: e.user.screen_name,
       userName: e.user.name,
       userScreenName: e.user.screen_name
     }
@@ -67,7 +68,7 @@ class DataOperations {
     await vendorOperations.updateVendorPush({ regionID: region._id, vendorID: vendor._id, field: 'tweetsDaily', payload});
 
     //WEBSOCKETS FUNTIONALITY HERE
-    return {...payload, place};
+    return {...payload, place, twitterID: e.user.id_str};
   }
 
   async getGeolocation(e) {
@@ -84,11 +85,19 @@ class DataOperations {
 
   async vendorAddressUpdate(payload) {
     if (payload.match) {
-      console.log(payload);
+      //console.log(payload);
       //before you can run any of this code you need to actually add the sample data trucks into the devseed db
-      // const region = await regionOperations.getRegionByName(this.regionName);
-      // const vendor = await vendorOperations.getVendorByTwitterID(region._id, payload.userID);
-      // await vendorOperations.updateVendorSet()
+      const region = await regionOperations.getRegionByName(this.regionName);
+      const vendor = await vendorOperations.getVendorByTwitterID(region._id, payload.userID);
+      // console.log(region);
+      // console.log(vendor);
+      // console.log(payload.userID);
+      // console.log("----")
+      // console.log();
+      // console.log();
+      // console.log();
+      // console.log();
+      //await vendorOperations.updateVendorSet({ regionID: region._id, vendorID: vendor._id, field: 'dailyActive ',  data: true });
     }
     // Set Vendor dailyActive to true
     // Set Vendor locationAccuracy to 0
