@@ -14,7 +14,24 @@ module.exports = {
       "price": "$$$$$",
       "rating": 5,
       "twitterID": "1053649707493404678",
-      "tweetsDaily": [],
+      "tweetsDaily": [
+        {
+          "tweetID": "laks3n",
+          "createdAt": new Date("2016-05-18T16:00:00Z"),
+          "text": "We are at Farragut Square",
+          "userID": "YummiesMobile",
+          "userName": "Yummies Mobile",
+          "userScreenName": "YummiesMobile",
+          "geolocation": {
+            "locationDate": new Date("2018-04-12T12:10:00Z"),
+            "accuracy": 3,
+            "address": "28 Ist",
+            "city": "Washington, DC",
+            "neighborhood": "Farragut Square",
+            "coordinates": [4.123, 1.522]
+          }
+        }
+      ],
       "locationHistory": [{
         "locationDate": new Date("2018-11-01T12:00:00Z"),
         "accuracy": 3,
@@ -23,7 +40,14 @@ module.exports = {
         "neighborhood": "Little Russia",
         "coordinates": [39.2934,-77.1234],
       }],
-      "userLocationHistory": [],
+      "userLocationHistory": [{
+        "locationDate": new Date("2018-04-12T12:10:00Z"),
+        "accuracy": -4,
+        "address": "Lol Ist",
+        "city": "Tysons, DC",
+        "neighborhood": "Farragut Triangle",
+        "coordinates": [4.123, 1.5222]
+      }],
       "comments": [],
       "dailyActive": false,
       "consecutiveDaysInactive": 0,

@@ -40,21 +40,21 @@ describe('Vendor Routes', function() {
           .end((err, res) => {
             expect(res).to.have.status(200);
             expect(res.body).to.be.a('array');
-            expect(res.body.length).to.be.equal(3);
+            expect(res.body.length).to.be.equal(5);
             done();
           });
       });
     });
 
     describe('/vendor/:regionID/?querystring', function() {
-      it('Expect to get a vendor with the specified Query String: ?price=$$$$&categories[]=Mexican&categories[]=Chinese', function(done) {
+      it('Expect to get a vendor with the specified Query String: ?categories[]=Venezuelan&categories[]=Arepa', function(done) {
         chai.request(server)
-          .get(`/vendor/${regionID}/?price=$$$$&categories[]=Mexican&categories[]=Chinese`)
+          .get(`/vendor/${regionID}/?categories[]=Venezuelan&categories[]=Arepa`)
           .end((err, res) => {
             expect(res).to.have.status(200);
             expect(res.body).to.be.a('array');
-            expect(res.body[0].categories).to.include('Mexican');
-            expect(res.body[0].categories).to.include('Chinese');
+            expect(res.body[0].categories).to.include('Venezuelan');
+            expect(res.body[0].categories).to.include('Arepa');
             expect(res.body.length).to.be.equal(1);
             done();
           });
@@ -168,7 +168,7 @@ describe('Vendor Routes', function() {
       });
 
       it(`Expect new comment in vendor to be '${commentText}'`, function(done) {
-        expect(updatedComments[1].text).to.be.equal(commentText);
+        expect(updatedComments[0].text).to.be.equal(commentText);
         expect(res.body.nModified).to.be.equal(1);
         expect(res).to.have.status(200);
         done();
