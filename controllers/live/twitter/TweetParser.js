@@ -1,7 +1,8 @@
 const tweetParser = {
   scanAddress: function(payload) {
     let result = {
-      userID: payload.userID,
+      userID: payload.twitterID,
+      date: payload.createdAt,
       match: false,
       certainty: 'none',
       rgxMatch: '',
@@ -53,7 +54,7 @@ const tweetParser = {
             certainty: 'partial',
             matchMethod: 'Regex known location match',
             location: {
-              locationDate: '',
+              locationDate: result.date,
               accuracy: 0,
               address: curNbhd.location.address,
               city: key,

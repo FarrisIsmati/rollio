@@ -89,29 +89,23 @@ class DataOperations {
       //before you can run any of this code you need to actually add the sample data trucks into the devseed db
       const region = await regionOperations.getRegionByName(this.regionName);
       const vendor = await vendorOperations.getVendorByTwitterID(region._id, payload.userID);
-      // console.log(region);
-      // console.log(vendor);
-      // console.log(payload.userID);
-      // console.log("----")
-      // console.log();
-      // console.log();
-      // console.log();
-      // console.log();
-      //await vendorOperations.updateVendorSet({ regionID: region._id, vendorID: vendor._id, field: 'dailyActive ',  data: true });
-    }
-    // Set Vendor dailyActive to true
-    // Set Vendor locationAccuracy to 0
-    // Set Vendor  comments to [ ]
-    // Set Vendor consecutiveDaysInactive to -1
-    // Push new coordinates to Vendor coordinatesHistory
-    // Update Region total dailyActive
-    // Does the Redis Key exist in the db
-    //   REDIS KEY (SADD) <- Saved as a set
-    //   vendor/comment/(truckid): 127.0.0.1, 198.23,1.9
-    //   vendor/locationAccuracy/(truckid): 127.0.0.1, 198.23,1.9
-    //   Yes
-    //     Delete the key
+      await vendorOperations.updateVendorSet({ regionID: region._id, vendorID: vendor._id, field: 'dailyActive',  data: true });
+      await vendorOperations.updateVendorSet({ regionID: region._id, vendorID: vendor._id, field: 'consecutiveDaysInactive',  data: -1 });
 
+      //Update Region Daily Active
+      //Get previous location history date
+      //Compare to current location history date using moment JS
+      //If current location date is different than previous
+        //Increment reigon daily active
+      await vendorOperations.updateVendorPush({ regionID: region._id, vendorID: vendor._id, field: 'locationHistory',  payload: payload.location});
+
+      // Does the Redis Key exist in the db
+      //   REDIS KEY (SADD) <- Saved as a set
+      //   vendor/comment/(truckid): 127.0.0.1, 198.23,1.9
+      //   vendor/locationAccuracy/(truckid): 127.0.0.1, 198.23,1.9
+      //   Yes
+      //     Delete the key
+    }
   }
 }
 
