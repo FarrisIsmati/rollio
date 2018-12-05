@@ -25,7 +25,7 @@ class DataOperations {
     });
   }
 
-  runOperations() {
+  async runOperations() {
     // const self = this;
     // this.twitterClient.streamClient(async e => {
     //   const vendorTweet = await this.vendorTweetUpdate(e);
@@ -36,9 +36,12 @@ class DataOperations {
 
     //While testing tweetParser to the sampleData comment out above code in this method
     //Match one word locations e.g(ballston, union station, etc.)
+    const region = await regionOperations.getRegionByName(this.regionName);
     const sampleData = require('../data/sampledata');
     for ( let i = 0; i < sampleData.length; i++ ) {
       let tweet = sampleData[i];
+      let vendor = await vendorOperations.getVendorByTwitterID(region._id, tweet.twitterID);
+      await vendorOperations.updateVendorPush({ regionID: region._id, vendorID: vendor._id, field: 'tweetsDaily', payload: tweet});
       let tweetAddress = tweetParser.scanAddress(tweet);
       this.vendorAddressUpdate(tweetAddress);
     }
@@ -85,10 +88,13 @@ class DataOperations {
 
   async vendorAddressUpdate(payload) {
     if (payload.match) {
+      if (payload.tweetID) {
+        payload.location = {...payload.location, tweetID: payload.tweetID}
+      }
       //console.log(payload);
       //before you can run any of this code you need to actually add the sample data trucks into the devseed db
       const region = await regionOperations.getRegionByName(this.regionName);
-      const vendor = await vendorOperations.getVendorByTwitterID(region._id, payload.userID);
+      const vendor = await vendorOperations.getVendorByTwitterID(region._id, payload.twitterID);
       await vendorOperations.updateVendorSet({ regionID: region._id, vendorID: vendor._id, field: 'dailyActive',  data: true });
       await vendorOperations.updateVendorSet({ regionID: region._id, vendorID: vendor._id, field: 'consecutiveDaysInactive',  data: -1 });
 

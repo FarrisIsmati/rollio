@@ -37,6 +37,7 @@
         "address": "123 Fake Street",
         "city": "Springfield",
         "neighborhood": "Little Russia",
+        "matchMethod": "Tweet Geolocation",
         "coordinates": [39.2934,-77.1234],
       }],
       "userLocationHistory": [{
@@ -45,6 +46,7 @@
         "address": "Lol Ist",
         "city": "Tysons, DC",
         "neighborhood": "Farragut Triangle",
+        "matchMethod": "User Input",
         "coordinates": [4.123, 1.5222]
       }],
       "comments": [],

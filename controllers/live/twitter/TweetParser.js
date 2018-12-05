@@ -1,12 +1,12 @@
 const tweetParser = {
   scanAddress: function(payload) {
     let result = {
-      userID: payload.twitterID,
+      tweetID: payload.tweetID,
+      twitterID: payload.twitterID,
       date: payload.createdAt,
       match: false,
       certainty: 'none',
       rgxMatch: '',
-      matchMethod: '',
       tweet: payload.text,
       location: {}
     };
@@ -16,14 +16,14 @@ const tweetParser = {
       let geolocation = payload.geolocation;
       result.match = true;
       result.certainty = 'certain';
-      result.matchMethod = 'Tweet Geolocation';
       result.location = {
         locationDate: payload.createdAt,
         accuracy: 0,
         address: payload.geolocation.address,
         city: payload.geolocation.city, //confirm this matches up with city/neighborhood checker
         neighborhood: payload.geolocation.neighborhood, //confirm this matches up with city/neighborhood checker
-        coordinates: payload.geolocation.coordinates
+        coordinates: payload.geolocation.coordinates,
+        matchMethod: 'Tweet Geolocation'
       }
       return result;
     }
@@ -52,14 +52,14 @@ const tweetParser = {
             match: true,
             rgxMatch: rgxMatchNbhd[0],
             certainty: 'partial',
-            matchMethod: 'Regex known location match',
             location: {
               locationDate: result.date,
               accuracy: 0,
               address: curNbhd.location.address,
               city: key,
               neighborhood: curNbhd.neighborhood,
-              coordinates: curNbhd.location.coordinates
+              coordinates: curNbhd.location.coordinates,
+              matchMethod: 'Tweet regex match'
             }
           }
           break;
