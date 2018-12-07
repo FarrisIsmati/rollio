@@ -18,6 +18,13 @@ const regionOperations = {
     })
     .catch(err => err);
   },
+  incrementRegionTotalDailyActive: function(regionID) {
+    return Region.update({
+      "_id": regionID
+    }, {
+      $inc: { 'totalDailyActive': 1 }
+    })
+  }
 }
 
 //EXPORT

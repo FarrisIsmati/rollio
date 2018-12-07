@@ -332,6 +332,32 @@ describe('DB Operations', function() {
         .then(() => done());
       });
     });
+
+    describe('Update Region Operations', function() {
+      let regionID;
+
+      before(function(done){
+        seed.runSeed().then(async () => {
+          regionID = await Region.findOne().then(region => region._id);
+          done();
+        });
+      });
+
+      it('Expect incrementRegionTotalDailyActive to be incremented by 1', async function() {
+        const prevRegionTotalDailyActive = await regionOperations.getRegion(regionID).then(res => res.totalDailyActive);
+        const updateRegionTotalDailyActiveRes = await regionOperations.incrementRegionTotalDailyActive(regionID);
+        const updatedRegionTotalDailyActive = await regionOperations.getRegion(regionID).then(res => res.totalDailyActive);
+        expect(prevRegionTotalDailyActive).to.equal(0);
+        expect(updateRegionTotalDailyActiveRes.nModified).to.equal(1);
+        expect(updatedRegionTotalDailyActive).to.equal(1);
+      })
+
+      after(function(done) {
+        seed.emptyRegions()
+        .then(() => seed.emptyVendors())
+        .then(() => done());
+      });
+    });
   });
 
 });

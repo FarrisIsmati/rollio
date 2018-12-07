@@ -1,7 +1,8 @@
 //DEPENDENCIES
 const Twitter             = require('../twitter/TwitterClient');
 const tweetParser         = require('../twitter/tweetParser');
-var NodeGeocoder          = require('node-geocoder');
+const NodeGeocoder        = require('node-geocoder');
+const moment              = require('moment');
 
 //OPERATIONS
 const regionOperations     = require('../../db/operations/regionOperations');
@@ -91,12 +92,23 @@ class DataOperations {
       if (payload.tweetID) {
         payload.location = {...payload.location, tweetID: payload.tweetID}
       }
-      //console.log(payload);
-      //before you can run any of this code you need to actually add the sample data trucks into the devseed db
       const region = await regionOperations.getRegionByName(this.regionName);
       const vendor = await vendorOperations.getVendorByTwitterID(region._id, payload.twitterID);
       await vendorOperations.updateVendorSet({ regionID: region._id, vendorID: vendor._id, field: 'dailyActive',  data: true });
       await vendorOperations.updateVendorSet({ regionID: region._id, vendorID: vendor._id, field: 'consecutiveDaysInactive',  data: -1 });
+
+      const prevHistoryArr = await vendorOperations.getVendor(region._id, vendor._id).then( res => res.locationHistory);
+
+      if (prevHistoryArr.length) {
+        const prevHistoryDate = prevHistoryArr[prevHistoryArr.length - 1].locationDate;
+        const isSameDay = moment(prevHistoryDate).isSame(payload.date, 'day');
+        if (!isSameDay) {
+          //inc regionDailyActive
+        }
+      } else {
+
+        //increment regionDailyActive
+      }
 
       //Update Region Daily Active
       //Get previous location history date
