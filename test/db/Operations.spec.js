@@ -65,13 +65,13 @@ describe('DB Operations', function() {
       it('Expect a vendor given an object with a set of mongo query parameters', function(done) {
         const params = {
           regionID,
-          consecutiveDaysInactive: 0
+          consecutiveDaysInactive: -1
         }
         vendorOperations.getVendorsByQuery(params)
         .then(res => {
           expect(res.length).to.be.equal(5);
           for (let i = 0; i < res.length; i++) {
-            expect(parseInt(res[i].consecutiveDaysInactive)).to.be.equal(0);
+            expect(parseInt(res[i].consecutiveDaysInactive)).to.be.equal(-1);
           }
           done();
         })
@@ -235,23 +235,23 @@ describe('DB Operations', function() {
         expect(updatedConsecutiveDaysInactive).to.be.equal(prevConsecutiveDaysInactive + 1);
       });
 
-      it('should reset consecutiveDaysInactive to 0', async function() {
+      it('should reset consecutiveDaysInactive to -1', async function() {
         const incrementConsecutiveDaysInactiveRes = await vendorOperations.incrementVendorConsecutiveDaysInactive(regionID, vendor._id)
         .then(res => res);
 
         const prevConsecutiveDaysInactive = await Vendor.findOne({ "_id": vendor._id })
         .then(vendor => vendor.consecutiveDaysInactive);
 
-        const params = { regionID, vendorID: vendor._id, field: 'consecutiveDaysInactive',  data: 0 };
+        const params = { regionID, vendorID: vendor._id, field: 'consecutiveDaysInactive',  data: -1 };
         const updateConsecutiveDaysInactiveRes = await vendorOperations.updateVendorSet(params)
         .then(res => res);
 
         const updatedConsecutiveDaysInactive = await Vendor.findOne({ "_id": vendor._id })
         .then(vendor => vendor.consecutiveDaysInactive);
 
-        expect(prevConsecutiveDaysInactive).to.be.equal(1);
+        expect(prevConsecutiveDaysInactive).to.be.equal(0);
         expect(updateConsecutiveDaysInactiveRes.nModified).to.equal(1);
-        expect(updatedConsecutiveDaysInactive).to.be.equal(0);
+        expect(updatedConsecutiveDaysInactive).to.be.equal(-1);
       });
 
       it('should update name of Vendor to Lobster Town', async function() {
