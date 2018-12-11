@@ -1,11 +1,12 @@
 //DEPENDENCIES
 const mongoose                = require('../connection');
-const LocationSchema       = require('./VendorSchema').LocationSchema;
+const VendorSchema            = require('./VendorSchema').VendorSchema;
+const LocationSchema          = require('./VendorSchema').LocationSchema;
 
 //REGION SCHEMA
 const RegionSchema = new mongoose.Schema({
   name : { type: String, required: true },
-  totalDailyActive : { type: Number, required: false },
+  dailyActiveVendorIDs : [{ type : mongoose.Schema.Types.ObjectId, ref: 'VendorSchema', required: false }],
   location : { type: String, required: true},
   coordinates : { type: LocationSchema, required: true },
   timezone : { type: String, required: true, enum: ['EST'] }

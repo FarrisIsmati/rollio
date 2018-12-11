@@ -335,24 +335,36 @@ describe('DB Operations', function() {
 
     describe('Update Region Operations', function() {
       let regionID;
+      let regionName = 'WASHINGTONDC'
+      let vendor;
 
-      before(function(done){
+      beforeEach(function(done){
         seed.runSeed().then(async () => {
           regionID = await Region.findOne().then(region => region._id);
+          vendorID = await Vendor.findOne({"regionID": await regionID}).then(vendor => vendor._id);
           done();
         });
       });
 
-      it('Expect incrementRegionTotalDailyActive to be incremented by 1', async function() {
-        const prevRegionTotalDailyActive = await regionOperations.getRegion(regionID).then(res => res.totalDailyActive);
-        const updateRegionTotalDailyActiveRes = await regionOperations.incrementRegionTotalDailyActive(regionID);
-        const updatedRegionTotalDailyActive = await regionOperations.getRegion(regionID).then(res => res.totalDailyActive);
-        expect(prevRegionTotalDailyActive).to.equal(0);
-        expect(updateRegionTotalDailyActiveRes.nModified).to.equal(1);
-        expect(updatedRegionTotalDailyActive).to.equal(1);
+      it('Expect incrementRegionDailyActiveVendorIDs to be incremented by 1', async function() {
+        const prevRegionDailyActiveVendorIDs = await regionOperations.getRegion(regionID).then(res => res.dailyActiveVendorIDs.length);
+        const updateRegionDailyActiveVendorIDsRes = await regionOperations.incrementRegionDailyActiveVendorIDs({regionID, vendorID});
+        const updatedRegionDailyActiveVendorIDs = await regionOperations.getRegion(regionID).then(res => res.dailyActiveVendorIDs.length);
+        expect(prevRegionDailyActiveVendorIDs).to.equal(prevRegionDailyActiveVendorIDs);
+        expect(updateRegionDailyActiveVendorIDsRes.nModified).to.equal(1);
+        expect(updatedRegionDailyActiveVendorIDs).to.equal(prevRegionDailyActiveVendorIDs + 1);
       })
 
-      after(function(done) {
+      it('Expect incrementRegionTotalDailyActive to be incremented by 1 given a regionName', async function() {
+        const prevRegionDailyActiveVendorIDs = await regionOperations.getRegionByName(regionName).then(res => res.dailyActiveVendorIDs.length);
+        const updateRegionDailyActiveVendorIDsRes = await regionOperations.incrementRegionDailyActiveVendorIDs({regionName, vendorID});
+        const updatedRegionDailyActiveVendorIDs = await regionOperations.getRegion(regionID).then(res => res.dailyActiveVendorIDs.length);
+        expect(prevRegionDailyActiveVendorIDs).to.equal(prevRegionDailyActiveVendorIDs);
+        expect(updateRegionDailyActiveVendorIDsRes.nModified).to.equal(1);
+        expect(updatedRegionDailyActiveVendorIDs).to.equal(prevRegionDailyActiveVendorIDs + 1);
+      })
+
+      afterEach(function(done) {
         seed.emptyRegions()
         .then(() => seed.emptyVendors())
         .then(() => done());

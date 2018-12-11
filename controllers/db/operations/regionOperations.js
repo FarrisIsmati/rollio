@@ -18,11 +18,14 @@ const regionOperations = {
     })
     .catch(err => err);
   },
-  incrementRegionTotalDailyActive: function(regionID) {
-    return Region.update({
-      "_id": regionID
-    }, {
-      $inc: { 'totalDailyActive': 1 }
+  incrementRegionDailyActiveVendorIDs: function(payload) {
+    const { regionID, regionName, vendorID } = payload;
+    let id = { "_id": regionID }
+    if (!regionID) {
+      id = { "name": regionName }
+    }
+    return Region.update(id, {
+      $push: { 'dailyActiveVendorIDs': vendorID }
     })
   }
 }

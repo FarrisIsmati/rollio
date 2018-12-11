@@ -134,7 +134,6 @@
   regions: [
     {
       "name": "WASHINGTONDC",
-      "totalDailyActive": 0,
       "coordinates": {
         "locationDate": new Date("2018-04-12T12:10:00Z"),
         "address": "Washington, D.C.",

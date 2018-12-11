@@ -2,7 +2,6 @@
 const Twitter             = require('../twitter/TwitterClient');
 const tweetParser         = require('../twitter/tweetParser');
 const NodeGeocoder        = require('node-geocoder');
-const moment              = require('moment');
 
 //OPERATIONS
 const regionOperations     = require('../../db/operations/regionOperations');
@@ -39,12 +38,29 @@ class DataOperations {
     //Match one word locations e.g(ballston, union station, etc.)
     const region = await regionOperations.getRegionByName(this.regionName);
     const sampleData = require('../data/sampledata');
-    for ( let i = 0; i < sampleData.length; i++ ) {
-      let tweet = sampleData[i];
+
+    const updateData = async tweet => {
+      //Update tweet first
       let vendor = await vendorOperations.getVendorByTwitterID(region._id, tweet.twitterID);
       await vendorOperations.updateVendorPush({ regionID: region._id, vendorID: vendor._id, field: 'tweetsDaily', payload: tweet});
+      //Check if tweet has an address
       let tweetAddress = tweetParser.scanAddress(tweet);
-      this.vendorAddressUpdate(tweetAddress);
+      await this.vendorAddressUpdate(tweetAddress);
+    }
+
+    //Run through sample data in an async for loop
+    for (let i = 0, p = Promise.resolve(); i < sampleData.length; i++) {
+      p = p.then(_ => new Promise(async resolve => {
+          let tweet = sampleData[i];
+          //Update tweet first
+          let vendor = await vendorOperations.getVendorByTwitterID(region._id, tweet.twitterID);
+          await vendorOperations.updateVendorPush({ regionID: region._id, vendorID: vendor._id, field: 'tweetsDaily', payload: tweet});
+          //Check if tweet has an address
+          let tweetAddress = tweetParser.scanAddress(tweet);
+          await this.vendorAddressUpdate(tweetAddress);
+          resolve();
+        }
+      ));
     }
   }
 
@@ -97,25 +113,9 @@ class DataOperations {
       await vendorOperations.updateVendorSet({ regionID: region._id, vendorID: vendor._id, field: 'dailyActive',  data: true });
       await vendorOperations.updateVendorSet({ regionID: region._id, vendorID: vendor._id, field: 'consecutiveDaysInactive',  data: -1 });
 
-      const prevHistoryArr = await vendorOperations.getVendor(region._id, vendor._id).then( res => res.locationHistory);
-
-      if (prevHistoryArr.length) {
-        const prevHistoryDate = prevHistoryArr[prevHistoryArr.length - 1].locationDate;
-        const isSameDay = moment(prevHistoryDate).isSame(payload.date, 'day');
-        if (!isSameDay) {
-          //inc regionDailyActive
-        }
-      } else {
-
-        //increment regionDailyActive
+      if (!region.dailyActiveVendorIDs.length || !region.dailyActiveVendorIDs.some(id => id.equals(vendor._id))) {
+        await regionOperations.incrementRegionDailyActiveVendorIDs({regionName: this.regionName, vendorID: vendor._id})
       }
-
-      //Update Region Daily Active
-      //Get previous location history date
-      //Compare to current location history date using moment JS
-      //If current location date is different than previous
-        //Increment reigon daily active
-      await vendorOperations.updateVendorPush({ regionID: region._id, vendorID: vendor._id, field: 'locationHistory',  payload: payload.location});
 
       // Does the Redis Key exist in the db
       //   REDIS KEY (SADD) <- Saved as a set
