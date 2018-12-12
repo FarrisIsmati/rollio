@@ -110,6 +110,8 @@ class DataOperations {
       }
       const region = await regionOperations.getRegionByName(this.regionName);
       const vendor = await vendorOperations.getVendorByTwitterID(region._id, payload.twitterID);
+
+      await vendorOperations.updateVendorPush({ regionID: region._id, vendorID: vendor._id, field: 'locationHistory',  payload: payload.location })
       await vendorOperations.updateVendorSet({ regionID: region._id, vendorID: vendor._id, field: 'dailyActive',  data: true });
       await vendorOperations.updateVendorSet({ regionID: region._id, vendorID: vendor._id, field: 'consecutiveDaysInactive',  data: -1 });
 
