@@ -41,6 +41,7 @@ const vendorRouteOperations = {
   .then(vendor => res.status(200).json(vendor)),
 
   putRegionIdVendorIdLocationTypeLocationIDAccuracy: async (req, res) => {
+    console.log('REGARDLESS JUST RUN IT')
     updateLocationAccuracy({regionID: req.params.regionID, vendorID: req.params.vendorID, type: req.body.type, locationID: req.body.locationID, amount: req.body.amount})
   .then(update => res.status(200).json(update))
   },

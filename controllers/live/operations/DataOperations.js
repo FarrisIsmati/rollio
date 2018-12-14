@@ -2,6 +2,7 @@
 const Twitter             = require('../twitter/TwitterClient');
 const tweetParser         = require('../twitter/tweetParser');
 const NodeGeocoder        = require('node-geocoder');
+const redisClient         = require('../../db/redis-config');
 
 //OPERATIONS
 const regionOperations     = require('../../db/operations/regionOperations');
@@ -119,12 +120,15 @@ class DataOperations {
         await regionOperations.incrementRegionDailyActiveVendorIDs({regionName: this.regionName, vendorID: vendor._id})
       }
 
-      // Does the Redis Key exist in the db
-      //   REDIS KEY (SADD) <- Saved as a set
-      //   vendor/comment/(truckid): 127.0.0.1, 198.23,1.9
-      //   vendor/locationAccuracy/(truckid): 127.0.0.1, 198.23,1.9
-      //   Yes
-      //     Delete the key
+      //Delete the keys related to commenting on the truck or upvoting the location accuracy
+      const pathLocationAccuracy = `/${region._id}/${vendor._id}/locationaccuracy`
+      const pathComment = `/${region._id}/${vendor._id}/comments`
+      const redisKeyLocationAccuracy = `rl::method::PUT::path::${pathLocationAccuracy}::regionID::${region._id}::vendorID::${vendor._id}`;
+      const redisKeyComment = `rl::method::PUT::path::${pathComment}::regionID::${region._id}::vendorID::${vendor._id}`;
+      await redisClient.delAsync(redisKeyLocationAccuracy)
+      .catch( (e) => console.log(e) );
+      await redisClient.delAsync(redisKeyComment)
+      .catch( (e) => console.log(e) );
     }
   }
 }

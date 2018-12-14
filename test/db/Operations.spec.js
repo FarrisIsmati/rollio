@@ -96,8 +96,8 @@ describe('DB Operations', function() {
         seed.runSeed().then(async () => {
           regionID = await Region.findOne().then(region => region._id);
           vendor = await Vendor.findOne({"regionID": await regionID});
-          locationID = vendor.locationHistory[0]._id
-          userLocationID = vendor.userLocationHistory[0]._id
+          locationID = vendor.locationHistory[vendor.locationHistory.length - 1]._id
+          userLocationID = vendor.userLocationHistory[vendor.userLocationHistory.length - 1]._id
           done();
         });
       });
