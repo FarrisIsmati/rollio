@@ -5,6 +5,10 @@ const expect              = chai.expect;
 const TwitterClient       = require('../../controllers/live/twitter/TwitterClient');
 const seed                = require('../../controllers/db/seeds/developmentSeed');
 
+//OPERATIONS
+const vendorOperations    = require('../../controllers/db/operations/vendorOperations');
+const regionOperations    = require('../../controllers/db/operations/regionOperations');
+
 //SCHEMAS
 const Region              = mongoose.model('Region');
 const Vendor              = mongoose.model('Vendor');
@@ -18,6 +22,21 @@ describe('Twitter Client', function() {
     a_secret: process.env.TWITTER_ACCESS_SECRET,
     regionName: 'WASHINGTONDC'
   });
+
+  const twitterOutput = {
+    id_str: '1059635881387192320',
+    created_at: 'Tue Nov 06 02:37:35 +0000 2018',
+    text: 'test tweet',
+    user: {
+      id: 1053649707493404700,
+      id_str: '1053649707493404678',
+      name: 'dcfoodtrucks',
+      screen_name: 'dcfoodtrucks1'
+    },
+    geo: {
+      coordinates: [38.88441446,-77.09551149]
+    }
+  }
 
   describe('constructor', function() {
     it('Expect TwitterClient to be a function', function(done) {
@@ -78,4 +97,37 @@ describe('Twitter Client', function() {
       expect(streamRes._eventsCount).to.be.equal(2);
     });
   });
+
+  describe('tweetFormatter', function() {
+    let regionID;
+    let vendor;
+
+    before(async function(){
+      await seed.runSeed().then(async () => {
+        regionID = await Region.findOne({name: 'WASHINGTONDC'}).then(region => region._id);
+        vendorID = await Vendor.findOne({regionID: regionID, twitterID: '1053649707493404678'}).then(vendor => vendor._id);
+      });
+    });
+
+    it('Expect tweetFormatter to return an object with properties', async function() {
+      const res = await twitterClient.tweetFormatter(twitterOutput);
+      expect(res).to.have.property('geolocation');
+      expect(res).to.have.property('place');
+    })
+
+    it('Expect tweetFormatter update vendor tweetsDaily', async function() {
+      const tweetsDailyCount = await vendorOperations.getVendor(regionID, vendorID)
+      .then(res => res.tweetsDaily.length);
+      await twitterClient.tweetFormatter(twitterOutput);
+      const tweetsDailyCountNew = await vendorOperations.getVendor(regionID, vendorID)
+      .then(res => res.tweetsDaily.length);
+      expect(tweetsDailyCountNew).to.be.equal(tweetsDailyCount + 1);
+    })
+
+    after(function(done) {
+      seed.emptyRegions()
+      .then(() => seed.emptyVendors())
+      .then(() => done());
+    });
+  })
 });

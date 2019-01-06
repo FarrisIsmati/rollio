@@ -152,7 +152,7 @@ describe('DB Operations', function() {
         expect(updatedDailyTweets.length).to.equal(prevDailyTweets.length + 1);
       });
 
-      it('should empty tweetsDaily collection', async function() {
+      it('Expect to empty tweetsDaily collection', async function() {
         const prevDailyTweets = await Vendor.findOne({ "_id": vendor._id })
         .then(vendor => vendor.tweetsDaily);
 
@@ -166,7 +166,7 @@ describe('DB Operations', function() {
         expect(updatedDailyTweets.length).to.equal(0);
       });
 
-      it('should set dailyActive from false to true', async function() {
+      it('Expect dailyActive to be set from false to true', async function() {
         const prevDailyActive = await Vendor.findOne({ "_id": vendor._id })
         .then(vendor => vendor.dailyActive);
 
@@ -180,6 +180,23 @@ describe('DB Operations', function() {
         expect(prevDailyActive).to.be.false;
         expect(updateDailyActiveRes.nModified).to.equal(1);
         expect(updatedDailyActive).to.be.true;
+      });
+
+      it('Expect updateVendorSet to update multiple fields in one operation', async function() {
+        let newEmail = 'test@gmail.com';
+        const prevVendor = await Vendor.findOne({ "_id": vendor._id });
+
+        const params = { regionID, vendorID: vendor._id, field: ['dailyActive', 'email'],  data: [true, newEmail] };
+        const updatedVendorRes = await vendorOperations.updateVendorSet(params)
+        .then(res => res);
+
+        const updatedVendor = await Vendor.findOne({ "_id": vendor._id });
+
+        expect(prevVendor.dailyActive).to.be.false;
+        expect(prevVendor.email).to.be.equal("");
+        expect(updatedVendorRes.nModified).to.equal(1);
+        expect(updatedVendor.dailyActive).to.be.true;
+        expect(updatedVendor.email).to.be.equal(newEmail);
       });
 
       it('Expect location accuracy to be incremented by 1', async function() {
@@ -221,7 +238,7 @@ describe('DB Operations', function() {
         expect(updatedLocationAccuracy).to.equal(prevLocationAccuracy + 1);
       });
 
-      it('should update consecutiveDaysInactive by incrementing value by one', async function() {
+      it('Expect consecutiveDaysInactive to be incremented by one', async function() {
         const prevConsecutiveDaysInactive = await Vendor.findOne({ "_id": vendor._id })
         .then(vendor => vendor.consecutiveDaysInactive);
 
@@ -235,7 +252,7 @@ describe('DB Operations', function() {
         expect(updatedConsecutiveDaysInactive).to.be.equal(prevConsecutiveDaysInactive + 1);
       });
 
-      it('should reset consecutiveDaysInactive to -1', async function() {
+      it('Expect updateVendorSet to set consecutiveDaysInactive to -1', async function() {
         const incrementConsecutiveDaysInactiveRes = await vendorOperations.incrementVendorConsecutiveDaysInactive(regionID, vendor._id)
         .then(res => res);
 

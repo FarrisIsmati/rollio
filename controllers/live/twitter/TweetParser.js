@@ -32,8 +32,6 @@ const tweetParser = {
     if (result.match) {
       result.location.locationDate = payload.createdAt;
     }
-    // console.log(result);
-    // console.log();
     return result;
   },
   matchKnownLocation: function(result) {

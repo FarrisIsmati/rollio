@@ -1,19 +1,8 @@
 //DEPENDENCIES
 const mongoose            = require('../../controllers/db/schemas/AllSchemas');
-const DataOperations      = require('../../controllers/live/operations/DataOperations');
+const LocationOperations  = require('../../controllers/live/location/LocationOperations');
 const chai                = require('chai');
 const expect              = chai.expect;
-
-//OPERATIONS
-const vendorOperations    = require('../../controllers/db/operations/vendorOperations');
-const regionOperations    = require('../../controllers/db/operations/regionOperations');
-
-//SCHEMAS
-const Vendor              = mongoose.model('Vendor');
-const Region              = mongoose.model('Region');
-
-//SEED
-const seed                = require('../../controllers/db/seeds/developmentSeed');
 
 //LIVE DATA OPERATIONS
 describe('DataOperations', function() {
@@ -38,5 +27,20 @@ describe('DataOperations', function() {
     coordinates: [38.88441446,-77.09551149]
   }
 
-  let dataOps = new DataOperations('WASHINGTONDC');
+  let locationOperation = new LocationOperations();
+
+  describe('getGeolocation', function() {
+    it('Expect getGeolocation to be a function', function(done) {
+      expect(locationOperation.getGeolocation).to.be.a('function');
+      done();
+    });
+
+    it('Expect getGeolocation to return a geocoded address given the proper payload', async function() {
+      const twOutGeo = Object.assign({...twitterOutput, geo: {
+        coordinates: [...twitterOutputGeo.coordinates]
+      }});
+      const res = await locationOperation.getGeolocation(twOutGeo);
+      expect(res.address).to.be.equal(twitterOutputGeo.address);
+    });
+  })
 });

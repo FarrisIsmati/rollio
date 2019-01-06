@@ -41,11 +41,20 @@ const vendorOperations = {
   //Sets data to a field given a regionID, vendorID, field, and data
   updateVendorSet: function(params) {
     const { regionID, vendorID, field, data } = params;
+    let obj = { [field]: data };
+
+    if (field.constructor === Array) {
+      obj = {};
+      for (let i = 0; i < field.length && i < data.length; i++) {
+        obj[field[i]] = data[i];
+      }
+    }
+
     return Vendor.update({
       "regionID": regionID,
       "_id": vendorID
     }, {
-      $set: { [field]: data }
+      $set: obj
     })
     .then( res => res )
     .catch( err => err );

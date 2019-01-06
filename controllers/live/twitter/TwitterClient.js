@@ -1,10 +1,15 @@
 //DEPENDENCIES
 const Twitter             = require('twitter');
+const LocationOperations     = require('../location/LocationOperations');
 const mongoose            = require('../../db/schemas/AllSchemas');
 
 //SCHEMA
 const Vendor              = mongoose.model('Vendor');
 const Region              = mongoose.model('Region');
+
+//OPERATIONS
+const regionOperations     = require('../../db/operations/regionOperations');
+const vendorOperations     = require('../../db/operations/vendorOperations');
 
 class TwitterClient {
   constructor(keys) {
@@ -17,6 +22,7 @@ class TwitterClient {
       access_token_key: a_key,
       access_token_secret: a_secret
     });
+    this.locationOperation = new LocationOperations();
   }
 
   //Get userIDs from DB
@@ -44,8 +50,9 @@ class TwitterClient {
 
     const stream = this.client.stream('statuses/filter', {follow: userIDs});
 
-    stream.on('data', e => {
-      event(e);
+    stream.on('data', async e => {
+      let formattedTweet = await this.tweetFormatter(e);
+      event(formattedTweet);
     })
 
     stream.on('error', err => {
@@ -53,6 +60,33 @@ class TwitterClient {
     })
 
     return stream;
+  }
+
+  async tweetFormatter(e) {
+    const region = await regionOperations.getRegionByName(this.regionName);
+    const vendor = await vendorOperations.getVendorByTwitterID(region._id, e.user.id_str);
+    let payload = {
+      tweetID: e.id_str,
+      createdAt: e.created_at,
+      text : e.text,
+      screenName: e.user.screen_name,
+      userName: e.user.name,
+      userScreenName: e.user.screen_name
+    }
+
+    let place = null;
+    if (e.place !== null) {
+      place = {...e.place};
+    }
+
+    if (e.geo !== null) {
+      payload.geolocation = await this.locationOperation.getGeolocation(e);
+    }
+
+    await vendorOperations.updateVendorPush({ regionID: region._id, vendorID: vendor._id, field: 'tweetsDaily', payload});
+
+    //WEBSOCKETS FUNTIONALITY HERE
+    return {...payload, place, twitterID: e.user.id_str};
   }
 }
 
