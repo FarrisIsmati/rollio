@@ -39,4 +39,22 @@ describe('DataOperations', function() {
   }
 
   let dataOps = new DataOperations('WASHINGTONDC');
+
+  //TEST VENDOR ADDRESS UPDATE HERE
+  //SAMPLE PAYLOAD DATA
+  // { tweetID: 'as6',
+  // twitterID: '890432286',
+  // date: 2016-05-18T16:00:00.000Z,
+  // match: true,
+  // certainty: 'partial',
+  // rgxMatch: 'Foggy Bottom today',
+  // tweet: 'We’re in Foggy Bottom today, DC! Corner of H and 22nd from 11-1:30.',
+  // location:
+  //  { locationDate: 2016-05-18T16:00:00.000Z,
+  //    accuracy: 0,
+  //    address: '0079 0064, Washington, DC 20052',
+  //    city: 'dc',
+  //    neighborhood: 'foggy bottom',
+  //    coordinates: [ 38.899291, -77.047859 ],
+  //    matchMethod: 'Tweet regex match' } }
 });
