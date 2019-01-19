@@ -10,7 +10,7 @@ const Vendor              = mongoose.model('Vendor');
 const Region              = mongoose.model('Region');
 
 //SEED
-const seed                = require('../../lib/db/seeds/developmentSeed');
+const seed                = require('../../lib/db/seeds/dev-seed');
 
 describe('Redis Operations', function() {
   describe('resetVendorLocationAndComment', function() {

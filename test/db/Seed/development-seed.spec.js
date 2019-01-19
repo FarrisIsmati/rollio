@@ -10,7 +10,7 @@ const Region              = mongoose.model('Region');
 const Vendor              = mongoose.model('Vendor');
 
 //SEED
-const seed                = require('../../../lib/db/seeds/developmentSeed');
+const seed                = require('../../../lib/db/seeds/dev-seed');
 
 //TESTS
 describe('Development Seed Operations', function() {
