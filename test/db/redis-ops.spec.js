@@ -1,14 +1,12 @@
 //DEPENDENCIES
-const chai            = require('chai');
-const expect          = chai.expect;
-const mongoose        = require('../../lib/db/mongo/mongoose/index');
-const redisClient     = require('../../lib/db/redis/index');
+const chai = require('chai');
+const expect = chai.expect;
+const mongoose = require('../../lib/db/mongo/mongoose/index');
+const client = require('../../lib/db/redis/index');
 const redisOps = require('../../lib/db/redis/operations/redis-ops');
-
 //SCHEMAS
 const Vendor              = mongoose.model('Vendor');
 const Region              = mongoose.model('Region');
-
 //SEED
 const seed                = require('../../lib/db/mongo/seeds/dev-seed');
 
@@ -34,17 +32,17 @@ describe('Redis Operations', function() {
 
     it('Expect a vendor location and comment path to both be emptied', async function() {
       //Add fake IPs addresses to the comment and location accuracy redis sets
-      const addComment = await redisClient.saddAsync(commentKey, 'test1234');
-      const addLocationAccuracy = await redisClient.saddAsync(locationAccuracyKey, 'test1234');
+      const addComment = await client.saddAsync(commentKey, 'test1234');
+      const addLocationAccuracy = await client.saddAsync(locationAccuracyKey, 'test1234');
       //Check if there are fake IP addresses added
-      const redisCommentIPsBefore = await redisClient.smembersAsync(commentKey);
-      const redisLocationAccuracyIPsBefore = await redisClient.smembersAsync(locationAccuracyKey);
+      const redisCommentIPsBefore = await client.smembersAsync(commentKey);
+      const redisLocationAccuracyIPsBefore = await client.smembersAsync(locationAccuracyKey);
       expect(redisCommentIPsBefore.length).to.be.equal(1);
       expect(redisLocationAccuracyIPsBefore.length).to.be.equal(1);
       //Reset IP addresses
       await redisOps.resetVendorLocationAndComment(region._id, vendor._id);
-      const redisCommentIPsAfter = await redisClient.smembersAsync(commentKey);
-      const redisLocationAccuracyIPsAfter = await redisClient.smembersAsync(locationAccuracyKey);
+      const redisCommentIPsAfter = await client.smembersAsync(commentKey);
+      const redisLocationAccuracyIPsAfter = await client.smembersAsync(locationAccuracyKey);
       expect(redisCommentIPsAfter.length).to.be.equal(0);
       expect(redisLocationAccuracyIPsAfter.length).to.be.equal(0);
     });

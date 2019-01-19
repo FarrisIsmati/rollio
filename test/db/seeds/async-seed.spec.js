@@ -1,18 +1,13 @@
-//TESTS THE EXTERNAL API FUNCTIONS CALLED WHEN SEEDING IN DATA TO DB
-
 //DEPENDENCIES
-const mongoose            = require('../../../lib/db/mongo/mongoose/index');
-const chai                = require('chai');
-const expect              = chai.expect;
-
+const mongoose = require('../../../lib/db/mongo/mongoose/index');
+const chai = require('chai');
+const expect = chai.expect;
 //SCHEMAS
-const Region              = mongoose.model('Region');
-const Vendor              = mongoose.model('Vendor');
-
+const Region = mongoose.model('Region');
+const Vendor = mongoose.model('Vendor');
 //SEED
-const seed                = require('../../../lib/db/mongo/seeds/dev-seed');
+const seed = require('../../../lib/db/mongo/seeds/dev-seed');
 
-//TESTS
 describe('Asynchronous Vendor Update Operations', function() {
   describe('Yelp', function() {
     let regionID;

@@ -1,20 +1,16 @@
 //DEPENDENCIES
-const mongoose            = require('../../lib/db/mongo/mongoose/index');
-const server              = require('../../index');
-const chai                = require('chai');
-const expect              = chai.expect;
-const chaiHttp            = require('chai-http');
-
+const mongoose = require('../../lib/db/mongo/mongoose/index');
+const server = require('../../index');
+const chai = require('chai');
+const expect = chai.expect;
+const chaiHttp = require('chai-http');
 //SEED
 const seed                = require('../../lib/db/mongo/seeds/dev-seed');
-
 //SCHEMAS
-const Region              = mongoose.model('Region');
+const Region = mongoose.model('Region');
 
-//CHAI ADD-ONS
 chai.use(chaiHttp);
 
-//TESTS
 describe('Region Routes', function() {
   let regionID;
 
@@ -27,7 +23,7 @@ describe('Region Routes', function() {
 
   describe('GET', function() {
     describe('/region/:id', function() {
-      it('Expect to get a region', function(done) {
+      it('expect to get a region', function(done) {
         chai.request(server)
           .get('/region/' + regionID)
           .end((err, res) => {

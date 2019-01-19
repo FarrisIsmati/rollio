@@ -1,18 +1,13 @@
-//TEST DEVELOPMENT SEED OPERATIONS
-
 //DEPENDENCIES
-const mongoose            = require('../../../lib/db/mongo/mongoose/index');
-const chai                = require('chai');
-const expect              = chai.expect;
-
+const mongoose = require('../../../lib/db/mongo/mongoose/index');
+const chai = require('chai');
+const expect = chai.expect;
 //SCHEMAS
-const Region              = mongoose.model('Region');
-const Vendor              = mongoose.model('Vendor');
-
+const Region = mongoose.model('Region');
+const Vendor = mongoose.model('Vendor');
 //SEED
-const seed                = require('../../../lib/db/mongo/seeds/dev-seed');
+const seed = require('../../../lib/db/mongo/seeds/dev-seed');
 
-//TESTS
 describe('Development Seed Operations', function() {
   const seedDB = done => { seed.runSeed().then(() => done()) };
   const emptyDB = done => { seed.emptyRegions().then(() => seed.emptyVendors()).then(() => done()) };

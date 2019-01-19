@@ -1,23 +1,19 @@
 //DEPENDENCIES
-const mongoose            = require('../../lib/db/mongo/mongoose/index');
-const chai                = require('chai');
-const chaid               = require('chaid');
-const dateTime            = require('chai-datetime');
-const assertArrays        = require('chai-arrays');
-const expect              = chai.expect;
-
+const mongoose = require('../../lib/db/mongo/mongoose/index');
+const chai = require('chai');
+const chaid = require('chaid');
+const dateTime = require('chai-datetime');
+const assertArrays = require('chai-arrays');
+const expect = chai.expect;
 //OPERATIONS
-const vendorOps    = require('../../lib/db/mongo/operations/vendor-ops');
-const regionOps    = require('../../lib/db/mongo/operations/region-ops');
-
+const vendorOps = require('../../lib/db/mongo/operations/vendor-ops');
+const regionOps = require('../../lib/db/mongo/operations/region-ops');
 //SCHEMAS
-const Vendor              = mongoose.model('Vendor');
-const Region              = mongoose.model('Region');
-
+const Vendor = mongoose.model('Vendor');
+const Region = mongoose.model('Region');
 //SEED
-const seed                = require('../../lib/db/mongo/seeds/dev-seed');
+const seed = require('../../lib/db/mongo/seeds/dev-seed');
 
-//CHAI ADD-ONS
 chai.use(chaid);
 chai.use(assertArrays);
 chai.use(dateTime);
@@ -36,7 +32,7 @@ describe('DB Operations', function() {
         });
       });
 
-      it('should return all vendors given a regionID', function(done) {
+      it('expect all vendors given a regionID', function(done) {
         vendorOps.getVendors(regionID)
         .then(res => {
           expect(res).to.be.array();
@@ -46,7 +42,7 @@ describe('DB Operations', function() {
         .catch(err => console.log(err));
       });
 
-      it('should return a vendor given a regionID and a objectID', function(done) {
+      it('expect a vendor given a regionID and an objectID', function(done) {
         vendorOps.getVendor(regionID, vendor._id)
         .then(res => {
           expect(res).to.have.same.id(vendor)
@@ -55,14 +51,14 @@ describe('DB Operations', function() {
         .catch(err => console.log(err));
       });
 
-      it('Expect to return a vendor given a regionID and a vendor twitterID', async function() {
+      it('expect to return a vendor given a regionID and a vendor twitterID', async function() {
         const arepaCrewTwitterID = '3183153867';
         const region = await regionOps.getRegionByName('WASHINGTONDC');
         const vendor = await vendorOps.getVendorByTwitterID(region._id, arepaCrewTwitterID); //Arepa Crew id
         expect(vendor.twitterID).to.equal(arepaCrewTwitterID);
       });
 
-      it('Expect a vendor given an object with a set of mongo query parameters', function(done) {
+      it('expect a vendor given an object with a set of mongo query parameters', function(done) {
         const params = {
           regionID,
           consecutiveDaysInactive: -1
@@ -102,7 +98,7 @@ describe('DB Operations', function() {
         });
       });
 
-      it('Expect new coordinate object pushed into locationHistory', async function() {
+      it('expect new coordinate object pushed into locationHistory', async function() {
         const coordinatesPayload = { locationDate: new Date("2018-02-18T16:22:00Z"), address: "28 Ist", coordinates:[1.123,4.523] };
 
         const prevCoordHist = await Vendor.findOne({ "_id": vendor._id })
@@ -122,7 +118,7 @@ describe('DB Operations', function() {
         expect(updatedCoordHist.length).to.equal(prevCoordHist.length + 1);
       });
 
-      it('should push new tweet object into tweetsDaily', async function() {
+      it('expect new tweet to be added to tweetsDaily', async function() {
         const tweetPayload = {
           "tweetID": "1xtwittera7v2",
           "createdAt": new Date("2017-02-18T08:20:00Z"),
@@ -152,7 +148,7 @@ describe('DB Operations', function() {
         expect(updatedDailyTweets.length).to.equal(prevDailyTweets.length + 1);
       });
 
-      it('Expect to empty tweetsDaily collection', async function() {
+      it('expect to empty tweetsDaily collection', async function() {
         const prevDailyTweets = await Vendor.findOne({ "_id": vendor._id })
         .then(vendor => vendor.tweetsDaily);
 
@@ -166,7 +162,7 @@ describe('DB Operations', function() {
         expect(updatedDailyTweets.length).to.equal(0);
       });
 
-      it('Expect dailyActive to be set from false to true', async function() {
+      it('expect dailyActive to be set from false to true', async function() {
         const prevDailyActive = await Vendor.findOne({ "_id": vendor._id })
         .then(vendor => vendor.dailyActive);
 
@@ -182,7 +178,7 @@ describe('DB Operations', function() {
         expect(updatedDailyActive).to.be.true;
       });
 
-      it('Expect updateVendorSet to update multiple fields in one operation', async function() {
+      it('expect updateVendorSet to update multiple fields in one operation', async function() {
         let newEmail = 'test@gmail.com';
         const prevVendor = await Vendor.findOne({ "_id": vendor._id });
 
@@ -199,7 +195,7 @@ describe('DB Operations', function() {
         expect(updatedVendor.email).to.be.equal(newEmail);
       });
 
-      it('Expect location accuracy to be incremented by 1', async function() {
+      it('expect location accuracy to be incremented by 1', async function() {
         const prevLocationAccuracy = await Vendor.findOne({ "_id": vendor._id })
         .then(vendor => vendor.locationHistory[0].accuracy);
 
@@ -212,7 +208,7 @@ describe('DB Operations', function() {
         expect(updatedLocationAccuracy).to.equal(prevLocationAccuracy + 1);
       });
 
-      it('Expect location accuracy to be decremented by 1', async function() {
+      it('expect location accuracy to be decremented by 1', async function() {
         const prevLocationAccuracy = await Vendor.findOne({ "_id": vendor._id })
         .then(vendor => vendor.locationHistory[0].accuracy);
 
@@ -238,7 +234,7 @@ describe('DB Operations', function() {
         expect(updatedLocationAccuracy).to.equal(prevLocationAccuracy + 1);
       });
 
-      it('Expect consecutiveDaysInactive to be incremented by one', async function() {
+      it('expect consecutiveDaysInactive to be incremented by one', async function() {
         const prevConsecutiveDaysInactive = await Vendor.findOne({ "_id": vendor._id })
         .then(vendor => vendor.consecutiveDaysInactive);
 
@@ -252,7 +248,7 @@ describe('DB Operations', function() {
         expect(updatedConsecutiveDaysInactive).to.be.equal(prevConsecutiveDaysInactive + 1);
       });
 
-      it('Expect updateVendorSet to set consecutiveDaysInactive to -1', async function() {
+      it('expect updateVendorSet to set consecutiveDaysInactive to -1', async function() {
         const incrementConsecutiveDaysInactiveRes = await vendorOps.incrementVendorConsecutiveDaysInactive(regionID, vendor._id)
         .then(res => res);
 
@@ -271,7 +267,7 @@ describe('DB Operations', function() {
         expect(updatedConsecutiveDaysInactive).to.be.equal(-1);
       });
 
-      it('should update name of Vendor to Lobster Town', async function() {
+      it('expect Vendor name to update to Lobster Town', async function() {
         const prevName = await Vendor.findOne({ "_id": vendor._id })
         .then(vendor => vendor.name);
 
@@ -286,7 +282,7 @@ describe('DB Operations', function() {
         expect(updatedName).to.be.equal('Lobster Town');
       });
 
-      it('should update closedDate of Vendor', async function() {
+      it('expect closedDate of Vendor to update', async function() {
         const date = new Date("2018-02-18T16:22:00Z");
 
         const prevClosedDate = await Vendor.findOne({ "_id": vendor._id })
@@ -325,7 +321,7 @@ describe('DB Operations', function() {
         });
       });
 
-      it('Expect getRegion to return a region given a regionID', function(done) {
+      it('expect getRegion to return a region given a regionID', function(done) {
         regionOps.getRegion(regionID)
         .then(res => {
           expect(res._id).to.have.same.id(regionID);
@@ -334,7 +330,7 @@ describe('DB Operations', function() {
         .catch(err => console.log(err));
       });
 
-      it('Expect getRegionByName to return a region with the name WASHINGTONDC', function(done) {
+      it('expect getRegionByName to return a region with the name WASHINGTONDC', function(done) {
         regionOps.getRegionByName('WASHINGTONDC')
         .then(res => {
           expect(res.name).to.be.equal('WASHINGTONDC');
@@ -363,7 +359,7 @@ describe('DB Operations', function() {
         });
       });
 
-      it('Expect incrementRegionDailyActiveVendorIDs to be incremented by 1', async function() {
+      it('expect incrementRegionDailyActiveVendorIDs to be incremented by 1', async function() {
         const prevRegionDailyActiveVendorIDs = await regionOps.getRegion(regionID).then(res => res.dailyActiveVendorIDs.length);
         const updateRegionDailyActiveVendorIDsRes = await regionOps.incrementRegionDailyActiveVendorIDs({regionID, vendorID});
         const updatedRegionDailyActiveVendorIDs = await regionOps.getRegion(regionID).then(res => res.dailyActiveVendorIDs.length);
@@ -372,7 +368,7 @@ describe('DB Operations', function() {
         expect(updatedRegionDailyActiveVendorIDs).to.equal(prevRegionDailyActiveVendorIDs + 1);
       })
 
-      it('Expect incrementRegionTotalDailyActive to be incremented by 1 given a regionName', async function() {
+      it('expect incrementRegionTotalDailyActive to be incremented by 1 given a regionName', async function() {
         const prevRegionDailyActiveVendorIDs = await regionOps.getRegionByName(regionName).then(res => res.dailyActiveVendorIDs.length);
         const updateRegionDailyActiveVendorIDsRes = await regionOps.incrementRegionDailyActiveVendorIDs({regionName, vendorID});
         const updatedRegionDailyActiveVendorIDs = await regionOps.getRegion(regionID).then(res => res.dailyActiveVendorIDs.length);

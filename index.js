@@ -1,23 +1,20 @@
 //ENV
 require('dotenv').config();
-
 //DEPENDENCIES
-const app             = require('express')();
+const app = require('express')();
       app.enable("trust proxy"); // only if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
-const bodyParser      = require('body-parser');
-const morgan          = require('morgan');
-const cors            = require('cors');
-const socketIO        = require('socket.io');
-const rateLimit       = require('express-rate-limit');
-const http            = require('http');
-const server          = require('http').createServer(app);
-const DataOperations  = require('./lib/live/operations/DataOperations');
-
+const bodyParser = require('body-parser');
+const morgan = require('morgan');
+const cors = require('cors');
+const socketIO = require('socket.io');
+const rateLimit = require('express-rate-limit');
+const http = require('http');
+const server = require('http').createServer(app);
+const vendorAddress = require('./lib/subscriptions/vendor-address');
 //ROUTES
-const region          = require('./lib/routes/region');
-const vendor          = require('./lib/routes/vendor');
+const region = require('./lib/routes/region');
+const vendor = require('./lib/routes/vendor');
 
-//SET LOGGER
 switch (process.env.NODE_ENV) {
     case 'DEVELOPMENT':
         console.log('Running DEVELOPMENT');
@@ -34,12 +31,16 @@ switch (process.env.NODE_ENV) {
         console.log('No enviroment set using DEVELOPMENT');
 }
 
-//APP
 app.set('port', process.env.PORT || 3001);
 if (process.env.NODE_ENV === 'PRODUCTION')
   app.enable("trust proxy");// only if behind a reversed proxy (AWS is the goal)
 
-//FIXED WINDOW RATE LIMITING
+// //Setup subscriptions
+// if (process.env.NODE_ENV !== 'TEST') {
+//   rabbitmq subscription method
+// }
+
+//Fixed window rate limiting
 const generalRateLimit = rateLimit({
   windowMs: 30 * 1000, // 30 seconds
   max: 15,
@@ -48,26 +49,17 @@ const generalRateLimit = rateLimit({
   },
 });
 
-//MIDDLEWARE
 app.use(generalRateLimit);
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(cors());
 
-//ROUTES
 app.use('/region', region);
 app.use('/vendor', vendor);
 
-//DATA OPERATIONS on WASHINGTONDC region
-if (process.env.NODE_ENV !== 'TEST') {
-  const dataOperations = new DataOperations('WASHINGTONDC');
-  dataOperations.runOperations();
-}
-
-//START SERVER
 server.listen(app.get('port'), () => {
   console.log('You are flying on ' + app.get('port'));
 })
 
-//FOR TESTING
+//For testing
 module.exports = app;

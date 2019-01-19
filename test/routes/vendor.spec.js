@@ -1,26 +1,22 @@
 //DEPENDENCIES
-const mongoose            = require('../../lib/db/mongo/mongoose/index');
-const server              = require('../../index');
-const chai                = require('chai');
-const expect              = chai.expect;
-const chaiHttp            = require('chai-http');
-
+const mongoose = require('../../lib/db/mongo/mongoose/index');
+const server = require('../../index');
+const chai = require('chai');
+const chaiHttp = require('chai-http');
+const expect = chai.expect;
 //SEED
-const seed                = require('../../lib/db/mongo/seeds/dev-seed');
-
+const seed  = require('../../lib/db/mongo/seeds/dev-seed');
 //SCHEMAS
-const Region              = mongoose.model('Region');
-const Vendor              = mongoose.model('Vendor');
+const Region = mongoose.model('Region');
+const Vendor = mongoose.model('Vendor');
 
-//CHAI ADD-ONS
 chai.use(chaiHttp);
 
-//TESTS
 describe('Vendor Routes', function() {
   let regionID;
   let vendor;
   let locationID;
-  let userLocationID
+  let userLocationID;
 
   beforeEach(function(done){
     seed.runSeed().then(async () => {
@@ -34,7 +30,7 @@ describe('Vendor Routes', function() {
 
   describe('GET', function() {
     describe('/vendor/:regionID', function() {
-      it('Expect to get all food trucks', function(done) {
+      it('expect to get all food trucks', function(done) {
         chai.request(server)
           .get(`/vendor/${regionID}`)
           .end((err, res) => {
@@ -47,7 +43,7 @@ describe('Vendor Routes', function() {
     });
 
     describe('/vendor/:regionID/?querystring', function() {
-      it('Expect to get a vendor with the specified Query String: ?categories[]=Venezuelan&categories[]=Arepa', function(done) {
+      it('expect to get a vendor with the specified Query String: ?categories[]=Venezuelan&categories[]=Arepa', function(done) {
         chai.request(server)
           .get(`/vendor/${regionID}/?categories[]=Venezuelan&categories[]=Arepa`)
           .end((err, res) => {
@@ -62,7 +58,7 @@ describe('Vendor Routes', function() {
     });
 
     describe('/vendor/:regionID/:vendorID', function() {
-      it('Expect to get a vendor', function(done) {
+      it('expect to get a vendor', function(done) {
         chai.request(server)
           .get(`/vendor/${regionID}/${vendor._id}`)
           .end((err, res) => {
@@ -77,7 +73,7 @@ describe('Vendor Routes', function() {
 
   describe('PUT', function() {
     describe('/vendor/:regionID/:vendorID/locationaccuracy', function() {
-      it('Expect a vendor locationHistory instance\'s accuracy to be increased by 1', async function() {
+      it('expect a vendor locationHistory instance\'s accuracy to be increased by 1', async function() {
         const prevLocationAccuracy = await Vendor.findOne({ "_id": vendor._id })
         .then(vendor => vendor.locationHistory[0].accuracy);
 
@@ -97,7 +93,7 @@ describe('Vendor Routes', function() {
         expect(res).to.have.status(200);
       });
 
-      it('Expect a vendor locationHistory instance\'s accuracy to be decreased by 1', async function() {
+      it('expect a vendor locationHistory instance\'s accuracy to be decreased by 1', async function() {
         const prevLocationAccuracy = await Vendor.findOne({ "_id": vendor._id })
         .then(vendor => vendor.locationHistory[0].accuracy);
 
@@ -117,7 +113,7 @@ describe('Vendor Routes', function() {
         expect(res).to.have.status(200);
       });
 
-      it('Expect a vendor userLocationHistory instance\'s accuracy to be increased by 1', async function() {
+      it('expect a vendor userLocationHistory instance\'s accuracy to be increased by 1', async function() {
         const prevLocationAccuracy = await Vendor.findOne({ "_id": vendor._id })
         .then(vendor => vendor.userLocationHistory[0].accuracy);
 
@@ -160,14 +156,14 @@ describe('Vendor Routes', function() {
         .then(vendor => vendor.comments);
       });
 
-      it('Expect vendor comments length to be increased by 1', function(done) {
+      it('expect vendor comments length to be increased by 1', function(done) {
         expect(updatedComments.length).to.be.equal(prevComments.length + 1);
         expect(res.body.nModified).to.be.equal(1);
         expect(res).to.have.status(200);
         done();
       });
 
-      it(`Expect new comment in vendor to be '${commentText}'`, function(done) {
+      it(`expect new comment in vendor to be '${commentText}'`, function(done) {
         expect(updatedComments[0].text).to.be.equal(commentText);
         expect(res.body.nModified).to.be.equal(1);
         expect(res).to.have.status(200);

@@ -12,10 +12,9 @@ const Vendor                    = mongoose.model('Vendor');
 //TESTS
 describe('Schemas', function() {
   describe('Region schema', function() {
-      it('should be invalid if timezone is not within schema timezone enum', done => {
+      it('expect to be invalid if timezone is not within schema timezone enum', done => {
           const fakeTimezone = 'FAKETEST'
           const region = new Region({ timezone: fakeTimezone});
-
           region.validate(err => {
               expect(err.errors.timezone).to.exist;
               expect(err.errors.timezone.properties.message).to.equal(`\`${fakeTimezone}\` is not a valid enum value for path \`timezone\`.`)
@@ -25,11 +24,10 @@ describe('Schemas', function() {
   });
 
   describe('Coordinates Schema', function() {
-    it('should be invalid if there are more than three values in the coordinates field', done => {
+    it('expect to be invalid if there are more than three values in the coordinates field', done => {
         const coordinates = new Coordinates({
           coordinates: [3.42424, -42.1414, 3.4114]
         });
-
         coordinates.validate(err => {
           expect(err.errors.coordinates).to.exist;
           expect(err.errors.coordinates.message).to.equal('coordinates exceeds the limit of 2');
@@ -39,10 +37,9 @@ describe('Schemas', function() {
   });
 
   describe('Comment Schema', function() {
-    it('should be invalid if the comment length is under 5 characters long', done => {
+    it('expect to be invalid if the comment length is under 5 characters long', done => {
         const text = 'four';
         const comment = new Comment({text});
-
         comment.validate(err => {
           expect(err.errors).to.exist;
           expect(err.errors.text.properties.message).to.equal(`Path \`text\` (\`${text}\`) is shorter than the minimum allowed length (5).`);
@@ -50,10 +47,9 @@ describe('Schemas', function() {
         });
     });
 
-    it('should be invalid if the comment length is over 255 characters long', done => {
+    it('expect to be invalid if the comment length is over 255 characters long', done => {
         const text = 'test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test t';
         const comment = new Comment({text});
-
         comment.validate(err => {
           expect(err.errors).to.exist;
           expect(err.errors.text.properties.message).to.equal(`Path \`text\` (\`${text}\`) is longer than the maximum allowed length (255).`);
@@ -63,7 +59,7 @@ describe('Schemas', function() {
   });
 
   describe('Vendor Schema', function() {
-    it('Expect to be invalid if type is not within schema timezone enum', done => {
+    it('expect to be invalid if type is not within schema timezone enum', done => {
         const fakeVendorType = 'mobileTrucks'
         const vendor = new Vendor({ type: fakeVendorType});
 
@@ -74,10 +70,9 @@ describe('Schemas', function() {
         });
     });
 
-    it('Expect to be invalid if creditCard is not within schema creditCard enum', done => {
+    it('expect to be invalid if creditCard is not within schema creditCard enum', done => {
         const creditCard = 'x'
         const vendor = new Vendor({ creditCard });
-
         vendor.validate(err => {
             expect(err.errors.creditCard).to.exist;
             expect(err.errors.creditCard.properties.message).to.equal(`\`${creditCard}\` is not a valid enum value for path \`creditCard\`.`);
@@ -86,5 +81,3 @@ describe('Schemas', function() {
     });
   });
 });
-
-//https://codeutopia.net/blog/2016/06/10/mongoose-models-and-unit-tests-the-definitive-guide/
