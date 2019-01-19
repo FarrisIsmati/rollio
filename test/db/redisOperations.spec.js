@@ -1,16 +1,16 @@
 //DEPENDENCIES
 const chai            = require('chai');
 const expect          = chai.expect;
-const mongoose        = require('../../controllers/db/schemas/AllSchemas');
-const redisClient     = require('../../controllers/db/redis-config');
-const redisOperations = require('../../controllers/db/redis/redisOperations');
+const mongoose        = require('../../lib/db/schemas/AllSchemas');
+const redisClient     = require('../../lib/db/redis-config');
+const redisOperations = require('../../lib/db/redis/redisOperations');
 
 //SCHEMAS
 const Vendor              = mongoose.model('Vendor');
 const Region              = mongoose.model('Region');
 
 //SEED
-const seed                = require('../../controllers/db/seeds/developmentSeed');
+const seed                = require('../../lib/db/seeds/developmentSeed');
 
 describe('Redis Operations', function() {
   describe('resetVendorLocationAndComment', function() {

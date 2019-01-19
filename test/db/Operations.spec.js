@@ -1,5 +1,5 @@
 //DEPENDENCIES
-const mongoose            = require('../../controllers/db/schemas/AllSchemas');
+const mongoose            = require('../../lib/db/schemas/AllSchemas');
 const chai                = require('chai');
 const chaid               = require('chaid');
 const dateTime            = require('chai-datetime');
@@ -7,15 +7,15 @@ const assertArrays        = require('chai-arrays');
 const expect              = chai.expect;
 
 //OPERATIONS
-const vendorOperations    = require('../../controllers/db/operations/vendorOperations');
-const regionOperations    = require('../../controllers/db/operations/regionOperations');
+const vendorOperations    = require('../../lib/db/operations/vendorOperations');
+const regionOperations    = require('../../lib/db/operations/regionOperations');
 
 //SCHEMAS
 const Vendor              = mongoose.model('Vendor');
 const Region              = mongoose.model('Region');
 
 //SEED
-const seed                = require('../../controllers/db/seeds/developmentSeed');
+const seed                = require('../../lib/db/seeds/developmentSeed');
 
 //CHAI ADD-ONS
 chai.use(chaid);

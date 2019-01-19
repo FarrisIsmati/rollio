@@ -11,11 +11,11 @@ const socketIO        = require('socket.io');
 const rateLimit       = require('express-rate-limit');
 const http            = require('http');
 const server          = require('http').createServer(app);
-const DataOperations  = require('./controllers/live/operations/DataOperations');
+const DataOperations  = require('./lib/live/operations/DataOperations');
 
 //ROUTES
-const region          = require('./controllers/routes/region');
-const vendor          = require('./controllers/routes/vendor');
+const region          = require('./lib/routes/region');
+const vendor          = require('./lib/routes/vendor');
 
 //SET LOGGER
 switch (process.env.NODE_ENV) {

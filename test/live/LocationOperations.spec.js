@@ -1,6 +1,6 @@
 //DEPENDENCIES
-const mongoose            = require('../../controllers/db/schemas/AllSchemas');
-const LocationOperations  = require('../../controllers/live/location/LocationOperations');
+const mongoose            = require('../../lib/db/schemas/AllSchemas');
+const LocationOperations  = require('../../lib/live/location/LocationOperations');
 const chai                = require('chai');
 const expect              = chai.expect;
 

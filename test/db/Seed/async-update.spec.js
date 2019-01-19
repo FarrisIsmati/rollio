@@ -1,7 +1,7 @@
 //TESTS THE EXTERNAL API FUNCTIONS CALLED WHEN SEEDING IN DATA TO DB
 
 //DEPENDENCIES
-const mongoose            = require('../../../controllers/db/schemas/AllSchemas');
+const mongoose            = require('../../../lib/db/schemas/AllSchemas');
 const chai                = require('chai');
 const expect              = chai.expect;
 
@@ -10,7 +10,7 @@ const Region              = mongoose.model('Region');
 const Vendor              = mongoose.model('Vendor');
 
 //SEED
-const seed                = require('../../../controllers/db/seeds/developmentSeed');
+const seed                = require('../../../lib/db/seeds/developmentSeed');
 
 //TESTS
 describe('Asynchronous Vendor Update Operations', function() {
