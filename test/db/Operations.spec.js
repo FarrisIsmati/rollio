@@ -8,7 +8,7 @@ const expect              = chai.expect;
 
 //OPERATIONS
 const vendorOperations    = require('../../lib/db/operations/vendorOperations');
-const regionOperations    = require('../../lib/db/operations/regionOperations');
+const regionOps    = require('../../lib/db/operations/region-ops');
 
 //SCHEMAS
 const Vendor              = mongoose.model('Vendor');
@@ -57,7 +57,7 @@ describe('DB Operations', function() {
 
       it('Expect to return a vendor given a regionID and a vendor twitterID', async function() {
         const arepaCrewTwitterID = '3183153867';
-        const region = await regionOperations.getRegionByName('WASHINGTONDC');
+        const region = await regionOps.getRegionByName('WASHINGTONDC');
         const vendor = await vendorOperations.getVendorByTwitterID(region._id, arepaCrewTwitterID); //Arepa Crew id
         expect(vendor.twitterID).to.equal(arepaCrewTwitterID);
       });
@@ -326,7 +326,7 @@ describe('DB Operations', function() {
       });
 
       it('Expect getRegion to return a region given a regionID', function(done) {
-        regionOperations.getRegion(regionID)
+        regionOps.getRegion(regionID)
         .then(res => {
           expect(res._id).to.have.same.id(regionID);
           done();
@@ -335,7 +335,7 @@ describe('DB Operations', function() {
       });
 
       it('Expect getRegionByName to return a region with the name WASHINGTONDC', function(done) {
-        regionOperations.getRegionByName('WASHINGTONDC')
+        regionOps.getRegionByName('WASHINGTONDC')
         .then(res => {
           expect(res.name).to.be.equal('WASHINGTONDC');
           done();
@@ -364,18 +364,18 @@ describe('DB Operations', function() {
       });
 
       it('Expect incrementRegionDailyActiveVendorIDs to be incremented by 1', async function() {
-        const prevRegionDailyActiveVendorIDs = await regionOperations.getRegion(regionID).then(res => res.dailyActiveVendorIDs.length);
-        const updateRegionDailyActiveVendorIDsRes = await regionOperations.incrementRegionDailyActiveVendorIDs({regionID, vendorID});
-        const updatedRegionDailyActiveVendorIDs = await regionOperations.getRegion(regionID).then(res => res.dailyActiveVendorIDs.length);
+        const prevRegionDailyActiveVendorIDs = await regionOps.getRegion(regionID).then(res => res.dailyActiveVendorIDs.length);
+        const updateRegionDailyActiveVendorIDsRes = await regionOps.incrementRegionDailyActiveVendorIDs({regionID, vendorID});
+        const updatedRegionDailyActiveVendorIDs = await regionOps.getRegion(regionID).then(res => res.dailyActiveVendorIDs.length);
         expect(prevRegionDailyActiveVendorIDs).to.equal(prevRegionDailyActiveVendorIDs);
         expect(updateRegionDailyActiveVendorIDsRes.nModified).to.equal(1);
         expect(updatedRegionDailyActiveVendorIDs).to.equal(prevRegionDailyActiveVendorIDs + 1);
       })
 
       it('Expect incrementRegionTotalDailyActive to be incremented by 1 given a regionName', async function() {
-        const prevRegionDailyActiveVendorIDs = await regionOperations.getRegionByName(regionName).then(res => res.dailyActiveVendorIDs.length);
-        const updateRegionDailyActiveVendorIDsRes = await regionOperations.incrementRegionDailyActiveVendorIDs({regionName, vendorID});
-        const updatedRegionDailyActiveVendorIDs = await regionOperations.getRegion(regionID).then(res => res.dailyActiveVendorIDs.length);
+        const prevRegionDailyActiveVendorIDs = await regionOps.getRegionByName(regionName).then(res => res.dailyActiveVendorIDs.length);
+        const updateRegionDailyActiveVendorIDsRes = await regionOps.incrementRegionDailyActiveVendorIDs({regionName, vendorID});
+        const updatedRegionDailyActiveVendorIDs = await regionOps.getRegion(regionID).then(res => res.dailyActiveVendorIDs.length);
         expect(prevRegionDailyActiveVendorIDs).to.equal(prevRegionDailyActiveVendorIDs);
         expect(updateRegionDailyActiveVendorIDsRes.nModified).to.equal(1);
         expect(updatedRegionDailyActiveVendorIDs).to.equal(prevRegionDailyActiveVendorIDs + 1);

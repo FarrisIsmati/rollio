@@ -3,7 +3,7 @@ const chai            = require('chai');
 const expect          = chai.expect;
 const mongoose        = require('../../lib/config/mongoose');
 const redisClient     = require('../../lib/config/redis');
-const redisOperations = require('../../lib/db/redis/redisOperations');
+const redisOps = require('../../lib/db/redis/redis-ops');
 
 //SCHEMAS
 const Vendor              = mongoose.model('Vendor');
@@ -42,7 +42,7 @@ describe('Redis Operations', function() {
       expect(redisCommentIPsBefore.length).to.be.equal(1);
       expect(redisLocationAccuracyIPsBefore.length).to.be.equal(1);
       //Reset IP addresses
-      await redisOperations.resetVendorLocationAndComment(region._id, vendor._id);
+      await redisOps.resetVendorLocationAndComment(region._id, vendor._id);
       const redisCommentIPsAfter = await redisClient.smembersAsync(commentKey);
       const redisLocationAccuracyIPsAfter = await redisClient.smembersAsync(locationAccuracyKey);
       expect(redisCommentIPsAfter.length).to.be.equal(0);
