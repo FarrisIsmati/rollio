@@ -2,7 +2,7 @@
 const chai            = require('chai');
 const expect          = chai.expect;
 const mongoose        = require('../../lib/db/schemas/AllSchemas');
-const redisClient     = require('../../lib/db/redis-config');
+const redisClient     = require('../../lib/config/redis');
 const redisOperations = require('../../lib/db/redis/redisOperations');
 
 //SCHEMAS
