@@ -1,7 +1,7 @@
 //TESTS THE EXTERNAL API FUNCTIONS CALLED WHEN SEEDING IN DATA TO DB
 
 //DEPENDENCIES
-const mongoose            = require('../../../lib/db/schemas/AllSchemas');
+const mongoose            = require('../../../lib/config/mongoose');
 const chai                = require('chai');
 const expect              = chai.expect;
 

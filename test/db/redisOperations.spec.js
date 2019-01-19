@@ -1,7 +1,7 @@
 //DEPENDENCIES
 const chai            = require('chai');
 const expect          = chai.expect;
-const mongoose        = require('../../lib/db/schemas/AllSchemas');
+const mongoose        = require('../../lib/config/mongoose');
 const redisClient     = require('../../lib/config/redis');
 const redisOperations = require('../../lib/db/redis/redisOperations');
 
