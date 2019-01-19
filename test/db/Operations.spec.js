@@ -7,7 +7,7 @@ const assertArrays        = require('chai-arrays');
 const expect              = chai.expect;
 
 //OPERATIONS
-const vendorOperations    = require('../../lib/db/operations/vendorOperations');
+const vendorOps    = require('../../lib/db/operations/vendor-ops');
 const regionOps    = require('../../lib/db/operations/region-ops');
 
 //SCHEMAS
@@ -37,7 +37,7 @@ describe('DB Operations', function() {
       });
 
       it('should return all vendors given a regionID', function(done) {
-        vendorOperations.getVendors(regionID)
+        vendorOps.getVendors(regionID)
         .then(res => {
           expect(res).to.be.array();
           expect(res[0].regionID).to.have.same.id(regionID);
@@ -47,7 +47,7 @@ describe('DB Operations', function() {
       });
 
       it('should return a vendor given a regionID and a objectID', function(done) {
-        vendorOperations.getVendor(regionID, vendor._id)
+        vendorOps.getVendor(regionID, vendor._id)
         .then(res => {
           expect(res).to.have.same.id(vendor)
           done();
@@ -58,7 +58,7 @@ describe('DB Operations', function() {
       it('Expect to return a vendor given a regionID and a vendor twitterID', async function() {
         const arepaCrewTwitterID = '3183153867';
         const region = await regionOps.getRegionByName('WASHINGTONDC');
-        const vendor = await vendorOperations.getVendorByTwitterID(region._id, arepaCrewTwitterID); //Arepa Crew id
+        const vendor = await vendorOps.getVendorByTwitterID(region._id, arepaCrewTwitterID); //Arepa Crew id
         expect(vendor.twitterID).to.equal(arepaCrewTwitterID);
       });
 
@@ -67,7 +67,7 @@ describe('DB Operations', function() {
           regionID,
           consecutiveDaysInactive: -1
         }
-        vendorOperations.getVendorsByQuery(params)
+        vendorOps.getVendorsByQuery(params)
         .then(res => {
           expect(res.length).to.be.equal(5);
           for (let i = 0; i < res.length; i++) {
@@ -109,7 +109,7 @@ describe('DB Operations', function() {
         .then(vendor => vendor.locationHistory);
 
         const params = { regionID, vendorID: vendor._id, field: 'locationHistory',  payload: coordinatesPayload };
-        const updateCoordHistRes = await vendorOperations.updateVendorPush(params)
+        const updateCoordHistRes = await vendorOps.updateVendorPush(params)
         .then(res => res);
 
         const updatedCoordHist = await Vendor.findOne({ "_id": vendor._id })
@@ -139,7 +139,7 @@ describe('DB Operations', function() {
         .then(vendor => vendor.tweetsDaily);
 
         const params = { regionID, vendorID: vendor._id, field: 'tweetsDaily',  payload: tweetPayload };
-        const updateDailyTweetsRes = await vendorOperations.updateVendorPush(params)
+        const updateDailyTweetsRes = await vendorOps.updateVendorPush(params)
         .then(res => res);
 
         const updatedDailyTweets = await Vendor.findOne({ "_id": vendor._id })
@@ -156,7 +156,7 @@ describe('DB Operations', function() {
         const prevDailyTweets = await Vendor.findOne({ "_id": vendor._id })
         .then(vendor => vendor.tweetsDaily);
 
-        const updateDailyTweetsRes = await vendorOperations.emptyVendorTweets(regionID, vendor._id)
+        const updateDailyTweetsRes = await vendorOps.emptyVendorTweets(regionID, vendor._id)
         .then(res => res);
 
         const updatedDailyTweets = await Vendor.findOne({ "_id": vendor._id })
@@ -171,7 +171,7 @@ describe('DB Operations', function() {
         .then(vendor => vendor.dailyActive);
 
         const params = { regionID, vendorID: vendor._id, field: 'dailyActive',  data: true };
-        const updateDailyActiveRes = await vendorOperations.updateVendorSet(params)
+        const updateDailyActiveRes = await vendorOps.updateVendorSet(params)
         .then(res => res);
 
         const updatedDailyActive = await Vendor.findOne({ "_id": vendor._id })
@@ -187,7 +187,7 @@ describe('DB Operations', function() {
         const prevVendor = await Vendor.findOne({ "_id": vendor._id });
 
         const params = { regionID, vendorID: vendor._id, field: ['dailyActive', 'email'],  data: [true, newEmail] };
-        const updatedVendorRes = await vendorOperations.updateVendorSet(params)
+        const updatedVendorRes = await vendorOps.updateVendorSet(params)
         .then(res => res);
 
         const updatedVendor = await Vendor.findOne({ "_id": vendor._id });
@@ -203,7 +203,7 @@ describe('DB Operations', function() {
         const prevLocationAccuracy = await Vendor.findOne({ "_id": vendor._id })
         .then(vendor => vendor.locationHistory[0].accuracy);
 
-        const updateLocationAccuracy = await vendorOperations.updateLocationAccuracy({regionID, vendorID: vendor._id, type: "locationHistory", locationID, amount: 1});
+        const updateLocationAccuracy = await vendorOps.updateLocationAccuracy({regionID, vendorID: vendor._id, type: "locationHistory", locationID, amount: 1});
 
         const updatedLocationAccuracy = await Vendor.findOne({ "_id": vendor._id })
         .then(vendor => vendor.locationHistory[0].accuracy);
@@ -216,7 +216,7 @@ describe('DB Operations', function() {
         const prevLocationAccuracy = await Vendor.findOne({ "_id": vendor._id })
         .then(vendor => vendor.locationHistory[0].accuracy);
 
-        const updateLocationAccuracy = await vendorOperations.updateLocationAccuracy({regionID, vendorID: vendor._id, type: "locationHistory", locationID, amount: -1});
+        const updateLocationAccuracy = await vendorOps.updateLocationAccuracy({regionID, vendorID: vendor._id, type: "locationHistory", locationID, amount: -1});
 
         const updatedLocationAccuracy = await Vendor.findOne({ "_id": vendor._id })
         .then(vendor => vendor.locationHistory[0].accuracy);
@@ -229,7 +229,7 @@ describe('DB Operations', function() {
         const prevLocationAccuracy = await Vendor.findOne({ "_id": vendor._id })
         .then(vendor => vendor.userLocationHistory[0].accuracy);
 
-        const updateLocationAccuracy = await vendorOperations.updateLocationAccuracy({regionID, vendorID: vendor._id, type: "userLocationHistory", locationID: userLocationID, amount: 1});
+        const updateLocationAccuracy = await vendorOps.updateLocationAccuracy({regionID, vendorID: vendor._id, type: "userLocationHistory", locationID: userLocationID, amount: 1});
 
         const updatedLocationAccuracy = await Vendor.findOne({ "_id": vendor._id })
         .then(vendor => vendor.userLocationHistory[0].accuracy);
@@ -242,7 +242,7 @@ describe('DB Operations', function() {
         const prevConsecutiveDaysInactive = await Vendor.findOne({ "_id": vendor._id })
         .then(vendor => vendor.consecutiveDaysInactive);
 
-        const updateConsecutiveDaysInactiveRes = await vendorOperations.incrementVendorConsecutiveDaysInactive(regionID, vendor._id)
+        const updateConsecutiveDaysInactiveRes = await vendorOps.incrementVendorConsecutiveDaysInactive(regionID, vendor._id)
         .then(res => res);
 
         const updatedConsecutiveDaysInactive = await Vendor.findOne({ "_id": vendor._id })
@@ -253,14 +253,14 @@ describe('DB Operations', function() {
       });
 
       it('Expect updateVendorSet to set consecutiveDaysInactive to -1', async function() {
-        const incrementConsecutiveDaysInactiveRes = await vendorOperations.incrementVendorConsecutiveDaysInactive(regionID, vendor._id)
+        const incrementConsecutiveDaysInactiveRes = await vendorOps.incrementVendorConsecutiveDaysInactive(regionID, vendor._id)
         .then(res => res);
 
         const prevConsecutiveDaysInactive = await Vendor.findOne({ "_id": vendor._id })
         .then(vendor => vendor.consecutiveDaysInactive);
 
         const params = { regionID, vendorID: vendor._id, field: 'consecutiveDaysInactive',  data: -1 };
-        const updateConsecutiveDaysInactiveRes = await vendorOperations.updateVendorSet(params)
+        const updateConsecutiveDaysInactiveRes = await vendorOps.updateVendorSet(params)
         .then(res => res);
 
         const updatedConsecutiveDaysInactive = await Vendor.findOne({ "_id": vendor._id })
@@ -276,7 +276,7 @@ describe('DB Operations', function() {
         .then(vendor => vendor.name);
 
         const params = { regionID, vendorID: vendor._id, field: 'name',  data: 'Lobster Town' };
-        const updateNameRes = await vendorOperations.updateVendorSet(params)
+        const updateNameRes = await vendorOps.updateVendorSet(params)
         .then(res => res);
 
         const updatedName = await Vendor.findOne({ "_id": vendor._id })
@@ -293,7 +293,7 @@ describe('DB Operations', function() {
         .then(vendor => vendor.closedDate);
 
         const params = { regionID, vendorID: vendor._id, field: 'closedDate',  data: date };
-        const updateClosedDateRes = await vendorOperations.updateVendorSet(params)
+        const updateClosedDateRes = await vendorOps.updateVendorSet(params)
         .then(res => res);
 
         const updatedClosedDate = await Vendor.findOne({ "_id": vendor._id })
