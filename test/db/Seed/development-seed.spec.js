@@ -1,7 +1,7 @@
 //TEST DEVELOPMENT SEED OPERATIONS
 
 //DEPENDENCIES
-const mongoose            = require('../../../lib/config/mongoose');
+const mongoose            = require('../../../lib/db/mongo/mongoose/index');
 const chai                = require('chai');
 const expect              = chai.expect;
 
@@ -10,7 +10,7 @@ const Region              = mongoose.model('Region');
 const Vendor              = mongoose.model('Vendor');
 
 //SEED
-const seed                = require('../../../lib/db/seeds/dev-seed');
+const seed                = require('../../../lib/db/mongo/seeds/dev-seed');
 
 //TESTS
 describe('Development Seed Operations', function() {

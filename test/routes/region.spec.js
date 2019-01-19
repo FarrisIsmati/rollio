@@ -1,12 +1,12 @@
 //DEPENDENCIES
-const mongoose            = require('../../lib/config/mongoose');
+const mongoose            = require('../../lib/db/mongo/mongoose/index');
 const server              = require('../../index');
 const chai                = require('chai');
 const expect              = chai.expect;
 const chaiHttp            = require('chai-http');
 
 //SEED
-const seed                = require('../../lib/db/seeds/dev-seed');
+const seed                = require('../../lib/db/mongo/seeds/dev-seed');
 
 //SCHEMAS
 const Region              = mongoose.model('Region');

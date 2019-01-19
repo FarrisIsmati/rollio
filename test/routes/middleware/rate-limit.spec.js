@@ -6,7 +6,7 @@ const expect                          = chai.expect;
 const sinonChai                       = require('sinon-chai');
 const sinonExpressMock                = require('sinon-express-mock');
 const { mockReq, mockRes }            = sinonExpressMock;
-const redisClient                     = require('../../../lib/config/redis');
+const redisClient                     = require('../../../lib/db/redis/index');
 const { routeLimitVendorOp }          = require('../../../lib/routes/middleware/rate-limit');
 
 chai.use(sinonChai);

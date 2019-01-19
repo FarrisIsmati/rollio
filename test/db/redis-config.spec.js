@@ -3,7 +3,7 @@
 //DEPENDENCIES
 const chai        = require('chai');
 const expect      = chai.expect;
-const client      = require('../../lib/config/redis');
+const client      = require('../../lib/db/redis/index');
 
 //TESTS
 describe('Redis Config', function() {

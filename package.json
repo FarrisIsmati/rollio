@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js",
-    "test": "set NODE_ENV=TEST&& mocha ./test/routes/**/*spec.js ./test/live/**/*spec.js ./test/db/**/*spec.js --timeout 10000 --exit",
-    "testall": "set NODE_ENV=TEST&& mocha ./test/**/*spec.js --timeout 10000 --exit",
+    "test": "set NODE_ENV=TEST&& mocha ./test/**/*spec.js --timeout 10000 --exit",
     "seeddev": "node -e require('./lib/db/seeds/developmentSeed.js').runSeed()"
   },
   "repository": {

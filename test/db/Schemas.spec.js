@@ -1,5 +1,5 @@
 //DEPENDENCIES
-const mongoose                  = require('../../lib/config/mongoose');
+const mongoose                  = require('../../lib/db/mongo/mongoose/index');
 const chai                      = require('chai');
 const expect                    = chai.expect;
 
