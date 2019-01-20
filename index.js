@@ -2,18 +2,20 @@
 require('dotenv').config();
 //DEPENDENCIES
 const app = require('express')();
-      app.enable("trust proxy"); // only if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const cors = require('cors');
-const socketIO = require('socket.io');
 const rateLimit = require('express-rate-limit');
 const http = require('http');
 const server = require('http').createServer(app);
-const vendorAddress = require('./lib/subscriptions/vendor-address');
+//OPERATIONS
+const regionOps = require('./lib/db/mongo/operations/region-ops');
+const vendorOps = require('./lib/db/mongo/operations/vendor-ops');
 //ROUTES
 const region = require('./lib/routes/region');
 const vendor = require('./lib/routes/vendor');
+//MESSAGES
+const sendVendorTwitterIDs = require('./lib/messaging/send/send-vendor-twitterid');
 
 switch (process.env.NODE_ENV) {
     case 'DEVELOPMENT':
@@ -35,11 +37,6 @@ app.set('port', process.env.PORT || 3001);
 if (process.env.NODE_ENV === 'PRODUCTION')
   app.enable("trust proxy");// only if behind a reversed proxy (AWS is the goal)
 
-// //Setup subscriptions
-// if (process.env.NODE_ENV !== 'TEST') {
-//   rabbitmq subscription method
-// }
-
 //Fixed window rate limiting
 const generalRateLimit = rateLimit({
   windowMs: 30 * 1000, // 30 seconds
@@ -56,6 +53,9 @@ app.use(cors());
 
 app.use('/region', region);
 app.use('/vendor', vendor);
+
+//Send init vendor twitterIDs via RabbitMQ to Twitter Service
+sendVendorTwitterIDs();
 
 server.listen(app.get('port'), () => {
   console.log('You are flying on ' + app.get('port'));
