@@ -1,0 +1,29 @@
+{
+  "name": "rollio-service-twitter",
+  "version": "1.0.0",
+  "description": "Twitter streaming and parsing into locations for vendors",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FarrisIsmati/Rollio-Service-Twitter.git"
+  },
+  "author": "Farris Ismati",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FarrisIsmati/Rollio-Service-Twitter/issues"
+  },
+  "homepage": "https://github.com/FarrisIsmati/Rollio-Service-Twitter#readme",
+  "dependencies": {
+    "amqplib": "^0.5.3",
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
+    "dotenv": "^6.2.0",
+    "express": "^4.16.4",
+    "morgan": "^1.9.1",
+    "twitter": "^1.7.1"
+  }
+}
