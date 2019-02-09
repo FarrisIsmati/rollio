@@ -1,7 +1,7 @@
 {
   "name": "dc-mobile-vendor-node",
   "version": "0.0.1",
-  "description": "Core API to DC Mobile Vendor Tracker (Name TBD)",
+  "description": "Vendor Service for Rollio",
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js",

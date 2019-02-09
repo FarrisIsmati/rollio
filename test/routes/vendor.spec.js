@@ -5,7 +5,7 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const expect = chai.expect;
 //SEED
-const seed  = require('../../lib/db/mongo/seeds/dev-seed');
+const seed = require('../../lib/db/mongo/seeds/dev-seed');
 //SCHEMAS
 const Region = mongoose.model('Region');
 const Vendor = mongoose.model('Vendor');
