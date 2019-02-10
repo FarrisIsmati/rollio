@@ -18,4 +18,17 @@ describe('Tweet Parser', function() {
       expect(result.match).to.be.true;
     });
   });
+  describe('Match Known Location', function() {
+    it('Expect tweet with text "Find us at roslyn today." to return a match', function() {
+      const result = tweetParser.matchKnownLocation(tweets.formatted4);
+      expect(result.location.address).to.equal('Rosslyn, Virginia  22209');
+      expect(result.match).to.be.true;
+    });
+  });
+  describe('Match Phrase', function() {
+    it('Expect tweet with text "Find us at roslyn tomorrow." not to return a match', function() {
+      const result = tweetParser.matchPhrase(tweets.formatted3);
+      expect(result.match).to.be.false;
+    });
+  });
 });

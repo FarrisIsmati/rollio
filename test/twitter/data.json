@@ -19,6 +19,26 @@
     "place": null,
     "twitterID": "1053649707493404679"
   },
+  "formatted3": {
+    "tweetID": "1094445123608473607",
+    "twitterID": "1053649707493404680",
+    "date": "Sun Feb 10 13:27:05 +0000 2019",
+    "match": false,
+    "certainty": "none",
+    "rgxMatch": "",
+    "tweet": "Find us at roslyn tomorrow.",
+    "location": {}
+  },
+  "formatted4": {
+    "tweetID": "1094445123608473608",
+    "twitterID": "1053649707493404680",
+    "date": "Sun Feb 10 13:27:05 +0000 2019",
+    "match": false,
+    "certainty": "none",
+    "rgxMatch": "",
+    "tweet": "Find us at roslyn today.",
+    "location": {}
+  },
   "raw1": {
     "created_at": "Sun Feb 10 03:57:05 +0000 2019",
     "id": 1094445123608473600,
