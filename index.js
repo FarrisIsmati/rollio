@@ -35,6 +35,8 @@ app.use(bodyParser.json());
 app.use(cors());
 
 recieveVendorList();
+// const twitter = require('./lib/twitter/index');
+// twitter.test();
 
 server.listen(app.get('port'), () => {
   console.log('You are flying on ' + app.get('port'));
