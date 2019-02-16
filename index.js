@@ -16,6 +16,7 @@ const region = require('./lib/routes/region');
 const vendor = require('./lib/routes/vendor');
 //MESSAGES
 const sendVendorTwitterIDs = require('./lib/messaging/send/send-vendor-twitterid');
+const recieveVendorLocation = require('./lib/messaging/recieve/recieve-vendor-location');
 
 switch (process.env.NODE_ENV) {
     case 'DEVELOPMENT':
@@ -54,11 +55,11 @@ app.use(cors());
 app.use('/region', region);
 app.use('/vendor', vendor);
 
-//Send init vendor twitterIDs via RabbitMQ to Twitter Service
-sendVendorTwitterIDs();
-
 server.listen(app.get('port'), () => {
   console.log('You are flying on ' + app.get('port'));
+  //Send init vendor twitterIDs via RabbitMQ to Twitter Service
+  sendVendorTwitterIDs();
+  recieveVendorLocation.recieveTweets();
 })
 
 //For testing
