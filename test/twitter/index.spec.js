@@ -10,7 +10,7 @@ describe('Twitter', function() {
   describe('Connection', function() {
     let connection;
     before(async function() {
-      connection = await twitter.streamClient(() => {});
+      connection = await twitter.streamClient();
     });
     it('Expect Twitter stream to be connected', async function() {
       expect(connection).to.be.an('object');

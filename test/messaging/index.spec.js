@@ -9,12 +9,23 @@ describe('RabbitMQ', function() {
       const amqp = await rabbitmq.amqp;
       expect(amqp).to.be.an('object');
     });
-    it('Expect "test" channel to recieve a message from the Queue', async function() {
-      const message = 'hello test';
+    it('Expect "test" channel to send a message to the Queue', async function() {
+      const chName = 'testSend'
+      const message = 'hello test send';
       const channel = await rabbitmq.amqp;
-      await channel.assertQueue('test', {durable: false});
-      await channel.sendToQueue('test', new Buffer(JSON.stringify(message)));
-      await rabbitmq.recieve('test', msg => {
+      await rabbitmq.send(chName, message);
+      await channel.assertQueue(chName, {durable: false});
+      await channel.consume(chName, msg => {
+        expect(JSON.parse(msg.content)).to.be.equal(message);
+      }, {noAck: true});
+    })
+    it('Expect "test" channel to recieve a message from the Queue', async function() {
+      const chName = 'testRecieve'
+      const message = 'hello test recieve';
+      const channel = await rabbitmq.amqp;
+      await channel.assertQueue(chName, {durable: false});
+      await channel.sendToQueue(chName, new Buffer(JSON.stringify(message)));
+      await rabbitmq.recieve(chName, msg => {
         expect(JSON.parse(msg.content)).to.be.equal(message);
       });
     })
