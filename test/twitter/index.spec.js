@@ -9,7 +9,7 @@ const tweets = require('./data.json');
 describe('Twitter', function() {
   describe('Connection', function() {
     let connection;
-    before(async function() {
+    beforeEach(async function() {
       connection = await twitter.streamClient();
     });
     it('Expect Twitter stream to be connected', async function() {
@@ -25,5 +25,12 @@ describe('Twitter', function() {
       const formatted = await twitter.tweetFormatter(tweets.raw1);
       expect(formatted).to.deep.equal(tweets.formatted1);
     });
-  })
+  });
+  describe('Backoff', function() {
+    it ('Expect backoff to take 1 second long when passing one', function() {
+      const time = twitter.backoff(1);
+      expect(time).to.equal(1000);
+      expect(twitter.backoffTime).to.equal(2);
+    })
+  });
 });
