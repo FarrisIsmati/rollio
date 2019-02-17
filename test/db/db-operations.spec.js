@@ -123,8 +123,6 @@ describe('DB Operations', function() {
           "tweetID": "1xtwittera7v2",
           "date": new Date("2017-02-18T08:20:00Z"),
           "text": "test tweet",
-          "userID": "Khlav Kalash",
-          "userScreenName": "Khlav Kalash Crab Juice",
           "location": {
             "locationDate": new Date("2017-02-18T08:20:00Z"),
             "coordinates": [38.24561, -77.86542]
