@@ -118,7 +118,7 @@ describe('DB Operations', function() {
         expect(updatedCoordHist.length).to.equal(prevCoordHist.length + 1);
       });
 
-      it('expect new tweet to be added to tweetsHistory', async function() {
+      it('expect new tweet to be added to tweetHistory', async function() {
         const tweetPayload = {
           "tweetID": "1xtwittera7v2",
           "date": new Date("2017-02-18T08:20:00Z"),
@@ -132,14 +132,14 @@ describe('DB Operations', function() {
         };
 
         const prevDailyTweets = await Vendor.findOne({ "_id": vendor._id })
-        .then(vendor => vendor.tweetsHistory);
+        .then(vendor => vendor.tweetHistory);
 
-        const params = { regionID, vendorID: vendor._id, field: 'tweetsHistory',  payload: tweetPayload };
+        const params = { regionID, vendorID: vendor._id, field: 'tweetHistory',  payload: tweetPayload };
         const updateDailyTweetsRes = await vendorOps.updateVendorPush(params)
         .then(res => res);
 
         const updatedDailyTweets = await Vendor.findOne({ "_id": vendor._id })
-        .then(vendor => vendor.tweetsHistory);
+        .then(vendor => vendor.tweetHistory);
 
         expect(updateDailyTweetsRes.nModified).to.equal(1);
         expect(updatedDailyTweets[updatedDailyTweets.length - 1].tweetID).to.equal(tweetPayload.tweetID);
