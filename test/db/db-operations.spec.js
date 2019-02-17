@@ -148,20 +148,6 @@ describe('DB Operations', function() {
         expect(updatedDailyTweets.length).to.equal(prevDailyTweets.length + 1);
       });
 
-      it('expect to empty tweetsHistory collection', async function() {
-        const prevDailyTweets = await Vendor.findOne({ "_id": vendor._id })
-        .then(vendor => vendor.tweetsHistory);
-
-        const updateDailyTweetsRes = await vendorOps.emptyVendorTweets(regionID, vendor._id)
-        .then(res => res);
-
-        const updatedDailyTweets = await Vendor.findOne({ "_id": vendor._id })
-        .then(vendor => vendor.tweetsHistory);
-
-        expect(updateDailyTweetsRes.nModified).to.equal(1);
-        expect(updatedDailyTweets.length).to.equal(0);
-      });
-
       it('expect dailyActive to be set from false to true', async function() {
         const prevDailyActive = await Vendor.findOne({ "_id": vendor._id })
         .then(vendor => vendor.dailyActive);
