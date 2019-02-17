@@ -118,45 +118,45 @@ describe('DB Operations', function() {
         expect(updatedCoordHist.length).to.equal(prevCoordHist.length + 1);
       });
 
-      it('expect new tweet to be added to tweetsDaily', async function() {
+      it('expect new tweet to be added to tweetsHistory', async function() {
         const tweetPayload = {
           "tweetID": "1xtwittera7v2",
-          "createdAt": new Date("2017-02-18T08:20:00Z"),
+          "date": new Date("2017-02-18T08:20:00Z"),
           "text": "test tweet",
           "userID": "Khlav Kalash",
           "userScreenName": "Khlav Kalash Crab Juice",
-          "geolocation": {
+          "location": {
             "locationDate": new Date("2017-02-18T08:20:00Z"),
             "coordinates": [38.24561, -77.86542]
           }
         };
 
         const prevDailyTweets = await Vendor.findOne({ "_id": vendor._id })
-        .then(vendor => vendor.tweetsDaily);
+        .then(vendor => vendor.tweetsHistory);
 
-        const params = { regionID, vendorID: vendor._id, field: 'tweetsDaily',  payload: tweetPayload };
+        const params = { regionID, vendorID: vendor._id, field: 'tweetsHistory',  payload: tweetPayload };
         const updateDailyTweetsRes = await vendorOps.updateVendorPush(params)
         .then(res => res);
 
         const updatedDailyTweets = await Vendor.findOne({ "_id": vendor._id })
-        .then(vendor => vendor.tweetsDaily);
+        .then(vendor => vendor.tweetsHistory);
 
         expect(updateDailyTweetsRes.nModified).to.equal(1);
         expect(updatedDailyTweets[updatedDailyTweets.length - 1].tweetID).to.equal(tweetPayload.tweetID);
-        expect(updatedDailyTweets[updatedDailyTweets.length - 1].createdAt).to.equalDate(tweetPayload.createdAt);
-        expect(updatedDailyTweets[updatedDailyTweets.length - 1].geolocation.locationDate).to.deep.equal(tweetPayload.geolocation.locationDate);
+        expect(updatedDailyTweets[updatedDailyTweets.length - 1].date).to.equalDate(tweetPayload.date);
+        expect(updatedDailyTweets[updatedDailyTweets.length - 1].location.locationDate).to.deep.equal(tweetPayload.location.locationDate);
         expect(updatedDailyTweets.length).to.equal(prevDailyTweets.length + 1);
       });
 
-      it('expect to empty tweetsDaily collection', async function() {
+      it('expect to empty tweetsHistory collection', async function() {
         const prevDailyTweets = await Vendor.findOne({ "_id": vendor._id })
-        .then(vendor => vendor.tweetsDaily);
+        .then(vendor => vendor.tweetsHistory);
 
         const updateDailyTweetsRes = await vendorOps.emptyVendorTweets(regionID, vendor._id)
         .then(res => res);
 
         const updatedDailyTweets = await Vendor.findOne({ "_id": vendor._id })
-        .then(vendor => vendor.tweetsDaily);
+        .then(vendor => vendor.tweetsHistory);
 
         expect(updateDailyTweetsRes.nModified).to.equal(1);
         expect(updatedDailyTweets.length).to.equal(0);
