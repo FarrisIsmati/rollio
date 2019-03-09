@@ -30,7 +30,8 @@ describe('Twitter', function() {
     it ('Expect backoff to take 1 second long when passing one', function() {
       const time = twitter.backoff(1);
       expect(time).to.equal(1000);
-      expect(twitter.backoffTime).to.equal(2);
+      //backoff time starts at 6 and is multiplied by 2
+      expect(twitter.backoffTime).to.equal(6);
     })
   });
 });
