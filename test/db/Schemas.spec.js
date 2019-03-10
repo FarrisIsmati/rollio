@@ -1,13 +1,13 @@
 //DEPENDENCIES
-const mongoose                  = require('../../lib/db/mongo/mongoose/index');
-const chai                      = require('chai');
-const expect                    = chai.expect;
+const mongoose = require('../../lib/db/mongo/mongoose/index');
+const chai = require('chai');
+const expect = chai.expect;
 
 //SCHEMAS
-const Comment                   = mongoose.model('Comment');
-const Region                    = mongoose.model('Region');
-const Coordinates               = mongoose.model('Coordinates');
-const Vendor                    = mongoose.model('Vendor');
+const Comment = mongoose.model('Comment');
+const Region = mongoose.model('Region');
+const Coordinates = mongoose.model('Coordinates');
+const Vendor = mongoose.model('Vendor');
 
 //TESTS
 describe('Schemas', function() {
