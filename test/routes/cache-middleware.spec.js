@@ -5,6 +5,7 @@ const sinonChai = require('sinon-chai');
 const sinonExpressMock = require('sinon-express-mock');
 const { mockReq, mockRes } = sinonExpressMock;
 const client = require('../../lib/db/redis/index');
+
 //MIDDLEWARE
 const { checkCache } = require('../../lib/routes/middleware/db-operations');
 
@@ -26,7 +27,6 @@ describe('Check Cache Method', function() {
     collectionKey: 'region',
     queryKey: `q::method::${req.method}::regionID::${req.path}`,
     ops: () => 'test123'
-
   }
 
   beforeEach(async function() {
