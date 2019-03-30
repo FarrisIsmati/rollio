@@ -36,7 +36,7 @@ describe('Rate Limit Middleware', function() {
     const resultFirst = await routeLimitVendorOp(req, res);
     const resultSecond = await routeLimitVendorOp(req, res);
     expect(resultFirst).to.be.equal(1);
-    expect(resultSecond).to.be.equal(0);
+    expect(resultSecond).to.be.equal(null);
   });
 
   it('expect routeLimitVendorOp to successfully add two IPs to the same path', async function() {
