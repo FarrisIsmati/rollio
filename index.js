@@ -58,8 +58,10 @@ app.use('/vendor', vendor);
 server.listen(app.get('port'), () => {
   console.log('You are flying on ' + app.get('port'));
   //Send init vendor twitterIDs via RabbitMQ to Twitter Service
-  sendVendorTwitterIDs();
-  recieveVendorLocation.recieveTweets();
+  if (process.env.NODE_ENV !== 'TEST') {
+    sendVendorTwitterIDs();
+    recieveVendorLocation.recieveTweets();
+  }
 })
 
 //For testing
