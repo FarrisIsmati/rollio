@@ -20,7 +20,6 @@ chai.use(dateTime);
 
 describe('DB Operations', function() {
   describe('Vendor DB Operations', function() {
-    //GET VENDOR DB OPERATIONS
     describe('Get Vendor Operations', function() {
       let regionID;
       let vendor;
@@ -331,8 +330,8 @@ describe('DB Operations', function() {
     });
 
     describe('Update Region Operations', function() {
-      let regionID;
       let regionName = 'WASHINGTONDC'
+      let regionID;
       let vendor;
 
       beforeEach(function(done){
