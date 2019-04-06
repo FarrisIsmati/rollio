@@ -177,6 +177,54 @@ describe('Cache Middleware', function() {
     });
   });
 
+  describe('Put Vendor Route Ops Method', function() {
+    let body;
+    let res;
+    let locationId;
+
+    before(async function(){
+      locationId = await Vendor.findOne({'_id': vendorId}).then(vendor => vendor.locationHistory[0]._id);
+      body = {
+        method: 'PUT',
+        params: {
+          regionID: regionId,
+          vendorID: vendorId,
+        },
+        body: {
+          type: 'locationHistory',
+          locationID: locationId,
+          amount: 1
+        }
+      }
+      res = mockRes();
+    });
+
+    it('expect putRegionIdVendorIdLocationTypeLocationIDAccuracy method to clear the cache on path regionId\\vendorId', async function() {
+      let bodyVendorById = {
+        method: 'GET',
+        path: `${regionId.toString()}/${vendorId.toString()}`,
+        params: {
+          regionID: regionId,
+          vendorID: vendorId
+        }
+      }
+      const reqPutVendorLocationAccuracy = mockReq(body);
+      const reqVendorById = mockReq(bodyVendorById);
+
+      await vendorRouteOps.getVendorById(reqVendorById, res);
+      const isInCacheBefore = await client.hgetAsync('vendor', `q::method::GET::path::${regionId}/${vendorId}`)
+      .then(cachedRes => JSON.parse(cachedRes));
+
+      await vendorRouteOps.putRegionIdVendorIdLocationTypeLocationIDAccuracy(reqPutVendorLocationAccuracy, res);
+
+      const isInCacheAfter = await client.hgetAsync('vendor', `q::method::GET::path::${regionId}/${vendorId}`)
+      .then(cachedRes => JSON.parse(cachedRes));
+
+      expect(isInCacheBefore).to.be.an('object');
+      expect(isInCacheAfter).to.be.null;
+    });
+  });
+
   after(function(done) {
     seed.emptyRegions()
     .then(() => seed.emptyVendors())
