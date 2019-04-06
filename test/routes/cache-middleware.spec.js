@@ -33,9 +33,9 @@ describe('Cache Middleware', function() {
     });
   });
 
-  // afterEach(async function() {
-  //   await client.flushallAsync();
-  // })
+  afterEach(async function() {
+    await client.flushallAsync();
+  })
 
   describe('Check Cache Method', function() {
     const body = {
@@ -116,7 +116,7 @@ describe('Cache Middleware', function() {
     before(function(){
       body = {
         method: 'GET',
-        path: `${regionId.toString()}/${vendorId.toString()}`,
+        path: `${regionId.toString()}`,
         params: {
           regionID: regionId
         }
@@ -125,15 +125,34 @@ describe('Cache Middleware', function() {
       res = mockRes();
     });
 
-    it('expect Vendor Route Operations getVendors method to save the req path into the cache', async function() {
-      const isInCacheBefore = await client.hgetAsync('vendor', `q::method::GET::path::${regionId}/${vendorId}`);
+    it('expect Vendor Route Operations getVendors method to save the req NON QS path into the cache', async function() {
+      const isInCacheBefore = await client.hgetAsync('vendor', `q::method::GET::path::${regionId}`);
       await vendorRouteOps.getVendors(req, res);
-      const isInCacheAfter = await client.hgetAsync('vendor', `q::method::GET::path::${regionId}/${vendorId}`)
+      const isInCacheAfter = await client.hgetAsync('vendor', `q::method::GET::path::${regionId}`)
       .then(cachedRes => JSON.parse(cachedRes));
 
       expect(isInCacheBefore).to.be.null;
       expect(isInCacheAfter).to.be.an('array');
       expect(isInCacheAfter[0]).to.have.own.property('twitterID');
+    });
+
+    it('expect Vendor Route Operations getVendors method to save the req QS path into the cache', async function() {
+      body = {
+        ...body,
+        query: {
+          creditCard: 'y'
+        }
+      }
+      req = mockReq(body);
+
+      const isInCacheBefore = await client.hgetAsync('vendor', `q::method::GET::path::${regionId}::query::{"creditCard":"y"}`);
+      await vendorRouteOps.getVendors(req, res);
+      const isInCacheAfter = await client.hgetAsync('vendor', `q::method::GET::path::${regionId}::query::{"creditCard":"y"}`)
+      .then(cachedRes => JSON.parse(cachedRes));
+
+      expect(isInCacheBefore).to.be.null;
+      expect(isInCacheAfter).to.be.an('array');
+      expect(isInCacheAfter[0]).to.have.own.property('creditCard');
     });
   });
 
