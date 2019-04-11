@@ -184,7 +184,7 @@ describe('Cache Middleware', function() {
     before(async function() {
       locationId = await Vendor.findOne({'_id': vendorId}).then(vendor => vendor.locationHistory[0]._id);
       res = mockRes();
-    };
+    });
 
     it('expect putRegionIdVendorIdLocationTypeLocationIDAccuracy method to clear the cache on path regionId/vendorId', async function() {
       const bodyPutVendorLocationAccuracy = {
