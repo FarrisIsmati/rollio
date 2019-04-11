@@ -18,9 +18,9 @@ chai.use(sinonChai);
 
 describe('Cache Middleware', function() {
   const regionName = 'WASHINGTONDC';
+  const twitterId = '1053649707493404678';
   let regionId;
   let vendorId;
-  const twitterId = '1053649707493404678';
 
   before(async function() {
     await seed.runSeed().then(async () => {
@@ -35,7 +35,7 @@ describe('Cache Middleware', function() {
 
   afterEach(async function() {
     await client.flushallAsync();
-  })
+  });
 
   describe('Check Cache Method', function() {
     const body = {
@@ -178,13 +178,16 @@ describe('Cache Middleware', function() {
   });
 
   describe('Put Vendor Route Ops Method', function() {
-    let body;
     let res;
     let locationId;
 
-    before(async function(){
+    before(async function() {
       locationId = await Vendor.findOne({'_id': vendorId}).then(vendor => vendor.locationHistory[0]._id);
-      body = {
+      res = mockRes();
+    };
+
+    it('expect putRegionIdVendorIdLocationTypeLocationIDAccuracy method to clear the cache on path regionId/vendorId', async function() {
+      const bodyPutVendorLocationAccuracy = {
         method: 'PUT',
         params: {
           regionID: regionId,
@@ -196,11 +199,7 @@ describe('Cache Middleware', function() {
           amount: 1
         }
       }
-      res = mockRes();
-    });
-
-    it('expect putRegionIdVendorIdLocationTypeLocationIDAccuracy method to clear the cache on path regionId\\vendorId', async function() {
-      let bodyVendorById = {
+      const bodyVendorById = {
         method: 'GET',
         path: `${regionId.toString()}/${vendorId.toString()}`,
         params: {
@@ -208,7 +207,7 @@ describe('Cache Middleware', function() {
           vendorID: vendorId
         }
       }
-      const reqPutVendorLocationAccuracy = mockReq(body);
+      const reqPutVendorLocationAccuracy = mockReq(bodyPutVendorLocationAccuracy);
       const reqVendorById = mockReq(bodyVendorById);
 
       await vendorRouteOps.getVendorById(reqVendorById, res);
