@@ -5,9 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js",
-    "testwindows": "set NODE_ENV=TEST&& mocha ./test/**/*spec.js --timeout 10000 --exit",
+    "test": "set NODE_ENV=TEST&& mocha ./test/**/*spec.js --timeout 10000 --exit",
     "testunix": "export NODE_ENV=TEST&& mocha ./test/**/*spec.js --timeout 10000 --exit"
-
   },
   "repository": {
     "type": "git",
