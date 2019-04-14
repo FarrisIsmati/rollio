@@ -4,6 +4,8 @@ const server = require('../../index');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const expect = chai.expect;
+//OPERATIONS
+const { getVendorsByQuery, incrementVendorConsecutiveDaysInactive } = require('../../lib/db/mongo/operations/vendor-ops');
 //SEED
 const seed = require('../../lib/db/mongo/seeds/dev-seed');
 //SCHEMAS
@@ -42,9 +44,10 @@ describe('Vendor Routes', function() {
       });
     });
 
-    describe('/vendor/:regionID/?querystring', function() {
-      it('expect to get a vendor with the specified Query String: ?categories[]=Venezuelan&categories[]=Arepa', function(done) {
-        chai.request(server)
+    describe ('Query String Route', function() {
+      describe('/vendor/:regionID/?querystring', function() {
+        it('expect to get a vendor with the specified Query String: ?categories[]=Venezuelan&categories[]=Arepa', function(done) {
+          chai.request(server)
           .get(`/vendor/${regionID}/?categories[]=Venezuelan&categories[]=Arepa`)
           .end((err, res) => {
             expect(res).to.have.status(200);
@@ -54,6 +57,28 @@ describe('Vendor Routes', function() {
             expect(res.body.length).to.be.equal(1);
             done();
           });
+        });
+      });
+
+      describe('/vendor/:regionID/?querystring test that it returns updated data after searching for it (Making sure deleting cache functionality worked)', function() {
+        it('expect to get a vendor with the specified Query String: ?categories[]=Venezuelan&categories[]=Arepa with incremented consecutive days inactive', async function() {
+          const queryResBefore = await chai.request(server)
+          .get(`/vendor/${regionID}/?categories[]=Venezuelan&categories[]=Arepa`);
+
+          const queryResParsedBefore = JSON.parse(queryResBefore.res.text);
+          const vendorID = queryResParsedBefore[0]._id;
+          const daysInactiveBefore = queryResParsedBefore[0].consecutiveDaysInactive;
+
+          await incrementVendorConsecutiveDaysInactive(regionID, vendorID);
+
+          const queryResAfter = await chai.request(server)
+          .get(`/vendor/${regionID}/?categories[]=Venezuelan&categories[]=Arepa`);
+
+          const queryResParsedAfter = JSON.parse(queryResAfter.res.text);
+          const daysInactiveAfter = queryResParsedAfter[0].consecutiveDaysInactive;
+
+          expect(daysInactiveAfter).to.equal(daysInactiveBefore + 1);
+        });
       });
     });
 
