@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 // ENV
 require('dotenv').config();
 
@@ -21,21 +22,17 @@ const recieveVendorLocation = require('./lib/messaging/recieve/recieve-vendor-lo
 
 switch (process.env.NODE_ENV) {
   case 'DEVELOPMENT':
-    // eslint-disable-next-line no-console
     console.log('Running DEVELOPMENT');
     // Log only on dev
     app.use(morgan('combined'));
     break;
   case 'TEST':
-    // eslint-disable-next-line no-console
     console.log('Running TEST');
     break;
   case 'PRODUCTION':
-    // eslint-disable-next-line no-console
     console.log('Running PRODUCTION');
     break;
   default:
-    // eslint-disable-next-line no-console
     console.log('No enviroment set using DEVELOPMENT');
 }
 
@@ -60,7 +57,6 @@ app.use('/region', region);
 app.use('/vendor', vendor);
 
 server.listen(app.get('port'), () => {
-  // eslint-disable-next-line no-console
   console.log(`You are flying on ${app.get('port')}`);
   // Send init vendor twitterIDs via RabbitMQ to Twitter Service
   if (process.env.NODE_ENV !== 'TEST') {
