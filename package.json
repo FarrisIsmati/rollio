@@ -25,9 +25,7 @@
     "url": "https://github.com/FarrisIsmati/dc-mobile-vendor-node/issues"
   },
   "homepage": "https://github.com/FarrisIsmati/dc-mobile-vendor-node#readme",
-  "devDependencies": {
-    "dotenv": "^6.0.0"
-  },
+  "devDependencies": {},
   "dependencies": {
     "amqplib": "^0.5.3",
     "awesome-phonenumber": "^2.2.6",
@@ -40,6 +38,7 @@
     "chaid": "^1.0.2",
     "config": "^2.0.1",
     "cors": "^2.8.4",
+    "dotenv": "^7.0.0",
     "express": "^4.16.3",
     "express-rate-limit": "^3.2.0",
     "mocha": "^5.2.0",
