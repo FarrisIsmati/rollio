@@ -1,21 +1,20 @@
-//TESTS REDIS CONFIG
+// DEPENDENCIES
+const chai = require('chai');
 
-//DEPENDENCIES
-const chai        = require('chai');
-const expect      = chai.expect;
-const client      = require('../../lib/db/redis/index');
+const { expect } = chai;
+const client = require('../../lib/db/redis/index');
 
-//TESTS
-describe('Redis Config', function() {
-  it('Expect Redis client to be connected', function() {
+// TESTS
+describe('Redis Config', () => {
+  it('Expect Redis client to be connected', () => {
     expect(client.connected).to.be.true;
   });
 
-  it('Expect Redis client to be connected', function() {
+  it('Expect Redis client to be connected', () => {
     expect(client.ready).to.be.true;
   });
 
-  it('Expect Redis client to have functions that return a promise', function() {
+  it('Expect Redis client to have functions that return a promise', () => {
     expect(client.getAsync).to.be.a('function');
   });
 });
