@@ -28,5 +28,11 @@
     "morgan": "^1.9.1",
     "node-geocoder": "^3.22.0",
     "twitter": "^1.7.1"
-  }
+  },
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "devDependencies": {},
+  "keywords": []
 }
