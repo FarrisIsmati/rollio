@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 // DEPENDENCIES
 const chai = require('chai');
 const chaid = require('chaid');
@@ -57,8 +58,10 @@ describe('DB Operations', () => {
       it('expect to return a vendor given a regionID and a vendor twitterID', async () => {
         const arepaCrewTwitterID = '3183153867';
         const region = await regionOps.getRegionByName('WASHINGTONDC');
-        const vendor = await vendorOps.getVendorByTwitterID(region._id, arepaCrewTwitterID); // Arepa Crew id
-        expect(vendor.twitterID).to.equal(arepaCrewTwitterID);
+        // Arepa Crew id
+        const vendorArepaCrew = await vendorOps
+          .getVendorByTwitterID(region._id, arepaCrewTwitterID);
+        expect(vendorArepaCrew.twitterID).to.equal(arepaCrewTwitterID);
       });
 
       it('expect a vendor given an object with a set of mongo query parameters', (done) => {
@@ -69,8 +72,8 @@ describe('DB Operations', () => {
         vendorOps.getVendorsByQuery(params)
           .then((res) => {
             expect(res.length).to.be.equal(5);
-            for (let i = 0; i < res.length; i++) {
-              expect(parseInt(res[i].consecutiveDaysInactive)).to.be.equal(-1);
+            for (let i = 0; i < res.length; i += 1) {
+              expect(parseInt(res[i].consecutiveDaysInactive, 10)).to.be.equal(-1);
             }
             done();
           })
@@ -105,7 +108,7 @@ describe('DB Operations', () => {
         const coordinatesPayload = { locationDate: new Date('2018-02-18T16:22:00Z'), address: '28 Ist', coordinates: [1.123, 4.523] };
 
         const prevCoordHist = await Vendor.findOne({ _id: vendor._id })
-          .then(vendor => vendor.locationHistory);
+          .then(vendorPrev => vendorPrev.locationHistory);
 
         const params = {
           regionID, vendorID: vendor._id, field: 'locationHistory', payload: coordinatesPayload,
@@ -114,12 +117,15 @@ describe('DB Operations', () => {
           .then(res => res);
 
         const updatedCoordHist = await Vendor.findOne({ _id: vendor._id })
-          .then(vendor => vendor.locationHistory);
+          .then(vendorUpdated => vendorUpdated.locationHistory);
 
         expect(updateCoordHistRes.nModified).to.equal(1);
-        expect(updatedCoordHist[updatedCoordHist.length - 1].locationDate).to.equalDate(coordinatesPayload.locationDate);
-        expect(updatedCoordHist[updatedCoordHist.length - 1].address).to.deep.equal(coordinatesPayload.address);
-        expect(updatedCoordHist[updatedCoordHist.length - 1].coordinates).to.deep.equal(coordinatesPayload.coordinates);
+        expect(updatedCoordHist[updatedCoordHist.length - 1].locationDate)
+          .to.equalDate(coordinatesPayload.locationDate);
+        expect(updatedCoordHist[updatedCoordHist.length - 1].address)
+          .to.deep.equal(coordinatesPayload.address);
+        expect(updatedCoordHist[updatedCoordHist.length - 1].coordinates)
+          .to.deep.equal(coordinatesPayload.coordinates);
         expect(updatedCoordHist.length).to.equal(prevCoordHist.length + 1);
       });
 
@@ -135,7 +141,7 @@ describe('DB Operations', () => {
         };
 
         const prevDailyTweets = await Vendor.findOne({ _id: vendor._id })
-          .then(vendor => vendor.tweetHistory);
+          .then(vendorPrev => vendorPrev.tweetHistory);
 
         const params = {
           regionID, vendorID: vendor._id, field: 'tweetHistory', payload: tweetPayload,
@@ -144,18 +150,21 @@ describe('DB Operations', () => {
           .then(res => res);
 
         const updatedDailyTweets = await Vendor.findOne({ _id: vendor._id })
-          .then(vendor => vendor.tweetHistory);
+          .then(vendorUpdated => vendorUpdated.tweetHistory);
 
         expect(updateDailyTweetsRes.nModified).to.equal(1);
-        expect(updatedDailyTweets[updatedDailyTweets.length - 1].tweetID).to.equal(tweetPayload.tweetID);
-        expect(updatedDailyTweets[updatedDailyTweets.length - 1].date).to.equalDate(tweetPayload.date);
-        expect(updatedDailyTweets[updatedDailyTweets.length - 1].location.locationDate).to.deep.equal(tweetPayload.location.locationDate);
+        expect(updatedDailyTweets[updatedDailyTweets.length - 1]
+          .tweetID).to.equal(tweetPayload.tweetID);
+        expect(updatedDailyTweets[updatedDailyTweets.length - 1].date)
+          .to.equalDate(tweetPayload.date);
+        expect(updatedDailyTweets[updatedDailyTweets.length - 1]
+          .location.locationDate).to.deep.equal(tweetPayload.location.locationDate);
         expect(updatedDailyTweets.length).to.equal(prevDailyTweets.length + 1);
       });
 
       it('expect dailyActive to be set from false to true', async () => {
         const prevDailyActive = await Vendor.findOne({ _id: vendor._id })
-          .then(vendor => vendor.dailyActive);
+          .then(vendorPrev => vendorPrev.dailyActive);
 
         const params = {
           regionID, vendorID: vendor._id, field: 'dailyActive', data: true,
@@ -164,7 +173,7 @@ describe('DB Operations', () => {
           .then(res => res);
 
         const updatedDailyActive = await Vendor.findOne({ _id: vendor._id })
-          .then(vendor => vendor.dailyActive);
+          .then(vendorUpdated => vendorUpdated.dailyActive);
 
         expect(prevDailyActive).to.be.false;
         expect(updateDailyActiveRes.nModified).to.equal(1);
@@ -192,14 +201,14 @@ describe('DB Operations', () => {
 
       it('expect location accuracy to be incremented by 1', async () => {
         const prevLocationAccuracy = await Vendor.findOne({ _id: vendor._id })
-          .then(vendor => vendor.locationHistory[0].accuracy);
+          .then(vendorPrev => vendorPrev.locationHistory[0].accuracy);
 
         const updateLocationAccuracy = await vendorOps.updateLocationAccuracy({
           regionID, vendorID: vendor._id, type: 'locationHistory', locationID, amount: 1,
         });
 
         const updatedLocationAccuracy = await Vendor.findOne({ _id: vendor._id })
-          .then(vendor => vendor.locationHistory[0].accuracy);
+          .then(vendorUpdated => vendorUpdated.locationHistory[0].accuracy);
 
         expect(updateLocationAccuracy.nModified).to.equal(1);
         expect(updatedLocationAccuracy).to.equal(prevLocationAccuracy + 1);
@@ -207,14 +216,14 @@ describe('DB Operations', () => {
 
       it('expect location accuracy to be decremented by 1', async () => {
         const prevLocationAccuracy = await Vendor.findOne({ _id: vendor._id })
-          .then(vendor => vendor.locationHistory[0].accuracy);
+          .then(vendorPrev => vendorPrev.locationHistory[0].accuracy);
 
         const updateLocationAccuracy = await vendorOps.updateLocationAccuracy({
           regionID, vendorID: vendor._id, type: 'locationHistory', locationID, amount: -1,
         });
 
         const updatedLocationAccuracy = await Vendor.findOne({ _id: vendor._id })
-          .then(vendor => vendor.locationHistory[0].accuracy);
+          .then(vendorUpdated => vendorUpdated.locationHistory[0].accuracy);
 
         expect(updateLocationAccuracy.nModified).to.equal(1);
         expect(updatedLocationAccuracy).to.equal(prevLocationAccuracy - 1);
@@ -222,14 +231,14 @@ describe('DB Operations', () => {
 
       it('Expect user location accuracy to be incremented by 1', async () => {
         const prevLocationAccuracy = await Vendor.findOne({ _id: vendor._id })
-          .then(vendor => vendor.userLocationHistory[0].accuracy);
+          .then(vendorPrev => vendorPrev.userLocationHistory[0].accuracy);
 
         const updateLocationAccuracy = await vendorOps.updateLocationAccuracy({
           regionID, vendorID: vendor._id, type: 'userLocationHistory', locationID: userLocationID, amount: 1,
         });
 
         const updatedLocationAccuracy = await Vendor.findOne({ _id: vendor._id })
-          .then(vendor => vendor.userLocationHistory[0].accuracy);
+          .then(vendorUpdated => vendorUpdated.userLocationHistory[0].accuracy);
 
         expect(updateLocationAccuracy.nModified).to.equal(1);
         expect(updatedLocationAccuracy).to.equal(prevLocationAccuracy + 1);
@@ -237,24 +246,23 @@ describe('DB Operations', () => {
 
       it('expect consecutiveDaysInactive to be incremented by one', async () => {
         const prevConsecutiveDaysInactive = await Vendor.findOne({ _id: vendor._id })
-          .then(vendor => vendor.consecutiveDaysInactive);
+          .then(vendorPrev => vendorPrev.consecutiveDaysInactive);
 
-        const updateConsecutiveDaysInactiveRes = await vendorOps.incrementVendorConsecutiveDaysInactive(regionID, vendor._id)
-          .then(res => res);
+        const updateConsecutiveDaysInactiveRes = await vendorOps
+          .incrementVendorConsecutiveDaysInactive(regionID, vendor._id).then(res => res);
 
         const updatedConsecutiveDaysInactive = await Vendor.findOne({ _id: vendor._id })
-          .then(vendor => vendor.consecutiveDaysInactive);
+          .then(vendorUpdated => vendorUpdated.consecutiveDaysInactive);
 
         expect(updateConsecutiveDaysInactiveRes.nModified).to.equal(1);
         expect(updatedConsecutiveDaysInactive).to.be.equal(prevConsecutiveDaysInactive + 1);
       });
 
       it('expect updateVendorSet to set consecutiveDaysInactive to -1', async () => {
-        const incrementConsecutiveDaysInactiveRes = await vendorOps.incrementVendorConsecutiveDaysInactive(regionID, vendor._id)
-          .then(res => res);
+        await vendorOps.incrementVendorConsecutiveDaysInactive(regionID, vendor._id);
 
         const prevConsecutiveDaysInactive = await Vendor.findOne({ _id: vendor._id })
-          .then(vendor => vendor.consecutiveDaysInactive);
+          .then(vendorPrev => vendorPrev.consecutiveDaysInactive);
 
         const params = {
           regionID, vendorID: vendor._id, field: 'consecutiveDaysInactive', data: -1,
@@ -263,7 +271,7 @@ describe('DB Operations', () => {
           .then(res => res);
 
         const updatedConsecutiveDaysInactive = await Vendor.findOne({ _id: vendor._id })
-          .then(vendor => vendor.consecutiveDaysInactive);
+          .then(vendorUpdated => vendorUpdated.consecutiveDaysInactive);
 
         expect(prevConsecutiveDaysInactive).to.be.equal(0);
         expect(updateConsecutiveDaysInactiveRes.nModified).to.equal(1);
@@ -271,9 +279,6 @@ describe('DB Operations', () => {
       });
 
       it('expect Vendor name to update to Lobster Town', async () => {
-        const prevName = await Vendor.findOne({ _id: vendor._id })
-          .then(vendor => vendor.name);
-
         const params = {
           regionID, vendorID: vendor._id, field: 'name', data: 'Lobster Town',
         };
@@ -281,7 +286,7 @@ describe('DB Operations', () => {
           .then(res => res);
 
         const updatedName = await Vendor.findOne({ _id: vendor._id })
-          .then(vendor => vendor.name);
+          .then(vendorUpdated => vendorUpdated.name);
 
         expect(updateNameRes.nModified).to.equal(1);
         expect(updatedName).to.be.equal('Lobster Town');
@@ -291,7 +296,7 @@ describe('DB Operations', () => {
         const date = new Date('2018-02-18T16:22:00Z');
 
         const prevClosedDate = await Vendor.findOne({ _id: vendor._id })
-          .then(vendor => vendor.closedDate);
+          .then(vendorPrev => vendorPrev.closedDate);
 
         const params = {
           regionID, vendorID: vendor._id, field: 'closedDate', data: date,
@@ -300,7 +305,7 @@ describe('DB Operations', () => {
           .then(res => res);
 
         const updatedClosedDate = await Vendor.findOne({ _id: vendor._id })
-          .then(vendor => vendor.closedDate);
+          .then(vendorUpdated => vendorUpdated.closedDate);
 
         expect(prevClosedDate).to.be.an('undefined');
         expect(updateClosedDateRes.nModified).to.equal(1);
@@ -334,7 +339,7 @@ describe('DB Operations', () => {
             expect(res._id).to.have.same.id(regionID);
             done();
           })
-          .catch(err => console.log(err));
+          .catch(err => console.error(err));
       });
 
       it('expect getRegionByName to return a region with the name WASHINGTONDC', (done) => {
@@ -343,7 +348,7 @@ describe('DB Operations', () => {
             expect(res.name).to.be.equal('WASHINGTONDC');
             done();
           })
-          .catch(err => console.log(err));
+          .catch(err => console.error(err));
       });
 
       after((done) => {
@@ -356,7 +361,7 @@ describe('DB Operations', () => {
     describe('Update Region Operations', () => {
       const regionName = 'WASHINGTONDC';
       let regionID;
-      let vendor;
+      let vendorID;
 
       beforeEach((done) => {
         seed.runSeed().then(async () => {
@@ -367,26 +372,39 @@ describe('DB Operations', () => {
       });
 
       it('expect incrementRegionDailyActiveVendorIDs to be incremented by 1 given a regionID', async () => {
-        const prevRegionDailyActiveVendorIDs = await regionOps.getRegion(regionID).then(res => res.dailyActiveVendorIDs.length);
-        const updateRegionDailyActiveVendorIDsRes = await regionOps.incrementRegionDailyActiveVendorIDs({ regionID, vendorID });
-        const updatedRegionDailyActiveVendorIDs = await regionOps.getRegion(regionID).then(res => res.dailyActiveVendorIDs.length);
+        const prevRegionDailyActiveVendorIDs = await regionOps.getRegion(regionID)
+          .then(res => res.dailyActiveVendorIDs.length);
+        const updateRegionDailyActiveVendorIDsRes = await regionOps
+          .incrementRegionDailyActiveVendorIDs({ regionID, vendorID });
+        const updatedRegionDailyActiveVendorIDs = await regionOps.getRegion(regionID)
+          .then(res => res.dailyActiveVendorIDs.length);
+
         expect(updateRegionDailyActiveVendorIDsRes.nModified).to.equal(1);
         expect(updatedRegionDailyActiveVendorIDs).to.equal(prevRegionDailyActiveVendorIDs + 1);
       });
 
       it('expect incrementRegionTotalDailyActive to be incremented by 1 given a regionName', async () => {
-        const prevRegionDailyActiveVendorIDs = await regionOps.getRegionByName(regionName).then(res => res.dailyActiveVendorIDs.length);
-        const updateRegionDailyActiveVendorIDsRes = await regionOps.incrementRegionDailyActiveVendorIDs({ regionName, vendorID });
-        const updatedRegionDailyActiveVendorIDs = await regionOps.getRegion(regionID).then(res => res.dailyActiveVendorIDs.length);
+        const prevRegionDailyActiveVendorIDs = await regionOps.getRegionByName(regionName)
+          .then(res => res.dailyActiveVendorIDs.length);
+        const updateRegionDailyActiveVendorIDsRes = await regionOps
+          .incrementRegionDailyActiveVendorIDs({ regionName, vendorID });
+        const updatedRegionDailyActiveVendorIDs = await regionOps.getRegion(regionID)
+          .then(res => res.dailyActiveVendorIDs.length);
+
         expect(updateRegionDailyActiveVendorIDsRes.nModified).to.equal(1);
         expect(updatedRegionDailyActiveVendorIDs).to.equal(prevRegionDailyActiveVendorIDs + 1);
       });
 
       it('expect incrementRegionDailyActiveVendorIDs to not insert a duplicate vendorID given a regionID', async () => {
-        const prevRegionDailyActiveVendorIDs = await regionOps.getRegion(regionID).then(res => res.dailyActiveVendorIDs.length);
-        const updateRegionDailyActiveVendorIDsRes = await regionOps.incrementRegionDailyActiveVendorIDs({ regionID, vendorID });
-        const updateRegionDailyActiveVendorIDsDuplicateRes = await regionOps.incrementRegionDailyActiveVendorIDs({ regionID, vendorID });
-        const updatedRegionDailyActiveVendorIDs = await regionOps.getRegion(regionID).then(res => res.dailyActiveVendorIDs.length);
+        const prevRegionDailyActiveVendorIDs = await regionOps
+          .getRegion(regionID).then(res => res.dailyActiveVendorIDs.length);
+        const updateRegionDailyActiveVendorIDsRes = await regionOps
+          .incrementRegionDailyActiveVendorIDs({ regionID, vendorID });
+        const updateRegionDailyActiveVendorIDsDuplicateRes = await regionOps
+          .incrementRegionDailyActiveVendorIDs({ regionID, vendorID });
+        const updatedRegionDailyActiveVendorIDs = await regionOps.getRegion(regionID)
+          .then(res => res.dailyActiveVendorIDs.length);
+
         expect(updateRegionDailyActiveVendorIDsRes.nModified).to.equal(1);
         expect(updateRegionDailyActiveVendorIDsDuplicateRes.nModified).to.equal(0);
         expect(updatedRegionDailyActiveVendorIDs).to.equal(prevRegionDailyActiveVendorIDs + 1);
