@@ -9,7 +9,7 @@ module.exports = {
   },
   "overrides": [
       {
-        "files": ["*.test.js", "*.spec.js"],
+        "files": ["*.spec.js"],
         "rules": {
             "no-unused-expressions": "off"
         }
