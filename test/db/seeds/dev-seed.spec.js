@@ -1,13 +1,13 @@
-/* eslint-disable no-undef */
-/* eslint-disable no-underscore-dangle */
 // DEPENDENCIES
 const chai = require('chai');
 const mongoose = require('../../../lib/db/mongo/mongoose/index');
 
 const { expect } = chai;
+
 // SCHEMAS
 const Region = mongoose.model('Region');
 const Vendor = mongoose.model('Vendor');
+
 // SEED
 const seed = require('../../../lib/db/mongo/seeds/dev-seed');
 

@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 // DEPENDENCIES
 const chai = require('chai');
 const mongoose = require('../../../lib/db/mongo/mongoose/index');
