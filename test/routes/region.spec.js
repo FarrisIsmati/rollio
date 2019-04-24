@@ -1,31 +1,34 @@
-//DEPENDENCIES
+// DEPENDENCIES
+const chai = require('chai');
+const chaiHttp = require('chai-http');
 const mongoose = require('../../lib/db/mongo/mongoose/index');
 const server = require('../../index');
-const chai = require('chai');
-const expect = chai.expect;
-const chaiHttp = require('chai-http');
-//SEED
+
+const { expect } = chai;
+
+// SEED
 const seed = require('../../lib/db/mongo/seeds/dev-seed');
-//SCHEMAS
+
+// SCHEMAS
 const Region = mongoose.model('Region');
 
 chai.use(chaiHttp);
 
-describe('Region Routes', function() {
+describe('Region Routes', () => {
   let regionID;
 
-  before(function(done){
+  before((done) => {
     seed.runSeed().then(async () => {
       regionID = await Region.findOne().then(region => region._id);
       done();
     });
   });
 
-  describe('GET', function() {
-    describe('/region/:id', function() {
-      it('expect to get a region', function(done) {
+  describe('GET', () => {
+    describe('/region/:id', () => {
+      it('expect to get a region', (done) => {
         chai.request(server)
-          .get('/region/' + regionID)
+          .get(`/region/${regionID}`)
           .end((err, res) => {
             expect(res).to.have.status(200);
             expect(res.body._id).to.have.same.id(regionID);
@@ -35,9 +38,9 @@ describe('Region Routes', function() {
     });
   });
 
-  after(function(done) {
+  after((done) => {
     seed.emptyRegions()
-    .then(() => seed.emptyVendors())
-    .then(() => done());
+      .then(() => seed.emptyVendors())
+      .then(() => done());
   });
 });
