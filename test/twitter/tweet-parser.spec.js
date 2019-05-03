@@ -9,19 +9,19 @@ const tweets = require('./data.json');
 
 describe('Tweet Parser', () => {
   describe('Scan Address', () => {
-    it('Expect tweet with text "Erlich Bachman" to not return a match', () => {
-      const result = tweetParser.scanAddress(tweets.formatted1);
+    it('Expect tweet with text "Erlich Bachman" to not return a match', async () => {
+      const result = await tweetParser.scanAddress(tweets.formatted1);
       expect(result.match).to.be.false;
     });
-    it('Expect tweet with text "Meet us at Union Station" to return a match', () => {
-      const result = tweetParser.scanAddress(tweets.formatted2);
+    it('Expect tweet with text "Meet us at Union Station" to return a match', async () => {
+      const result = await tweetParser.scanAddress(tweets.formatted2);
       expect(result.location.address).to.equal('50 Massachusetts Ave NE, Washington, DC 20002');
       expect(result.match).to.be.true;
     });
   });
   describe('Match Known Location', () => {
-    it('Expect tweet with text "Find us at roslyn today." to return a match', () => {
-      const result = tweetParser.matchKnownLocation(tweets.formatted4);
+    it('Expect tweet with text "Find us at roslyn today." to return a match', async () => {
+      const result = await tweetParser.matchKnownLocation(tweets.formatted4);
       expect(result.location.address).to.equal('Rosslyn, Virginia  22209');
       expect(result.match).to.be.true;
     });
