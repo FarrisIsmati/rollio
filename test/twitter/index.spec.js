@@ -47,7 +47,7 @@ describe('Twitter', () => {
       expect(results.length).to.be.equal(sampleData.length);
     });
 
-    it('expect there to be 10 matches', async () => {
+    it('expect there to be 11 matches', async () => {
       let matches = 0;
       for (let i = 0; i < results.length; i += 1) {
         const result = results[i];
@@ -55,7 +55,7 @@ describe('Twitter', () => {
           matches += 1;
         }
       }
-      expect(matches).to.be.equal(10);
+      expect(matches).to.be.equal(11);
     });
   });
 });
