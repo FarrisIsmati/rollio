@@ -6,18 +6,37 @@ const { expect } = chai;
 const googlePlaces = require('../../lib/bin/google-places');
 
 describe('Google Places', async () => {
-  it('expect googlePlaces to return an array', async () => {
-    const res = await googlePlaces.search('');
-    expect(res).to.be.an('array');
+  describe('Search Method', () => {
+    it('expect googlePlaces search return a promise', async () => {
+      const res = googlePlaces.search('');
+      expect(res).to.be.a('promise');
+    });
+
+    it('expect googlePlaces search to resolve an array', async () => {
+      const res = await googlePlaces.search('');
+      expect(res).to.be.an('array');
+    });
+
+    it('expect googlePlaces search to resolve an array of length 1 given the address h and 22nd, dc', async () => {
+      const res = await googlePlaces.search('h and 22nd, dc');
+      expect(res.length).to.be.equal(1);
+    });
+
+    it('expect googlePlaces search to resolve the address "1025 F St NW, Washington, DC 20005, USA"', async () => {
+      const res = await googlePlaces.search('h and 22nd, dc');
+      expect(res[0].formatted_address).to.be.equal('1025 F St NW, Washington, DC 20005, USA');
+    });
   });
 
-  it('expect googlePlaces to return an array of length 1', async () => {
-    const res = await googlePlaces.search('h and 22nd, dc');
-    expect(res.length).to.be.equal(1);
-  });
+  describe('Neighborhood from coordinates', () => {
+    it('expect googlePlaces neighborhoodFromCoords to return a promise', async () => {
+      const res = googlePlaces.neighborhoodFromCoords(38.906483, -77.005863);
+      expect(res).to.be.a('promise');
+    });
 
-  it('expect googlePlaces to return the address "1025 F St NW, Washington, DC 20005, USA"', async () => {
-    const res = await googlePlaces.search('h and 22nd, dc');
-    expect(res[0].formatted_address).to.be.equal('1025 F St NW, Washington, DC 20005, USA');
+    it('expect googlePlaces neighborhoodFromCoords to resolve the neighborhood noma from coordinates 38.906483, -77.005863', async () => {
+      const res = await googlePlaces.neighborhoodFromCoords(38.906483, -77.005863);
+      expect(res).to.be.equal('noma');
+    });
   });
 });
