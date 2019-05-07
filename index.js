@@ -38,15 +38,16 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
 
-recieveVendorList();
-// FOR TESTING ~~~
-// eslint-disable-next-line import/newline-after-import
-const twitter = require('./lib/twitter/index');
-twitter.test();
-// FOR TESTING ~~~
+// // FOR TESTING ~~~
+// // eslint-disable-next-line import/newline-after-import
+// const twitter = require('./lib/twitter/index');
+// twitter.test();
+// // FOR TESTING ~~~
 
 server.listen(app.get('port'), () => {
+  console.log(process.env.NODE_ENV);
   console.log(`You are flying on ${app.get('port')}`);
+  recieveVendorList();
 });
 
 // For testing
