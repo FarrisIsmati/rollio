@@ -10,6 +10,7 @@ const cors = require('cors');
 const server = require('http').createServer(app);
 
 // LIB
+const sendVendorsRequest = require('./lib/messaging/send/send-vendors-request');
 const recieveVendorList = require('./lib/messaging/recieve/recieve-vendor-list');
 
 switch (process.env.NODE_ENV) {
@@ -47,6 +48,10 @@ app.use(cors());
 server.listen(app.get('port'), () => {
   console.log(process.env.NODE_ENV);
   console.log(`You are flying on ${app.get('port')}`);
+
+  // Request new list of vendors for twitter to listen to
+  sendVendorsRequest();
+  // Listen for vendors list message
   recieveVendorList();
 });
 
