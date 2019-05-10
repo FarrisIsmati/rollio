@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  app:
+    container_name: docker-rollio-service-vendor
+    build: .
+    env_file:
+      - .env
+    restart: always
+    ports: 
+      - '80:3001'
