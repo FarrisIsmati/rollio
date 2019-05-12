@@ -9,6 +9,7 @@ const morgan = require('morgan');
 const cors = require('cors');
 const rateLimit = require('express-rate-limit');
 const http = require('http');
+const config = require('./config');
 
 const server = http.createServer(app);
 
@@ -20,24 +21,26 @@ const vendor = require('./lib/routes/vendor');
 const recieveVendorsRequest = require('./lib/messaging/recieve/recieve-vendors-request');
 const recieveVendorLocation = require('./lib/messaging/recieve/recieve-vendor-location');
 
-switch (process.env.NODE_ENV) {
-  case 'DEVELOPMENT':
-    console.log('Running DEVELOPMENT');
+switch (config.NODE_ENV) {
+  case 'DEVELOPMENT_DOCKER':
+  case 'DEVELOPMENT_LOCAL':
+    console.log(`Running ${config.NODE_ENV}`);
     // Log only on dev
     app.use(morgan('combined'));
     break;
-  case 'TEST':
-    console.log('Running TEST');
+  case 'TEST_DOCKER':
+  case 'TEST_LOCAL':
+    console.log(`Running ${config.NODE_ENV}`);
     break;
   case 'PRODUCTION':
-    console.log('Running PRODUCTION');
+    console.log(`Running ${config.NODE_ENV}`);
     break;
   default:
-    console.log('No enviroment set using DEVELOPMENT');
+    console.log(`No enviroment set using ${config.NODE_ENV}`);
 }
 
-app.set('port', process.env.PORT || 3001);
-if (process.env.NODE_ENV === 'PRODUCTION') { app.enable('trust proxy'); }// only if behind a reversed proxy (AWS is the goal)
+app.set('port', config.PORT || 3001);
+if (config.NODE_ENV === 'PRODUCTION') { app.enable('trust proxy'); }// only if behind a reversed proxy (AWS is the goal)
 
 // Fixed window rate limiting
 const generalRateLimit = rateLimit({
@@ -59,7 +62,7 @@ app.use('/vendor', vendor);
 server.listen(app.get('port'), () => {
   console.log(`You are flying on ${app.get('port')}`);
   // Send init vendor twitterIDs via RabbitMQ to Twitter Service
-  if (process.env.NODE_ENV !== 'TEST') {
+  if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') {
     recieveVendorsRequest();
     recieveVendorLocation.recieveTweets();
   }

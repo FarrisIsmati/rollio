@@ -6,6 +6,8 @@ services:
     build: .
     env_file:
       - .env
+    enviroments:
+      - NODE_ENV=DEVELOPMENT_DOCKER
     restart: always
     ports: 
       - '80:3001'

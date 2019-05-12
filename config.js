@@ -1,0 +1,57 @@
+// ENV
+require('dotenv').config();
+
+const {
+  NODE_ENV, PORT, REGION, YELP_API_KEY, YELP_CLIENT_ID,
+} = process.env;
+
+let MONGO_CONNECT;
+let REDIS_HOST;
+let REDIS_PORT;
+let RABBITMQ_CONNECT;
+
+switch (NODE_ENV) {
+  case 'PRODUCTION':
+    MONGO_CONNECT = process.env.MONGO_PROD;
+    REDIS_HOST = process.env.REDIS_HOST_PROD;
+    REDIS_PORT = process.env.REDIS_PORT_PROD;
+    RABBITMQ_CONNECT = process.env.RABBITMQ_SERVER_ID_PROD;
+    break;
+  case 'DEVELOPMENT_LOCAL':
+    MONGO_CONNECT = process.env.MONGO_DEV_LOCAL;
+    REDIS_PORT = process.env.REDIS_PORT_LOCAL;
+    REDIS_HOST = process.env.REDIS_HOST_LOCAL;
+    RABBITMQ_CONNECT = process.env.RABBITMQ_SERVER_ID_LOCAL;
+    break;
+  case 'TEST_LOCAL':
+    MONGO_CONNECT = process.env.MONGO_TEST_LOCAL;
+    REDIS_PORT = process.env.REDIS_PORT_LOCAL;
+    REDIS_HOST = process.env.REDIS_HOST_LOCAL;
+    RABBITMQ_CONNECT = process.env.RABBITMQ_SERVER_ID_LOCAL;
+    break;
+  case 'DEVELOPMENT_DOCKER':
+    MONGO_CONNECT = process.env.MONGO_DEV_DOCKER;
+    REDIS_PORT = process.env.REDIS_PORT_DOCKER;
+    REDIS_HOST = process.env.REDIS_HOST_DOCKER;
+    RABBITMQ_CONNECT = process.env.RABBITMQ_SERVER_ID_DOCKER;
+    break;
+  case 'TEST_DOCKER':
+    MONGO_CONNECT = process.env.MONGO_TEST_DOCKER;
+    REDIS_PORT = process.env.REDIS_PORT_DOCKER;
+    REDIS_HOST = process.env.REDIS_HOST_DOCKER;
+    RABBITMQ_CONNECT = process.env.RABBITMQ_SERVER_ID_DOCKER;
+    break;
+  default:
+}
+
+module.exports = {
+  NODE_ENV,
+  PORT,
+  REGION,
+  YELP_API_KEY,
+  YELP_CLIENT_ID,
+  MONGO_CONNECT,
+  REDIS_PORT,
+  REDIS_HOST,
+  RABBITMQ_CONNECT,
+};
