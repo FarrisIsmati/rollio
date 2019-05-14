@@ -1,37 +1,36 @@
-/* eslint-disable no-console */
-// ENV
-require('dotenv').config();
-
 // DEPENDENCIES
 const app = require('express')();
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const cors = require('cors');
 const server = require('http').createServer(app);
+const config = require('./config');
 
 // LIB
 const sendVendorsRequest = require('./lib/messaging/send/send-vendors-request');
 const recieveVendorList = require('./lib/messaging/recieve/recieve-vendor-list');
 
-switch (process.env.NODE_ENV) {
-  case 'DEVELOPMENT':
-    console.log('Running DEVELOPMENT');
+switch (config.NODE_ENV) {
+  case 'DEVELOPMENT_DOCKER':
+  case 'DEVELOPMENT_LOCAL':
+    console.log(`Running ${config.NODE_ENV}`);
     // Log only on dev
     app.use(morgan('combined'));
     break;
-  case 'TEST':
-    console.log('Running TEST');
+  case 'TEST_DOCKER':
+  case 'TEST_LOCAL':
+    console.log(`Running ${config.NODE_ENV}`);
     break;
   case 'PRODUCTION':
-    console.log('Running PRODUCTION');
+    console.log(`Running ${config.NODE_ENV}`);
     break;
   default:
-    console.log('No enviroment set using DEVELOPMENT');
+    console.log(`No enviroment set using ${config.NODE_ENV}`);
 }
 
-app.set('port', process.env.PORT || 3002);
+app.set('port', config.PORT || 3002);
 
-if (process.env.NODE_ENV === 'PRODUCTION') {
+if (config.NODE_ENV === 'PRODUCTION') {
   app.enable('trust proxy');
 }
 
@@ -46,7 +45,7 @@ app.use(cors());
 // // FOR TESTING ~~~
 
 server.listen(app.get('port'), () => {
-  console.log(process.env.NODE_ENV);
+  console.log(config.NODE_ENV);
   console.log(`You are flying on ${app.get('port')}`);
 
   // Request new list of vendors for twitter to listen to
