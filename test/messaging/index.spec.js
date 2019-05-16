@@ -8,7 +8,6 @@ describe('RabbitMQ', () => {
   describe('Send to "test" channel', () => {
     it('expect RabbitMQ instance to be connected', async () => {
       const amqp = await rabbitmq.amqp;
-
       expect(amqp).to.be.an('object');
     });
 
