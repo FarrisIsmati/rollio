@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 // DEPENDENCIES
 const app = require('express')();
 const bodyParser = require('body-parser');
@@ -25,7 +26,7 @@ switch (config.NODE_ENV) {
     console.log(`Running ${config.NODE_ENV}`);
     break;
   default:
-    console.log(`No enviroment set using ${config.NODE_ENV}`);
+    console.log(`No enviroment set, running ${config.NODE_ENV}`);
 }
 
 app.set('port', config.PORT || 3002);
