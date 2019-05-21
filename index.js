@@ -7,6 +7,7 @@ const cors = require('cors');
 const rateLimit = require('express-rate-limit');
 const http = require('http');
 const config = require('./config');
+const seed = require('./lib/db/mongo/seeds/dev-seed');
 
 const server = http.createServer(app);
 
@@ -56,8 +57,14 @@ app.use(cors());
 app.use('/region', region);
 app.use('/vendor', vendor);
 
-server.listen(app.get('port'), () => {
+server.listen(app.get('port'), async () => {
   console.log(`You are flying on ${app.get('port')}`);
+
+  // Seed the docker db (Only for docker testing purposes now, delete when proper db env setup)
+  if (config.NODE_ENV === 'DEVELOPMENT_DOCKER') {
+    await seed.runSeed();
+  }
+
   // Send init vendor twitterIDs via RabbitMQ to Twitter Service
   if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') {
     recieveVendorsRequest();

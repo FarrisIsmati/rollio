@@ -29,13 +29,4 @@ services:
     links:
       - redis
       - mongo
-  # app-service-twitter:
-  #   container_name: docker-rollio-service-twitter
-  #   build: .
-  #   env_file:
-  #     - ./Rollio-Service-Vendor/.env
-  #   enviroments:
-  #     - NODE_ENV=DEVELOPMENT_DOCKER
-  #   restart: always
-  #   ports: 
-  #     - '80:3002'
+      - rabbitmq
