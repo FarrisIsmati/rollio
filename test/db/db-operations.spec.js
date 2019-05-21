@@ -43,7 +43,10 @@ describe('DB Operations', () => {
             expect(res[0].regionID).to.have.same.id(regionID);
             done();
           })
-          .catch(err => console.log(err));
+          .catch((err) => {
+            console.log(err);
+            throw err;
+          });
       });
 
       it('expect a vendor given a regionID and an objectID', (done) => {
@@ -52,7 +55,10 @@ describe('DB Operations', () => {
             expect(res).to.have.same.id(vendor);
             done();
           })
-          .catch(err => console.log(err));
+          .catch((err) => {
+            console.log(err);
+            throw err;
+          });
       });
 
       it('expect to return a vendor given a regionID and a vendor twitterID', async () => {
@@ -77,7 +83,10 @@ describe('DB Operations', () => {
             }
             done();
           })
-          .catch(err => console.log(err));
+          .catch((err) => {
+            console.log(err);
+            throw err;
+          });
       });
 
       after((done) => {
