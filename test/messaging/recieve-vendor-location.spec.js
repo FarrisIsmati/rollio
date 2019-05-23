@@ -4,7 +4,7 @@ const chai = require('chai');
 const mongoose = require('../../lib/db/mongo/mongoose/index');
 
 const { expect } = chai;
-const recieveVendorLocation = require('../../lib/messaging/recieve/recieve-vendor-location.js');
+const receiveVendorLocation = require('../../lib/messaging/receive/receive-vendor-location.js');
 const redisClient = require('../../lib/db/redis/index');
 
 // SCHEMAS
@@ -14,7 +14,7 @@ const Region = mongoose.model('Region');
 // SEED
 const seed = require('../../lib/db/mongo/seeds/dev-seed');
 
-describe('Message Recieve Vendor Location', () => {
+describe('Message Receive Vendor Location', () => {
   describe('setVendorActive', () => {
     let region;
     let vendor;
@@ -40,7 +40,7 @@ describe('Message Recieve Vendor Location', () => {
       await redisClient.hsetAsync(collectionKey, query, '{"test":"data"}');
       const cacheResBefore = await redisClient.hgetAsync(collectionKey, query);
 
-      await recieveVendorLocation.setVendorActive(region, vendor);
+      await receiveVendorLocation.setVendorActive(region, vendor);
       const cacheResAfter = await redisClient.hgetAsync(collectionKey, query);
 
       expect(cacheResBefore).to.be.equal('{"test":"data"}');
@@ -53,7 +53,7 @@ describe('Message Recieve Vendor Location', () => {
       await redisClient.hsetAsync(collectionKey, query, '{"test2":"data"}');
       const cacheResBefore = await redisClient.hgetAsync(collectionKey, query);
 
-      await recieveVendorLocation.setVendorActive(region, vendor);
+      await receiveVendorLocation.setVendorActive(region, vendor);
       const cacheResAfter = await redisClient.hgetAsync(collectionKey, query);
 
       expect(cacheResBefore).to.be.equal('{"test2":"data"}');
@@ -62,7 +62,7 @@ describe('Message Recieve Vendor Location', () => {
 
     it('expect setVendorActive to add vendorID to dailyActiveVendorIDs', async () => {
       const dailyActiveVendorIDsLenBefore = region.dailyActiveVendorIDs.length;
-      await recieveVendorLocation.setVendorActive(region, vendor);
+      await receiveVendorLocation.setVendorActive(region, vendor);
       const updatedRegion = await Region.findOne({ _id: region._id })
         .catch((err) => {
           const errMsg = new Error(err);
@@ -76,7 +76,7 @@ describe('Message Recieve Vendor Location', () => {
 
     it('expect setVendorActive to set dailyActive of vendor to true', async () => {
       const dailyActiveBefore = vendor.dailyActive;
-      await recieveVendorLocation.setVendorActive(region, vendor);
+      await receiveVendorLocation.setVendorActive(region, vendor);
       const updatedVendor = await Vendor.findOne({ _id: vendor._id })
         .catch((err) => {
           const errMsg = new Error(err);

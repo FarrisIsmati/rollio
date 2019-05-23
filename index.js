@@ -16,8 +16,8 @@ const region = require('./lib/routes/region');
 const vendor = require('./lib/routes/vendor');
 
 // MESSAGES
-const recieveVendorsRequest = require('./lib/messaging/recieve/recieve-vendors-request');
-const recieveVendorLocation = require('./lib/messaging/recieve/recieve-vendor-location');
+const receiveVendorsRequest = require('./lib/messaging/receive/receive-vendors-request');
+const receiveVendorLocation = require('./lib/messaging/receive/receive-vendor-location');
 
 switch (config.NODE_ENV) {
   case 'DEVELOPMENT_DOCKER':
@@ -67,8 +67,8 @@ server.listen(app.get('port'), async () => {
 
   // Send init vendor twitterIDs via RabbitMQ to Twitter Service
   if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') {
-    recieveVendorsRequest();
-    recieveVendorLocation.recieveTweets();
+    receiveVendorsRequest();
+    receiveVendorLocation.receiveTweets();
   }
 });
 
