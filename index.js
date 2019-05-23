@@ -9,7 +9,7 @@ const config = require('./config');
 
 // LIB
 const sendVendorsRequest = require('./lib/messaging/send/send-vendors-request');
-const recieveVendorList = require('./lib/messaging/recieve/recieve-vendor-list');
+const receiveVendorList = require('./lib/messaging/receive/receive-vendor-list');
 
 switch (config.NODE_ENV) {
   case 'DEVELOPMENT_DOCKER':
@@ -50,7 +50,7 @@ server.listen(app.get('port'), () => {
   // Request new list of vendors for twitter to listen to
   sendVendorsRequest();
   // Listen for vendors list message
-  recieveVendorList();
+  receiveVendorList();
 });
 
 // For testing

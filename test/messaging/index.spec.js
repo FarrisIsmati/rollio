@@ -5,7 +5,7 @@ const rabbitmq = require('../../lib/messaging/index');
 const { expect } = chai;
 
 describe('RabbitMQ', () => {
-  describe('Recieve from "test" channel', () => {
+  describe('Receive from "test" channel', () => {
     it('Expect RabbitMQ instance to be connected', async () => {
       const amqp = await rabbitmq.amqp;
 
@@ -23,13 +23,13 @@ describe('RabbitMQ', () => {
       }, { noAck: true });
     });
 
-    it('Expect "test" channel to recieve a message from the Queue', async () => {
-      const chName = 'testRecieve';
-      const message = 'hello test recieve';
+    it('Expect "test" channel to receive a message from the Queue', async () => {
+      const chName = 'testReceive';
+      const message = 'hello test receive';
       const channel = await rabbitmq.amqp;
       await channel.assertQueue(chName, { durable: false });
       await channel.sendToQueue(chName, Buffer.from(JSON.stringify(message)));
-      await rabbitmq.recieve(chName, (msg) => {
+      await rabbitmq.receive(chName, (msg) => {
         expect(JSON.parse(msg.content)).to.be.equal(message);
       });
     });
