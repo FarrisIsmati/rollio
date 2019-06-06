@@ -77,7 +77,7 @@ describe('DB Operations', () => {
         };
         vendorOps.getVendorsByQuery(params)
           .then((res) => {
-            expect(res.length).to.be.equal(5);
+            expect(res.length).to.be.equal(4);
             for (let i = 0; i < res.length; i += 1) {
               expect(parseInt(res[i].consecutiveDaysInactive, 10)).to.be.equal(-1);
             }
@@ -282,7 +282,9 @@ describe('DB Operations', () => {
         const updatedConsecutiveDaysInactive = await Vendor.findOne({ _id: vendor._id })
           .then(vendorUpdated => vendorUpdated.consecutiveDaysInactive);
 
-        expect(prevConsecutiveDaysInactive).to.be.equal(0);
+        // Starts at 4
+        expect(prevConsecutiveDaysInactive).to.be.equal(5);
+
         expect(updateConsecutiveDaysInactiveRes.nModified).to.equal(1);
         expect(updatedConsecutiveDaysInactive).to.be.equal(-1);
       });
