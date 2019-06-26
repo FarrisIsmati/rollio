@@ -42,7 +42,7 @@ describe('Vendor Routes', () => {
           .end((err, res) => {
             expect(res).to.have.status(200);
             expect(res.body).to.be.a('array');
-            expect(res.body.length).to.be.equal(5);
+            expect(res.body.length).to.be.equal(8);
             done();
           });
       });

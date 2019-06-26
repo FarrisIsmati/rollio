@@ -70,14 +70,14 @@ describe('DB Operations', () => {
         expect(vendorArepaCrew.twitterID).to.equal(arepaCrewTwitterID);
       });
 
-      it('expect a vendor given an object with a set of mongo query parameters', (done) => {
+      it('expect a vendor given an object with a set of mongo query parameters, expect number of consecuitve days inactive vendors 7', (done) => {
         const params = {
           regionID,
           consecutiveDaysInactive: -1,
         };
         vendorOps.getVendorsByQuery(params)
           .then((res) => {
-            expect(res.length).to.be.equal(4);
+            expect(res.length).to.be.equal(7);
             for (let i = 0; i < res.length; i += 1) {
               expect(parseInt(res[i].consecutiveDaysInactive, 10)).to.be.equal(-1);
             }
