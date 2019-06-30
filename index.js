@@ -8,6 +8,7 @@ const rateLimit = require('express-rate-limit');
 const http = require('http');
 const config = require('./config');
 const seed = require('./lib/db/mongo/seeds/dev-seed');
+const logger = require('./lib/log/index');
 
 const server = http.createServer(app);
 
@@ -58,7 +59,7 @@ app.use('/region', region);
 app.use('/vendor', vendor);
 
 server.listen(app.get('port'), async () => {
-  console.log(`You are flying on ${app.get('port')}`);
+  logger.info(`Server on port ${app.get('port')}`);
 
   // Seed the docker db (Only for docker testing purposes now, delete when proper db env setup)
   if (config.NODE_ENV === 'DEVELOPMENT_DOCKER') {
