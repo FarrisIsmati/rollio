@@ -3,3 +3,5 @@
 
 # misc
 .env
+combined.log
+error.log

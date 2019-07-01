@@ -23,19 +23,19 @@ const receiveVendorLocation = require('./lib/messaging/receive/receive-vendor-lo
 switch (config.NODE_ENV) {
   case 'DEVELOPMENT_DOCKER':
   case 'DEVELOPMENT_LOCAL':
-    console.log(`Running ${config.NODE_ENV}`);
+    logger.info(`Running ${config.NODE_ENV}`);
     // Log only on dev
     app.use(morgan('combined'));
     break;
   case 'TEST_DOCKER':
   case 'TEST_LOCAL':
-    console.log(`Running ${config.NODE_ENV}`);
+    logger.info(`Running ${config.NODE_ENV}`);
     break;
   case 'PRODUCTION':
-    console.log(`Running ${config.NODE_ENV}`);
+    logger.info(`Running ${config.NODE_ENV}`);
     break;
   default:
-    console.log(`No enviroment set, running ${config.NODE_ENV}`);
+    logger.info(`No enviroment set, running ${config.NODE_ENV}`);
 }
 
 app.set('port', config.PORT || 3001);
