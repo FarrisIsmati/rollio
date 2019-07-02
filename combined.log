@@ -91,3 +91,10 @@
 {"message":"Message recieved","level":"info","timestamp":"2019-07-01 21:40:45"}
 {"message":"Message recieved","level":"info","timestamp":"2019-07-01 21:40:45"}
 {"message":"MongoDB: Successfully connected to DEVELOPMENT_LOCAL DB","level":"info","timestamp":"2019-07-01 21:40:47"}
+{"message":"Running TEST_LOCAL","level":"info","timestamp":"2019-07-01 21:42:58"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-07-01 21:42:59"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-07-01 21:42:59"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-07-01 21:42:59"}
+{"message":"MongoDB: Successfully connected to TEST_LOCAL DB","level":"info","timestamp":"2019-07-01 21:43:00"}
+{"message":"Message sent","level":"info","timestamp":"2019-07-01 21:43:01"}
+{"message":"this is test data","level":"info","timestamp":"2019-07-01 21:43:01"}
