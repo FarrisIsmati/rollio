@@ -1,0 +1,93 @@
+{"message":"Running TEST_LOCAL","level":"info","timestamp":"2019-06-30 23:04:01"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-06-30 23:04:02"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-06-30 23:04:02"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-06-30 23:04:02"}
+{"message":"MongoDB: Successfully connected to TEST_LOCAL DB","level":"info","timestamp":"2019-06-30 23:04:03"}
+{"message":"Message sent","level":"info","timestamp":"2019-06-30 23:04:05"}
+{"message":"this is test data","level":"info","timestamp":"2019-06-30 23:04:05"}
+{"message":"Running DEVELOPMENT_LOCAL","level":"info","timestamp":"2019-07-01 08:30:03"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-07-01 08:30:03"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-07-01 08:30:03"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-07-01 08:30:03"}
+{"message":"Message recieved","level":"info","timestamp":"2019-07-01 08:30:03"}
+{"message":"Message recieved","level":"info","timestamp":"2019-07-01 08:30:03"}
+{"message":"Vendors list requrest recieved: true","level":"info","timestamp":"2019-07-01 08:30:03"}
+{"message":"MongoDB: Successfully connected to DEVELOPMENT_LOCAL DB","level":"info","timestamp":"2019-07-01 08:30:04"}
+{"message":"Message sent","level":"info","timestamp":"2019-07-01 08:30:04"}
+{"message":"1053649707493404678,3333907289,3183153867,890432286,488727238,197614798,836024018,540537070","level":"info","timestamp":"2019-07-01 08:30:04"}
+{"message":"Vendors list requrest recieved: true","level":"info","timestamp":"2019-07-01 08:30:23"}
+{"message":"Message sent","level":"info","timestamp":"2019-07-01 08:30:23"}
+{"message":"1053649707493404678,3333907289,3183153867,890432286,488727238,197614798,836024018,540537070","level":"info","timestamp":"2019-07-01 08:30:23"}
+{"message":"Recieved tweet","level":"info","timestamp":"2019-07-01 08:55:09"}
+{"message":{"tweetID":"1145677202991788033","twitterID":"889665881395130368","date":"Mon Jul 01 12:55:05 +0000 2019","match":true,"certainty":"partial","rgxMatch":"Franklin Square today","tweet":"RT @theballtruck: Franklin Square today!","location":{"locationDate":"Mon Jul 01 12:55:05 +0000 2019","accuracy":0,"address":"Franklin Square Fountain, 950 13th St NW, Washington, DC 20005","city":"dc","neighborhood":"franklin square","coordinates":[38.901938,-77.03082],"matchMethod":"Tweet regex match"}},"level":"info","timestamp":"2019-07-01 08:55:09"}
+{"message":"Recieved tweet","level":"info","timestamp":"2019-07-01 09:32:09"}
+{"message":{"tweetID":"1145686519228829701","twitterID":"1016321801973043202","date":"Mon Jul 01 13:32:06 +0000 2019","match":false,"certainty":"none","rgxMatch":"","tweet":"@ChickfilaMobile ??????????????????????????????????????????????????????????????????????????????????????????????????… https://t.co/7WWPILeC2H","location":{}},"level":"info","timestamp":"2019-07-01 09:32:09"}
+{"message":"Recieved tweet","level":"info","timestamp":"2019-07-01 10:30:07"}
+{"message":{"tweetID":"1145701104799424512","twitterID":"890432286","date":"Mon Jul 01 14:30:04 +0000 2019","match":false,"certainty":"none","rgxMatch":"","tweet":"Planning your fourth of July party but don’t know where to start? We got you covered! Our 4th of July picnic basket… https://t.co/aWeLFAwD0t","location":{}},"level":"info","timestamp":"2019-07-01 10:30:07"}
+{"message":"Recieved tweet","level":"info","timestamp":"2019-07-01 10:58:10"}
+{"message":{"tweetID":"1145708162491850754","twitterID":"3333907289","date":"Mon Jul 01 14:58:06 +0000 2019","match":false,"certainty":"none","rgxMatch":"","tweet":"Parked at Virginia Ave NW State Dept","location":{}},"level":"info","timestamp":"2019-07-01 10:58:10"}
+{"message":"Recieved tweet","level":"info","timestamp":"2019-07-01 11:33:20"}
+{"message":{"tweetID":"1145717010443190272","twitterID":"488727238","date":"Mon Jul 01 15:33:16 +0000 2019","match":true,"certainty":"partial","rgxMatch":"Franklin Square","tweet":"Today’s menu for Franklin Square: https://t.co/fSNS6h9psm","location":{"locationDate":"Mon Jul 01 15:33:16 +0000 2019","accuracy":0,"address":"Franklin Square Fountain, 950 13th St NW, Washington, DC 20005","city":"dc","neighborhood":"franklin square","coordinates":[38.901938,-77.03082],"matchMethod":"Tweet regex match"}},"level":"info","timestamp":"2019-07-01 11:33:20"}
+{"message":"MongoDB: Disconnected!","level":"info","timestamp":"2019-07-01 18:18:57"}
+{"message":"Running DEVELOPMENT_LOCAL","level":"info","timestamp":"2019-07-01 21:30:43"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-07-01 21:30:43"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-07-01 21:30:43"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-07-01 21:30:43"}
+{"message":"Message recieved","level":"info","timestamp":"2019-07-01 21:30:43"}
+{"message":"Message recieved","level":"info","timestamp":"2019-07-01 21:30:43"}
+{"message":"MongoDB: Successfully connected to DEVELOPMENT_LOCAL DB","level":"info","timestamp":"2019-07-01 21:30:44"}
+{"message":"Running DEVELOPMENT_LOCAL","level":"info","timestamp":"2019-07-01 21:35:13"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-07-01 21:35:13"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-07-01 21:35:14"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-07-01 21:35:14"}
+{"message":"Message recieved","level":"info","timestamp":"2019-07-01 21:35:14"}
+{"message":"Message recieved","level":"info","timestamp":"2019-07-01 21:35:14"}
+{"message":"MongoDB: Successfully connected to DEVELOPMENT_LOCAL DB","level":"info","timestamp":"2019-07-01 21:35:14"}
+{"message":"Running DEVELOPMENT_LOCAL","level":"info","timestamp":"2019-07-01 21:36:03"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-07-01 21:36:03"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-07-01 21:36:03"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-07-01 21:36:03"}
+{"message":"Message recieved","level":"info","timestamp":"2019-07-01 21:36:03"}
+{"message":"Message recieved","level":"info","timestamp":"2019-07-01 21:36:03"}
+{"message":"MongoDB: Successfully connected to DEVELOPMENT_LOCAL DB","level":"info","timestamp":"2019-07-01 21:36:04"}
+{"message":"Running DEVELOPMENT_LOCAL","level":"info","timestamp":"2019-07-01 21:36:55"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-07-01 21:36:55"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-07-01 21:36:55"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-07-01 21:36:55"}
+{"message":"Message recieved","level":"info","timestamp":"2019-07-01 21:36:55"}
+{"message":"Message recieved","level":"info","timestamp":"2019-07-01 21:36:55"}
+{"message":"MongoDB: Successfully connected to DEVELOPMENT_LOCAL DB","level":"info","timestamp":"2019-07-01 21:36:56"}
+{"message":"Running DEVELOPMENT_LOCAL","level":"info","timestamp":"2019-07-01 21:37:53"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-07-01 21:37:53"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-07-01 21:37:53"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-07-01 21:37:53"}
+{"message":"Message recieved","level":"info","timestamp":"2019-07-01 21:37:53"}
+{"message":"Message recieved","level":"info","timestamp":"2019-07-01 21:37:53"}
+{"message":"MongoDB: Successfully connected to DEVELOPMENT_LOCAL DB","level":"info","timestamp":"2019-07-01 21:37:54"}
+{"message":"Running DEVELOPMENT_LOCAL","level":"info","timestamp":"2019-07-01 21:39:27"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-07-01 21:39:27"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-07-01 21:39:27"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-07-01 21:39:27"}
+{"message":"Message recieved","level":"info","timestamp":"2019-07-01 21:39:27"}
+{"message":"Message recieved","level":"info","timestamp":"2019-07-01 21:39:27"}
+{"message":"MongoDB: Successfully connected to DEVELOPMENT_LOCAL DB","level":"info","timestamp":"2019-07-01 21:39:28"}
+{"message":"Running DEVELOPMENT_LOCAL","level":"info","timestamp":"2019-07-01 21:40:33"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-07-01 21:40:33"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-07-01 21:40:33"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-07-01 21:40:33"}
+{"message":"Message recieved","level":"info","timestamp":"2019-07-01 21:40:33"}
+{"message":"Message recieved","level":"info","timestamp":"2019-07-01 21:40:33"}
+{"message":"MongoDB: Successfully connected to DEVELOPMENT_LOCAL DB","level":"info","timestamp":"2019-07-01 21:40:34"}
+{"message":"Running DEVELOPMENT_LOCAL","level":"info","timestamp":"2019-07-01 21:40:43"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-07-01 21:40:43"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-07-01 21:40:44"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-07-01 21:40:44"}
+{"message":"Message recieved","level":"info","timestamp":"2019-07-01 21:40:44"}
+{"message":"Message recieved","level":"info","timestamp":"2019-07-01 21:40:44"}
+{"message":"Running DEVELOPMENT_LOCAL","level":"info","timestamp":"2019-07-01 21:40:45"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-07-01 21:40:45"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-07-01 21:40:45"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-07-01 21:40:45"}
+{"message":"Message recieved","level":"info","timestamp":"2019-07-01 21:40:45"}
+{"message":"Message recieved","level":"info","timestamp":"2019-07-01 21:40:45"}
+{"message":"MongoDB: Successfully connected to DEVELOPMENT_LOCAL DB","level":"info","timestamp":"2019-07-01 21:40:47"}
