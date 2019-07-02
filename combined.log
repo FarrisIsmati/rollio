@@ -1,0 +1,3 @@
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-07-01 22:14:31"}
+{"message":"Message sent","level":"info","timestamp":"2019-07-01 22:14:34"}
+{"message":"hello test send","level":"info","timestamp":"2019-07-01 22:14:34"}

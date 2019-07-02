@@ -6,6 +6,7 @@ const morgan = require('morgan');
 const cors = require('cors');
 const server = require('http').createServer(app);
 const config = require('./config');
+const logger = require('./lib/log/index');
 
 // LIB
 const sendVendorsRequest = require('./lib/messaging/send/send-vendors-request');
@@ -14,19 +15,19 @@ const receiveVendorList = require('./lib/messaging/receive/receive-vendor-list')
 switch (config.NODE_ENV) {
   case 'DEVELOPMENT_DOCKER':
   case 'DEVELOPMENT_LOCAL':
-    console.log(`Running ${config.NODE_ENV}`);
+    logger.info(`Running ${config.NODE_ENV}`);
     // Log only on dev
     app.use(morgan('combined'));
     break;
   case 'TEST_DOCKER':
   case 'TEST_LOCAL':
-    console.log(`Running ${config.NODE_ENV}`);
+    logger.info(`Running ${config.NODE_ENV}`);
     break;
   case 'PRODUCTION':
-    console.log(`Running ${config.NODE_ENV}`);
+    logger.info(`Running ${config.NODE_ENV}`);
     break;
   default:
-    console.log(`No enviroment set, running ${config.NODE_ENV}`);
+    logger.info(`No enviroment set, running ${config.NODE_ENV}`);
 }
 
 app.set('port', config.PORT || 3002);
@@ -46,7 +47,7 @@ app.use(cors());
 // // FOR TESTING ~~~
 
 server.listen(app.get('port'), () => {
-  console.log(`You are flying on ${app.get('port')}`);
+  logger.info(`Server on port ${app.get('port')}`);
   // Request new list of vendors for twitter to listen to
   sendVendorsRequest();
   // Listen for vendors list message

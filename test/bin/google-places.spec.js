@@ -22,9 +22,9 @@ describe('Google Places', async () => {
       expect(res.length).to.be.equal(1);
     });
 
-    it('expect googlePlaces search to resolve the address "2401 H St NW, Washington, DC 20037, USA"', async () => {
+    it('expect googlePlaces search to resolve the address "22nd St NW, Washington, DC, USA"', async () => {
       const res = await googlePlaces.search('h and 22nd, dc');
-      expect(res[0].formatted_address).to.be.equal('2401 H St NW, Washington, DC 20037, USA');
+      expect(res[0].formatted_address).to.be.equal('22nd St NW, Washington, DC, USA');
     });
   });
 
