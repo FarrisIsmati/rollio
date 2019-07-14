@@ -1,0 +1,6 @@
+{"message":"Redis: Connection failed trying again, attempts: 1","level":"error","timestamp":"2019-07-14 13:10:03"}
+{"message":"Redis: Connection failed trying again, attempts: 2","level":"error","timestamp":"2019-07-14 13:10:07"}
+{"message":"Redis: Connection failed trying again, attempts: 3","level":"error","timestamp":"2019-07-14 13:10:11"}
+{"message":"Redis: Connection failed trying again, attempts: 4","level":"error","timestamp":"2019-07-14 13:10:18"}
+{"message":"Redis: Connection failed trying again, attempts: 5","level":"error","timestamp":"2019-07-14 13:10:28"}
+{"message":"Redis: Connection failed trying again, attempts: 6","level":"error","timestamp":"2019-07-14 13:10:43"}
