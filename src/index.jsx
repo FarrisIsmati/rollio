@@ -1,11 +1,14 @@
+// DEPENDENCIES
 import React from 'react';
 import ReactDOM from 'react-dom';
+
+// COMPONENTS
 import App from './components/App';
 
-// STYLES
-import '../dist/css/main.css'
+// STYLESHEETS
+import '../dist/css/main.css';
 
 ReactDOM.render(
   <App />,
-  document.getElementById('root')
+  document.getElementById('root'),
 );
