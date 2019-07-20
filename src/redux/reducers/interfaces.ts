@@ -4,19 +4,44 @@ export interface Coordinates {
 }
   
 // Preview set of vendor data
-export interface VendorPrev {
-    id: string
-    name: string
+export interface VendorCard {
+    id: string,
+    name: string,
     description: string,
     coordinates: Coordinates,
     selected: boolean,
-    lastUpdated: string,
-    groupPinId: string
+    lastUpdated: string
+}
+
+export interface Location {
+    coordinates: Coordinates,
+    address: string,
+    neighborhood: string,
+    municipality: string
 }
 
 // Full set of vendor data
 export interface VendorFull {
-    id: string
+    id: string,
+    name: string,
+    description: string,
+    email: string,
+    website: string,
+    phonenumber: number,
+    categories: string[],
+    price: string,
+    rating: number,
+    twitterID: string,
+    comments: Comment[],
+    creditCard: boolean,
+    closedDate: string,
+    location: Location
+}
+
+export interface Comment {
+    name: string,
+    date: string,
+    text: string
 }
 
 // Pin on map
@@ -24,23 +49,31 @@ export interface Pin {
     id: string,
     vendorId: string,
     selected: boolean,
-    coordinates: Coordinates
+    location: Location,
 }
 
 // Pin with multiple vendors
 export interface GroupPin {
     id: string,
-    vendorIndecies: number[], // All the vendors[] indecies to quickly look up the data
+    vendorIds: string[], // All the vendorsAll[] indecies to quickly look up the data
     selected: boolean,
-    coordinates: Coordinates
+    location: Location
+}
+
+// Filters for map
+export interface Filter {
+    price: string,
+    rating: number[],
+    categories: string[]
 }
 
 export interface DataDefaultState {
-    vendorsAll: VendorPrev[],
+    vendorsAll: { [key: string]: VendorCard }
     selectedVendor: VendorFull
 }
 
 export interface MapDefaultState {
     vendorsDisplayedSingle: Pin[],
     vendorsDisplayedGroup: GroupPin[],
+    activeFilters: Filter[]
 }
