@@ -6,7 +6,7 @@ import ReactDOM from 'react-dom';
 import App from './components/App';
 
 // STYLESHEETS
-import '../dist/css/main.css';
+import './dist/css/main.css';
 
 ReactDOM.render(
   <App />,

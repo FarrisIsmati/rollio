@@ -1,0 +1,14 @@
+// Main page layout
+
+html, body, #root, .App {
+ min-height: 100%;
+}
+
+body {
+    margin: 0;
+}
+
+// VARIABLES
+
+// Side margins of full page width
+$body-margin-sides: 14.5%

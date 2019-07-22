@@ -25,7 +25,7 @@ const defaultState:DataDefaultState = {
     },
 }
 
-export function dataReducer(state = defaultState, action) {
+export function dataReducer(state = defaultState, action: any) {
     switch (action.type) {
     default:
         return state

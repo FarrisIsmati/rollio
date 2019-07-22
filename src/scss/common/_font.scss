@@ -1,0 +1,19 @@
+// Mixins
+
+@mixin neuzeit-bold {
+    font-family: neuzeit-grotesk, sans-serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+p, h1, h2 {
+    margin: 0;
+}
+
+.font__navbar {
+    @include neuzeit-bold;
+    letter-spacing: 0.75px;
+    text-align: right;
+    color: $fontBlack;
+}
+

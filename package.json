@@ -29,8 +29,8 @@
     "eslint-plugin-react": "^7.14.2"
   },
   "scripts": {
-    "build-task:scss-compile": "node-sass-chokidar --source-map true src/scss/ -o dist/css",
-    "build-task:autoprefixer": "postcss dist/css/*.css --use autoprefixer -d dist/css",
+    "build-task:scss-compile": "node-sass-chokidar --source-map true src/scss/ -o src/dist/css",
+    "build-task:autoprefixer": "postcss src/dist/css/*.css --use autoprefixer -d src/dist/css",
     "sass:build": "npm-run-all -p build-task:*",
     "sass:watch": "chokidar \"src/scss/**/*.scss\" -c \"npm run sass:build\"",
     "dev": "npm-run-all -p sass:* start",

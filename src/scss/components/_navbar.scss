@@ -1,0 +1,35 @@
+.navbar {
+    &__wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 80px;
+        background-color: mediumturquoise;
+    }
+
+    &__content_wrapper {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        margin: 0 $body-margin-sides;
+        background-color: goldenrod;
+    }
+
+    &__logo_wrapper {
+        img {
+            height: 31px;
+            width: 111px;
+        }
+    }
+
+    &__links_wrapper {
+        display: flex;
+        align-self: flex-end;
+
+        span {
+            width: 40px;
+        }
+    }
+
+}
+

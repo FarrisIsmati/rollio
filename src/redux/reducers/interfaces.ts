@@ -1,6 +1,6 @@
 export interface Coordinates {
-    lat: number,
-    long: number
+    lat: number | null,
+    long: number | null
 }
   
 // Preview set of vendor data
@@ -27,13 +27,13 @@ export interface VendorFull {
     description: string,
     email: string,
     website: string,
-    phonenumber: number,
+    phonenumber: number | null,
     categories: string[],
     price: string,
-    rating: number,
+    rating: number | null,
     twitterID: string,
     comments: Comment[],
-    creditCard: boolean,
+    creditCard: boolean | null,
     closedDate: string,
     location: Location
 }
