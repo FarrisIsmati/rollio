@@ -2,7 +2,7 @@
 import React from 'react';
 
 // COMPONENTS
-import Navbar from './navbar/Navbar';
+import Navbar from './navbar/navbar';
 
 const App = () => (
   <div className="App">

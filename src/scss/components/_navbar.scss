@@ -4,7 +4,7 @@
         justify-content: center;
         align-items: center;
         height: 80px;
-        background-color: $color-background-nav
+        background-color: $color-background-nav;
     }
 
     &__content_wrapper {
@@ -27,6 +27,15 @@
 
         span {
             width: 40px;
+        }
+
+        &_mobile {
+            align-self: center;
+
+            svg {
+                fill: $color-font-main-light;
+                height: 2em;
+            }
         }
     }
 
