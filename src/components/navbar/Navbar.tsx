@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { FaBars } from 'react-icons/fa';
 
 // HOOKS
-import windowResize from '../../hooks/common/window-resize';
+import useWindowWidth from '../../hooks/common/use-window-width';
 
 // IMG
 import logo from '../../img/logo-rollio-beta.png';
@@ -23,7 +23,7 @@ const NavbarHamburger = (
 )
 
 const Navbar = () => {
-  const width = windowResize();
+  const width = useWindowWidth();
 
   return (
       // Mobile resize this flex centers
