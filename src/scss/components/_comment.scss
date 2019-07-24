@@ -1,0 +1,15 @@
+.commentpost {
+ &__wrapper {
+     min-height: 100px;
+     width: 600px;
+     background-color: $color-comment-background;
+     border-radius: 6px;
+     padding: 12px 16px;
+ }
+
+ &__header_wrapper {
+     display: flex;
+     justify-content: space-between;
+     margin-bottom: 11px;
+ }
+}

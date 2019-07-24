@@ -1,4 +1,14 @@
+// COLORS
+$white: #fff;
+$offWhite: #fafafa;
+
+// FONTS
 $color-font-main: #212121;
 $color-font-main-light: #4d4d4d;
-$color-background-nav: #fff;
-$color-background-main: #fafafa;
+
+// COMPONENTS
+// Main
+$color-background-nav: $white;
+$color-background-main: $offWhite;
+// Comments
+$color-comment-background: $white;
