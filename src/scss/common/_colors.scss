@@ -1,14 +1,20 @@
 // COLORS
 $white: #fff;
-$offWhite: #fafafa;
+$rollioWhite: #fafafa;
+$rollioBlue: #0046c6;
+$rollioBlack: #212121;
+$rollioMedGrey: #4d4d4d;
+$rollioLightGrey: #757575;
 
 // FONTS
-$color-font-main: #212121;
-$color-font-main-light: #4d4d4d;
+$color-font-main: $rollioBlack;
+$color-font-main-light: $rollioMedGrey;
+$color-font-main-light2: $rollioLightGrey;
 
 // COMPONENTS
 // Main
 $color-background-nav: $white;
-$color-background-main: $offWhite;
+$color-background-main: $rollioWhite;
 // Comments
+$color-comment-icon-text: $rollioBlue;
 $color-comment-background: $white;

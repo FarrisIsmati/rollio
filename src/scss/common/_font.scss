@@ -4,16 +4,16 @@
     font-family: neuzeit-grotesk, sans-serif;
     font-weight: 700;
     font-style: normal;
+    letter-spacing: 0.75px;
+}
+
+@mixin neuzeit-reg {
+    font-family: neuzeit-grotesk, sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    letter-spacing: 0.75px;
 }
 
 p, h1, h2 {
     margin: 0;
 }
-
-.font__navbar {
-    @include neuzeit-bold;
-    letter-spacing: 0.75px;
-    text-align: right;
-    color: $color-font-main;
-}
-
