@@ -1,11 +1,11 @@
 // DEPENDENCIES
-import React from 'react';
+import React, {FC} from 'react';
 
 // COMPONENTS
 import Navbar from './navbar/navbar';
 import TruckProfile from './truck-profile/truck-profile'
 
-const App = () => (
+const App:FC = () => (
   <div className="App">
     <Navbar/>
     <TruckProfile/>

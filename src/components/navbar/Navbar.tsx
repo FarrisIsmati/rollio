@@ -1,9 +1,9 @@
 // DEPENDENCIES
-import React, { useState, useEffect } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import { FaBars } from 'react-icons/fa';
 
 // HOOKS
-import useWindowWidth from '../../hooks/common/use-window-width';
+import useWindowWidth from '../common/hooks/use-window-width';
 
 // IMG
 import logo from '../../img/logo-rollio-beta.png';
@@ -22,7 +22,7 @@ const NavbarHamburger = (
   </div>
 )
 
-const Navbar = () => {
+const Navbar:FC = () => {
   const width = useWindowWidth();
 
   return (

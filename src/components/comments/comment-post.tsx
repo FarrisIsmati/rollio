@@ -1,7 +1,7 @@
 // DEPENDENCIES
-import React from 'react';
+import React, {FC} from 'react';
 
-const CommentPost = () => {
+const CommentPost:FC = () => {
   return (
     <div className="commentpost__wrapper"> 
         <div className="commentpost__header_wrapper">

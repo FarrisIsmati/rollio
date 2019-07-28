@@ -1,6 +1,5 @@
 .commentadd {
     &__wrapper {
-        display: flex;
         max-width: 600px;
         border-radius: 6px;
         box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
@@ -9,6 +8,15 @@
         font-size: 1.2em;
     }
 
+    &__active_wrapper {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__tophalf {
+        display: flex;
+    }
+    
     &__text {
         &_wrapper {
             width: 100%;
@@ -23,6 +31,16 @@
                     outline: none !important;
                 }
             }
+        }
+
+        &_body_active {
+            margin-top: 14.5px;
+            min-height: 100px;
+            display: inline;
+        }
+
+        &_name {
+            border-bottom: 1px solid $color-comment-name-border;
         }
     }
 
