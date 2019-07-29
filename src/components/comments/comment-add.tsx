@@ -9,44 +9,26 @@ import { IconContext } from 'react-icons';
 import { IoMdText } from 'react-icons/io';
 
 const CommentAdd:FC = () => {
-    const { text, handleChange } = useCommentAdd();
+    const { commentActive, commentBody, commentName, namePlaceHolder, clickNameInput, changeText, commentBodyInput } = useCommentAdd();
 
-    const CommentAddName:ReactElement = (
-        <div id="commentAddName" className='commentadd__text_wrapper commentadd__text_name'>
-            <input id="commentAddName" type='text' placeholder='Add your name (optional)' maxLength={30} className='font__comment_add_content'/>
-        </div>
-    )
-    
-    // MAKE A CUSTOM TEXT AREA
-    const CommentAddText:ReactElement = (
-        <div className={ text === '' ? 'commentadd__text_wrapper' : 'commentadd__text_body_active commentadd__text_wrapper'}>
-            <input id="commentAddText" type='text' value={text} onChange={handleChange} placeholder='Be the first to share your thoughts...' className='font__comment_add_content'/>
-        </div>
-    )
-
-    const CommentTopHalf:Function = (element:ReactElement) => {
-        return (
+    return (
+        <div className='commentadd__wrapper'>
             <div className='commentadd__tophalf'>
                 <IconContext.Provider value={{ size: '32', className: 'commentadd__icon_type_text' }}>
                     <div>
                         <IoMdText/>
                     </div>
                 </IconContext.Provider>
-                { element }
+                {/* Optional Add name but place holder and class changes on click */}
+                <div id="commentAddName" className={ commentActive ? 'commentadd__text_name_active commentadd__text_wrapper' : 'commentadd__text_name_inactive commentadd__text_wrapper'}>
+                    <input id="commentAddName" type='text' value={commentName} onClick={clickNameInput} onChange={e=>{changeText(e,'name')}} placeholder={namePlaceHolder()} maxLength={30} className='font__comment_add_content'/>
+                </div>
             </div>
-        )
-    }
 
-    const CommentTypingState:ReactElement = (
-        <div className="commentadd__active_wrapper">
-            { CommentTopHalf(CommentAddName) }
-            { CommentAddText }
-        </div>
-    )
-    
-    return (
-        <div className='commentadd__wrapper'>
-            { text === '' ? CommentTopHalf(CommentAddText) : CommentTypingState }
+            {/* CUSTOM TEXT AREA NOW */}
+            <div className={ commentActive ? 'commentadd__text_body_active commentadd__text_wrapper' : 'commentadd__text_body_inactive commentadd__text_wrapper'}>
+                <input id="commentBody" ref={commentBodyInput} type='text' value={commentBody} onChange={e=>changeText(e,'body')} placeholder='Be the first to share your thoughts...' className='font__comment_add_content'/>
+            </div>
         </div>
     )
     

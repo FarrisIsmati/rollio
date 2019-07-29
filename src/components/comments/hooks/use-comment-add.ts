@@ -1,16 +1,40 @@
 // DEPENDENCIES
-import React, { ChangeEvent, useState, useEffect } from 'react';
+import React, { ChangeEvent, useState, useRef } from 'react';
 
 const useCommentAdd = () => {
-    const [text, setText] = useState<string>('');
+    const [commentActive, setCommentActive] = useState<boolean>(false);
+    const [commentBody, setcommentBody] = useState<string>('');
+    const [commentName, setcommentName] = useState<string>('');
 
-    const handleChange = (e:ChangeEvent<HTMLInputElement>) => {
-        setText(e.target.value);
+    const commentBodyInput:any = useRef(null);
+
+    const namePlaceHolder = () => {
+        return commentActive === false ? 'Be the first to share your thoughts...' : 'Add your name (optional)';   
+    }
+
+    const changeText = (e:ChangeEvent<HTMLInputElement>, input:string) => {
+        if (input === 'body') {
+            setcommentBody(e.target.value);
+        } else if (input === 'name') {
+            setcommentName(e.target.value);
+        }
+    }
+
+    const clickNameInput = (e:React.MouseEvent<HTMLInputElement, MouseEvent>) => {
+        if (!commentActive) {
+            setCommentActive(true);
+            commentBodyInput.current.focus();
+        }
     }
 
     return {
-        text,
-        handleChange
+        commentActive,
+        commentBody,
+        commentName,
+        namePlaceHolder,
+        clickNameInput,
+        changeText,
+        commentBodyInput
     }
 }
 
