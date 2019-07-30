@@ -1,6 +1,9 @@
 // DEPENDENCIES
 import React, { FC, ReactElement } from 'react';
 
+// COMPONENTS
+import TextAreaGrow from '../common/text/textarea-grow';
+
 // HOOKS
 import useCommentAdd from './hooks/use-comment-add';
 
@@ -28,6 +31,7 @@ const CommentAdd:FC = () => {
             {/* CUSTOM TEXT AREA NOW */}
             <div className={ commentActive ? 'commentadd__text_body_active commentadd__text_wrapper' : 'commentadd__text_body_inactive commentadd__text_wrapper'}>
                 <input id="commentBody" type='text' tabIndex={0} onBlur={blurCommentBodyInput} ref={commentBodyInput} value={commentBody} onChange={e=>changeText(e,'body')} placeholder='Be the first to share your thoughts...' className='font__comment_add_content'/>
+                <TextAreaGrow></TextAreaGrow>
             </div>
         </div>
     )
