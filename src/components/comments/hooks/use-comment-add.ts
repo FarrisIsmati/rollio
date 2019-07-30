@@ -3,8 +3,8 @@ import React, { ChangeEvent, useState, useRef } from 'react';
 
 const useCommentAdd = () => {
     const [commentActive, setCommentActive] = useState<boolean>(false);
-    const [commentBody, setcommentBody] = useState<string>('');
-    const [commentName, setcommentName] = useState<string>('');
+    const [commentBody, setCommentBody] = useState<string>('');
+    const [commentName, setCommentName] = useState<string>('');
 
     const commentBodyInput:any = useRef(null);
 
@@ -14,16 +14,24 @@ const useCommentAdd = () => {
 
     const changeText = (e:ChangeEvent<HTMLInputElement>, input:string) => {
         if (input === 'body') {
-            setcommentBody(e.target.value);
+            setCommentBody(e.target.value);
         } else if (input === 'name') {
-            setcommentName(e.target.value);
+            setCommentName(e.target.value);
         }
     }
 
-    const clickNameInput = (e:React.MouseEvent<HTMLInputElement, MouseEvent>) => {
+    const clickNameInput = (e:React.FocusEvent<HTMLInputElement>) => {
         if (!commentActive) {
             setCommentActive(true);
             commentBodyInput.current.focus();
+        }
+    }
+
+    const blurCommentBodyInput = (e:any) => {
+        const offFocusTarget:HTMLInputElement | null = e.relatedTarget;
+
+        if (commentBody === '' && (offFocusTarget === null || (offFocusTarget.id !== 'commentAddName' && offFocusTarget.id !== 'commentBody'))) {
+            setCommentActive(false);
         }
     }
 
@@ -34,7 +42,8 @@ const useCommentAdd = () => {
         namePlaceHolder,
         clickNameInput,
         changeText,
-        commentBodyInput
+        commentBodyInput,
+        blurCommentBodyInput
     }
 }
 
