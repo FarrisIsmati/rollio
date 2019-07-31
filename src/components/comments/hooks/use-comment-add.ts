@@ -12,7 +12,7 @@ const useCommentAdd = () => {
         return commentActive === false ? 'Be the first to share your thoughts...' : 'Add your name (optional)';   
     }
 
-    const changeText = (e:ChangeEvent<HTMLInputElement>, input:string) => {
+    const changeText = (e:ChangeEvent<HTMLTextAreaElement> | ChangeEvent<HTMLInputElement>, input:string) => {
         if (input === 'body') {
             setCommentBody(e.target.value);
         } else if (input === 'name') {
@@ -27,10 +27,10 @@ const useCommentAdd = () => {
         }
     }
 
-    const blurCommentBodyInput = (e:any) => {
-        const offFocusTarget:HTMLInputElement | null = e.relatedTarget;
+    const blurComment = (e:any) => {
+        const offFocusTarget:HTMLInputElement | HTMLTextAreaElement | null = e.relatedTarget;
 
-        if (commentBody === '' && (offFocusTarget === null || (offFocusTarget.id !== 'commentAddName' && offFocusTarget.id !== 'commentBody'))) {
+        if (commentBody === '' && (offFocusTarget === null || (offFocusTarget.id !== 'commentBodyTextArea' && offFocusTarget.id !== 'commentBody'))) {
             setCommentActive(false);
         }
     }
@@ -43,7 +43,7 @@ const useCommentAdd = () => {
         clickNameInput,
         changeText,
         commentBodyInput,
-        blurCommentBodyInput
+        blurComment
     }
 }
 

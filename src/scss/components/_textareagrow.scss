@@ -1,0 +1,17 @@
+.textarea__grow {
+    line-height: 20px;
+    width: 100%;
+    border: none;
+    resize: none;
+
+    &:focus {
+        outline: none;
+    }
+}
+
+// APPLIED FONTS
+
+.font__textarea_grow {
+    @include neuzeit-reg;
+    color: $color-font-main;
+}

@@ -3,27 +3,26 @@ import React, { KeyboardEvent, useState, ChangeEvent} from 'react';
 
 const useTextAreaGrow = () => {
     const [rows, setRows] = useState<number>(1);
+    const [minRows] = useState<number>(1);
 
-    const keyPress = (e:KeyboardEvent<HTMLTextAreaElement>) => {
-        // If hit return key
-        if (e.keyCode === 13) {
-            setRows(rows + 1);
+    const textAreaHandleChange = (e:ChangeEvent<HTMLTextAreaElement>) => {
+        const textAreaGrowLineHeight = 20;
+       
+		const previousRows = e.target.rows;
+        e.target.rows = minRows;
+
+        const currentRows = ~~(e.target.scrollHeight / 20);
+
+        if (currentRows === previousRows) {
+            e.target.rows = currentRows;
         }
 
-        if (e.keyCode === 8) {
-            const textAreaArr:Array<string> = e.currentTarget.value.split('\n');
-            const lastLine:string = textAreaArr[textAreaArr.length - 1];
-
-            if (rows > 1 && lastLine === '') {
-                console.log('remove');
-                setRows(rows - 1);
-            }
-        }
+        setRows(currentRows);
     }
 
     return {
         rows,
-        keyPress
+        textAreaHandleChange
     }
 }
 

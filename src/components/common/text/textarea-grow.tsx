@@ -1,14 +1,27 @@
 // DEPENDENCIES
-import React, {FC} from 'react';
+import React, {FC, ChangeEvent} from 'react';
 
 // HOOKS
 import useTextAreaGrow from './hooks/use-textarea-grow';
 
-const TextAreaGrowable:FC = () => {
-    const { rows, keyPress } = useTextAreaGrow();
+interface TextAreaGrowProps  {
+    id: string,
+    onChange: (e:ChangeEvent<HTMLTextAreaElement>) => void,
+    onBlur: (e:any) => void
+}
+
+const TextAreaGrowable:FC<TextAreaGrowProps> = (props) => {
+    const { rows, textAreaHandleChange } = useTextAreaGrow();
 
     return (
-        <textarea id='commentBodyTextArea' tabIndex={0} onKeyDown={keyPress} rows={rows}></textarea>
+        <textarea 
+            id={props.id} 
+            className='textarea__grow font__textarea_grow' 
+            tabIndex={0} 
+            onBlur={props.onBlur}
+            onChange={(e) => {props.onChange(e); textAreaHandleChange(e)}} 
+            rows={rows}
+        ></textarea>
     );
 }
 
