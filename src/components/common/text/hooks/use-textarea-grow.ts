@@ -6,12 +6,12 @@ const useTextAreaGrow = () => {
     const [minRows] = useState<number>(1);
 
     const textAreaHandleChange = (e:ChangeEvent<HTMLTextAreaElement>) => {
-        const textAreaGrowLineHeight = 20;
+        const textAreaLineHeight = 20;
        
 		const previousRows = e.target.rows;
         e.target.rows = minRows;
 
-        const currentRows = ~~(e.target.scrollHeight / 20);
+        const currentRows = ~~(e.target.scrollHeight / textAreaLineHeight);
 
         if (currentRows === previousRows) {
             e.target.rows = currentRows;

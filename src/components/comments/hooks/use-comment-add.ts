@@ -6,7 +6,7 @@ const useCommentAdd = () => {
     const [commentBody, setCommentBody] = useState<string>('');
     const [commentName, setCommentName] = useState<string>('');
 
-    const commentBodyInput:any = useRef(null);
+    const commentBodyTextArea:any = useRef(null);
 
     const namePlaceHolder = () => {
         return commentActive === false ? 'Be the first to share your thoughts...' : 'Add your name (optional)';   
@@ -23,14 +23,17 @@ const useCommentAdd = () => {
     const clickNameInput = (e:React.FocusEvent<HTMLInputElement>) => {
         if (!commentActive) {
             setCommentActive(true);
-            commentBodyInput.current.focus();
+
+            if (commentName === '') {
+                commentBodyTextArea.current.focus();
+            }
         }
     }
 
     const blurComment = (e:any) => {
         const offFocusTarget:HTMLInputElement | HTMLTextAreaElement | null = e.relatedTarget;
 
-        if (commentBody === '' && (offFocusTarget === null || (offFocusTarget.id !== 'commentBodyTextArea' && offFocusTarget.id !== 'commentBody'))) {
+        if (commentBody === '' && (offFocusTarget === null || (offFocusTarget.id !== 'commentBodyTextArea' && offFocusTarget.id !== 'commentNameInput'))) {
             setCommentActive(false);
         }
     }
@@ -42,7 +45,7 @@ const useCommentAdd = () => {
         namePlaceHolder,
         clickNameInput,
         changeText,
-        commentBodyInput,
+        commentBodyTextArea,
         blurComment
     }
 }
