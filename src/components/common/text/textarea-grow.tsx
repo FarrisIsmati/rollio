@@ -1,9 +1,8 @@
 // DEPENDENCIES
-import React, {FC, ChangeEvent} from 'react';
+import React, { ChangeEvent} from 'react';
 
 // HOOKS
 import useTextAreaGrow from './hooks/use-textarea-grow';
-import { placeholder } from '@babel/types';
 
 interface TextAreaGrowProps  {
     id: string,

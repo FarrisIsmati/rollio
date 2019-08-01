@@ -34,6 +34,13 @@ const useCommentAdd = () => {
         const offFocusTarget:HTMLInputElement | HTMLTextAreaElement | null = e.relatedTarget;
 
         if (commentBody === '' && (offFocusTarget === null || (offFocusTarget.id !== 'commentBodyTextArea' && offFocusTarget.id !== 'commentNameInput'))) {
+
+            // If you click on the share button then the focus will switch back to the comment body
+            if (offFocusTarget !== null && offFocusTarget.id === 'commentAddButton') {
+                commentBodyTextArea.current.focus();
+                return;
+            }
+
             setCommentActive(false);
         }
     }
@@ -51,9 +58,3 @@ const useCommentAdd = () => {
 }
 
 export default useCommentAdd;
-
-// Follow this tut
-// https://www.youtube.com/watch?v=3WQUItcK-j0
-
-// Maybe this one too
-// https://www.youtube.com/watch?v=oQZJxyMoLws

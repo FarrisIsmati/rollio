@@ -1,0 +1,22 @@
+.button {
+    &__default {
+        width: 82px;
+        height: 40px;
+        border-radius: 8px;
+        background-color: #0046c6;
+        border: none;
+        outline: none;
+        color: $color-button-default;
+    }
+
+    &__comment_add {
+        // blank
+    }
+}
+
+// APPLIED FONTS
+
+.font__button_comment_add {
+    @include neuzeit-bold;
+    font-size: 18px;
+}

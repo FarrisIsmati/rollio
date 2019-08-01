@@ -3,6 +3,7 @@ import React, { FC, ReactElement } from 'react';
 
 // COMPONENTS
 import TextAreaGrow from '../common/text/textarea-grow';
+import ButtonDefault from '../common/buttons/button-default';
 
 // HOOKS
 import useCommentAdd from './hooks/use-comment-add';
@@ -38,7 +39,7 @@ const CommentAdd:FC = () => {
                 </div>
             </div>
 
-            <div className={ commentActive ? 'commentadd__text_body_active commentadd__text_wrapper' : 'commentadd__text_body_inactive commentadd__text_wrapper'}>
+            <div className={ commentActive ? 'commentadd__text_body_active' : 'commentadd__text_body_inactive'}>
                 <TextAreaGrow 
                     id='commentBodyTextArea' 
                     onChange={e=>changeText(e,'body')} 
@@ -47,6 +48,7 @@ const CommentAdd:FC = () => {
                     ref={commentBodyTextArea} 
                     placeholder={'Be the first to share your thoughts...'} 
                     className={'textarea__grow font__textarea_grow font__comment_add_content'}/>
+                <ButtonDefault id={'commentAddButton'} text={'Share'} className={'button__comment_add font__button_comment_add'}/>
             </div>
         </div>
     )

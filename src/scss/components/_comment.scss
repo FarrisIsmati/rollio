@@ -30,7 +30,9 @@
 
         &_body {
             &_active, &_inactive {
-                display: block;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
             }
 
             &_active {
