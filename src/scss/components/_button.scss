@@ -3,10 +3,24 @@
         width: 82px;
         height: 40px;
         border-radius: 8px;
-        background-color: #0046c6;
+        background-color: $color-button-default-background;
         border: none;
         outline: none;
-        color: $color-button-default;
+        color: $color-button-default-font;
+        transition:background-color .1s ease-in;
+
+        &:hover {
+            cursor: pointer;
+        }
+        
+        &_locked {
+            background-color: $color-button-default-background-locked;
+            transition:background-color .1s ease-in;
+            
+            &:hover {
+                cursor: default;
+            }
+        }
     }
 
     &__comment_add {

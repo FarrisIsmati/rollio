@@ -14,7 +14,7 @@ import { IoMdText } from 'react-icons/io';
 
 const CommentAdd:FC = () => {
     const { commentActive, commentBody, commentName, namePlaceHolder, clickNameInput, changeText, commentBodyTextArea, blurComment } = useCommentAdd();
-    console.log(commentBodyTextArea)
+
     return (
         <div className='commentadd__wrapper'>
             <div className='commentadd__tophalf'>
@@ -48,7 +48,7 @@ const CommentAdd:FC = () => {
                     ref={commentBodyTextArea} 
                     placeholder={'Be the first to share your thoughts...'} 
                     className={'textarea__grow font__textarea_grow font__comment_add_content'}/>
-                <ButtonDefault id={'commentAddButton'} text={'Share'} className={'button__comment_add font__button_comment_add'}/>
+                <ButtonDefault id={'commentAddButton'} text={'Share'} className={'button__comment_add font__button_comment_add'} isLocked={() => commentBody === ''}/>
             </div>
         </div>
     )
