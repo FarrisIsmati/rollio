@@ -175,11 +175,7 @@ describe('Vendor Routes', () => {
         res = await chai.request(server)
           .put(`/vendor/${regionID}/${vendor._id}/comments`)
           .send({
-            field: 'comments',
-            payload: {
-              commentDate: new Date('2019-12-12T12:10:00Z'),
-              text: commentText,
-            },
+            text: commentText,
           });
         updatedComments = await Vendor.findOne({ _id: vendor._id })
           .then(vendorUpdated => vendorUpdated.comments);
@@ -194,6 +190,13 @@ describe('Vendor Routes', () => {
 
       it(`expect new comment in vendor to be '${commentText}'`, (done) => {
         expect(updatedComments[0].text).to.be.equal(commentText);
+        expect(res.body.nModified).to.be.equal(1);
+        expect(res).to.have.status(200);
+        done();
+      });
+
+      it(`expect new comment name in vendor to be Some Dude`, (done) => {
+        expect(updatedComments[0].name).to.be.equal('Some Dude');
         expect(res.body.nModified).to.be.equal(1);
         expect(res).to.have.status(200);
         done();

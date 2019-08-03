@@ -4,3 +4,30 @@
 {"message":"Redis: Connection failed trying again, attempts: 4","level":"error","timestamp":"2019-07-14 13:10:18"}
 {"message":"Redis: Connection failed trying again, attempts: 5","level":"error","timestamp":"2019-07-14 13:10:28"}
 {"message":"Redis: Connection failed trying again, attempts: 6","level":"error","timestamp":"2019-07-14 13:10:43"}
+{"message":"RabbitMQ: Connection failed trying again","level":"error","timestamp":"2019-07-14 13:14:20"}
+{"message":"attempts: 1","level":"error","timestamp":"2019-07-14 13:14:22"}
+{"message":"Redis: Connection failed trying again, attempts: 1","level":"error","timestamp":"2019-07-14 13:34:12"}
+{"message":"Redis: Connection failed trying again, attempts: 1","level":"error","timestamp":"2019-08-02 20:26:40"}
+{"level":"error","timestamp":"2019-08-02 20:33:52"}
+{"level":"error","timestamp":"2019-08-02 20:36:00"}
+{"level":"error","timestamp":"2019-08-02 20:41:22"}
+{"level":"error","timestamp":"2019-08-02 20:41:50"}
+{"level":"error","timestamp":"2019-08-02 20:41:50"}
+{"level":"error","timestamp":"2019-08-02 20:41:50"}
+{"level":"error","timestamp":"2019-08-02 20:41:50"}
+{"level":"error","timestamp":"2019-08-02 21:01:05"}
+{"level":"error","timestamp":"2019-08-02 21:01:05"}
+{"level":"error","timestamp":"2019-08-02 21:01:05"}
+{"level":"error","timestamp":"2019-08-02 21:01:05"}
+{"level":"error","timestamp":"2019-08-02 21:01:05"}
+{"level":"error","timestamp":"2019-08-02 21:01:05"}
+{"level":"error","timestamp":"2019-08-02 21:01:05"}
+{"level":"error","timestamp":"2019-08-02 21:01:05"}
+{"level":"error","timestamp":"2019-08-02 21:01:05"}
+{"level":"error","timestamp":"2019-08-02 21:01:05"}
+{"level":"error","timestamp":"2019-08-02 21:01:05"}
+{"level":"error","timestamp":"2019-08-02 21:01:05"}
+{"level":"error","timestamp":"2019-08-02 21:01:05"}
+{"level":"error","timestamp":"2019-08-02 21:01:05"}
+{"level":"error","timestamp":"2019-08-02 21:01:05"}
+{"level":"error","timestamp":"2019-08-02 21:01:05"}

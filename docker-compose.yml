@@ -39,7 +39,7 @@ services:
     container_name: rollio-service-twitter
     build: ..\Rollio-Service-Twitter
     env_file:
-      - .env
+      - ..\Rollio-Service-Twitter\.env
     environment:
       - NODE_ENV=DEVELOPMENT_DOCKER
       - PORT=3002
