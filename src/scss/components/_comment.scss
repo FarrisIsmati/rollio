@@ -92,6 +92,15 @@
     }
 }
 
+.commentsection {
+    &__wrapper {
+
+        & .commentadd__wrapper {
+            margin-bottom: 32px;
+        }
+    }
+}
+
 // APPLIED FONTS
 
 .font__comment_add {
