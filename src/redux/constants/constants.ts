@@ -1,0 +1,2 @@
+// DATA
+export const GET_VENDOR_PROFILE = 'GET_VENDOR_PROFILE'

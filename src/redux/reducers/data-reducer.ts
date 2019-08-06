@@ -1,3 +1,9 @@
+// CONSTANTS
+import {
+    GET_VENDOR_PROFILE,
+}                            from "../constants/constants"
+
+// INTERFACES
 import { DataDefaultState } from "./interfaces";
 
 const defaultState:DataDefaultState = {
@@ -27,6 +33,11 @@ const defaultState:DataDefaultState = {
 
 export function dataReducer(state = defaultState, action: any) {
     switch (action.type) {
+    case GET_VENDOR_PROFILE:
+        return {
+            ...state, 
+            selectedVendor: { ...action.payload }
+        }
     default:
         return state
     }
