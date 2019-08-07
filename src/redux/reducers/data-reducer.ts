@@ -1,6 +1,6 @@
 // CONSTANTS
 import {
-    GET_VENDOR_PROFILE,
+    RECIEVE_VENDOR_PROFILE,
 }                            from "../constants/constants"
 
 // INTERFACES
@@ -21,7 +21,6 @@ const defaultState:DataDefaultState = {
         twitterID: '',
         comments: [],
         creditCard: null,
-        closedDate: '',
         location: {
             coordinates: { lat: null, long: null },
             address: '',
@@ -33,10 +32,10 @@ const defaultState:DataDefaultState = {
 
 export function dataReducer(state = defaultState, action: any) {
     switch (action.type) {
-    case GET_VENDOR_PROFILE:
+    case RECIEVE_VENDOR_PROFILE:
         return {
             ...state, 
-            selectedVendor: { ...action.payload }
+            selectedVendor: { ...state.selectedVendor, ...action.payload }
         }
     default:
         return state

@@ -6,8 +6,8 @@ import { dataReducer }          from './data-reducer'
 import { mapReducer }        from './map-reducer'
 
 const rootReducer = combineReducers({
-  ...dataReducer,
-  ...mapReducer
+  data: dataReducer,
+  map: mapReducer
 })
 
 export default rootReducer

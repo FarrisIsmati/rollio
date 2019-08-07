@@ -1,13 +1,14 @@
 // DEPENDENCIES
 import React, {FC} from 'react';
-import thunkMiddleware          from 'redux-thunk'
-import { createLogger }         from 'redux-logger'
+import { Provider } from 'react-redux'
+import thunkMiddleware from 'redux-thunk'
+import { createLogger } from 'redux-logger'
 import {  createStore,
           applyMiddleware
-        }                       from 'redux'
+        } from 'redux'
 
 //REDUX
-import rootReducer              from '../redux/reducers/root-reducer'
+import rootReducer from '../redux/reducers/root-reducer'
 
 // COMPONENTS
 import Navbar from './navbar/navbar';
@@ -24,10 +25,12 @@ export const store = createStore(
 )
 
 const App:FC = () => (
-  <div className="App">
-    <Navbar/>
-    <TruckProfile/>
-  </div>
+  <Provider store={store}>
+    <div className="App">
+      <Navbar/>
+      <TruckProfile/>
+    </div>
+  </Provider>
 );
 
 export default App;

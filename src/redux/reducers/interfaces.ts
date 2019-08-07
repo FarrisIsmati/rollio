@@ -34,7 +34,6 @@ export interface VendorFull {
     twitterID: string,
     comments: Comment[],
     creditCard: boolean | null,
-    closedDate: string,
     location: Location
 }
 
