@@ -31,3 +31,20 @@
 {"level":"error","timestamp":"2019-08-02 21:01:05"}
 {"level":"error","timestamp":"2019-08-02 21:01:05"}
 {"level":"error","timestamp":"2019-08-02 21:01:05"}
+{"message":"Redis: Connection failed trying again, attempts: 1","level":"error","timestamp":"2019-08-07 20:38:10"}
+{"message":"Redis: Connection failed trying again, attempts: 1","level":"error","timestamp":"2019-08-07 21:40:58"}
+{"message":"Redis: Connection failed trying again, attempts: 1","level":"error","timestamp":"2019-08-07 21:41:43"}
+{"message":"Redis: Connection failed trying again, attempts: 1","level":"error","timestamp":"2019-08-07 21:42:48"}
+{"message":"Redis: Connection failed trying again, attempts: 1","level":"error","timestamp":"2019-08-07 21:43:32"}
+{"message":"Redis: Connection failed trying again, attempts: 1","level":"error","timestamp":"2019-08-07 21:43:44"}
+{"message":"Redis: Connection failed trying again, attempts: 2","level":"error","timestamp":"2019-08-07 21:43:47"}
+{"message":"Redis: Connection failed trying again, attempts: 1","level":"error","timestamp":"2019-08-07 21:44:26"}
+{"message":"Redis: Connection failed trying again, attempts: 1","level":"error","timestamp":"2019-08-07 21:50:27"}
+{"message":"Redis: Connection failed trying again, attempts: 1","level":"error","timestamp":"2019-08-07 21:54:56"}
+{"message":"Redis: Connection failed trying again, attempts: 1","level":"error","timestamp":"2019-08-07 21:57:17"}
+{"message":"Redis: Connection failed trying again, attempts: 1","level":"error","timestamp":"2019-08-07 21:57:29"}
+{"message":"Redis: Connection failed trying again, attempts: 2","level":"error","timestamp":"2019-08-07 21:57:32"}
+{"message":"Redis: Connection failed trying again, attempts: 1","level":"error","timestamp":"2019-08-07 21:58:02"}
+{"message":"Redis: Connection failed trying again, attempts: 1","level":"error","timestamp":"2019-08-07 21:58:33"}
+{"message":"Redis: Connection failed trying again, attempts: 1","level":"error","timestamp":"2019-08-07 22:00:13"}
+{"message":"Redis: Connection failed trying again, attempts: 1","level":"error","timestamp":"2019-08-07 22:03:44"}
