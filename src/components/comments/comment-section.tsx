@@ -3,17 +3,33 @@ import React, {FC} from 'react';
 
 // COMPONENTS
 import CommentPost from './comment-post';
+import CommentPostEmpty from './comment-post-empty';
 import CommentAdd from './comment-add';
 
-const CommentSection = () => {
-  // In Redux when opening up this page (This page being the truck profile)
-  // Load all truck profile into state
-  // Use comments of truck from the props passed in from redux state
-  // Create an array of comment posts 
+interface Comment {
+  _id: string,
+  name: string,
+  commentDate: string,
+  text: string
+}
+
+interface CommentSectionProps {
+  getComments: () => Comment[]
+}
+
+const CommentSection = (props:CommentSectionProps) => {
+  const comments: Comment[] = props.getComments();
+
+  const commentArray = !comments.length ? 
+    <CommentPostEmpty /> :
+    comments.map((comment: Comment) =>
+      <CommentPost key={comment._id} name={comment.name} time={comment.commentDate} text={comment.text}/>
+    );
+
   return (
     <div className="commentsection__wrapper"> 
         <CommentAdd />
-        <CommentPost name={'Jim'} time={'1min'} text={'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'}/>
+        { commentArray }
     </div>
   );
 }

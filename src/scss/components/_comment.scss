@@ -129,5 +129,9 @@
         @include neuzeit-reg;
         color: $color-font-main;
     }
-}
 
+    &_empty {
+        @include neuzeit-reg;
+        color: $color-font-main-light2;
+    }
+}

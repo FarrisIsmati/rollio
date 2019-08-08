@@ -1,30 +1,24 @@
 // DEPENDENCIES
 import React from 'react';
-import  { useDispatch  } from 'react-redux';
 
 // COMPONENTS
 import CommentSection from '../comments/comment-section';
 
-// ACTIONS
-import { fetchVendorProfile } from '../../redux/actions/data-actions';
-
-// REDUX CONSTANTS
-import { RECIEVE_VENDOR_PROFILE } from '../../redux/constants/constants';
+// HOOKS
+import useVendorData from './hooks/use-vendor-data';
 
 const TruckProfile = () => {
-  const dispatch = useDispatch();
+  const { FetchVendorProfileData, GetCommentsFromState } = useVendorData();
 
-  dispatch(
-    fetchVendorProfile({ 
-      regionId: '5d1f9acc3d1ed51898543a72',
-      vendorId: '5d1f9acd3d1ed51898543a7a'
-    })
-  )
+  FetchVendorProfileData({ 
+    regionId: '5d1f9acc3d1ed51898543a72',
+    vendorId: '5d1f9acd3d1ed51898543a7e'
+  });
 
   return (
       // Mobile resize this flex centers
     <div className="truckprofile__wrapper"> 
-        <CommentSection />
+        <CommentSection getComments={GetCommentsFromState}/>
     </div>
   );
 }
