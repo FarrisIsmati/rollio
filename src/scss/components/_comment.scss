@@ -83,6 +83,7 @@
         background-color: $color-comment-background;
         border-radius: 6px;
         padding: 12px 16px;
+        margin-top: 8px;
     }
 
     &__header_wrapper {
@@ -96,7 +97,7 @@
     &__wrapper {
 
         & .commentadd__wrapper {
-            margin-bottom: 32px;
+            margin-bottom: 24px;
         }
     }
 }
