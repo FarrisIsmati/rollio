@@ -1,14 +1,22 @@
 // DEPENDENCIES
-import React, { ChangeEvent, useState, useRef } from 'react';
+import React, { ChangeEvent, useState, useRef, useEffect } from 'react';
+import { array } from 'prop-types';
 
 const useCommentAdd = () => {
     const [commentActive, setCommentActive] = useState<boolean>(false);
     const [commentBody, setCommentBody] = useState<string>('');
     const [commentName, setCommentName] = useState<string>('');
+    const [numberOfComments, setNumberOfComments] = useState<number>(5);
 
     const commentBodyTextArea:any = useRef(null);
 
-    const namePlaceHolder = () => {
+    useEffect(() => {
+        return () => {
+            setNumberOfComments(5);
+        }
+    })
+
+    const getNamePlaceHolder = () => {
         return commentActive === false ? 'Be the first to share your thoughts...' : 'Add your name (optional)';   
     }
 
@@ -45,15 +53,21 @@ const useCommentAdd = () => {
         }
     }
 
+    const showMoreComments = () => {
+        setNumberOfComments(numberOfComments + 5);
+    }
+
     return {
         commentActive,
         commentBody,
         commentName,
-        namePlaceHolder,
+        numberOfComments,
+        getNamePlaceHolder,
         clickNameInput,
         changeText,
         commentBodyTextArea,
-        blurComment
+        blurComment,
+        showMoreComments
     }
 }
 

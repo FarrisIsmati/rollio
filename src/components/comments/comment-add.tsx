@@ -13,7 +13,7 @@ import { IconContext } from 'react-icons';
 import { IoMdText } from 'react-icons/io';
 
 const CommentAdd:FC = () => {
-    const { commentActive, commentBody, commentName, namePlaceHolder, clickNameInput, changeText, commentBodyTextArea, blurComment } = useCommentAdd();
+    const { commentActive, commentBody, commentName, getNamePlaceHolder, clickNameInput, changeText, commentBodyTextArea, blurComment } = useCommentAdd();
 
     return (
         <div className='commentadd__wrapper'>
@@ -33,7 +33,7 @@ const CommentAdd:FC = () => {
                         onBlur={blurComment} 
                         onFocus={clickNameInput} 
                         onChange={e=>{changeText(e,'name')}} 
-                        placeholder={namePlaceHolder()} 
+                        placeholder={getNamePlaceHolder()} 
                         maxLength={30} 
                         className='font__comment_add_content'/>
                 </div>

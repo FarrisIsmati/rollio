@@ -2,34 +2,24 @@
 import React, {FC} from 'react';
 
 // COMPONENTS
-import CommentPost from './comment-post';
+import CommentPosts from './comment-posts';
 import CommentPostEmpty from './comment-post-empty';
 import CommentAdd from './comment-add';
 
-interface Comment {
-  _id: string,
-  name: string,
-  commentDate: string,
-  text: string
-}
+// INTERFACES
+import { Comment, CommentSectionProps } from './interfaces';
 
-interface CommentSectionProps {
-  getComments: () => Comment[]
-}
-
-const CommentSection = (props:CommentSectionProps) => {
+const CommentSection = (props: CommentSectionProps) => {
   const comments: Comment[] = props.getComments();
 
-  const commentArray = !comments.length ? 
+  const commentsArray = !comments.length ? 
     <CommentPostEmpty /> :
-    comments.map((comment: Comment) =>
-      <CommentPost key={comment._id} name={comment.name} time={comment.commentDate} text={comment.text}/>
-    );
+    <CommentPosts comments={comments}/>;
 
   return (
     <div className="commentsection__wrapper"> 
         <CommentAdd />
-        { commentArray }
+        { commentsArray }
     </div>
   );
 }
