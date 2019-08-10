@@ -5,6 +5,12 @@ export interface Comment {
     text: string
   }
   
-  export interface CommentSectionProps {
+export interface CommentSectionProps {
     getComments: () => Comment[]
+  }
+
+export interface CommentPostProps  {
+    time: string,
+    name: string,
+    text: string
   }
