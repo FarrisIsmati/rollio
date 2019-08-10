@@ -76,6 +76,18 @@
     margin-bottom: 10px;
 }
 
+.commentposts {
+    &__wrapper {
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+#commentShowMoreButton {
+    margin-top: 8px;
+}
+
 .commentpost {
     &__wrapper {
         min-height: 100px;

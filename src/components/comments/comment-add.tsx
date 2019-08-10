@@ -48,7 +48,13 @@ const CommentAdd:FC = () => {
                     ref={commentBodyTextArea} 
                     placeholder={'Be the first to share your thoughts...'} 
                     className={'textarea__grow font__textarea_grow font__comment_add_content'}/>
-                <ButtonDefault id={'commentAddButton'} text={'Share'} className={'button__comment_add font__button_comment_add'} isLocked={() => commentBody === ''}/>
+                <ButtonDefault 
+                    id={'commentAddButton'} 
+                    text={'Share'} 
+                    className={'button__comment_add font__button_comment_add'} 
+                    isLocked={() => commentBody === ''}
+                    handleClick={()=>null}
+                />
             </div>
         </div>
     )

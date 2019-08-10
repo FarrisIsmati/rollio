@@ -12,6 +12,10 @@
         &:hover {
             cursor: pointer;
         }
+
+        &_wide {
+            width: 122px;
+        }
         
         &_locked {
             background-color: $color-button-default-background-locked;
@@ -22,15 +26,15 @@
             }
         }
     }
-
-    &__comment_add {
-        // blank
-    }
 }
 
 // APPLIED FONTS
-
 .font__button_comment_add {
+    @include neuzeit-bold;
+    font-size: 18px;
+}
+
+.font__button_comment_showmore {
     @include neuzeit-bold;
     font-size: 18px;
 }
