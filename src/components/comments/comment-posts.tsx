@@ -9,6 +9,7 @@ import ButtonDefault from '../common/buttons/button-default';
 import { Comment } from './interfaces';
 
 const CommentPosts = (props: any) => {
+  //MOVE EVERYTHING HERE TO A HOOK
     const setComment = (comment: Comment) => <CommentPost key={comment._id} name={comment.name} time={comment.commentDate} text={comment.text}/>
 
     let initialComments
