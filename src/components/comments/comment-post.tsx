@@ -11,7 +11,7 @@ const CommentPost = (props: CommentPostProps) => {
   const { GetTime } = useCommentPost(props);
 
   return (
-    <div className="commentpost__wrapper"> 
+    <div className="commentpost__wrapper">
         <div className="commentpost__header_wrapper">
             <p className="font__comment_posted_name">{ props.name }</p>
             <p className="font__comment_posted_time">{ GetTime() }</p>

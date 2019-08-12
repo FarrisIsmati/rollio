@@ -11,8 +11,8 @@ const TruckProfile = () => {
   const { FetchVendorProfileData, GetCommentsFromState } = useVendorData();
 
   FetchVendorProfileData({ 
-    regionId: '5d1f9acc3d1ed51898543a72',
-    vendorId: '5d1f9acd3d1ed51898543a7e'
+    regionId: '5d50bc3f6013b802bcaec400',
+    vendorId: '5d50bc3f6013b802bcaec408'
   });
 
   return (

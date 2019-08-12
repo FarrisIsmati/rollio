@@ -1,6 +1,7 @@
 // CONSTANTS
 import {
     RECIEVE_VENDOR_PROFILE,
+    POST_VENDOR_COMMENT
 }                            from "../constants/constants"
 
 // INTERFACES
@@ -36,6 +37,17 @@ export function dataReducer(state = defaultState, action: any) {
         return {
             ...state, 
             selectedVendor: { ...state.selectedVendor, ...action.payload }
+        }
+    case POST_VENDOR_COMMENT:
+        return {
+            ...state,
+            selectedVendor: {
+                ...state.selectedVendor,
+                comments: [
+                    action.payload,
+                    ...state.selectedVendor.comments
+                ]
+            }
         }
     default:
         return state

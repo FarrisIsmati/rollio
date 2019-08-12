@@ -1,6 +1,5 @@
 // DEPENDENCIES
 import React, { ChangeEvent, useState, useRef, useEffect } from 'react';
-import { array } from 'prop-types';
 
 const useCommentAdd = () => {
     const [commentActive, setCommentActive] = useState<boolean>(false);
@@ -18,6 +17,10 @@ const useCommentAdd = () => {
 
     const getNamePlaceHolder = () => {
         return commentActive === false ? 'Be the first to share your thoughts...' : 'Add your name (optional)';   
+    }
+
+    const getIsLocked = () => {
+        return commentBody === '';
     }
 
     const changeText = (e:ChangeEvent<HTMLTextAreaElement> | ChangeEvent<HTMLInputElement>, input:string) => {
@@ -63,6 +66,7 @@ const useCommentAdd = () => {
         commentName,
         numberOfComments,
         getNamePlaceHolder,
+        getIsLocked,
         clickNameInput,
         changeText,
         commentBodyTextArea,

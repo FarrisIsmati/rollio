@@ -1,6 +1,8 @@
 // DEPENDENCIES
 import React, { FC, ReactElement } from 'react';
 
+
+
 // COMPONENTS
 import TextAreaGrow from '../common/text/textarea-grow';
 import ButtonDefault from '../common/buttons/button-default';
@@ -12,8 +14,34 @@ import useCommentAdd from './hooks/use-comment-add';
 import { IconContext } from 'react-icons';
 import { IoMdText } from 'react-icons/io';
 
-const CommentAdd:FC = () => {
-    const { commentActive, commentBody, commentName, getNamePlaceHolder, clickNameInput, changeText, commentBodyTextArea, blurComment } = useCommentAdd();
+
+
+
+// DEPENDENCIES
+import { useDispatch } from 'react-redux';
+// ACTIONS
+import { requestPostVendorComment } from '../../redux/actions/data-actions';
+
+
+
+
+
+const CommentAdd:FC = (props) => {
+    const { 
+        commentActive,
+        commentBody,
+        commentName,
+        getNamePlaceHolder,
+        getIsLocked,
+        clickNameInput,
+        changeText,
+        commentBodyTextArea,
+        blurComment,
+    } = useCommentAdd();
+
+    const dispatch = useDispatch();
+
+
 
     return (
         <div className='commentadd__wrapper'>
@@ -52,8 +80,12 @@ const CommentAdd:FC = () => {
                     id={'commentAddButton'} 
                     text={'Share'} 
                     className={'button__comment_add font__button_comment_add'} 
-                    isLocked={() => commentBody === ''}
-                    handleClick={()=>null}
+                    isLocked={getIsLocked}
+                    // GET A UNIQUE ID RETURNED 
+                    // GET GET SHOW MORE LOCKED RESPONSIVE
+                    // GET COMMENT TO BE ADDED WHEN ADDED
+                    handleClick={() =>     dispatch( requestPostVendorComment({ regionId: '5d50bc3f6013b802bcaec400', vendorId: '5d50bc3f6013b802bcaec408', name: 'lolwow', text: 'lol haha omg wow' }) )
+                }
                 />
             </div>
         </div>

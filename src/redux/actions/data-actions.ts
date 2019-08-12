@@ -7,7 +7,9 @@ import { VENDOR_API } from '../../config'
 // CONSTANTS
 import {
     RECIEVE_VENDOR_PROFILE,
-}                            from "../constants/constants"
+    POST_VENDOR_COMMENT
+} from "../constants/constants"
+
 
 // Gets the detailed set of vendor profile data
 export function recieveVendorProfile(vendor:any) {
@@ -37,14 +39,43 @@ export function recieveVendorProfile(vendor:any) {
 }
 
 export function fetchVendorProfile(payload:any) {
-    const { regionId, vendorId } = payload
+    const { regionId, vendorId } = payload;
     return (dispatch:any) => {
         axios.get(`${VENDOR_API}/vendor/${regionId}/${vendorId}`)
         .then((res: AxiosResponse<any>) => res.data,
-            error => console.log('An error occurred.', error)
+            error => console.log('An error occurred: ', error)
         )
         .then((json)=>{
             dispatch(recieveVendorProfile(json))
         })
     }
-  }
+}
+
+export function postVendorComment(commentBody:any) {
+    return {
+        type: POST_VENDOR_COMMENT,
+        payload: {
+            ...commentBody
+        }
+    }
+}
+
+export function requestPostVendorComment(payload:any) {
+    const { regionId, vendorId, name, text } = payload;
+    return (dispatch:any) => {
+        axios.put(`${VENDOR_API}/vendor/${regionId}/${vendorId}/comments`, {
+            name,
+            text
+        })
+        .then(() => {
+            dispatch(postVendorComment({
+                name,
+                text,
+                date: Date.now()
+            }))
+        })
+        .catch((err) => {
+            console.error(err);
+        })
+    }
+}
