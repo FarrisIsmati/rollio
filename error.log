@@ -50,3 +50,38 @@
 {"message":"Redis: Connection failed trying again, attempts: 1","level":"error","timestamp":"2019-08-07 22:03:44"}
 {"message":"RabbitMQ: Connection failed trying again","level":"error","timestamp":"2019-08-07 22:05:20"}
 {"message":"attempts: 1","level":"error","timestamp":"2019-08-07 22:05:22"}
+{"message":"Redis: Connection failed trying again, attempts: 1","level":"error","timestamp":"2019-08-09 20:29:08"}
+{"message":"Redis: Connection failed trying again, attempts: 1","level":"error","timestamp":"2019-08-10 09:57:03"}
+{"message":"Redis: Connection failed trying again, attempts: 1","level":"error","timestamp":"2019-08-11 17:40:43"}
+{"level":"error","timestamp":"2019-08-11 20:13:25"}
+{"level":"error","timestamp":"2019-08-11 20:14:02"}
+{"level":"error","timestamp":"2019-08-11 20:14:02"}
+{"level":"error","timestamp":"2019-08-11 20:14:28"}
+{"level":"error","timestamp":"2019-08-11 20:14:29"}
+{"level":"error","timestamp":"2019-08-11 20:14:39"}
+{"level":"error","timestamp":"2019-08-11 20:15:30"}
+{"level":"error","timestamp":"2019-08-11 20:15:31"}
+{"level":"error","timestamp":"2019-08-11 20:15:31"}
+{"level":"error","timestamp":"2019-08-11 20:15:32"}
+{"level":"error","timestamp":"2019-08-11 20:15:34"}
+{"level":"error","timestamp":"2019-08-11 20:16:05"}
+{"level":"error","timestamp":"2019-08-11 20:16:22"}
+{"level":"error","timestamp":"2019-08-11 20:17:07"}
+{"message":"Redis: Connection failed trying again, attempts: 1","level":"error","timestamp":"2019-08-11 20:18:46"}
+{"message":"Redis: Connection failed trying again, attempts: 2","level":"error","timestamp":"2019-08-11 20:18:50"}
+{"message":"Redis: Connection failed trying again, attempts: 3","level":"error","timestamp":"2019-08-11 20:18:55"}
+{"message":"Redis: Connection failed trying again, attempts: 4","level":"error","timestamp":"2019-08-11 20:19:01"}
+{"message":"Redis: Connection failed trying again, attempts: 1","level":"error","timestamp":"2019-08-11 20:19:07"}
+{"message":"Redis: Connection failed trying again, attempts: 2","level":"error","timestamp":"2019-08-11 20:19:11"}
+{"message":"Redis: Connection failed trying again, attempts: 3","level":"error","timestamp":"2019-08-11 20:19:16"}
+{"level":"error","timestamp":"2019-08-11 20:53:25"}
+{"level":"error","timestamp":"2019-08-11 20:54:01"}
+{"level":"error","timestamp":"2019-08-11 20:57:31"}
+{"level":"error","timestamp":"2019-08-11 20:58:18"}
+{"level":"error","timestamp":"2019-08-11 20:58:42"}
+{"message":"Must include a regionID, vendorID, field, payload, & position properties in params","level":"error","timestamp":"2019-08-11 21:00:09"}
+{"message":"Must include a regionID, vendorID, field, payload, & position properties in params","level":"error","timestamp":"2019-08-11 21:01:45"}
+{"message":"Must include a regionID, vendorID, field, payload, & position properties in params","level":"error","timestamp":"2019-08-11 21:01:59"}
+{"message":"Must include a regionID, vendorID, field, payload, & position properties in params","level":"error","timestamp":"2019-08-11 21:03:04"}
+{"message":"Must include a regionID, vendorID, field, payload, & position properties in params","level":"error","timestamp":"2019-08-11 21:03:34"}
+{"level":"error","timestamp":"2019-08-11 21:04:31"}
