@@ -1,14 +1,15 @@
 // DEPENDENCIES
-import axios, { AxiosResponse } from 'axios'
+import axios, { AxiosResponse } from 'axios';
+import moment from 'moment';
 
 // ENV
-import { VENDOR_API } from '../../config'
+import { VENDOR_API } from '../../config';
 
 // CONSTANTS
 import {
     RECIEVE_VENDOR_PROFILE,
     POST_VENDOR_COMMENT
-} from "../constants/constants"
+} from "../constants/constants";
 
 
 // Gets the detailed set of vendor profile data
@@ -67,11 +68,13 @@ export function requestPostVendorComment(payload:any) {
             name,
             text
         })
-        .then(() => {
+        .then((res:any) => {
+            console.log(res)
             dispatch(postVendorComment({
+                commentDate: moment().format('YYYY-MM-DDTHH:mm:SS.sss'),
+                _id: res.data._id,
                 name,
                 text,
-                date: Date.now()
             }))
         })
         .catch((err) => {
