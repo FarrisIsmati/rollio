@@ -38,6 +38,20 @@ describe('Region Routes', () => {
     });
   });
 
+  describe('GET', () => {
+    describe('/region/name/:name', () => {
+      it('expect to get a region by name', (done) => {
+        chai.request(server)
+          .get('/region/name/WASHINGTONDC')
+          .end((err, res) => {
+            expect(res).to.have.status(200);
+            expect(res.body.name).to.be.equal('WASHINGTONDC');
+            done();
+          });
+      });
+    });
+  });
+
   after((done) => {
     seed.emptyRegions()
       .then(() => seed.emptyVendors())
