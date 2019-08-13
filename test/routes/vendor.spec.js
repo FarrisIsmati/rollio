@@ -183,21 +183,18 @@ describe('Vendor Routes', () => {
 
       it('expect vendor comments length to be increased by 1', (done) => {
         expect(updatedComments.length).to.be.equal(prevComments.length + 1);
-        expect(res.body.nModified).to.be.equal(1);
         expect(res).to.have.status(200);
         done();
       });
 
       it(`expect new comment in vendor to be '${commentText}'`, (done) => {
         expect(updatedComments[0].text).to.be.equal(commentText);
-        expect(res.body.nModified).to.be.equal(1);
         expect(res).to.have.status(200);
         done();
       });
 
-      it(`expect new comment name in vendor to be Some Dude`, (done) => {
+      it('expect new comment name in vendor to be Some Dude', (done) => {
         expect(updatedComments[0].name).to.be.equal('Some Dude');
-        expect(res.body.nModified).to.be.equal(1);
         expect(res).to.have.status(200);
         done();
       });

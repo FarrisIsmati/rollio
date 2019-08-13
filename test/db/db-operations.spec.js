@@ -147,15 +147,10 @@ describe('DB Operations', () => {
         const params = {
           regionID, vendorID: vendor._id, field: 'comments', payload: commentPayload, position: 0,
         };
-        const updateCommentsRes = await vendorOps.updateVendorPushPosition(params)
-          .then(res => res);
+        const updateCommentsRes = await vendorOps.updateVendorPushPosition(params);
 
-        const updatedComments = await Vendor.findOne({ _id: vendor._id })
-          .then(vendorUpdated => vendorUpdated.comments);
-
-        expect(updateCommentsRes.nModified).to.equal(1);
-        expect(updatedComments[0].name).to.be.equal(commentPayload.name);
-        expect(updatedComments[0].text).to.be.equal(commentPayload.text);
+        expect(updateCommentsRes.comments[0].name).to.be.equal(commentPayload.name);
+        expect(updateCommentsRes.comments[0].text).to.be.equal(commentPayload.text);
       });
 
       it('expect new tweet to be added to tweetHistory', async () => {
