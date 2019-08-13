@@ -1,5 +1,10 @@
 // DEPENDENCIES
 import React, { ChangeEvent, useState, useRef, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+
+// ACTIONS
+import { requestPostVendorComment } from '../../../redux/actions/data-actions';
+
 
 const useCommentAdd = () => {
     const [commentActive, setCommentActive] = useState<boolean>(false);
@@ -56,6 +61,11 @@ const useCommentAdd = () => {
         }
     }
 
+    const dispatch = useDispatch();
+    const dispatchRequestPostVendorComment = () => {
+        return dispatch( requestPostVendorComment({ regionId: '5d50bc3f6013b802bcaec400', vendorId: '5d50bc3f6013b802bcaec408', name: commentName, text: commentBody }) )
+    }
+
     const showMoreComments = () => {
         setNumberOfComments(numberOfComments + 5);
     }
@@ -71,7 +81,8 @@ const useCommentAdd = () => {
         changeText,
         commentBodyTextArea,
         blurComment,
-        showMoreComments
+        showMoreComments,
+        dispatchRequestPostVendorComment
     }
 }
 

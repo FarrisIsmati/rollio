@@ -8,6 +8,7 @@ import {
 import { DataDefaultState } from "./interfaces";
 
 const defaultState:DataDefaultState = {
+    regionID: '',
     vendorsAll: {},
     selectedVendor: {
         id: '',

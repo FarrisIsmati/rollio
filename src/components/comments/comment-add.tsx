@@ -1,8 +1,6 @@
 // DEPENDENCIES
 import React, { FC, ReactElement } from 'react';
 
-
-
 // COMPONENTS
 import TextAreaGrow from '../common/text/textarea-grow';
 import ButtonDefault from '../common/buttons/button-default';
@@ -13,18 +11,6 @@ import useCommentAdd from './hooks/use-comment-add';
 // ICONS
 import { IconContext } from 'react-icons';
 import { IoMdText } from 'react-icons/io';
-
-
-
-
-// DEPENDENCIES
-import { useDispatch } from 'react-redux';
-// ACTIONS
-import { requestPostVendorComment } from '../../redux/actions/data-actions';
-
-
-
-
 
 const CommentAdd:FC = (props) => {
     const { 
@@ -37,11 +23,8 @@ const CommentAdd:FC = (props) => {
         changeText,
         commentBodyTextArea,
         blurComment,
+        dispatchRequestPostVendorComment,
     } = useCommentAdd();
-
-    const dispatch = useDispatch();
-
-
 
     return (
         <div className='commentadd__wrapper'>
@@ -84,8 +67,7 @@ const CommentAdd:FC = (props) => {
                     // GET A UNIQUE ID RETURNED 
                     // GET GET SHOW MORE LOCKED RESPONSIVE
                     // GET COMMENT TO BE ADDED WHEN ADDED
-                    handleClick={() =>     dispatch( requestPostVendorComment({ regionId: '5d50bc3f6013b802bcaec400', vendorId: '5d50bc3f6013b802bcaec408', name: 'lolwow', text: 'lol haha omg wow' }) )
-                }
+                    handleClick={dispatchRequestPostVendorComment}
                 />
             </div>
         </div>

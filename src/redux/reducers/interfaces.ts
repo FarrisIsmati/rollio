@@ -67,6 +67,7 @@ export interface Filter {
 }
 
 export interface DataDefaultState {
+    regionID: string,
     vendorsAll: { [key: string]: VendorCard }
     selectedVendor: VendorFull
 }

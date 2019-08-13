@@ -16,9 +16,8 @@ const TruckProfile = () => {
   });
 
   return (
-      // Mobile resize this flex centers
     <div className="truckprofile__wrapper"> 
-        <CommentSection getComments={GetCommentsFromState}/>
+        <CommentSection getComments={GetCommentsFromState} />
     </div>
   );
 }
