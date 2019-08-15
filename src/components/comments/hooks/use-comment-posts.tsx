@@ -1,5 +1,6 @@
 // DEPENDENCIES
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import moment from 'moment';
 
 // COMPONENTS
 import CommentPost from '../comment-post';
@@ -9,6 +10,14 @@ import { Comment } from '../interfaces';
 
 const useCommentPosts = (props: any) => {
     const SetComment = (comment: Comment) => {
+        if (comment.name === '') {
+            comment.name = 'Some Dude';
+        }
+
+        if (comment.commentDate === '') {
+            comment.commentDate = moment().subtract(30, 'seconds').format('YYYY-MM-DDTHH:mm:SS.sss');
+        }
+
         return (
             <CommentPost key={comment._id} name={comment.name} time={comment.commentDate} text={comment.text}/>
         )
@@ -29,15 +38,20 @@ const useCommentPosts = (props: any) => {
         const targetLength = shownComments.length + 10;
 
         if (shownComments.length === commentsLength) {
-        return
+            return
         }
 
         if (targetLength < commentsLength) {
-        setShownComments(props.comments.slice(0, targetLength).map(SetComment))
+            setShownComments(props.comments.slice(0, targetLength).map(SetComment))
         } else {
-        setShownComments(props.comments.map(SetComment))
+            setShownComments(props.comments.map(SetComment))
         }
     }
+    
+    // Only render if comments array has changed changed in size
+    useEffect(() => {
+        setShownComments(props.comments.slice(0, shownComments.length).map(SetComment))
+    }, [props.comments.length])
 
     return {
         shownComments,

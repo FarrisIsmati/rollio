@@ -62,7 +62,11 @@ const useCommentAdd = () => {
     }
 
     const dispatch = useDispatch();
+
     const dispatchRequestPostVendorComment = () => {
+        if (commentBody === '') {
+            return
+        }
         return dispatch( requestPostVendorComment({ regionId: '5d50bc3f6013b802bcaec400', vendorId: '5d50bc3f6013b802bcaec408', name: commentName, text: commentBody }) )
     }
 
