@@ -24,6 +24,7 @@ export const store = createStore(
   )
 )
 
+// SET UP ROUTES :)
 const App:FC = () => {
   return (
     <Provider store={store}>

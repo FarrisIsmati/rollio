@@ -58,14 +58,11 @@ export function dataReducer(state = defaultState, action: any) {
                 ]
             }
         }
-    // case RECIEVE_REGION_DATA:
-    //     return {
-    //         ...state,
-    //         selectedVendor: {
-    //             ...state.selectedVendor,
-
-    //         }
-    //     }
+    case RECIEVE_REGION_DATA:
+        return {
+            ...state,
+            ...action.payload
+        }
     default:
         return state
     }

@@ -14,12 +14,14 @@ import useVendorData from './hooks/use-vendor-data';
 const TruckProfile = () => {
   const { FetchVendorProfileData, GetCommentsFromState } = useVendorData();
   
-  // const dispatch = useDispatch();
+  // When ready load up on the page that requires it (Main map page)
+  const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   dispatch( fetchRegionData({ regionName: 'WASHINGTONDC' }))
-  // }, [])
+  useEffect(() => {
+    dispatch( fetchRegionData({ regionName: 'WASHINGTONDC' }))
+  }, [])
 
+  // This data will be taken from the route
   FetchVendorProfileData({ 
     regionId: '5d50bc3f6013b802bcaec400',
     vendorId: '5d50bc3f6013b802bcaec408'

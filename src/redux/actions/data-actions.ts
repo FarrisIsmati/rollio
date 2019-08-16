@@ -93,7 +93,14 @@ export function recieveRegionData(region:any) {
     return {
         type: RECIEVE_REGION_DATA,
         payload: {
-            ...region
+            regionID: region._id,
+            regionName: region.name,
+            dailyActiveVendors: region.dailyActiveVendorIDs,
+            regionCoordinates: {
+                lat: region.coordinates.coordinates[0],
+                long: region.coordinates.coordinates[1]
+            },
+            regionTimezone: region.timezone
         }
     }
 }
@@ -106,8 +113,7 @@ export function fetchRegionData(payload:any) {
             error => console.log('An error occurred: ', error)
         )
         .then((json)=>{
-            console.log(json);
-            dispatch(recieveVendorProfile(json))
+            dispatch(recieveRegionData(json))
         })
     }
 }
