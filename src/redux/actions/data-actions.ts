@@ -8,12 +8,19 @@ import { VENDOR_API } from '../../config';
 // CONSTANTS
 import {
     RECIEVE_VENDOR_PROFILE,
-    POST_VENDOR_COMMENT
+    POST_VENDOR_COMMENT,
+    RECIEVE_REGION_DATA
 } from "../constants/constants";
 
 
 // Gets the detailed set of vendor profile data
 export function recieveVendorProfile(vendor:any) {
+    let location = null;
+
+    // If the most recently updated of the vendor location history is today
+    if (vendor.locationHistory.length && moment(Date.now()).isSame(vendor.locationHistory[0].locationDate, 'day')) {
+        location = vendor.locationHistory[0];
+    }
     // LOCATION HISTORY ONLY IF IT"S LOCATION IS TODAY CREATE THAT CHECK
     const profile = {
         categories: vendor.categories,
@@ -22,7 +29,7 @@ export function recieveVendorProfile(vendor:any) {
         description: vendor.description,
         email: vendor.email,
         id: vendor._id,
-        location: vendor.locationHistory[0],
+        location,
         name: vendor.name,
         phonenumber: vendor.phonenumber,
         price: vendor.price,
@@ -78,6 +85,29 @@ export function requestPostVendorComment(payload:any) {
         })
         .catch((err) => {
             console.error(err);
+        })
+    }
+}
+
+export function recieveRegionData(region:any) {
+    return {
+        type: RECIEVE_REGION_DATA,
+        payload: {
+            ...region
+        }
+    }
+}
+
+export function fetchRegionData(payload:any) {
+    const { regionName } = payload;
+    return (dispatch:any) => {
+        axios.get(`${VENDOR_API}/region/name/${regionName}`)
+        .then((res: AxiosResponse<any>) => res.data,
+            error => console.log('An error occurred: ', error)
+        )
+        .then((json)=>{
+            console.log(json);
+            dispatch(recieveVendorProfile(json))
         })
     }
 }

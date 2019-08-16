@@ -34,7 +34,7 @@ export interface VendorFull {
     twitterID: string,
     comments: Comment[],
     creditCard: boolean | null,
-    location: Location
+    location: Location | null
 }
 
 export interface Comment {
@@ -68,6 +68,10 @@ export interface Filter {
 
 export interface DataDefaultState {
     regionID: string,
+    regionName: string,
+    dailyActiveVendors: string[],
+    regionCoordinates: Coordinates,
+    regionTimezone: string,
     vendorsAll: { [key: string]: VendorCard }
     selectedVendor: VendorFull
 }

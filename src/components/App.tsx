@@ -24,13 +24,15 @@ export const store = createStore(
   )
 )
 
-const App:FC = () => (
-  <Provider store={store}>
-    <div className="App">
-      <Navbar/>
-      <TruckProfile/>
-    </div>
-  </Provider>
-);
+const App:FC = () => {
+  return (
+    <Provider store={store}>
+      <div className="App">
+        <Navbar/>
+        <TruckProfile/>
+      </div>
+    </Provider>
+  );
+}
 
 export default App;

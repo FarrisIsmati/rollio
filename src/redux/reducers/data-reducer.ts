@@ -1,7 +1,8 @@
 // CONSTANTS
 import {
     RECIEVE_VENDOR_PROFILE,
-    POST_VENDOR_COMMENT
+    POST_VENDOR_COMMENT,
+    RECIEVE_REGION_DATA
 }                            from "../constants/constants"
 
 // INTERFACES
@@ -9,6 +10,13 @@ import { DataDefaultState } from "./interfaces";
 
 const defaultState:DataDefaultState = {
     regionID: '',
+    regionName: '',
+    dailyActiveVendors: [],
+    regionCoordinates: {
+        lat: null,
+        long: null
+    },
+    regionTimezone: '',
     vendorsAll: {},
     selectedVendor: {
         id: '',
@@ -50,6 +58,14 @@ export function dataReducer(state = defaultState, action: any) {
                 ]
             }
         }
+    // case RECIEVE_REGION_DATA:
+    //     return {
+    //         ...state,
+    //         selectedVendor: {
+    //             ...state.selectedVendor,
+
+    //         }
+    //     }
     default:
         return state
     }
