@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 
 // ACTIONS
 import { requestPostVendorComment } from '../../../redux/actions/data-actions';
+import { AxiosResponse } from 'axios';
 
 
 const useCommentAdd = () => {
@@ -11,10 +12,11 @@ const useCommentAdd = () => {
     const [commentBody, setCommentBody] = useState<string>('');
     const [commentName, setCommentName] = useState<string>('');
     const [numberOfComments, setNumberOfComments] = useState<number>(5);
-
+    const [commentErrorMessage, setCommentErrorMessage] = useState<string>('');
     const commentBodyTextArea:any = useRef(null);
 
     useEffect(() => {
+        // Upon unmounting reset number of comments to 5
         return () => {
             setNumberOfComments(5);
         }
@@ -63,11 +65,23 @@ const useCommentAdd = () => {
 
     const dispatch = useDispatch();
 
-    const dispatchRequestPostVendorComment = () => {
+    const dispatchRequestPostVendorComment = async () => {
         if (commentBody === '') {
             return
         }
-        return dispatch( requestPostVendorComment({ regionId: '5d50bc3f6013b802bcaec400', vendorId: '5d50bc3f6013b802bcaec408', name: commentName, text: commentBody }) )
+        const dispatchRes:any = await dispatch( requestPostVendorComment({ regionId: '5d50bc3f6013b802bcaec400', vendorId: '5d50bc3f6013b802bcaec408', name: commentName, text: commentBody }) )
+
+        const httpStatus = dispatchRes.response ? dispatchRes.response.status : dispatchRes.status;
+
+        if (httpStatus === 429) {
+            setCommentErrorMessage(() => 'You can only comment on this vendor once per day');
+        } else if (httpStatus === 200) {
+            setCommentErrorMessage(() => '');
+        } else {
+            setCommentErrorMessage(() => 'Error: your comment could not be submitted');
+        }
+
+        return dispatchRes;
     }
 
     const showMoreComments = () => {
@@ -78,6 +92,7 @@ const useCommentAdd = () => {
         commentActive,
         commentBody,
         commentName,
+        commentErrorMessage,
         numberOfComments,
         getNamePlaceHolder,
         getIsLocked,

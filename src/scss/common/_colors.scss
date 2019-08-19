@@ -6,11 +6,13 @@ $rollioBlack: #212121;
 $rollioMedGrey: #4d4d4d;
 $rollioLightGrey: #757575;
 $rollioLighterGrey: #eeeeee;
+$rollioRed: #f54336;
 
 // FONTS
 $color-font-main: $rollioBlack;
 $color-font-main-light: $rollioMedGrey;
 $color-font-main-light2: $rollioLightGrey;
+$color-font-error: $rollioRed;
 
 // COMPONENTS
 // Main
@@ -24,3 +26,5 @@ $color-comment-name-border: $rollioLighterGrey;
 $color-button-default-font: $white;
 $color-button-default-background: $rollioBlue;
 $color-button-default-background-locked: $rollioLighterGrey;
+
+

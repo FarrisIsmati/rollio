@@ -62,6 +62,14 @@
         }
     }
 
+    &__button_holder {
+        display: flex;
+
+        .button__comment_add {
+            margin-right: 15px;
+        }
+    }
+
     &__icon {
         &_type_text {
             margin-right: 18px;
@@ -69,6 +77,10 @@
             color: $color-comment-icon-text;
         }
     }
+}
+
+#commentErrorMessage {
+    font-size: 12px;
 }
 
 #commentBodyTextArea {
@@ -126,6 +138,11 @@
         &::placeholder,::-moz-placeholder,:-moz-placeholder,::-webkit-input-placeholder,:-ms-input-placeholder  {
             color: $color-font-main-light2;
         }
+    }
+
+    &_error {
+        @include neuzeit-reg;
+        color: $color-font-error;
     }
 }
 

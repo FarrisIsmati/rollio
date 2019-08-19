@@ -70,8 +70,7 @@ export function postVendorComment(commentBody:any) {
 
 export function requestPostVendorComment(payload:any) {
     const { regionId, vendorId, name, text } = payload;
-    return (dispatch:any) => {
-        axios.put(`${VENDOR_API}/vendor/${regionId}/${vendorId}/comments`, {
+    return (dispatch:any) => axios.put(`${VENDOR_API}/vendor/${regionId}/${vendorId}/comments`, {
             name,
             text
         })
@@ -82,11 +81,13 @@ export function requestPostVendorComment(payload:any) {
                 name,
                 text,
             }))
+            console.log(res)
+            return res;
         })
         .catch((err) => {
             console.error(err);
+            return err;
         })
-    }
 }
 
 export function recieveRegionData(region:any) {
