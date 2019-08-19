@@ -4,10 +4,9 @@ import { useDispatch } from 'react-redux';
 
 // ACTIONS
 import { requestPostVendorComment } from '../../../redux/actions/data-actions';
-import { AxiosResponse } from 'axios';
 
 
-const useCommentAdd = () => {
+const useCommentAdd = (props:any) => {
     const [commentActive, setCommentActive] = useState<boolean>(false);
     const [commentBody, setCommentBody] = useState<string>('');
     const [commentName, setCommentName] = useState<string>('');
@@ -69,9 +68,11 @@ const useCommentAdd = () => {
         if (commentBody === '') {
             return
         }
+        // USE THIS DATA FROM STATE OR ROUTES? HMMMM
+        const routeLocation = props.location.pathname.substr(1).split('/');
 
         try {
-            const dispatchRes:any = await dispatch( requestPostVendorComment({ regionId: '5d50bc3f6013b802bcaec400', vendorId: '5d50bc3f6013b802bcaec408', name: commentName, text: commentBody }) )
+            const dispatchRes:any = await dispatch( requestPostVendorComment({ regionId: routeLocation[0], vendorId: routeLocation[1], name: commentName, text: commentBody }) )
             const httpStatus = dispatchRes.response ? dispatchRes.response.status : dispatchRes.status;
 
             if (httpStatus === 429) {

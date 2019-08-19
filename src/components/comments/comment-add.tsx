@@ -1,5 +1,6 @@
 // DEPENDENCIES
 import React, { FC, ReactElement } from 'react';
+import { withRouter } from "react-router";
 
 // COMPONENTS
 import TextAreaGrow from '../common/text/textarea-grow';
@@ -25,7 +26,7 @@ const CommentAdd:FC = (props) => {
         commentBodyTextArea,
         blurComment,
         dispatchRequestPostVendorComment,
-    } = useCommentAdd();
+    } = useCommentAdd(props);
 
     return (
         <div className='commentadd__wrapper'>
@@ -73,7 +74,6 @@ const CommentAdd:FC = (props) => {
             </div>
         </div>
     )
-    
 }
 
-export default CommentAdd;
+export default withRouter(CommentAdd);

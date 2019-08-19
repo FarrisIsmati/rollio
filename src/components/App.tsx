@@ -3,9 +3,15 @@ import React, {FC} from 'react';
 import { Provider } from 'react-redux'
 import thunkMiddleware from 'redux-thunk'
 import { createLogger } from 'redux-logger'
-import {  createStore,
-          applyMiddleware
-        } from 'redux'
+import {  
+  createStore,
+  applyMiddleware
+} from 'redux'
+import { 
+  Route,
+  Switch,
+  BrowserRouter
+} from 'react-router-dom'
 
 //REDUX
 import rootReducer from '../redux/reducers/root-reducer'
@@ -24,14 +30,17 @@ export const store = createStore(
   )
 )
 
-// SET UP ROUTES :)
 const App:FC = () => {
   return (
     <Provider store={store}>
-      <div className="App">
-        <Navbar/>
-        <TruckProfile/>
-      </div>
+      <BrowserRouter>
+        <div className="App">
+          <Navbar/>
+          <Switch>
+            <Route exact path="/5d50bc3f6013b802bcaec400/5d50bc3f6013b802bcaec408" component={ TruckProfile } />
+          </Switch>
+        </div>
+      </BrowserRouter>
     </Provider>
   );
 }
