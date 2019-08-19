@@ -69,19 +69,22 @@ const useCommentAdd = () => {
         if (commentBody === '') {
             return
         }
-        const dispatchRes:any = await dispatch( requestPostVendorComment({ regionId: '5d50bc3f6013b802bcaec400', vendorId: '5d50bc3f6013b802bcaec408', name: commentName, text: commentBody }) )
 
-        const httpStatus = dispatchRes.response ? dispatchRes.response.status : dispatchRes.status;
+        try {
+            const dispatchRes:any = await dispatch( requestPostVendorComment({ regionId: '5d50bc3f6013b802bcaec400', vendorId: '5d50bc3f6013b802bcaec408', name: commentName, text: commentBody }) )
+            const httpStatus = dispatchRes.response ? dispatchRes.response.status : dispatchRes.status;
 
-        if (httpStatus === 429) {
-            setCommentErrorMessage(() => 'You can only comment on this vendor once per day');
-        } else if (httpStatus === 200) {
-            setCommentErrorMessage(() => '');
-        } else {
+            if (httpStatus === 429) {
+                setCommentErrorMessage(() => 'You can only comment on this vendor once per day');
+            } else if (httpStatus === 200) {
+                setCommentErrorMessage(() => '');
+                setCommentBody(() => '');
+            } else {
+                setCommentErrorMessage(() => 'Error: your comment could not be submitted');
+            }
+        } catch (error) {
             setCommentErrorMessage(() => 'Error: your comment could not be submitted');
         }
-
-        return dispatchRes;
     }
 
     const showMoreComments = () => {
