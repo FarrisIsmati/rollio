@@ -85,3 +85,14 @@
 {"message":"Must include a regionID, vendorID, field, payload, & position properties in params","level":"error","timestamp":"2019-08-11 21:03:04"}
 {"message":"Must include a regionID, vendorID, field, payload, & position properties in params","level":"error","timestamp":"2019-08-11 21:03:34"}
 {"level":"error","timestamp":"2019-08-11 21:04:31"}
+{"message":"Redis: Connection failed trying again, attempts: 1","level":"error","timestamp":"2019-08-14 22:05:16"}
+{"message":"Redis: Connection failed trying again, attempts: 1","level":"error","timestamp":"2019-08-15 22:15:55"}
+{"message":"Redis: Connection failed trying again, attempts: 1","level":"error","timestamp":"2019-08-18 15:58:25"}
+{"message":"MongoDB: Disconnected!","level":"error","timestamp":"2019-08-18 20:43:05"}
+{"message":"Redis: Connection failed trying again, attempts: 1","level":"error","timestamp":"2019-08-18 21:43:47"}
+{"message":"Redis: Connection failed trying again, attempts: 1","level":"error","timestamp":"2019-08-18 21:44:56"}
+{"message":"Redis: Connection failed trying again, attempts: 2","level":"error","timestamp":"2019-08-18 21:44:59"}
+{"message":"Redis: Connection failed trying again, attempts: 3","level":"error","timestamp":"2019-08-18 21:45:04"}
+{"message":"Redis: Connection failed trying again, attempts: 1","level":"error","timestamp":"2019-08-18 21:46:48"}
+{"message":"Redis: Connection failed trying again, attempts: 1","level":"error","timestamp":"2019-08-18 21:47:53"}
+{"message":"Redis: Connection failed trying again, attempts: 1","level":"error","timestamp":"2019-08-18 21:55:59"}
