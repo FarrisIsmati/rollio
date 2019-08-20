@@ -1,11 +1,30 @@
 // DEPENDENCIES
-import React, { KeyboardEvent, useState, ChangeEvent} from 'react';
+import React, { useEffect, useState, ChangeEvent} from 'react';
 
-const useTextAreaGrow = () => {
+interface tempChangeEvent  {
+    target: {
+        rows: number,
+        scrollHeight: number
+    }
+}
+
+const useTextAreaGrow = (ref: any) => {
     const [rows, setRows] = useState<number>(1);
     const [minRows] = useState<number>(1);
 
-    const textAreaHandleChange = (e:ChangeEvent<HTMLTextAreaElement>) => {
+    useEffect(() => {
+        const tempChangeEvent:tempChangeEvent = {
+            target: {
+                rows: ref.current.rows,
+                scrollHeight: ref.current.scrollHeight
+            }
+        }
+
+        // Initialize height on render
+        textAreaHandleChange(tempChangeEvent)
+    }, [])
+
+    const textAreaHandleChange = (e:ChangeEvent<HTMLTextAreaElement> | tempChangeEvent) => {
         const textAreaLineHeight = 20;
        
 		const previousRows = e.target.rows;

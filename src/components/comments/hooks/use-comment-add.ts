@@ -68,7 +68,7 @@ const useCommentAdd = (props:any) => {
         if (commentBody === '') {
             return
         }
-        // USE THIS DATA FROM STATE OR ROUTES? HMMMM
+
         const routeLocation = props.location.pathname.substr(1).split('/');
 
         try {

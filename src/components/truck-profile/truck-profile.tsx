@@ -1,5 +1,5 @@
 // DEPENDENCIES
-import React, { useEffect } from 'react';
+import React from 'react';
 
 // COMPONENTS
 import CommentSection from '../comments/comment-section';
@@ -9,7 +9,7 @@ import { withRouter } from 'react-router';
 import useVendorData from './hooks/use-vendor-data';
 
 const TruckProfile = (props:any) => {
-  const { FetchVendorProfileData, GetCommentsFromState } = useVendorData();
+  const { FetchVendorProfileData, GetCommentsFromState } = useVendorData;
   const routeLocation = props.location.pathname.substr(1).split('/');
 
   // This data will be taken from the route
@@ -19,11 +19,15 @@ const TruckProfile = (props:any) => {
   });
 
   return (
-    <div className="truckprofile__wrapper"> 
+    <div className='truckprofile__wrapper'>
+      <div className='truckprofile__top_wrapper'>
+        <p> lol </p>
+      </div>
+      <div className='truckprofile__bottom_wrapper'>
         <CommentSection getComments={GetCommentsFromState} />
+      </div>
     </div>
   );
 }
-
 
 export default withRouter(TruckProfile);

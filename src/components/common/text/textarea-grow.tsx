@@ -14,7 +14,7 @@ interface TextAreaGrowProps  {
 }
 
 const TextAreaGrowable = React.forwardRef((props: TextAreaGrowProps, ref: any) => {
-    const { rows, textAreaHandleChange } = useTextAreaGrow();
+    const { rows, textAreaHandleChange } = useTextAreaGrow(ref);
 
     return (
         <textarea 

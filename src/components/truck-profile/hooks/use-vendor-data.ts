@@ -4,20 +4,14 @@ import { useSelector, useDispatch  } from 'react-redux';
 // ACTIONS
 import { fetchVendorProfile } from '../../../redux/actions/data-actions';
 
-const useVendorData = () => {    
-    const FetchVendorProfileData = (props: any) => {
+const useVendorData = {    
+    FetchVendorProfileData: (props: any) => {
         const { regionId, vendorId } = props;
         const dispatch = useDispatch();
         dispatch( fetchVendorProfile({ regionId, vendorId }) );
-    }
-
-    const GetCommentsFromState = () => {
+    },
+    GetCommentsFromState: () => {
         return useSelector((state:any) => state.data.selectedVendor.comments)
-    }
-
-    return {
-        FetchVendorProfileData,
-        GetCommentsFromState
     }
 }
 
