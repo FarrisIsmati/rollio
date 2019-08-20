@@ -18,7 +18,7 @@ import rootReducer from '../redux/reducers/root-reducer'
 
 // COMPONENTS
 import Navbar from './navbar/navbar';
-import TruckProfile from './truck-profile/truck-profile'
+import TruckProfile from './vendor-profile/vendor-profile'
 
 const loggerMiddleware = createLogger()
 

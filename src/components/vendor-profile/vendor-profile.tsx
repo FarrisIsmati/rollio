@@ -19,11 +19,11 @@ const TruckProfile = (props:any) => {
   });
 
   return (
-    <div className='truckprofile__wrapper'>
-      <div className='truckprofile__top_wrapper'>
+    <div className='vendorprofile__wrapper'>
+      <div className='vendorprofile__top_wrapper'>
         <p> lol </p>
       </div>
-      <div className='truckprofile__bottom_wrapper'>
+      <div className='vendorprofile__bottom_wrapper'>
         <CommentSection getComments={GetCommentsFromState} />
       </div>
     </div>

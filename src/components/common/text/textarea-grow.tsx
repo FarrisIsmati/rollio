@@ -31,5 +31,4 @@ const TextAreaGrowable = React.forwardRef((props: TextAreaGrowProps, ref: any) =
     );
 })
 
-
 export default TextAreaGrowable;
