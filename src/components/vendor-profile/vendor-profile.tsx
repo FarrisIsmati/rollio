@@ -1,14 +1,15 @@
 // DEPENDENCIES
 import React from 'react';
+import { withRouter } from 'react-router';
 
 // COMPONENTS
 import CommentSection from '../comments/comment-section';
-import { withRouter } from 'react-router';
+import VendorData from './vendor-data';
 
 // HOOKS
 import useVendorData from './hooks/use-vendor-data';
 
-const TruckProfile = (props:any) => {
+const VendorProfile = (props:any) => {
   const { FetchVendorProfileData, GetCommentsFromState } = useVendorData;
   const routeLocation = props.location.pathname.substr(1).split('/');
 
@@ -21,7 +22,7 @@ const TruckProfile = (props:any) => {
   return (
     <div className='vendorprofile__wrapper'>
       <div className='vendorprofile__top_wrapper'>
-        <p> lol </p>
+        <VendorData />
       </div>
       <div className='vendorprofile__bottom_wrapper'>
         <CommentSection getComments={GetCommentsFromState} />
@@ -30,4 +31,4 @@ const TruckProfile = (props:any) => {
   );
 }
 
-export default withRouter(TruckProfile);
+export default withRouter(VendorProfile);
