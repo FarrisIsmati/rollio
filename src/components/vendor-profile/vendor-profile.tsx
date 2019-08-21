@@ -6,17 +6,22 @@ import { withRouter } from 'react-router';
 import CommentSection from '../comments/comment-section';
 import VendorData from './vendor-data';
 
+// UTILS
+import { getRouteIds } from '../../util/index';
+
 // HOOKS
 import useVendorData from './hooks/use-vendor-data';
 
 const VendorProfile = (props:any) => {
   const { FetchVendorProfileData, GetCommentsFromState } = useVendorData;
-  const routeLocation = props.location.pathname.substr(1).split('/');
+
+  const regionId = getRouteIds(props).regionId;
+  const vendorId = getRouteIds(props).vendorId;
 
   // This data will be taken from the route
   FetchVendorProfileData({ 
-    regionId: routeLocation[0],
-    vendorId: routeLocation[1]
+    regionId: regionId,
+    vendorId: vendorId
   });
 
   return (

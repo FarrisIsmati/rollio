@@ -2,7 +2,10 @@
 import React, { ChangeEvent, useState, useRef, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
-// ACTIONS
+// UTILS
+import { getRouteIds } from '../../../util/index';
+
+// REDUX
 import { requestPostVendorComment } from '../../../redux/actions/data-actions';
 
 
@@ -69,10 +72,11 @@ const useCommentAdd = (props:any) => {
             return
         }
 
-        const routeLocation = props.location.pathname.substr(1).split('/');
+        const regionId = getRouteIds(props).regionId;
+        const vendorId = getRouteIds(props).vendorId;
 
         try {
-            const dispatchRes:any = await dispatch( requestPostVendorComment({ regionId: routeLocation[0], vendorId: routeLocation[1], name: commentName, text: commentBody }) )
+            const dispatchRes:any = await dispatch( requestPostVendorComment({ regionId, vendorId, name: commentName, text: commentBody }) )
             const httpStatus = dispatchRes.response ? dispatchRes.response.status : dispatchRes.status;
 
             if (httpStatus === 429) {

@@ -25,6 +25,7 @@ const defaultState:DataDefaultState = {
         email: '',
         website: '',
         phonenumber: null,
+        profileImageLink: '',
         categories: [],
         price: '',
         rating: null,

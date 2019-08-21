@@ -28,6 +28,7 @@ export interface VendorFull {
     email: string,
     website: string,
     phonenumber: number | null,
+    profileImageLink: string | null,
     categories: string[],
     price: string,
     rating: number | null,

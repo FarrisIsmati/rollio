@@ -32,6 +32,7 @@ export function recieveVendorProfile(vendor:any) {
         location,
         name: vendor.name,
         phonenumber: vendor.phonenumber,
+        profileImageLink: vendor.profileImageLink,
         price: vendor.price,
         rating: vendor.rating,
         twitterID: vendor.twitterID,
