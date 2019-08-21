@@ -12,6 +12,9 @@ const useVendorData = {
     },
     GetCommentsFromState: () => {
         return useSelector((state:any) => state.data.selectedVendor.comments)
+    },
+    GetVendorDataFromState: () => {
+        return useSelector((state:any) => state.data.selectedVendor)
     }
 }
 

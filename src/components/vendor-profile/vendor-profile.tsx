@@ -13,7 +13,7 @@ import { getRouteIds } from '../../util/index';
 import useVendorData from './hooks/use-vendor-data';
 
 const VendorProfile = (props:any) => {
-  const { FetchVendorProfileData, GetCommentsFromState } = useVendorData;
+  const { FetchVendorProfileData, GetCommentsFromState, GetVendorDataFromState } = useVendorData;
 
   const regionId = getRouteIds(props).regionId;
   const vendorId = getRouteIds(props).vendorId;
@@ -27,7 +27,7 @@ const VendorProfile = (props:any) => {
   return (
     <div className='vendorprofile__wrapper'>
       <div className='vendorprofile__top_wrapper'>
-        <VendorData />
+        <VendorData getVendorData={GetVendorDataFromState} />
       </div>
       <div className='vendorprofile__bottom_wrapper'>
         <CommentSection getComments={GetCommentsFromState} />

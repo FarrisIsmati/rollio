@@ -2,9 +2,12 @@
 import React from 'react';
 
 const VendorData = (props:any) => {
-  return (
+    const vendor = props.getVendorData()
+
+    return (
     <div className='vendordata__wrapper'>
         <div className='col1'>
+            <img src={vendor.profileImageLink}/>
             <p>Astro Donuts</p>
         </div>
         <div className='col2'>
