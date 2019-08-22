@@ -18,11 +18,13 @@
         }
 
         .col3 {
-
+            margin-top: 32px;
         }
 
         .col4 {
-            
+            margin-top: 32px;
+            display: flex;
+            justify-content: space-between;
         }
     }
 
@@ -45,10 +47,29 @@
     line-height: 1.19;
 }
 
+.font__vendordata_description {
+    @include neuzeit-reg;
+    color: $color-font-main;
+    font-size: 18px;
+}
+
+.font__vendordata_link {
+    @include neuzeit-reg;
+    color: $color-font-link;
+    font-size: 18px;
+    text-decoration: none;
+}
+
 // MEDIA QUERY
 
 @media only screen and (max-width: 576px) {
     .font__vendordata_title {
         font-size: 26px;
+    }
+
+    .vendordata__wrapper {
+        .col4 {
+            flex-direction: column;
+        }
     }
   }

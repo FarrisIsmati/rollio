@@ -25,7 +25,7 @@ const useCommentAdd = (props:any) => {
     })
 
     const getNamePlaceHolder = () => {
-        return commentActive === false ? 'Be the first to share your thoughts...' : 'Add your name (optional)';   
+        return commentActive === false ? 'Share thoughts...' : 'Name (Optional)';   
     }
 
     const getIsLocked = () => {
