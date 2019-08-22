@@ -4,14 +4,22 @@ import React from 'react';
 const VendorData = (props:any) => {
     const vendor = props.getVendorData()
 
+    const Categories = vendor.categories.map((category:string) => {
+        return (            
+            <div className='info__category_wrapper' key={category}>
+                {category}
+            </div>
+        )
+    })
+
     return (
     <div className='vendordata__wrapper'>
         <div className='col1'>
-            <img src={vendor.profileImageLink}/>
-            <p>Astro Donuts</p>
+            <img src={vendor.profileImageLink} className='vendordata__vendor_profimg'/>
+            <h1 className='font__vendordata_title'>{vendor.name}</h1>
         </div>
         <div className='col2'>
-            <p>Thingy</p>
+            {Categories}
         </div>
         <div className='col3'>
             <p>descrip</p> 

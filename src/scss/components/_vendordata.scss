@@ -5,11 +5,16 @@
         max-width: 600px;
 
         .col1 {
+            display: flex;
+            align-items: center;
 
+            h1 {
+                margin-left: 16px;
+            }
         }
 
         .col2 {
-
+            margin-top: 17px;
         }
 
         .col3 {
@@ -20,4 +25,30 @@
             
         }
     }
+
+    &__vendor_profimg {
+        display: block;
+        max-width:144px;
+        max-height:114px;
+        width: auto;
+        height: auto;
+    }
 }
+
+// APPLIED FONTS
+
+.font__vendordata_title {
+    @include neuzeit-black;
+    color: $color-font-alt;
+    font-size: 42px;
+    font-stretch: normal;
+    line-height: 1.19;
+}
+
+// MEDIA QUERY
+
+@media only screen and (max-width: 576px) {
+    .font__vendordata_title {
+        font-size: 26px;
+    }
+  }
