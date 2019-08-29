@@ -67,6 +67,8 @@ const useCommentAdd = (props:any) => {
 
     const dispatch = useDispatch();
 
+    // WORK ON LOGIC IF OYU HAVE ONE COMMENT AN DPOST THE FIRST ONE GETS HIDDEN !!!
+
     const dispatchRequestPostVendorComment = async () => {
         if (commentBody === '') {
             return

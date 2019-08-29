@@ -9,6 +9,9 @@ import CommentPost from '../comment-post';
 import { Comment } from '../interfaces';
 
 const useCommentPosts = (props: any) => {
+    // Initital amount of comments needed to be shown before activating show more comments feature
+    const initalCommentsLength = 5;
+
     const SetComment = (comment: Comment) => {
         if (comment.name === '') {
             comment.name = 'Some Dude';
@@ -25,25 +28,36 @@ const useCommentPosts = (props: any) => {
 
     let initialComments;
 
-    if (props.comments.length >= 5) {
-        initialComments = props.comments.slice(0, 5).map(SetComment);
+    if (props.comments.length >= initalCommentsLength) {
+        initialComments = props.comments.slice(0, initalCommentsLength).map(SetComment);
     } else {
         initialComments = props.comments.map(SetComment)
     }
 
+    // Target number of comments to be shown
+    const [targetLength, setTargetLength] = useState(initalCommentsLength)
+    // Currently shown comments
     const [shownComments, setShownComments] = useState(initialComments);
+    // If a user adds a comment & less than the initalCommentsLength is shown show all the comments
+    useEffect(() => {
+        if (props.comments.length <= initalCommentsLength && shownComments.length < props.comments.length) {
+            setShownComments(props.comments.map(SetComment))
+        }
+    })
 
     const ShowMoreComments = () => {
         const commentsLength = props.comments.length;
-        const targetLength = shownComments.length + 10;
+        setTargetLength(shownComments.length + 10);
 
         if (shownComments.length === commentsLength) {
             return
         }
 
+        // If newly shown comments length is less than total number of existing comments show it up to the target length slice
         if (targetLength < commentsLength) {
             setShownComments(props.comments.slice(0, targetLength).map(SetComment))
         } else {
+        // Else show all the comments
             setShownComments(props.comments.map(SetComment))
         }
     }
