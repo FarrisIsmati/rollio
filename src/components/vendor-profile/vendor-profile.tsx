@@ -26,6 +26,9 @@ const VendorProfile = (props:any) => {
 
   return (
     <div className='vendorprofile__wrapper'>
+      {/* <div className='vendorprofile__twitterwidget_wrapper'>
+        tst
+      </div> */}
       <div className='vendorprofile__top_wrapper'>
         <VendorData getVendorData={GetVendorDataFromState} />
       </div>

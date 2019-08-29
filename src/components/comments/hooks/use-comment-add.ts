@@ -80,12 +80,15 @@ const useCommentAdd = (props:any) => {
         try {
             const dispatchRes:any = await dispatch( requestPostVendorComment({ regionId, vendorId, name: commentName, text: commentBody }) )
             const httpStatus = dispatchRes.response ? dispatchRes.response.status : dispatchRes.status;
-
+            console.log(httpStatus);
             if (httpStatus === 429) {
                 setCommentErrorMessage(() => 'You can only comment on this vendor once per day');
             } else if (httpStatus === 200) {
+                // Upon Successful message sent clean up add comment
                 setCommentErrorMessage(() => '');
                 setCommentBody(() => '');
+                setCommentName(() => '');
+                setCommentActive(false);
             } else {
                 setCommentErrorMessage(() => 'Error: your comment could not be submitted');
             }
