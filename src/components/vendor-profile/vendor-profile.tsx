@@ -21,7 +21,8 @@ const VendorProfile = (props:any) => {
   // This data will be taken from the route
   FetchVendorProfileData({ 
     regionId: regionId,
-    vendorId: vendorId
+    vendorId: vendorId,
+    history: props.history
   });
 
   return (

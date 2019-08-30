@@ -47,19 +47,6 @@ export function recieveVendorProfile(vendor:any) {
     }
 }
 
-export function fetchVendorProfile(payload:any) {
-    const { regionId, vendorId } = payload;
-    return (dispatch:any) => {
-        axios.get(`${VENDOR_API}/vendor/${regionId}/${vendorId}`)
-        .then((res: AxiosResponse<any>) => res.data,
-            error => console.log('An error occurred: ', error)
-        )
-        .then((json)=>{
-            dispatch(recieveVendorProfile(json))
-        })
-    }
-}
-
 export function postVendorComment(commentBody:any) {
     return {
         type: POST_VENDOR_COMMENT,

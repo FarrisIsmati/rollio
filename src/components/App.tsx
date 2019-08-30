@@ -39,6 +39,7 @@ const App:FC = () => {
           <Navbar/>
           <Switch>
             <Route exact path="/region/:regionId/vendor/:vendorId" component={ VendorProfile } />
+            <Route exact path="/invalid" component={ PageInvalid } />
             <Route path="/*" component={ PageInvalid } />
           </Switch>
         </div>
