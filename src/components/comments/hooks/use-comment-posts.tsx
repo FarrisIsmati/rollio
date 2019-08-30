@@ -34,8 +34,6 @@ const useCommentPosts = (props: any) => {
         initialComments = props.comments.map(SetComment)
     }
 
-    // Target number of comments to be shown
-    const [targetLength, setTargetLength] = useState(initalCommentsLength)
     // Currently shown comments
     const [shownComments, setShownComments] = useState(initialComments);
     // If a user adds a comment & less than the initalCommentsLength is shown show all the comments
@@ -47,7 +45,7 @@ const useCommentPosts = (props: any) => {
 
     const ShowMoreComments = () => {
         const commentsLength = props.comments.length;
-        setTargetLength(shownComments.length + 10);
+        const targetLength = shownComments.length + 10;
 
         if (shownComments.length === commentsLength) {
             return
