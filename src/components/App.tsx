@@ -1,8 +1,8 @@
 // DEPENDENCIES
 import React, {FC} from 'react';
-import { Provider } from 'react-redux'
-import thunkMiddleware from 'redux-thunk'
-import { createLogger } from 'redux-logger'
+import { Provider } from 'react-redux';
+import thunkMiddleware from 'redux-thunk';
+import { createLogger } from 'redux-logger';
 import {  
   createStore,
   applyMiddleware
@@ -11,14 +11,15 @@ import {
   Route,
   Switch,
   BrowserRouter
-} from 'react-router-dom'
+} from 'react-router-dom';
 
 //REDUX
-import rootReducer from '../redux/reducers/root-reducer'
+import rootReducer from '../redux/reducers/root-reducer';
 
 // COMPONENTS
 import Navbar from './navbar/navbar';
-import VendorProfile from './vendor-profile/vendor-profile'
+import VendorProfile from './vendor-profile/vendor-profile';
+import PageInvalid from './error/page-invalid';
 
 const loggerMiddleware = createLogger()
 
@@ -38,6 +39,7 @@ const App:FC = () => {
           <Navbar/>
           <Switch>
             <Route exact path="/region/:regionId/vendor/:vendorId" component={ VendorProfile } />
+            <Route path="/*" component={ PageInvalid } />
           </Switch>
         </div>
       </BrowserRouter>
