@@ -15,6 +15,16 @@ function useMap() {
             zoom: 12,
             interactive: true
         })
+
+        // create a HTML element for each feature
+        const el = document.createElement('div');
+        el.className = 'marker';
+
+        // make a marker for each feature and add to the map
+        new mapboxgl.Marker(el)
+            .setLngLat([-77.032, 38.913])
+            .addTo(map);
+
     }
 
     return {
@@ -23,3 +33,10 @@ function useMap() {
 }
 
 export default useMap;
+
+// To do
+// Get a pin to work
+// Style the pin
+// Upon loading the region ensure all vendors are up in state
+// Display them in pins
+// Account for pins that are close together
