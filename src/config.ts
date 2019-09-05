@@ -5,7 +5,6 @@ const {
 
 const VENDOR_API = REACT_APP_VENDOR_API;
 const MAPBOX_API_KEY= REACT_APP_MAPBOX_API_KEY;
-console.log(MAPBOX_API_KEY)
 
 export {
     VENDOR_API,

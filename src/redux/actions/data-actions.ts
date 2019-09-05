@@ -9,9 +9,14 @@ import { VENDOR_API } from '../../config';
 import {
     RECIEVE_VENDOR_PROFILE,
     POST_VENDOR_COMMENT,
-    RECIEVE_REGION_DATA
+    RECIEVE_REGION_DATA,
+    FETCH_REGION_DATA
 } from "../constants/constants";
 
+
+// -------
+// PROFILE
+// -------
 
 // Gets the detailed set of vendor profile data
 export function recieveVendorProfile(vendor:any) {
@@ -47,6 +52,10 @@ export function recieveVendorProfile(vendor:any) {
     }
 }
 
+// --------
+// COMMENTS
+// --------
+
 export function postVendorComment(commentBody:any) {
     return {
         type: POST_VENDOR_COMMENT,
@@ -78,10 +87,15 @@ export function requestPostVendorComment(payload:any) {
         })
 }
 
+// -----------
+// REGION DATA
+// -----------
+
 export function recieveRegionData(region:any) {
     return {
         type: RECIEVE_REGION_DATA,
         payload: {
+            isRegionLoaded: true,
             regionID: region._id,
             regionName: region.name,
             dailyActiveVendors: region.dailyActiveVendorIDs,
@@ -94,15 +108,32 @@ export function recieveRegionData(region:any) {
     }
 }
 
-export function fetchRegionData(payload:any) {
-    const { regionName } = payload;
+export function fetchRegionData() {
+    return {
+        type: FETCH_REGION_DATA,
+        payload: {
+            isRegionLoaded: false
+        }
+    }
+}
+
+// Get Region data with either a region name or region ID
+export function fetchRegionDataAsync(payload:any) {
+    const { regionName, regionId, cb } = payload;
+    // Set route based on payload params
+    const route = regionId === '' || regionId === undefined ? `${VENDOR_API}/region/name/${regionName}` : `${VENDOR_API}/region/${regionId}`
+
     return (dispatch:any) => {
-        axios.get(`${VENDOR_API}/region/name/${regionName}`)
-        .then((res: AxiosResponse<any>) => res.data,
-            error => console.log('An error occurred: ', error)
-        )
-        .then((json)=>{
-            dispatch(recieveRegionData(json))
+        // Set region load status to false when fetching a new region
+        dispatch(fetchRegionData());
+        axios.get(route)
+        .then((res: AxiosResponse<any>) => dispatch(recieveRegionData(res.data)))
+        .catch((err) => {
+            if (cb) {
+                cb()
+            } else {
+                console.error('This region does not exist')
+            }
         })
     }
 }

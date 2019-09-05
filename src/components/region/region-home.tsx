@@ -2,12 +2,24 @@
 import React from 'react';
 
 // COMPONENTS
-import Map from '../map/map'
+import Map from '../map/map';
 
-const RegionHome = () => {
+// HOOKS
+import useLoadRegion from './hooks/use-load-region';
+import useRegionData from './hooks/use-region-data';
+
+const RegionHome = (props:any) => {
+  // On mount load the region
+  useLoadRegion(props);
+
+  // Redux State interaction
+  const { GetRegionLoadStatus } = useRegionData;
+
   return (
     <div className='regionhome__wrapper'>
-        <Map />
+        {
+          GetRegionLoadStatus() ? <Map /> : <p>loading</p>
+        }
     </div>
   );
 }

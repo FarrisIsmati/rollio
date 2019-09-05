@@ -24,7 +24,6 @@ function useMap() {
         new mapboxgl.Marker(el)
             .setLngLat([-77.032, 38.913])
             .addTo(map);
-
     }
 
     return {

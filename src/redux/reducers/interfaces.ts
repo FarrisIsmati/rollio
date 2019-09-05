@@ -68,6 +68,7 @@ export interface Filter {
 }
 
 export interface DataDefaultState {
+    isRegionLoaded: boolean,
     regionID: string,
     regionName: string,
     dailyActiveVendors: string[],
