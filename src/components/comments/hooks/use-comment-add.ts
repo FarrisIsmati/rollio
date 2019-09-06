@@ -8,7 +8,6 @@ import { getRouteIds } from '../../../util/index';
 // REDUX
 import { requestPostVendorComment } from '../../../redux/actions/data-actions';
 
-
 const useCommentAdd = (props:any) => {
     const [commentActive, setCommentActive] = useState<boolean>(false);
     const [commentBody, setCommentBody] = useState<string>('');
@@ -67,8 +66,6 @@ const useCommentAdd = (props:any) => {
 
     const dispatch = useDispatch();
 
-    // WORK ON LOGIC IF OYU HAVE ONE COMMENT AN DPOST THE FIRST ONE GETS HIDDEN !!!
-
     const dispatchRequestPostVendorComment = async () => {
         if (commentBody === '') {
             return
@@ -80,7 +77,6 @@ const useCommentAdd = (props:any) => {
         try {
             const dispatchRes:any = await dispatch( requestPostVendorComment({ regionId, vendorId, name: commentName, text: commentBody }) )
             const httpStatus = dispatchRes.response ? dispatchRes.response.status : dispatchRes.status;
-            console.log(httpStatus);
             if (httpStatus === 429) {
                 setCommentErrorMessage(() => 'You can only comment on this vendor once per day');
             } else if (httpStatus === 200) {

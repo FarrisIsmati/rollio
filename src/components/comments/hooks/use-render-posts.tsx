@@ -8,7 +8,7 @@ import CommentPost from '../comment-post';
 // INTERFACES
 import { Comment } from '../interfaces';
 
-const useCommentPosts = (props: any) => {
+const useRenderPosts = (props: any) => {
     // Initital amount of comments needed to be shown before activating show more comments feature
     const initalCommentsLength = 5;
 
@@ -71,4 +71,4 @@ const useCommentPosts = (props: any) => {
     }
 }
 
-export default useCommentPosts;
+export default useRenderPosts;

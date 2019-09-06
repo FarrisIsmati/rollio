@@ -5,10 +5,10 @@ import React, { useState, useEffect } from 'react';
 import ButtonDefault from '../common/buttons/button-default';
 
 // HOOKS
-import useCommentPosts from './hooks/use-comment-posts';
+import useRenderPosts from './hooks/use-render-posts';
 
 const CommentPosts = (props: any) => {
-    const { shownComments, ShowMoreComments } = useCommentPosts(props);
+    const { shownComments, ShowMoreComments } = useRenderPosts(props);
 
     return (
       <div className='commentposts__wrapper'>
