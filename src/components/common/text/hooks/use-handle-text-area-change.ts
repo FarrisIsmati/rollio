@@ -8,7 +8,7 @@ interface tempChangeEvent  {
     }
 }
 
-const useTextAreaGrow = (ref: any) => {
+const useHandleTextAreaChange = (ref: any) => {
     const [rows, setRows] = useState<number>(1);
     const [minRows] = useState<number>(1);
 
@@ -45,4 +45,4 @@ const useTextAreaGrow = (ref: any) => {
     }
 }
 
-export default useTextAreaGrow;
+export default useHandleTextAreaChange;

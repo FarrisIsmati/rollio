@@ -10,7 +10,7 @@ import CommentAdd from './comment-add';
 import { Comment, CommentSectionProps } from './interfaces';
 
 const CommentSection = (props: CommentSectionProps) => {
-  const comments: Comment[] = props.getComments();
+  const comments: Comment[] = props.comments;
 
   const commentsArray = !comments.length ? 
     <CommentPostEmpty /> :

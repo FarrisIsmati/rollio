@@ -2,7 +2,7 @@
 import React, { ChangeEvent} from 'react';
 
 // HOOKS
-import useTextAreaGrow from './hooks/use-textarea-grow';
+import useHandleTextAreaChange from './hooks/use-handle-text-area-change';
 
 interface TextAreaGrowProps  {
     id: string,
@@ -14,7 +14,7 @@ interface TextAreaGrowProps  {
 }
 
 const TextAreaGrowable = React.forwardRef((props: TextAreaGrowProps, ref: any) => {
-    const { rows, textAreaHandleChange } = useTextAreaGrow(ref);
+    const { rows, textAreaHandleChange } = useHandleTextAreaChange(ref);
 
     return (
         <textarea 

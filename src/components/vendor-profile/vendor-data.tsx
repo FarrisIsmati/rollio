@@ -2,7 +2,7 @@
 import React from 'react';
 
 const VendorData = (props:any) => {
-    const vendor = props.getVendorData()
+    const vendor = props.vendorData
 
     const Categories = vendor.categories.map((category:string) => {
         return (            

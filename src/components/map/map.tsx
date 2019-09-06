@@ -1,11 +1,31 @@
 // DEPENDENCIES
 import React from 'react';
+import mapboxgl from 'mapbox-gl';
 
-// HOOKS
-import useMap from './hooks/use-map';
+// CONFIG
+import { MAPBOX_API_KEY } from '../../config'
 
 const Map = () => {
-  const { renderMap } = useMap();
+  const renderMap = (mapContainer: any) => {
+    //@ts-ignore
+    mapboxgl.accessToken = MAPBOX_API_KEY;
+    let map = new mapboxgl.Map({
+        container: mapContainer,
+        style: 'mapbox://styles/farrisismati/ck04ma9xw0mse1cp25m11fgqs',
+        center: [-77.0369, 38.9072],
+        zoom: 12,
+        interactive: true
+    })
+
+    // create a HTML element for each feature
+    const el = document.createElement('div');
+    el.className = 'marker';
+
+    // make a marker for each feature and add to the map
+    new mapboxgl.Marker(el)
+        .setLngLat([-77.032, 38.913])
+        .addTo(map);
+  }
 
   return (
     <div className='map__wrapper' ref={renderMap}></div>

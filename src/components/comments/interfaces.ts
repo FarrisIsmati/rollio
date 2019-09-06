@@ -6,7 +6,7 @@ export interface Comment {
   }
   
 export interface CommentSectionProps {
-    getComments: () => Comment[]
+  comments: Comment[]
   }
 
 export interface CommentPostProps  {

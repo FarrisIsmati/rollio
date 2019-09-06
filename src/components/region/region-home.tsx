@@ -6,20 +6,18 @@ import Map from '../map/map';
 
 // HOOKS
 import useLoadRegion from './hooks/use-load-region';
-import useRegionData from './hooks/use-region-data';
+import useGetAppState from '../common/hooks/use-get-app-state';
 
 const RegionHome = (props:any) => {
   // On mount load the region
   useLoadRegion(props);
 
-  // Redux State interaction
-  const { GetRegionLoadStatus } = useRegionData;
+  // Render Content
+  const content = useGetAppState().isRegionLoaded ? <Map /> : <p>loading</p>
 
   return (
     <div className='regionhome__wrapper'>
-        {
-          GetRegionLoadStatus() ? <Map /> : <p>loading</p>
-        }
+      { content }
     </div>
   );
 }

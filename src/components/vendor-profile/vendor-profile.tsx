@@ -10,20 +10,18 @@ import VendorData from './vendor-data';
 import { getRouteIds } from '../../util/index';
 
 // HOOKS
-import useVendorData from './hooks/use-vendor-data';
+import useGetVendorData from './hooks/use-get-vendor-data';
+import useGetAppState from '../common/hooks/use-get-app-state';
 
 const VendorProfile = (props:any) => {
-  const { FetchVendorProfileData, GetCommentsFromState, GetVendorDataFromState } = useVendorData;
-
-  const regionId = getRouteIds(props).regionId;
-  const vendorId = getRouteIds(props).vendorId;
-
-  // This data will be taken from the route
-  FetchVendorProfileData({ 
-    regionId: regionId,
-    vendorId: vendorId,
+  useGetVendorData({ 
+    regionId: getRouteIds(props).regionId,
+    vendorId: getRouteIds(props).vendorId,
     history: props.history
-  });
+  })
+
+  const vendorData = useGetAppState().selectedVendor
+  const comments = useGetAppState().selectedVendor.comments
 
   return (
     <div className='vendorprofile__wrapper'>
@@ -31,10 +29,10 @@ const VendorProfile = (props:any) => {
         tst
       </div> */}
       <div className='vendorprofile__top_wrapper'>
-        <VendorData getVendorData={GetVendorDataFromState} />
+        <VendorData vendorData={vendorData} />
       </div>
       <div className='vendorprofile__bottom_wrapper'>
-        <CommentSection getComments={GetCommentsFromState} />
+        <CommentSection comments={comments} />
       </div>
     </div>
   );
