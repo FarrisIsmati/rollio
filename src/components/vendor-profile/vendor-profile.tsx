@@ -20,11 +20,12 @@ const VendorProfile = (props:any) => {
     history: props.history
   })
 
-  const vendorData = useGetAppState().selectedVendor
-  const comments = useGetAppState().selectedVendor.comments
+  const vendorData = useGetAppState().data.selectedVendor
+  const comments = useGetAppState().data.selectedVendor.comments
 
-  return (
-    <div className='vendorprofile__wrapper'>
+  // Render Content
+  const content = useGetAppState().async.isVendorLoaded ?
+    <React.Fragment>
       {/* <div className='vendorprofile__twitterwidget_wrapper'>
         tst
       </div> */}
@@ -34,6 +35,13 @@ const VendorProfile = (props:any) => {
       <div className='vendorprofile__bottom_wrapper'>
         <CommentSection comments={comments} />
       </div>
+    </React.Fragment>
+  : <p>loading</p>
+
+
+  return (
+    <div className='vendorprofile__wrapper'>
+      { content }
     </div>
   );
 }

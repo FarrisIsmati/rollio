@@ -9,7 +9,6 @@ import {
 import { DataDefaultState } from "./interfaces";
 
 const defaultState:DataDefaultState = {
-    isRegionLoaded: false,
     regionID: '',
     regionName: '',
     dailyActiveVendors: [],

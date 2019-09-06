@@ -13,7 +13,7 @@ const RegionHome = (props:any) => {
   useLoadRegion(props);
 
   // Render Content
-  const content = useGetAppState().isRegionLoaded ? <Map /> : <p>loading</p>
+  const content = useGetAppState().async.isRegionLoaded ? <Map /> : <p>loading</p>
 
   return (
     <div className='regionhome__wrapper'>

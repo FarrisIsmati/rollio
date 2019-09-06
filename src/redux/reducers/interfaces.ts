@@ -68,7 +68,6 @@ export interface Filter {
 }
 
 export interface DataDefaultState {
-    isRegionLoaded: boolean,
     regionID: string,
     regionName: string,
     dailyActiveVendors: string[],
@@ -82,4 +81,10 @@ export interface MapDefaultState {
     vendorsDisplayedSingle: Pin[],
     vendorsDisplayedGroup: GroupPin[],
     activeFilters: Filter[]
+}
+
+// Async
+export interface AsyncDefaultState {
+    isRegionLoaded: boolean,
+    isVendorLoaded: boolean
 }

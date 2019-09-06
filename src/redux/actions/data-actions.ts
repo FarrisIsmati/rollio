@@ -1,5 +1,5 @@
 // DEPENDENCIES
-import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosResponse, AxiosError } from 'axios';
 import moment from 'moment';
 
 // ENV
@@ -10,16 +10,22 @@ import {
     RECIEVE_VENDOR_PROFILE,
     POST_VENDOR_COMMENT,
     RECIEVE_REGION_DATA,
-    FETCH_REGION_DATA
-} from "../constants/constants";
+    FETCH_REGION_DATA,
+    FETCH_VENDOR_DATA
+} from '../constants/constants'
 
+// INTERFACES
+import {
+    VendorDataAsyncPayload,
+    RegionDataAsyncPayload
+} from './interfaces';
 
 // -------
 // PROFILE
 // -------
 
 // Gets the detailed set of vendor profile data
-export function recieveVendorProfile(vendor:any) {
+export function recieveVendorData(vendor:any) {
     let location = null;
 
     // If the most recently updated of the vendor location history is today
@@ -52,6 +58,41 @@ export function recieveVendorProfile(vendor:any) {
     }
 }
 
+function fetchVendorDataSuccess() {
+    return {
+        type: FETCH_VENDOR_DATA,
+        payload: {
+            isVendorLoaded: true
+        }
+    }
+}
+
+function fetchVendorDataStart() {
+    return {
+        type: FETCH_VENDOR_DATA,
+        payload: {
+            isVendorLoaded: false
+        }
+    }
+}
+
+export function fetchVendorDataAsync(payload:VendorDataAsyncPayload) {
+    const { regionId, vendorId, cb } = payload;
+
+    return (dispatch:any) => {
+        dispatch(fetchVendorDataStart())
+        axios.get(`${VENDOR_API}/vendor/${regionId}/${vendorId}`)
+            .then((res: AxiosResponse<any>) => {
+                dispatch(recieveVendorData(res.data));
+                dispatch(fetchVendorDataSuccess());
+            })
+            .catch((err:any) => {
+                console.error(err)
+                cb()
+            })
+    }
+}
+
 // --------
 // COMMENTS
 // --------
@@ -81,7 +122,7 @@ export function requestPostVendorComment(payload:any) {
             console.log(res)
             return res;
         })
-        .catch((err) => {
+        .catch((err:AxiosError) => {
             console.error(err);
             return err;
         })
@@ -95,7 +136,6 @@ export function recieveRegionData(region:any) {
     return {
         type: RECIEVE_REGION_DATA,
         payload: {
-            isRegionLoaded: true,
             regionID: region._id,
             regionName: region.name,
             dailyActiveVendors: region.dailyActiveVendorIDs,
@@ -108,7 +148,17 @@ export function recieveRegionData(region:any) {
     }
 }
 
-export function fetchRegionData() {
+
+function fetchRegionDataSuccess() {
+    return {
+        type: FETCH_REGION_DATA,
+        payload: {
+            isRegionLoaded: true
+        }
+    }
+}
+
+function fetchRegionDataStart() {
     return {
         type: FETCH_REGION_DATA,
         payload: {
@@ -118,22 +168,22 @@ export function fetchRegionData() {
 }
 
 // Get Region data with either a region name or region ID
-export function fetchRegionDataAsync(payload:any) {
+export function fetchRegionDataAsync(payload:RegionDataAsyncPayload) {
     const { regionName, regionId, cb } = payload;
     // Set route based on payload params
     const route = regionId === '' || regionId === undefined ? `${VENDOR_API}/region/name/${regionName}` : `${VENDOR_API}/region/${regionId}`
 
     return (dispatch:any) => {
         // Set region load status to false when fetching a new region
-        dispatch(fetchRegionData());
+        dispatch(fetchRegionDataStart());
         axios.get(route)
-        .then((res: AxiosResponse<any>) => dispatch(recieveRegionData(res.data)))
-        .catch((err) => {
-            if (cb) {
-                cb()
-            } else {
-                console.error('This region does not exist')
-            }
+        .then((res: AxiosResponse<any>) => {
+            dispatch(recieveRegionData(res.data));
+            dispatch(fetchRegionDataSuccess());
+        })
+        .catch((err:AxiosError) => {
+            console.error(err)
+            cb()
         })
     }
 }
