@@ -229,3 +229,9 @@
 {"level":"error","timestamp":"2019-09-10 21:25:26"}
 {"message":"Redis: Connection failed trying again, attempts: 1","level":"error","timestamp":"2019-09-10 21:25:29"}
 {"message":"Redis: Connection failed trying again, attempts: 1","level":"error","timestamp":"2019-09-10 21:25:31"}
+{"message":"RabbitMQ: Connection failed trying again","level":"error","timestamp":"2019-09-10 21:51:16"}
+{"message":"attempts: 1","level":"error","timestamp":"2019-09-10 21:51:18"}
+{"level":"error","timestamp":"2019-09-10 21:51:21"}
+{"level":"error","timestamp":"2019-09-10 21:51:21"}
+{"level":"error","timestamp":"2019-09-10 21:51:21"}
+{"level":"error","timestamp":"2019-09-10 21:51:21"}
