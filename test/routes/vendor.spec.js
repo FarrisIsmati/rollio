@@ -48,6 +48,19 @@ describe('Vendor Routes', () => {
       });
     });
 
+    describe('/vendor/:regionID/object', () => {
+      it('expect to get an object back', (done) => {
+        chai.request(server)
+          .get(`/vendor/${regionID}/object`)
+          .end((err, res) => {
+            expect(res).to.have.status(200);
+            expect(res.body).to.be.an('object');
+            expect(Object.keys(res.body).length).to.be.equal(8);
+            done();
+          });
+      });
+    });
+
     describe('Query String Route', () => {
       describe('/vendor/:regionID/?querystring', () => {
         it('expect to get a vendor with the specified Query String: ?categories[]=Venezuelan&categories[]=Arepa', (done) => {

@@ -2456,3 +2456,859 @@
 {"message":"MongoDB: Successfully connected to TEST_LOCAL DB","level":"info","timestamp":"2019-08-28 22:26:13"}
 {"message":"Message sent","level":"info","timestamp":"2019-08-28 22:26:13"}
 {"message":"this is test data","level":"info","timestamp":"2019-08-28 22:26:13"}
+{"message":"Running DEVELOPMENT_LOCAL","level":"info","timestamp":"2019-08-29 21:13:47"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-08-29 21:13:47"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-08-29 21:13:48"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-08-29 21:13:48"}
+{"message":"Message recieved","level":"info","timestamp":"2019-08-29 21:13:48"}
+{"message":"Message recieved","level":"info","timestamp":"2019-08-29 21:13:48"}
+{"message":"MongoDB: Successfully connected to DEVELOPMENT_LOCAL DB","level":"info","timestamp":"2019-08-29 21:13:49"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-08-29 21:29:44"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-08-29 21:35:19"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-08-29 21:35:26"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-08-29 21:35:29"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-08-29 21:36:12"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-08-29 21:36:35"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-08-29 21:37:12"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-08-29 21:37:56"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-08-29 21:38:06"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-08-29 21:44:52"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-08-29 21:44:53"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-08-29 21:50:09"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-08-29 21:56:24"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-08-29 21:56:27"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-08-29 21:56:38"}
+{"level":"error","timestamp":"2019-08-29 21:56:40"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-08-29 21:56:43"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-08-29 22:05:36"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-08-29 22:06:47"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-08-29 22:07:08"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-08-29 22:16:09"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-08-29 22:17:15"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-08-29 22:19:33"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-08-29 22:19:40"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-08-29 22:19:42"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-08-29 22:19:54"}
+{"level":"error","timestamp":"2019-08-29 22:20:01"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-08-29 22:20:10"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-08-29 22:20:33"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-08-29 22:20:46"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-08-29 22:21:37"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-08-29 22:21:57"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-08-29 22:24:14"}
+{"level":"error","timestamp":"2019-08-29 22:24:16"}
+{"level":"error","timestamp":"2019-08-29 22:24:53"}
+{"level":"error","timestamp":"2019-08-29 22:24:53"}
+{"level":"error","timestamp":"2019-08-29 22:24:54"}
+{"level":"error","timestamp":"2019-08-29 22:24:55"}
+{"level":"error","timestamp":"2019-08-29 22:24:55"}
+{"level":"error","timestamp":"2019-08-29 22:24:55"}
+{"level":"error","timestamp":"2019-08-29 22:24:56"}
+{"level":"error","timestamp":"2019-08-29 22:24:56"}
+{"level":"error","timestamp":"2019-08-29 22:24:56"}
+{"level":"error","timestamp":"2019-08-29 22:24:57"}
+{"level":"error","timestamp":"2019-08-29 22:24:57"}
+{"level":"error","timestamp":"2019-08-29 22:24:57"}
+{"level":"error","timestamp":"2019-08-29 22:24:57"}
+{"level":"error","timestamp":"2019-08-29 22:24:57"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-08-29 22:26:19"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-08-29 22:26:56"}
+{"level":"error","timestamp":"2019-08-29 22:26:59"}
+{"level":"error","timestamp":"2019-08-29 22:27:10"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-08-29 22:27:23"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-08-29 22:27:34"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-08-29 22:27:39"}
+{"level":"error","timestamp":"2019-08-29 22:27:41"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-08-29 22:27:58"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-08-29 22:28:29"}
+{"level":"error","timestamp":"2019-08-29 22:28:57"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-08-29 22:42:24"}
+{"level":"error","timestamp":"2019-08-29 22:42:26"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-08-29 22:42:54"}
+{"level":"error","timestamp":"2019-08-29 22:42:56"}
+{"message":"Running DEVELOPMENT_LOCAL","level":"info","timestamp":"2019-08-29 22:43:52"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-08-29 22:43:52"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-08-29 22:43:52"}
+{"message":"Message recieved","level":"info","timestamp":"2019-08-29 22:43:52"}
+{"message":"Message recieved","level":"info","timestamp":"2019-08-29 22:43:52"}
+{"message":"Redis: Connection failed trying again, attempts: 1","level":"error","timestamp":"2019-08-29 22:43:55"}
+{"message":"MongoDB: Successfully connected to DEVELOPMENT_LOCAL DB","level":"info","timestamp":"2019-08-29 22:43:56"}
+{"message":"Running DEVELOPMENT_LOCAL","level":"info","timestamp":"2019-08-30 19:43:02"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-08-30 19:43:02"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-08-30 19:43:02"}
+{"message":"RabbitMQ: Connection failed trying again","level":"error","timestamp":"2019-08-30 19:43:04"}
+{"message":"attempts: 1","level":"error","timestamp":"2019-08-30 19:43:06"}
+{"message":"MongoDB: Successfully connected to DEVELOPMENT_LOCAL DB","level":"info","timestamp":"2019-08-30 19:43:06"}
+{"message":"RabbitMQ: Connection failed trying again","level":"error","timestamp":"2019-08-30 19:43:08"}
+{"message":"attempts: 2","level":"error","timestamp":"2019-08-30 19:43:11"}
+{"message":"RabbitMQ: Connection failed trying again","level":"error","timestamp":"2019-08-30 19:43:13"}
+{"message":"attempts: 3","level":"error","timestamp":"2019-08-30 19:43:17"}
+{"message":"RabbitMQ: Connection failed trying again","level":"error","timestamp":"2019-08-30 19:43:19"}
+{"message":"attempts: 4","level":"error","timestamp":"2019-08-30 19:43:26"}
+{"message":"RabbitMQ: Connection failed trying again","level":"error","timestamp":"2019-08-30 19:43:28"}
+{"message":"attempts: 5","level":"error","timestamp":"2019-08-30 19:43:38"}
+{"message":"RabbitMQ: Connection failed trying again","level":"error","timestamp":"2019-08-30 19:43:40"}
+{"message":"attempts: 6","level":"error","timestamp":"2019-08-30 19:43:55"}
+{"message":"RabbitMQ: Connection failed trying again","level":"error","timestamp":"2019-08-30 19:43:57"}
+{"message":"attempts: 7","level":"error","timestamp":"2019-08-30 19:44:20"}
+{"message":"RabbitMQ: Connection failed trying again","level":"error","timestamp":"2019-08-30 19:44:22"}
+{"message":"attempts: 8","level":"error","timestamp":"2019-08-30 19:44:56"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-08-30 19:58:22"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-08-30 19:59:07"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-08-30 19:59:13"}
+{"message":"Running DEVELOPMENT_LOCAL","level":"info","timestamp":"2019-08-30 20:09:42"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-08-30 20:09:42"}
+{"message":"Running DEVELOPMENT_LOCAL","level":"info","timestamp":"2019-09-02 10:22:47"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-09-02 10:22:47"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-09-02 10:22:47"}
+{"message":"RabbitMQ: Connection failed trying again","level":"error","timestamp":"2019-09-02 10:22:49"}
+{"message":"attempts: 1","level":"error","timestamp":"2019-09-02 10:22:51"}
+{"message":"MongoDB: Successfully connected to DEVELOPMENT_LOCAL DB","level":"info","timestamp":"2019-09-02 10:22:51"}
+{"message":"RabbitMQ: Connection failed trying again","level":"error","timestamp":"2019-09-02 10:22:53"}
+{"message":"attempts: 2","level":"error","timestamp":"2019-09-02 10:22:56"}
+{"message":"RabbitMQ: Connection failed trying again","level":"error","timestamp":"2019-09-02 10:22:58"}
+{"message":"attempts: 3","level":"error","timestamp":"2019-09-02 10:23:02"}
+{"message":"RabbitMQ: Connection failed trying again","level":"error","timestamp":"2019-09-02 10:23:04"}
+{"message":"attempts: 4","level":"error","timestamp":"2019-09-02 10:23:11"}
+{"message":"RabbitMQ: Connection failed trying again","level":"error","timestamp":"2019-09-02 10:23:13"}
+{"message":"attempts: 5","level":"error","timestamp":"2019-09-02 10:23:23"}
+{"message":"RabbitMQ: Connection failed trying again","level":"error","timestamp":"2019-09-02 10:23:25"}
+{"message":"attempts: 6","level":"error","timestamp":"2019-09-02 10:23:40"}
+{"message":"RabbitMQ: Connection failed trying again","level":"error","timestamp":"2019-09-02 10:23:42"}
+{"message":"Running DEVELOPMENT_LOCAL","level":"info","timestamp":"2019-09-02 10:24:04"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-09-02 10:24:04"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-09-02 10:24:04"}
+{"message":"RabbitMQ: Connection failed trying again","level":"error","timestamp":"2019-09-02 10:24:06"}
+{"message":"attempts: 1","level":"error","timestamp":"2019-09-02 10:24:08"}
+{"message":"MongoDB: Successfully connected to DEVELOPMENT_LOCAL DB","level":"info","timestamp":"2019-09-02 10:24:08"}
+{"message":"RabbitMQ: Connection failed trying again","level":"error","timestamp":"2019-09-02 10:24:10"}
+{"message":"attempts: 2","level":"error","timestamp":"2019-09-02 10:24:13"}
+{"message":"RabbitMQ: Connection failed trying again","level":"error","timestamp":"2019-09-02 10:24:15"}
+{"message":"attempts: 3","level":"error","timestamp":"2019-09-02 10:24:20"}
+{"message":"RabbitMQ: Connection failed trying again","level":"error","timestamp":"2019-09-02 10:24:22"}
+{"message":"attempts: 4","level":"error","timestamp":"2019-09-02 10:24:28"}
+{"message":"RabbitMQ: Connection failed trying again","level":"error","timestamp":"2019-09-02 10:24:30"}
+{"message":"Running DEVELOPMENT_LOCAL","level":"info","timestamp":"2019-09-02 10:24:35"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-09-02 10:24:35"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-09-02 10:24:35"}
+{"message":"RabbitMQ: Connection failed trying again","level":"error","timestamp":"2019-09-02 10:24:37"}
+{"message":"attempts: 1","level":"error","timestamp":"2019-09-02 10:24:39"}
+{"message":"MongoDB: Successfully connected to DEVELOPMENT_LOCAL DB","level":"info","timestamp":"2019-09-02 10:24:39"}
+{"message":"RabbitMQ: Connection failed trying again","level":"error","timestamp":"2019-09-02 10:24:41"}
+{"message":"attempts: 2","level":"error","timestamp":"2019-09-02 10:24:44"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-09-02 10:24:44"}
+{"message":"Message recieved","level":"info","timestamp":"2019-09-02 10:24:44"}
+{"message":"Message recieved","level":"info","timestamp":"2019-09-02 10:24:44"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-02 11:03:56"}
+{"message":"Running DEVELOPMENT_LOCAL","level":"info","timestamp":"2019-09-02 12:29:02"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-09-02 12:29:02"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-09-02 12:29:03"}
+{"message":"Message recieved","level":"info","timestamp":"2019-09-02 12:29:03"}
+{"message":"Message recieved","level":"info","timestamp":"2019-09-02 12:29:03"}
+{"message":"Running DEVELOPMENT_LOCAL","level":"info","timestamp":"2019-09-03 20:37:57"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-09-03 20:37:57"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-09-03 20:37:58"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-09-03 20:37:58"}
+{"message":"Message recieved","level":"info","timestamp":"2019-09-03 20:37:58"}
+{"message":"Message recieved","level":"info","timestamp":"2019-09-03 20:37:58"}
+{"message":"MongoDB: Successfully connected to DEVELOPMENT_LOCAL DB","level":"info","timestamp":"2019-09-03 20:38:00"}
+{"message":"Running DEVELOPMENT_LOCAL","level":"info","timestamp":"2019-09-03 22:21:03"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-09-03 22:21:03"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-09-03 22:21:03"}
+{"message":"Message recieved","level":"info","timestamp":"2019-09-03 22:21:03"}
+{"message":"Message recieved","level":"info","timestamp":"2019-09-03 22:21:03"}
+{"message":"Running DEVELOPMENT_LOCAL","level":"info","timestamp":"2019-09-04 20:52:03"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-09-04 20:52:03"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-09-04 20:52:03"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-09-04 20:52:03"}
+{"message":"Message recieved","level":"info","timestamp":"2019-09-04 20:52:03"}
+{"message":"Message recieved","level":"info","timestamp":"2019-09-04 20:52:03"}
+{"message":"MongoDB: Successfully connected to DEVELOPMENT_LOCAL DB","level":"info","timestamp":"2019-09-04 20:52:05"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 21:39:00"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 21:39:58"}
+{"level":"error","timestamp":"2019-09-04 21:40:01"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 21:40:32"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 21:40:44"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 21:40:53"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 21:41:01"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 21:41:27"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 21:43:10"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 21:43:27"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 21:43:45"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 21:43:52"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 21:44:05"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 21:44:14"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 21:44:19"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 21:44:24"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 21:44:51"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 21:45:31"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 21:46:12"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 21:46:37"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 21:46:47"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 21:46:52"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 21:47:01"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 21:47:10"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 21:47:26"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 21:47:51"}
+{"level":"error","timestamp":"2019-09-04 21:47:54"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 21:48:23"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 21:48:34"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 21:49:21"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 21:50:56"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 21:51:03"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 21:54:45"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 21:55:03"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 21:55:58"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 21:57:02"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 21:57:12"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 22:07:54"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 22:09:23"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 22:09:33"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 22:10:04"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 22:10:12"}
+{"level":"error","timestamp":"2019-09-04 22:10:15"}
+{"command":"HSET","args":["region","q::method::GET::path::/5d672cce26370c93ee0c5ecb3","{\"message\":\"Cast to ObjectId failed for value \\\"5d672cce26370c93ee0c5ecb3\\\" at path \\\"_id\\\" for model \\\"Region\\\"\",\"name\":\"CastError\",\"stringValue\":\"\\\"5d672cce26370c93ee0c5ecb3\\\"\",\"kind\":\"ObjectId\",\"value\":\"5d672cce26370c93ee0c5ecb3\",\"path\":\"_id\"}"],"code":"MISCONF","level":"error","timestamp":"2019-09-04 22:10:15"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 22:12:21"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 22:12:39"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 22:17:18"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 22:21:09"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 22:21:28"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 22:21:34"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 22:22:34"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 22:23:43"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 22:23:45"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 22:24:56"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 22:25:46"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 22:26:38"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 22:26:40"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 22:26:51"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 22:28:33"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 22:28:35"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 22:28:46"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 22:28:53"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 22:29:11"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 22:29:17"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 22:30:05"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 22:30:28"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 22:30:33"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 22:30:58"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 22:31:17"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 22:33:26"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 22:33:30"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 22:36:22"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 22:36:49"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 22:36:54"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 22:37:33"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 22:37:36"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 22:37:39"}
+{"level":"error","timestamp":"2019-09-04 22:37:42"}
+{"command":"HSET","args":["region","q::method::GET::path::/5d672cc26370ce93ee0c5ecb3","{\"message\":\"Cast to ObjectId failed for value \\\"5d672cc26370ce93ee0c5ecb3\\\" at path \\\"_id\\\" for model \\\"Region\\\"\",\"name\":\"CastError\",\"stringValue\":\"\\\"5d672cc26370ce93ee0c5ecb3\\\"\",\"kind\":\"ObjectId\",\"value\":\"5d672cc26370ce93ee0c5ecb3\",\"path\":\"_id\"}"],"code":"MISCONF","level":"error","timestamp":"2019-09-04 22:37:42"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 22:38:21"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 22:38:58"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 22:39:14"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 22:39:22"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 22:40:13"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 22:40:22"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-04 22:40:24"}
+{"message":"Running DEVELOPMENT_LOCAL","level":"info","timestamp":"2019-09-04 22:41:17"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-09-04 22:41:17"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-09-04 22:41:17"}
+{"message":"Message recieved","level":"info","timestamp":"2019-09-04 22:41:17"}
+{"message":"Message recieved","level":"info","timestamp":"2019-09-04 22:41:17"}
+{"message":"Running DEVELOPMENT_LOCAL","level":"info","timestamp":"2019-09-05 20:35:02"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-09-05 20:35:02"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-09-05 20:35:04"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-09-05 20:35:04"}
+{"message":"Message recieved","level":"info","timestamp":"2019-09-05 20:35:04"}
+{"message":"Message recieved","level":"info","timestamp":"2019-09-05 20:35:04"}
+{"message":"MongoDB: Successfully connected to DEVELOPMENT_LOCAL DB","level":"info","timestamp":"2019-09-05 20:35:04"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:00:16"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:08:47"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:08:53"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:09:09"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:11:58"}
+{"level":"error","timestamp":"2019-09-05 21:12:01"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:13:24"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:13:54"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:15:24"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:18:56"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:19:56"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:21:52"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:22:35"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:22:40"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:22:48"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:23:03"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:23:03"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:23:03"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:23:03"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:23:03"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:23:03"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:23:03"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:23:03"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:23:03"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:23:03"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:23:03"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:23:03"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:23:03"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:23:03"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:23:03"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:24:19"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:24:19"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:24:19"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:24:19"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:24:19"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:24:19"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:24:20"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:24:20"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:24:20"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:24:20"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:24:20"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:24:20"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:24:20"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:24:20"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:24:20"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:25:38"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:25:38"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:25:38"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:25:38"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:25:38"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:25:38"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:25:38"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:25:38"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:25:38"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:25:38"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:25:38"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:25:38"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:25:38"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:25:38"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:25:38"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:26:16"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:26:16"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:26:16"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:26:16"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:26:16"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:26:16"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:26:16"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:26:16"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:26:16"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:26:16"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:26:16"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:26:16"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:26:16"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:26:16"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:28:27"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:28:27"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:28:27"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:28:27"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:28:27"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:28:27"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:28:27"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:28:27"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:28:27"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:28:27"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:28:27"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:28:27"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:28:27"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:28:27"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:28:27"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:28:58"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:28:58"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:28:58"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:28:58"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:28:58"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:28:58"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:28:58"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:28:58"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:28:58"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:28:58"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:28:59"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:28:59"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:28:59"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:28:59"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:28:59"}
+{"message":"Redis: Connection failed trying again, attempts: 1","level":"error","timestamp":"2019-09-05 21:30:03"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-09-05 21:30:03"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-09-05 21:30:03"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:30:12"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:30:12"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:30:12"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:30:12"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:30:12"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:30:12"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:30:12"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:30:12"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:30:12"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:30:12"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:30:12"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:30:12"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:30:12"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:30:12"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:31:20"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:31:20"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:31:20"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:31:20"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:31:20"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:31:20"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:31:20"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:31:20"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:31:20"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:31:20"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:31:20"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:31:20"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:31:20"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:31:20"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:31:20"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:34:00"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:34:00"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:34:00"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:34:00"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:34:00"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:34:00"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:34:00"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:34:00"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:34:00"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:34:00"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:34:00"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:34:00"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:34:00"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:34:00"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:34:00"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:35:25"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:35:25"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:35:25"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:35:25"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:35:25"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:35:25"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:35:26"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:35:26"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:35:26"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:35:26"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:35:26"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:35:26"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:35:26"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:35:26"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:35:26"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:39:19"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:39:19"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:39:19"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:39:19"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:39:19"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:39:19"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:39:19"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:39:19"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:39:19"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:39:19"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:39:19"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:39:19"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:39:19"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:39:19"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:39:19"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:44:43"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:44:56"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:53:33"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:54:31"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 21:58:46"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 22:08:18"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 22:08:40"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 22:09:17"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 22:10:24"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 22:15:02"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 22:16:32"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 22:18:16"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 22:18:25"}
+{"level":"error","timestamp":"2019-09-05 22:19:34"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 22:19:41"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 22:20:02"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 22:20:03"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 22:33:02"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 22:33:36"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 22:34:11"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 22:34:20"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 22:34:33"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 22:34:36"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 22:34:41"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 22:36:56"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 22:36:57"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-05 22:36:59"}
+{"message":"Running DEVELOPMENT_LOCAL","level":"info","timestamp":"2019-09-05 22:37:58"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-09-05 22:37:58"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-09-05 22:38:00"}
+{"message":"Message recieved","level":"info","timestamp":"2019-09-05 22:38:00"}
+{"message":"Message recieved","level":"info","timestamp":"2019-09-05 22:38:00"}
+{"message":"Running DEVELOPMENT_LOCAL","level":"info","timestamp":"2019-09-06 15:42:08"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-09-06 15:42:08"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-09-06 15:42:08"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-09-06 15:42:08"}
+{"message":"Message recieved","level":"info","timestamp":"2019-09-06 15:42:08"}
+{"message":"Message recieved","level":"info","timestamp":"2019-09-06 15:42:08"}
+{"message":"MongoDB: Successfully connected to DEVELOPMENT_LOCAL DB","level":"info","timestamp":"2019-09-06 15:42:10"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-06 15:58:03"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-06 16:03:39"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-06 16:04:01"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-06 16:05:08"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-06 16:05:20"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-06 16:05:48"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-06 16:05:58"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-06 16:06:19"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-06 16:11:17"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-06 16:11:27"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-06 16:11:41"}
+{"message":"Running DEVELOPMENT_LOCAL","level":"info","timestamp":"2019-09-06 16:12:22"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-09-06 16:12:22"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-09-06 16:12:22"}
+{"message":"Message recieved","level":"info","timestamp":"2019-09-06 16:12:22"}
+{"message":"Message recieved","level":"info","timestamp":"2019-09-06 16:12:22"}
+{"message":"Running DEVELOPMENT_LOCAL","level":"info","timestamp":"2019-09-09 21:11:50"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-09-09 21:11:50"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-09-09 21:11:50"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-09-09 21:11:51"}
+{"message":"Message recieved","level":"info","timestamp":"2019-09-09 21:11:51"}
+{"message":"Message recieved","level":"info","timestamp":"2019-09-09 21:11:51"}
+{"message":"MongoDB: Successfully connected to DEVELOPMENT_LOCAL DB","level":"info","timestamp":"2019-09-09 21:11:52"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:16:40"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:17:25"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:18:13"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:19:09"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:21:35"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:23:11"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:24:24"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:24:51"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:25:44"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:26:16"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:26:45"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:26:54"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:27:08"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:27:16"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:27:58"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:28:25"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:32:11"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:32:12"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:33:53"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:33:53"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:33:53"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:33:53"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:33:53"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:33:53"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:33:53"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:33:53"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:33:53"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:33:53"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:33:53"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:33:53"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:33:53"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:33:53"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:33:53"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:34:23"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:34:23"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:34:23"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:34:23"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:34:23"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:34:23"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:34:23"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:34:23"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:34:23"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:34:23"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:34:23"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:34:23"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:34:23"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:34:23"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:34:24"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:40:54"}
+{"level":"error","timestamp":"2019-09-09 21:40:58"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:55:54"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:56:54"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:57:04"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:57:20"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:57:57"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:58:43"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:58:48"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 21:59:47"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 22:11:05"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 22:13:33"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 22:13:53"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 22:16:16"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 22:16:16"}
+{"message":"Running DEVELOPMENT_LOCAL","level":"info","timestamp":"2019-09-09 22:21:12"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-09-09 22:21:12"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-09-09 22:21:12"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-09-09 22:21:12"}
+{"message":"Message recieved","level":"info","timestamp":"2019-09-09 22:21:12"}
+{"message":"Message recieved","level":"info","timestamp":"2019-09-09 22:21:12"}
+{"message":"MongoDB: Successfully connected to DEVELOPMENT_LOCAL DB","level":"info","timestamp":"2019-09-09 22:21:14"}
+{"message":"Running DEVELOPMENT_LOCAL","level":"info","timestamp":"2019-09-09 22:23:33"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-09-09 22:23:33"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-09-09 22:23:33"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-09-09 22:23:33"}
+{"message":"Message recieved","level":"info","timestamp":"2019-09-09 22:23:33"}
+{"message":"Message recieved","level":"info","timestamp":"2019-09-09 22:23:33"}
+{"message":"MongoDB: Successfully connected to DEVELOPMENT_LOCAL DB","level":"info","timestamp":"2019-09-09 22:23:36"}
+{"message":"Running DEVELOPMENT_LOCAL","level":"info","timestamp":"2019-09-09 22:24:10"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-09-09 22:24:10"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-09-09 22:24:10"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-09-09 22:24:10"}
+{"message":"Message recieved","level":"info","timestamp":"2019-09-09 22:24:10"}
+{"message":"Message recieved","level":"info","timestamp":"2019-09-09 22:24:10"}
+{"message":"MongoDB: Successfully connected to DEVELOPMENT_LOCAL DB","level":"info","timestamp":"2019-09-09 22:24:12"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 22:24:39"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 22:25:10"}
+{"message":"Running DEVELOPMENT_LOCAL","level":"info","timestamp":"2019-09-09 22:26:33"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-09-09 22:26:33"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-09-09 22:26:33"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-09-09 22:26:33"}
+{"message":"Message recieved","level":"info","timestamp":"2019-09-09 22:26:33"}
+{"message":"Message recieved","level":"info","timestamp":"2019-09-09 22:26:33"}
+{"message":"MongoDB: Successfully connected to DEVELOPMENT_LOCAL DB","level":"info","timestamp":"2019-09-09 22:26:35"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 22:26:38"}
+{"message":"Redis: Connection failed trying again, attempts: 1","level":"error","timestamp":"2019-09-09 22:26:55"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-09-09 22:26:56"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-09-09 22:26:57"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 22:27:06"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 22:27:07"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 22:27:08"}
+{"message":"Redis: Connection failed trying again, attempts: 1","level":"error","timestamp":"2019-09-09 22:27:17"}
+{"message":"Redis: Connection failed trying again, attempts: 2","level":"error","timestamp":"2019-09-09 22:27:20"}
+{"message":"Redis: Connection failed trying again, attempts: 3","level":"error","timestamp":"2019-09-09 22:27:25"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-09-09 22:27:25"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-09-09 22:27:25"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-09-09 22:27:25"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-09-09 22:27:25"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-09-09 22:27:25"}
+{"message":"Running DEVELOPMENT_LOCAL","level":"info","timestamp":"2019-09-09 22:29:26"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-09-09 22:29:26"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-09-09 22:29:26"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-09-09 22:29:26"}
+{"message":"Message recieved","level":"info","timestamp":"2019-09-09 22:29:26"}
+{"message":"Message recieved","level":"info","timestamp":"2019-09-09 22:29:26"}
+{"message":"MongoDB: Successfully connected to DEVELOPMENT_LOCAL DB","level":"info","timestamp":"2019-09-09 22:29:28"}
+{"message":"Cache Hit","level":"info","timestamp":"2019-09-09 22:29:30"}
+{"message":"Redis: Connection failed trying again, attempts: 1","level":"error","timestamp":"2019-09-09 22:29:39"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-09-09 22:29:39"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-09-09 22:29:39"}
+{"message":"Running DEVELOPMENT_LOCAL","level":"info","timestamp":"2019-09-09 22:30:53"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-09-09 22:30:53"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-09-09 22:30:53"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-09-09 22:30:53"}
+{"message":"Message recieved","level":"info","timestamp":"2019-09-09 22:30:53"}
+{"message":"Message recieved","level":"info","timestamp":"2019-09-09 22:30:53"}
+{"message":"MongoDB: Successfully connected to DEVELOPMENT_LOCAL DB","level":"info","timestamp":"2019-09-09 22:30:55"}
+{"message":"Running DEVELOPMENT_LOCAL","level":"info","timestamp":"2019-09-09 22:31:41"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-09-09 22:31:41"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-09-09 22:31:41"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-09-09 22:31:41"}
+{"message":"Message recieved","level":"info","timestamp":"2019-09-09 22:31:41"}
+{"message":"Message recieved","level":"info","timestamp":"2019-09-09 22:31:41"}
+{"message":"MongoDB: Successfully connected to DEVELOPMENT_LOCAL DB","level":"info","timestamp":"2019-09-09 22:31:43"}
+{"message":"Running DEVELOPMENT_LOCAL","level":"info","timestamp":"2019-09-09 22:34:45"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-09-09 22:34:45"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-09-09 22:34:45"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-09-09 22:34:45"}
+{"message":"Message recieved","level":"info","timestamp":"2019-09-09 22:34:45"}
+{"message":"Message recieved","level":"info","timestamp":"2019-09-09 22:34:45"}
+{"message":"MongoDB: Successfully connected to DEVELOPMENT_LOCAL DB","level":"info","timestamp":"2019-09-09 22:34:47"}
+{"message":"Running TEST_LOCAL","level":"info","timestamp":"2019-09-09 22:35:17"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-09-09 22:35:18"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-09-09 22:35:18"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-09-09 22:35:18"}
+{"message":"MongoDB: Successfully connected to TEST_LOCAL DB","level":"info","timestamp":"2019-09-09 22:35:20"}
+{"message":"Message sent","level":"info","timestamp":"2019-09-09 22:35:21"}
+{"message":"this is test data","level":"info","timestamp":"2019-09-09 22:35:21"}
+{"message":"Running TEST_LOCAL","level":"info","timestamp":"2019-09-09 22:36:25"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-09-09 22:36:25"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-09-09 22:36:25"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-09-09 22:36:25"}
+{"message":"MongoDB: Successfully connected to TEST_LOCAL DB","level":"info","timestamp":"2019-09-09 22:36:27"}
+{"message":"Message sent","level":"info","timestamp":"2019-09-09 22:36:28"}
+{"message":"this is test data","level":"info","timestamp":"2019-09-09 22:36:28"}
+{"message":"Running TEST_LOCAL","level":"info","timestamp":"2019-09-09 22:37:05"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-09-09 22:37:05"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-09-09 22:37:05"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-09-09 22:37:06"}
+{"message":"MongoDB: Successfully connected to TEST_LOCAL DB","level":"info","timestamp":"2019-09-09 22:37:08"}
+{"message":"Message sent","level":"info","timestamp":"2019-09-09 22:37:08"}
+{"message":"this is test data","level":"info","timestamp":"2019-09-09 22:37:08"}
+{"level":"error","timestamp":"2019-09-09 22:37:09"}
+{"level":"error","timestamp":"2019-09-09 22:37:09"}
+{"level":"error","timestamp":"2019-09-09 22:37:09"}
+{"level":"error","timestamp":"2019-09-09 22:37:09"}
+{"message":"Running DEVELOPMENT_LOCAL","level":"info","timestamp":"2019-09-10 21:02:18"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-09-10 21:02:18"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-09-10 21:02:19"}
+{"message":"MongoDB: Successfully connected to DEVELOPMENT_LOCAL DB","level":"info","timestamp":"2019-09-10 21:02:21"}
+{"message":"RabbitMQ: Connection failed trying again","level":"error","timestamp":"2019-09-10 21:02:28"}
+{"message":"attempts: 1","level":"error","timestamp":"2019-09-10 21:02:30"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-09-10 21:02:30"}
+{"message":"Message recieved","level":"info","timestamp":"2019-09-10 21:02:30"}
+{"message":"Message recieved","level":"info","timestamp":"2019-09-10 21:02:30"}
+{"message":"Running DEVELOPMENT_LOCAL","level":"info","timestamp":"2019-09-10 21:07:49"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-09-10 21:07:49"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-09-10 21:07:49"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-09-10 21:07:49"}
+{"message":"Message recieved","level":"info","timestamp":"2019-09-10 21:07:49"}
+{"message":"Message recieved","level":"info","timestamp":"2019-09-10 21:07:49"}
+{"message":"Running TEST_LOCAL","level":"info","timestamp":"2019-09-10 21:07:59"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-09-10 21:07:59"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-09-10 21:07:59"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-09-10 21:07:59"}
+{"message":"MongoDB: Successfully connected to TEST_LOCAL DB","level":"info","timestamp":"2019-09-10 21:08:01"}
+{"message":"Message sent","level":"info","timestamp":"2019-09-10 21:08:02"}
+{"message":"this is test data","level":"info","timestamp":"2019-09-10 21:08:02"}
+{"message":"Running TEST_LOCAL","level":"info","timestamp":"2019-09-10 21:08:47"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-09-10 21:08:47"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-09-10 21:08:47"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-09-10 21:08:47"}
+{"message":"MongoDB: Successfully connected to TEST_LOCAL DB","level":"info","timestamp":"2019-09-10 21:08:49"}
+{"message":"Message sent","level":"info","timestamp":"2019-09-10 21:08:50"}
+{"message":"this is test data","level":"info","timestamp":"2019-09-10 21:08:50"}
+{"message":"Running TEST_LOCAL","level":"info","timestamp":"2019-09-10 21:11:15"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-09-10 21:11:15"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-09-10 21:11:16"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-09-10 21:11:16"}
+{"message":"MongoDB: Successfully connected to TEST_LOCAL DB","level":"info","timestamp":"2019-09-10 21:11:18"}
+{"message":"Message sent","level":"info","timestamp":"2019-09-10 21:11:18"}
+{"message":"this is test data","level":"info","timestamp":"2019-09-10 21:11:18"}
+{"level":"error","timestamp":"2019-09-10 21:11:19"}
+{"level":"error","timestamp":"2019-09-10 21:11:19"}
+{"level":"error","timestamp":"2019-09-10 21:11:19"}
+{"level":"error","timestamp":"2019-09-10 21:11:19"}
+{"message":"Running TEST_LOCAL","level":"info","timestamp":"2019-09-10 21:11:40"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-09-10 21:11:40"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-09-10 21:11:40"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-09-10 21:11:40"}
+{"message":"MongoDB: Successfully connected to TEST_LOCAL DB","level":"info","timestamp":"2019-09-10 21:11:42"}
+{"message":"Message sent","level":"info","timestamp":"2019-09-10 21:11:42"}
+{"message":"this is test data","level":"info","timestamp":"2019-09-10 21:11:42"}
+{"message":"Running TEST_LOCAL","level":"info","timestamp":"2019-09-10 21:12:05"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-09-10 21:12:05"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-09-10 21:12:05"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-09-10 21:12:06"}
+{"message":"MongoDB: Successfully connected to TEST_LOCAL DB","level":"info","timestamp":"2019-09-10 21:12:07"}
+{"message":"Message sent","level":"info","timestamp":"2019-09-10 21:12:07"}
+{"message":"this is test data","level":"info","timestamp":"2019-09-10 21:12:07"}
+{"message":"Running TEST_LOCAL","level":"info","timestamp":"2019-09-10 21:12:36"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-09-10 21:12:36"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-09-10 21:12:36"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-09-10 21:12:36"}
+{"message":"MongoDB: Successfully connected to TEST_LOCAL DB","level":"info","timestamp":"2019-09-10 21:12:38"}
+{"message":"Message sent","level":"info","timestamp":"2019-09-10 21:12:39"}
+{"message":"this is test data","level":"info","timestamp":"2019-09-10 21:12:39"}
+{"message":"Running TEST_LOCAL","level":"info","timestamp":"2019-09-10 21:13:41"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-09-10 21:13:41"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-09-10 21:13:41"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-09-10 21:13:43"}
+{"message":"MongoDB: Successfully connected to TEST_LOCAL DB","level":"info","timestamp":"2019-09-10 21:13:43"}
+{"message":"Message sent","level":"info","timestamp":"2019-09-10 21:13:45"}
+{"message":"this is test data","level":"info","timestamp":"2019-09-10 21:13:45"}
+{"message":"Running TEST_LOCAL","level":"info","timestamp":"2019-09-10 21:18:24"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-09-10 21:18:24"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-09-10 21:18:24"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-09-10 21:18:24"}
+{"message":"MongoDB: Successfully connected to TEST_LOCAL DB","level":"info","timestamp":"2019-09-10 21:18:26"}
+{"level":"error","timestamp":"2019-09-10 21:18:26"}
+{"level":"error","timestamp":"2019-09-10 21:18:26"}
+{"level":"error","timestamp":"2019-09-10 21:18:26"}
+{"level":"error","timestamp":"2019-09-10 21:18:26"}
+{"level":"error","timestamp":"2019-09-10 21:18:26"}
+{"level":"error","timestamp":"2019-09-10 21:18:26"}
+{"level":"error","timestamp":"2019-09-10 21:18:26"}
+{"level":"error","timestamp":"2019-09-10 21:18:26"}
+{"level":"error","timestamp":"2019-09-10 21:18:26"}
+{"level":"error","timestamp":"2019-09-10 21:18:26"}
+{"level":"error","timestamp":"2019-09-10 21:18:26"}
+{"level":"error","timestamp":"2019-09-10 21:18:26"}
+{"level":"error","timestamp":"2019-09-10 21:18:26"}
+{"level":"error","timestamp":"2019-09-10 21:18:26"}
+{"level":"error","timestamp":"2019-09-10 21:18:26"}
+{"level":"error","timestamp":"2019-09-10 21:18:26"}
+{"message":"Message sent","level":"info","timestamp":"2019-09-10 21:18:27"}
+{"message":"this is test data","level":"info","timestamp":"2019-09-10 21:18:27"}
+{"message":"Redis: Connection failed trying again, attempts: 1","level":"error","timestamp":"2019-09-10 21:18:29"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-09-10 21:18:29"}
+{"message":"Running TEST_LOCAL","level":"info","timestamp":"2019-09-10 21:18:40"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-09-10 21:18:40"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-09-10 21:18:40"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-09-10 21:18:40"}
+{"message":"MongoDB: Successfully connected to TEST_LOCAL DB","level":"info","timestamp":"2019-09-10 21:18:43"}
+{"message":"Message sent","level":"info","timestamp":"2019-09-10 21:18:44"}
+{"message":"this is test data","level":"info","timestamp":"2019-09-10 21:18:44"}
+{"message":"Running TEST_LOCAL","level":"info","timestamp":"2019-09-10 21:19:30"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-09-10 21:19:30"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-09-10 21:19:30"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-09-10 21:19:30"}
+{"message":"MongoDB: Successfully connected to TEST_LOCAL DB","level":"info","timestamp":"2019-09-10 21:19:32"}
+{"message":"Message sent","level":"info","timestamp":"2019-09-10 21:19:33"}
+{"message":"this is test data","level":"info","timestamp":"2019-09-10 21:19:33"}
+{"message":"Running TEST_LOCAL","level":"info","timestamp":"2019-09-10 21:20:00"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-09-10 21:20:00"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-09-10 21:20:00"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-09-10 21:20:00"}
+{"message":"MongoDB: Successfully connected to TEST_LOCAL DB","level":"info","timestamp":"2019-09-10 21:20:02"}
+{"message":"Message sent","level":"info","timestamp":"2019-09-10 21:20:04"}
+{"message":"this is test data","level":"info","timestamp":"2019-09-10 21:20:04"}
+{"message":"Running TEST_LOCAL","level":"info","timestamp":"2019-09-10 21:21:08"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-09-10 21:21:08"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-09-10 21:21:08"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-09-10 21:21:08"}
+{"message":"MongoDB: Successfully connected to TEST_LOCAL DB","level":"info","timestamp":"2019-09-10 21:21:10"}
+{"message":"Message sent","level":"info","timestamp":"2019-09-10 21:21:11"}
+{"message":"this is test data","level":"info","timestamp":"2019-09-10 21:21:11"}
+{"message":"Running TEST_LOCAL","level":"info","timestamp":"2019-09-10 21:21:21"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-09-10 21:21:21"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-09-10 21:21:21"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-09-10 21:21:21"}
+{"message":"MongoDB: Successfully connected to TEST_LOCAL DB","level":"info","timestamp":"2019-09-10 21:21:23"}
+{"message":"Message sent","level":"info","timestamp":"2019-09-10 21:21:23"}
+{"message":"this is test data","level":"info","timestamp":"2019-09-10 21:21:23"}
+{"message":"Running TEST_LOCAL","level":"info","timestamp":"2019-09-10 21:21:38"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-09-10 21:21:38"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-09-10 21:21:38"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-09-10 21:21:38"}
+{"message":"MongoDB: Successfully connected to TEST_LOCAL DB","level":"info","timestamp":"2019-09-10 21:21:40"}
+{"message":"Message sent","level":"info","timestamp":"2019-09-10 21:21:41"}
+{"message":"this is test data","level":"info","timestamp":"2019-09-10 21:21:41"}
+{"message":"Running TEST_LOCAL","level":"info","timestamp":"2019-09-10 21:25:24"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-09-10 21:25:24"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-09-10 21:25:24"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-09-10 21:25:24"}
+{"message":"MongoDB: Successfully connected to TEST_LOCAL DB","level":"info","timestamp":"2019-09-10 21:25:26"}
+{"level":"error","timestamp":"2019-09-10 21:25:26"}
+{"level":"error","timestamp":"2019-09-10 21:25:26"}
+{"level":"error","timestamp":"2019-09-10 21:25:26"}
+{"level":"error","timestamp":"2019-09-10 21:25:26"}
+{"level":"error","timestamp":"2019-09-10 21:25:26"}
+{"level":"error","timestamp":"2019-09-10 21:25:26"}
+{"level":"error","timestamp":"2019-09-10 21:25:26"}
+{"level":"error","timestamp":"2019-09-10 21:25:26"}
+{"level":"error","timestamp":"2019-09-10 21:25:26"}
+{"level":"error","timestamp":"2019-09-10 21:25:26"}
+{"level":"error","timestamp":"2019-09-10 21:25:26"}
+{"level":"error","timestamp":"2019-09-10 21:25:26"}
+{"level":"error","timestamp":"2019-09-10 21:25:26"}
+{"level":"error","timestamp":"2019-09-10 21:25:26"}
+{"level":"error","timestamp":"2019-09-10 21:25:26"}
+{"level":"error","timestamp":"2019-09-10 21:25:26"}
+{"message":"Message sent","level":"info","timestamp":"2019-09-10 21:25:26"}
+{"message":"this is test data","level":"info","timestamp":"2019-09-10 21:25:26"}
+{"message":"Redis: Connection failed trying again, attempts: 1","level":"error","timestamp":"2019-09-10 21:25:29"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-09-10 21:25:29"}
+{"message":"Redis: Connection failed trying again, attempts: 1","level":"error","timestamp":"2019-09-10 21:25:31"}
+{"message":"Running DEVELOPMENT_LOCAL","level":"info","timestamp":"2019-09-10 21:25:44"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-09-10 21:25:44"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-09-10 21:25:45"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-09-10 21:25:45"}
+{"message":"Message recieved","level":"info","timestamp":"2019-09-10 21:25:45"}
+{"message":"Message recieved","level":"info","timestamp":"2019-09-10 21:25:45"}
+{"message":"MongoDB: Successfully connected to DEVELOPMENT_LOCAL DB","level":"info","timestamp":"2019-09-10 21:25:46"}
+{"message":"Running TEST_LOCAL","level":"info","timestamp":"2019-09-10 21:25:56"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-09-10 21:25:56"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-09-10 21:25:56"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-09-10 21:25:56"}
+{"message":"MongoDB: Successfully connected to TEST_LOCAL DB","level":"info","timestamp":"2019-09-10 21:25:58"}
+{"message":"Message sent","level":"info","timestamp":"2019-09-10 21:25:59"}
+{"message":"this is test data","level":"info","timestamp":"2019-09-10 21:25:59"}
+{"message":"Running TEST_LOCAL","level":"info","timestamp":"2019-09-10 21:27:13"}
+{"message":"Server on port 3001","level":"info","timestamp":"2019-09-10 21:27:13"}
+{"message":"Redis: Successfully connected","level":"info","timestamp":"2019-09-10 21:27:13"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-09-10 21:27:13"}
+{"message":"MongoDB: Successfully connected to TEST_LOCAL DB","level":"info","timestamp":"2019-09-10 21:27:15"}
+{"message":"Message sent","level":"info","timestamp":"2019-09-10 21:27:16"}
+{"message":"this is test data","level":"info","timestamp":"2019-09-10 21:27:16"}
