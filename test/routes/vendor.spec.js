@@ -83,7 +83,7 @@ describe('Vendor Routes', () => {
             .get(`/vendor/${regionID}/?categories[]=Venezuelan&categories[]=Arepa`);
 
           const queryResParsedBefore = JSON.parse(queryResBefore.res.text);
-          const vendorID = queryResParsedBefore[0]._id;
+          const vendorID = queryResParsedBefore[0].id;
           const daysInactiveBefore = queryResParsedBefore[0].consecutiveDaysInactive;
 
           await incrementVendorConsecutiveDaysInactive(regionID, vendorID);
@@ -92,6 +92,7 @@ describe('Vendor Routes', () => {
             .get(`/vendor/${regionID}/?categories[]=Venezuelan&categories[]=Arepa`);
 
           const queryResParsedAfter = JSON.parse(queryResAfter.res.text);
+
           const daysInactiveAfter = queryResParsedAfter[0].consecutiveDaysInactive;
 
           expect(daysInactiveAfter).to.equal(daysInactiveBefore + 1);

@@ -161,7 +161,7 @@ describe('Cache Middleware', () => {
 
       expect(isInCacheBefore).to.be.null;
       expect(isInCacheAfter).to.be.an('array');
-      expect(isInCacheAfter[0]).to.have.own.property('twitterID');
+      expect(isInCacheAfter[0]).to.have.own.property('description');
     });
 
     it('expect Vendor Route Operations getVendorsAsObject method to return an object of equal length that of getVendors operation', async () => {
@@ -193,7 +193,7 @@ describe('Cache Middleware', () => {
       const firstKey = Object.keys(isInCacheAfter)[0];
 
       expect(isInCacheBefore).to.be.null;
-      expect(isInCacheAfter[firstKey]).to.have.own.property('twitterID');
+      expect(isInCacheAfter[firstKey]).to.have.own.property('description');
     });
   });
 

@@ -29,7 +29,7 @@ describe('Message Receive Vendor Location', () => {
             const errMsg = new Error(err);
             console.error(errMsg);
           });
-        vendor = await Vendor.findOne({ regionID: await region._id })
+        vendor = await Vendor.findOne({ regionID: await region._id, dailyActive: false })
           .catch((err) => {
             const errMsg = new Error(err);
             console.error(errMsg);

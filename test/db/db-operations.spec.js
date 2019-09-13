@@ -187,16 +187,17 @@ describe('DB Operations', () => {
       });
 
       it('expect dailyActive to be set from false to true', async () => {
-        const prevDailyActive = await Vendor.findOne({ _id: vendor._id })
-          .then(vendorPrev => vendorPrev.dailyActive);
+        const targetVendor = await Vendor.findOne({ dailyActive: false });
+
+        const vendorID = targetVendor._id;
+        const prevDailyActive = targetVendor.dailyActive;
 
         const params = {
-          regionID, vendorID: vendor._id, field: 'dailyActive', data: true,
+          regionID, vendorID, field: 'dailyActive', data: true,
         };
-        const updateDailyActiveRes = await vendorOps.updateVendorSet(params)
-          .then(res => res);
-
-        const updatedDailyActive = await Vendor.findOne({ _id: vendor._id })
+        const updateDailyActiveRes = await vendorOps.updateVendorSet(params);
+        
+        const updatedDailyActive = await Vendor.findOne({ _id: vendorID })
           .then(vendorUpdated => vendorUpdated.dailyActive);
 
         expect(prevDailyActive).to.be.false;
@@ -206,20 +207,21 @@ describe('DB Operations', () => {
 
       it('expect updateVendorSet to update multiple fields in one operation', async () => {
         const newEmail = 'test@gmail.com';
+        const newDescription = 'test123';
         const prevVendor = await Vendor.findOne({ _id: vendor._id });
 
         const params = {
-          regionID, vendorID: vendor._id, field: ['dailyActive', 'email'], data: [true, newEmail],
+          regionID, vendorID: vendor._id, field: ['description', 'email'], data: [newDescription, newEmail],
         };
         const updatedVendorRes = await vendorOps.updateVendorSet(params)
           .then(res => res);
 
         const updatedVendor = await Vendor.findOne({ _id: vendor._id });
 
-        expect(prevVendor.dailyActive).to.be.false;
-        expect(prevVendor.email).to.be.equal('');
+        expect(prevVendor.description).to.not.be.equal(newDescription);
+        expect(prevVendor.email).to.not.be.equal(newEmail);
         expect(updatedVendorRes.nModified).to.equal(1);
-        expect(updatedVendor.dailyActive).to.be.true;
+        expect(updatedVendor.description).to.be.equal(newDescription);
         expect(updatedVendor.email).to.be.equal(newEmail);
       });
 

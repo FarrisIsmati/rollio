@@ -238,3 +238,135 @@
 {"message":"Redis: Connection failed trying again, attempts: 1","level":"error","timestamp":"2019-09-12 21:54:01"}
 {"message":"Redis: Connection failed trying again, attempts: 1","level":"error","timestamp":"2019-09-12 22:01:13"}
 {"message":"Redis: Connection failed trying again, attempts: 1","level":"error","timestamp":"2019-09-12 22:15:24"}
+{"level":"error","timestamp":"2019-09-12 22:22:03"}
+{"level":"error","timestamp":"2019-09-12 22:22:03"}
+{"level":"error","timestamp":"2019-09-12 22:22:03"}
+{"level":"error","timestamp":"2019-09-12 22:22:03"}
+{"level":"error","timestamp":"2019-09-12 22:22:03"}
+{"level":"error","timestamp":"2019-09-12 22:22:03"}
+{"level":"error","timestamp":"2019-09-12 22:22:03"}
+{"level":"error","timestamp":"2019-09-12 22:22:03"}
+{"level":"error","timestamp":"2019-09-12 22:22:03"}
+{"level":"error","timestamp":"2019-09-12 22:22:03"}
+{"level":"error","timestamp":"2019-09-12 22:22:03"}
+{"level":"error","timestamp":"2019-09-12 22:22:03"}
+{"level":"error","timestamp":"2019-09-12 22:22:03"}
+{"level":"error","timestamp":"2019-09-12 22:22:03"}
+{"level":"error","timestamp":"2019-09-12 22:22:03"}
+{"level":"error","timestamp":"2019-09-12 22:22:03"}
+{"level":"error","timestamp":"2019-09-12 22:22:03"}
+{"message":"Redis: Connection failed trying again, attempts: 1","level":"error","timestamp":"2019-09-12 22:22:05"}
+{"message":"Redis: Connection failed trying again, attempts: 2","level":"error","timestamp":"2019-09-12 22:22:09"}
+{"message":"Redis: Connection failed trying again, attempts: 1","level":"error","timestamp":"2019-09-12 22:22:11"}
+{"command":"HSET","args":["region","q::method::GET::path::/5d7afd53fb93e8164cd01d46","{\"dailyActiveVendorIDs\":[],\"_id\":\"5d7afd53fb93e8164cd01d46\",\"name\":\"WASHINGTONDC\",\"coordinates\":{\"accuracy\":0,\"coordinates\":[38.9072,77.0369],\"_id\":\"5d7afd53fb93e8164cd01d47\",\"locationDate\":\"2018-04-12T12:10:00.000Z\",\"address\":\"Washington, D.C.\"},\"location\":\"Washington, D.C.\",\"timezone\":\"EST\",\"__v\":0}"],"code":"MISCONF","level":"error","timestamp":"2019-09-12 22:22:12"}
+{"level":"error","timestamp":"2019-09-12 22:22:12"}
+{"level":"error","timestamp":"2019-09-12 22:22:12"}
+{"level":"error","timestamp":"2019-09-12 22:22:12"}
+{"level":"error","timestamp":"2019-09-12 22:22:12"}
+{"level":"error","timestamp":"2019-09-12 22:26:19"}
+{"level":"error","timestamp":"2019-09-12 22:26:47"}
+{"level":"error","timestamp":"2019-09-12 22:30:33"}
+{"level":"error","timestamp":"2019-09-12 22:30:33"}
+{"level":"error","timestamp":"2019-09-12 22:30:34"}
+{"level":"error","timestamp":"2019-09-12 22:30:34"}
+{"level":"error","timestamp":"2019-09-12 22:30:34"}
+{"level":"error","timestamp":"2019-09-12 22:30:34"}
+{"level":"error","timestamp":"2019-09-12 22:30:34"}
+{"level":"error","timestamp":"2019-09-12 22:30:34"}
+{"level":"error","timestamp":"2019-09-12 22:30:34"}
+{"level":"error","timestamp":"2019-09-12 22:30:34"}
+{"level":"error","timestamp":"2019-09-12 22:30:34"}
+{"level":"error","timestamp":"2019-09-12 22:30:34"}
+{"level":"error","timestamp":"2019-09-12 22:30:34"}
+{"level":"error","timestamp":"2019-09-12 22:30:34"}
+{"level":"error","timestamp":"2019-09-12 22:30:34"}
+{"level":"error","timestamp":"2019-09-12 22:30:34"}
+{"level":"error","timestamp":"2019-09-12 22:30:34"}
+{"level":"error","timestamp":"2019-09-12 22:30:34"}
+{"message":"Redis: Connection failed trying again, attempts: 1","level":"error","timestamp":"2019-09-12 22:30:36"}
+{"message":"Redis: Connection failed trying again, attempts: 1","level":"error","timestamp":"2019-09-12 22:30:38"}
+{"level":"error","timestamp":"2019-09-12 22:30:54"}
+{"level":"error","timestamp":"2019-09-12 22:31:49"}
+{"level":"error","timestamp":"2019-09-12 22:32:13"}
+{"level":"error","timestamp":"2019-09-12 22:33:10"}
+{"level":"error","timestamp":"2019-09-12 22:33:45"}
+{"level":"error","timestamp":"2019-09-12 22:37:10"}
+{"level":"error","timestamp":"2019-09-12 22:37:10"}
+{"level":"error","timestamp":"2019-09-12 22:37:10"}
+{"level":"error","timestamp":"2019-09-12 22:37:10"}
+{"level":"error","timestamp":"2019-09-12 22:37:10"}
+{"level":"error","timestamp":"2019-09-12 22:37:10"}
+{"level":"error","timestamp":"2019-09-12 22:37:10"}
+{"level":"error","timestamp":"2019-09-12 22:37:10"}
+{"level":"error","timestamp":"2019-09-12 22:37:10"}
+{"level":"error","timestamp":"2019-09-12 22:37:10"}
+{"level":"error","timestamp":"2019-09-12 22:37:10"}
+{"level":"error","timestamp":"2019-09-12 22:37:10"}
+{"level":"error","timestamp":"2019-09-12 22:37:10"}
+{"level":"error","timestamp":"2019-09-12 22:37:10"}
+{"level":"error","timestamp":"2019-09-12 22:37:10"}
+{"level":"error","timestamp":"2019-09-12 22:37:10"}
+{"level":"error","timestamp":"2019-09-12 22:37:10"}
+{"level":"error","timestamp":"2019-09-12 22:37:10"}
+{"message":"Redis: Connection failed trying again, attempts: 1","level":"error","timestamp":"2019-09-12 22:37:12"}
+{"level":"error","timestamp":"2019-09-12 22:43:13"}
+{"level":"error","timestamp":"2019-09-12 22:43:13"}
+{"level":"error","timestamp":"2019-09-12 22:43:13"}
+{"level":"error","timestamp":"2019-09-12 22:43:13"}
+{"level":"error","timestamp":"2019-09-12 22:43:13"}
+{"level":"error","timestamp":"2019-09-12 22:43:13"}
+{"level":"error","timestamp":"2019-09-12 22:43:13"}
+{"level":"error","timestamp":"2019-09-12 22:43:13"}
+{"level":"error","timestamp":"2019-09-12 22:43:13"}
+{"level":"error","timestamp":"2019-09-12 22:43:13"}
+{"level":"error","timestamp":"2019-09-12 22:43:13"}
+{"level":"error","timestamp":"2019-09-12 22:43:13"}
+{"level":"error","timestamp":"2019-09-12 22:43:13"}
+{"level":"error","timestamp":"2019-09-12 22:43:14"}
+{"level":"error","timestamp":"2019-09-12 22:43:14"}
+{"level":"error","timestamp":"2019-09-12 22:43:14"}
+{"level":"error","timestamp":"2019-09-12 22:43:14"}
+{"level":"error","timestamp":"2019-09-12 22:43:14"}
+{"message":"Redis: Connection failed trying again, attempts: 1","level":"error","timestamp":"2019-09-12 22:43:16"}
+{"level":"error","timestamp":"2019-09-12 22:48:51"}
+{"level":"error","timestamp":"2019-09-12 22:48:51"}
+{"level":"error","timestamp":"2019-09-12 22:48:51"}
+{"level":"error","timestamp":"2019-09-12 22:48:51"}
+{"level":"error","timestamp":"2019-09-12 22:48:51"}
+{"level":"error","timestamp":"2019-09-12 22:48:51"}
+{"level":"error","timestamp":"2019-09-12 22:48:51"}
+{"level":"error","timestamp":"2019-09-12 22:48:51"}
+{"level":"error","timestamp":"2019-09-12 22:48:52"}
+{"level":"error","timestamp":"2019-09-12 22:48:52"}
+{"level":"error","timestamp":"2019-09-12 22:48:52"}
+{"level":"error","timestamp":"2019-09-12 22:48:52"}
+{"level":"error","timestamp":"2019-09-12 22:48:52"}
+{"level":"error","timestamp":"2019-09-12 22:48:52"}
+{"level":"error","timestamp":"2019-09-12 22:48:52"}
+{"level":"error","timestamp":"2019-09-12 22:48:52"}
+{"level":"error","timestamp":"2019-09-12 22:48:52"}
+{"level":"error","timestamp":"2019-09-12 22:48:52"}
+{"message":"Redis: Connection failed trying again, attempts: 1","level":"error","timestamp":"2019-09-12 22:48:54"}
+{"level":"error","timestamp":"2019-09-12 22:56:23"}
+{"level":"error","timestamp":"2019-09-12 22:56:23"}
+{"level":"error","timestamp":"2019-09-12 22:56:23"}
+{"level":"error","timestamp":"2019-09-12 22:56:23"}
+{"level":"error","timestamp":"2019-09-12 22:57:11"}
+{"level":"error","timestamp":"2019-09-12 22:57:11"}
+{"level":"error","timestamp":"2019-09-12 22:57:11"}
+{"level":"error","timestamp":"2019-09-12 22:57:11"}
+{"level":"error","timestamp":"2019-09-12 22:57:11"}
+{"level":"error","timestamp":"2019-09-12 22:57:11"}
+{"level":"error","timestamp":"2019-09-12 22:57:11"}
+{"level":"error","timestamp":"2019-09-12 22:57:11"}
+{"level":"error","timestamp":"2019-09-12 22:57:11"}
+{"level":"error","timestamp":"2019-09-12 22:57:11"}
+{"level":"error","timestamp":"2019-09-12 22:57:11"}
+{"level":"error","timestamp":"2019-09-12 22:57:11"}
+{"level":"error","timestamp":"2019-09-12 22:57:11"}
+{"level":"error","timestamp":"2019-09-12 22:57:11"}
+{"level":"error","timestamp":"2019-09-12 22:57:11"}
+{"level":"error","timestamp":"2019-09-12 22:57:11"}
+{"level":"error","timestamp":"2019-09-12 22:57:11"}
+{"level":"error","timestamp":"2019-09-12 22:57:11"}
+{"message":"Redis: Connection failed trying again, attempts: 1","level":"error","timestamp":"2019-09-12 22:57:13"}
