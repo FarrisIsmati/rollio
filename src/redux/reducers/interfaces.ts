@@ -1,6 +1,6 @@
 export interface Coordinates {
     lat: number | null,
-    long: number | null
+    long: number | null,
 }
   
 // Preview set of vendor data
@@ -8,16 +8,21 @@ export interface VendorCard {
     id: string,
     name: string,
     description: string,
-    coordinates: Coordinates,
+    categories: [],
+    consecutiveDaysInactive: number,
+    location: Location | null,
     selected: boolean,
-    lastUpdated: string
+    isActive: boolean,
+    lastUpdated: string,
 }
 
 export interface Location {
     coordinates: Coordinates,
     address: string,
     neighborhood: string,
-    municipality: string
+    municipality: string,
+    accuracy: number | null,
+    id: string,
 }
 
 // Full set of vendor data
@@ -35,13 +40,15 @@ export interface VendorFull {
     twitterID: string,
     comments: Comment[],
     creditCard: boolean | null,
-    location: Location | null
+    location: Location | null,
+    isActive: boolean,
+    lastUpdated: Date,
 }
 
 export interface Comment {
     name: string,
     date: string,
-    text: string
+    text: string,
 }
 
 // Pin on map
@@ -57,14 +64,14 @@ export interface GroupPin {
     id: string,
     vendorIds: string[], // All the vendorsAll[] indecies to quickly look up the data
     selected: boolean,
-    location: Location
+    location: Location,
 }
 
 // Filters for map
 export interface Filter {
     price: string,
     rating: number[],
-    categories: string[]
+    categories: string[],
 }
 
 export interface DataDefaultState {
@@ -73,18 +80,19 @@ export interface DataDefaultState {
     dailyActiveVendors: string[],
     regionCoordinates: Coordinates,
     regionTimezone: string,
-    vendorsAll: { [key: string]: VendorCard }
-    selectedVendor: VendorFull
+    vendorsAll: { [key: string]: VendorCard },
+    selectedVendor: VendorFull,
 }
 
 export interface MapDefaultState {
     vendorsDisplayedSingle: Pin[],
     vendorsDisplayedGroup: GroupPin[],
-    activeFilters: Filter[]
+    activeFilters: Filter[],
 }
 
 // Async
 export interface AsyncDefaultState {
     isRegionLoaded: boolean,
-    isVendorLoaded: boolean
+    isVendorLoaded: boolean,
+    areVendorsLoaded: boolean,
 }

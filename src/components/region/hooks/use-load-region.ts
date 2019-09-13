@@ -15,14 +15,18 @@ const useLoadRegion = (props:any) => {
     // Gets vendor profile data, if it fails redirects to an error page
     const getRegionDataFromRegionId = () => {
         const regionId = getRouteIds(props).regionId;
+
         const reRouteCb = () => {
             props.history.replace('/invalid');
         }
+
         const payload = {
             regionId,
+            shouldFetchVendors: true,
             cb: reRouteCb
         }
         dispatch(fetchRegionDataAsync(payload))
+
     }
 
     useEffect(() => {

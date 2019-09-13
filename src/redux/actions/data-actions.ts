@@ -11,7 +11,8 @@ import {
     POST_VENDOR_COMMENT,
     RECIEVE_REGION_DATA,
     FETCH_REGION_DATA,
-    FETCH_VENDOR_DATA
+    FETCH_VENDOR_DATA,
+    FETCH_ALL_VENDORS
 } from '../constants/constants'
 
 // INTERFACES
@@ -47,7 +48,9 @@ export function recieveVendorData(vendor:any) {
         price: vendor.price,
         rating: vendor.rating,
         twitterID: vendor.twitterID,
-        website: vendor.website
+        website: vendor.website,
+        isActive: vendor.dailyActive,
+        lastUpdated: vendor.updateDate,
     }
 
     return {
@@ -136,7 +139,7 @@ export function recieveRegionData(region:any) {
     return {
         type: RECIEVE_REGION_DATA,
         payload: {
-            regionID: region._id,
+            regionId: region._id,
             regionName: region.name,
             dailyActiveVendors: region.dailyActiveVendorIDs,
             regionCoordinates: {
@@ -169,7 +172,7 @@ function fetchRegionDataStart() {
 
 // Get Region data with either a region name or region ID
 export function fetchRegionDataAsync(payload:RegionDataAsyncPayload) {
-    const { regionName, regionId, cb } = payload;
+    const { regionName, regionId, shouldFetchVendors, cb } = payload;
     // Set route based on payload params
     const route = regionId === '' || regionId === undefined ? `${VENDOR_API}/region/name/${regionName}` : `${VENDOR_API}/region/${regionId}`
 
@@ -180,10 +183,66 @@ export function fetchRegionDataAsync(payload:RegionDataAsyncPayload) {
         .then((res: AxiosResponse<any>) => {
             dispatch(recieveRegionData(res.data));
             dispatch(fetchRegionDataSuccess());
+            if ( shouldFetchVendors ) {
+                dispatch(fetchAllVendorsAsync({regionId}))
+            }
         })
         .catch((err:AxiosError) => {
             console.error(err)
             cb()
+            return err
         })
+    }
+}
+
+// -----------
+// VENDOR DATA
+// -----------
+
+
+export function recieveAllVendors(vendors:any) {
+    // return {
+    //     type: RECIEVE_REGION_DATA,
+    //     payload: {
+    //         vendorsAll: vendors
+    //     }
+    // }
+}
+
+
+function fetchAllVendorsSuccess() {
+    return {
+        type: FETCH_ALL_VENDORS,
+        payload: {
+            areVendorsLoaded: true
+        }
+    }
+}
+
+function fetchAllVendorsStart() {
+    return {
+        type: FETCH_ALL_VENDORS,
+        payload: {
+            areVendorsLoaded: false
+        }
+    }
+}
+
+// Get all vendors with a region ID
+export function fetchAllVendorsAsync(payload:any) {
+    const { regionId } = payload;
+
+    return (dispatch:any) => {
+        // Set region load status to false when fetching a new region
+        dispatch(fetchAllVendorsStart());
+        axios.get(`${VENDOR_API}/vendor/${regionId}/object`)
+            .then((res: AxiosResponse<any>) => {
+                console.log(res.data);
+                // dispatch(recieveAllVendors(res.data));
+                dispatch(fetchAllVendorsSuccess());
+            })
+            .catch((err:AxiosError) => {
+                console.error(err)
+            })
     }
 }
