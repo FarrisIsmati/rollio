@@ -33,7 +33,7 @@ export function recieveVendorData(vendor:any) {
     if (vendor.locationHistory.length && moment(Date.now()).isSame(vendor.locationHistory[0].locationDate, 'day')) {
         location = vendor.locationHistory[0];
     }
-    // LOCATION HISTORY ONLY IF IT"S LOCATION IS TODAY CREATE THAT CHECK
+    // LOCATION HISTORY ONLY IF IT'S LOCATION IS TODAY CREATE THAT CHECK
     const profile = {
         categories: vendor.categories,
         comments: vendor.comments,

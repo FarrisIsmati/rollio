@@ -42,7 +42,7 @@ export interface VendorFull {
     creditCard: boolean | null,
     location: Location | null,
     isActive: boolean,
-    lastUpdated: Date,
+    lastUpdated: Date | null,
 }
 
 export interface Comment {

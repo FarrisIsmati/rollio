@@ -33,11 +33,15 @@ const defaultState:DataDefaultState = {
         comments: [],
         creditCard: null,
         location: {
+            id: '',
             coordinates: { lat: null, long: null },
             address: '',
             neighborhood: '',
-            municipality: ''
-        }
+            municipality: '',
+            accuracy: 0,
+        },
+        isActive: false,
+        lastUpdated: null,
     },
 }
 
