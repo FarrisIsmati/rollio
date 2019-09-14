@@ -1,5 +1,5 @@
 // DEPENDENCIES
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 function useWindowWidth() {
     const [width, setWidth] = useState(window.innerWidth);

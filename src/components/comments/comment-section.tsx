@@ -1,5 +1,5 @@
 // DEPENDENCIES
-import React, {FC} from 'react';
+import React from 'react';
 
 // COMPONENTS
 import CommentPosts from './comment-posts';

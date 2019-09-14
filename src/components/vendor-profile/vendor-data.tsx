@@ -15,7 +15,7 @@ const VendorData = (props:any) => {
     return (
     <div className='vendordata__wrapper'>
         <div className='col1'>
-            <img src={vendor.profileImageLink} className='vendordata__vendor_profimg'/>
+            <img src={vendor.profileImageLink} alt={`${vendor.name} profile`} className='vendordata__vendor_profimg'/>
             <h1 className='font__vendordata_title'>{vendor.name}</h1>
         </div>
         <div className='col2'>
@@ -28,12 +28,12 @@ const VendorData = (props:any) => {
             <p className="font__vendordata_description">{vendor.creditCard === 'y' ? 'Credit Cards Accepted' : 'Credit Card NOT Accepted'}</p>
             {
                 vendor.website ?
-                <p><a className="font__vendordata_link" href={vendor.website} target="_blank">Website</a></p>  :
+                <p><a className="font__vendordata_link" href={vendor.website} target="_blank" rel="noopener noreferrer">Website</a></p>  :
                 <p className="font__vendordata_description">No website</p>
             }
             {
                 vendor.phonenumber ?
-                <p><a className="font__vendordata_link" href={`tel:${vendor.phonenumber}`} target="_blank">{vendor.phonenumber}</a></p>  :
+                <p><a className="font__vendordata_link" href={`tel:${vendor.phonenumber}`} target="_blank" rel="noopener noreferrer">{vendor.phonenumber}</a></p>  :
                 <p className="font__vendordata_description">No phone number</p>
             }
         </div>

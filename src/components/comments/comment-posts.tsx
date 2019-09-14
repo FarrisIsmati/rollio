@@ -1,5 +1,5 @@
 // DEPENDENCIES
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 // COMPONENTS
 import ButtonDefault from '../common/buttons/button-default';
