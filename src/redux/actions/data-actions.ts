@@ -7,12 +7,19 @@ import { VENDOR_API } from '../../config';
 
 // CONSTANTS
 import {
-    RECIEVE_VENDOR_PROFILE,
-    POST_VENDOR_COMMENT,
-    RECIEVE_REGION_DATA,
-    FETCH_REGION_DATA,
     FETCH_VENDOR_DATA,
-    FETCH_ALL_VENDORS
+    FETCH_VENDOR_DATA_SUCCESS,
+    RECIEVE_VENDOR_DATA,
+
+    FETCH_REGION_DATA,
+    FETCH_REGION_DATA_SUCCESS,
+    RECIEVE_REGION_DATA,
+
+    FETCH_ALL_VENDORS,
+    FETCH_ALL_VENDORS_SUCCESS,
+    RECIEVE_ALL_VENDORS,
+
+    POST_VENDOR_COMMENT,
 } from '../constants/constants'
 
 // INTERFACES
@@ -54,7 +61,7 @@ export function recieveVendorData(vendor:any) {
     }
 
     return {
-        type: RECIEVE_VENDOR_PROFILE,
+        type: RECIEVE_VENDOR_DATA,
         payload: {
             ...profile
         }
@@ -63,7 +70,7 @@ export function recieveVendorData(vendor:any) {
 
 function fetchVendorDataSuccess() {
     return {
-        type: FETCH_VENDOR_DATA,
+        type: FETCH_VENDOR_DATA_SUCCESS,
         payload: {
             isVendorLoaded: true
         }
@@ -154,7 +161,7 @@ export function recieveRegionData(region:any) {
 
 function fetchRegionDataSuccess() {
     return {
-        type: FETCH_REGION_DATA,
+        type: FETCH_REGION_DATA_SUCCESS,
         payload: {
             isRegionLoaded: true
         }
@@ -201,18 +208,18 @@ export function fetchRegionDataAsync(payload:RegionDataAsyncPayload) {
 
 
 export function recieveAllVendors(vendors:any) {
-    // return {
-    //     type: RECIEVE_REGION_DATA,
-    //     payload: {
-    //         vendorsAll: vendors
-    //     }
-    // }
+    return {
+        type: RECIEVE_ALL_VENDORS,
+        payload: {
+            ...vendors
+        }
+    }
 }
 
 
 function fetchAllVendorsSuccess() {
     return {
-        type: FETCH_ALL_VENDORS,
+        type: FETCH_ALL_VENDORS_SUCCESS,
         payload: {
             areVendorsLoaded: true
         }
@@ -237,8 +244,7 @@ export function fetchAllVendorsAsync(payload:any) {
         dispatch(fetchAllVendorsStart());
         axios.get(`${VENDOR_API}/vendor/${regionId}/object`)
             .then((res: AxiosResponse<any>) => {
-                console.log(res.data);
-                // dispatch(recieveAllVendors(res.data));
+                dispatch(recieveAllVendors(res.data));
                 dispatch(fetchAllVendorsSuccess());
             })
             .catch((err:AxiosError) => {

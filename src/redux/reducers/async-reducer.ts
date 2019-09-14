@@ -1,8 +1,8 @@
 // CONSTANTS
 import {
-    FETCH_REGION_DATA,
-    FETCH_VENDOR_DATA,
-    FETCH_ALL_VENDORS
+    FETCH_REGION_DATA_SUCCESS,
+    FETCH_VENDOR_DATA_SUCCESS,
+    FETCH_ALL_VENDORS_SUCCESS,
 }                            from "../constants/constants"
 
 // INTERFACES
@@ -16,17 +16,17 @@ const defaultState:AsyncDefaultState = {
 
 export function asyncReducer(state = defaultState, action: any) {
     switch (action.type) {
-    case FETCH_REGION_DATA:
+    case FETCH_REGION_DATA_SUCCESS:
         return {
             ...state,
             ...action.payload
         }
-    case FETCH_VENDOR_DATA:
+    case FETCH_VENDOR_DATA_SUCCESS:
         return {
             ...state,
             ...action.payload
         }
-    case FETCH_ALL_VENDORS:
+    case FETCH_ALL_VENDORS_SUCCESS:
         return {
             ...state,
             ...action.payload

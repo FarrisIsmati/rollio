@@ -1,8 +1,9 @@
 // CONSTANTS
 import {
-    RECIEVE_VENDOR_PROFILE,
+    RECIEVE_REGION_DATA,
+    RECIEVE_VENDOR_DATA,
+    RECIEVE_ALL_VENDORS,
     POST_VENDOR_COMMENT,
-    RECIEVE_REGION_DATA
 }                            from "../constants/constants"
 
 // INTERFACES
@@ -47,10 +48,20 @@ const defaultState:DataDefaultState = {
 
 export function dataReducer(state = defaultState, action: any) {
     switch (action.type) {
-    case RECIEVE_VENDOR_PROFILE:
+    case RECIEVE_REGION_DATA:
+        return {
+            ...state,
+            ...action.payload
+        }
+    case RECIEVE_VENDOR_DATA:
         return {
             ...state, 
             selectedVendor: { ...state.selectedVendor, ...action.payload }
+        }
+    case RECIEVE_ALL_VENDORS:
+        return {
+            ...state,
+            vendorsAll: { ...action.payload }
         }
     case POST_VENDOR_COMMENT:
         return {
@@ -62,11 +73,6 @@ export function dataReducer(state = defaultState, action: any) {
                     ...state.selectedVendor.comments
                 ]
             }
-        }
-    case RECIEVE_REGION_DATA:
-        return {
-            ...state,
-            ...action.payload
         }
     default:
         return state
