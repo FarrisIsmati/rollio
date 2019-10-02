@@ -1,8 +1,13 @@
 .map {
     &__wrapper {
+        display: inline-block;
         height: 300px;
         width: 500px;
     }
+}
+
+.mapboxgl-map {
+    height: 100%;
 }
 
 .marker {

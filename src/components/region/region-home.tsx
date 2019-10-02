@@ -17,11 +17,11 @@ const RegionHome = (props:any) => {
   const areVendorsLoaded = state.async.areVendorsLoaded
 
   // Render Content
-  const content = isRegionLoaded && areVendorsLoaded ? <Map /> : <p>loading</p>
+  const map = isRegionLoaded && areVendorsLoaded ? <Map mapType='region' /> : <p>loading</p>
 
   return (
     <div className='regionhome__wrapper'>
-      { content }
+      { map }
     </div>
   );
 }
