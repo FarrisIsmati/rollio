@@ -8,7 +8,7 @@ import { asyncReducer } from './async-reducer'
 
 const rootReducer = combineReducers({
   data: dataReducer,
-  map: mapReducer,
+  regionMap: mapReducer,
   async: asyncReducer
 })
 
