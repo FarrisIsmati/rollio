@@ -13,8 +13,8 @@ const RegionHome = (props:any) => {
   useLoadRegion(props);
 
   const state = useGetAppState();
-  const isRegionLoaded = state.async.isRegionLoaded
-  const areVendorsLoaded = state.async.areVendorsLoaded
+  const isRegionLoaded = state.async.isRegionLoaded;
+  const areVendorsLoaded = state.async.areVendorsLoaded;
 
   // Render Content
   const map = isRegionLoaded && areVendorsLoaded ? <Map mapType='region' /> : <p>loading</p>
