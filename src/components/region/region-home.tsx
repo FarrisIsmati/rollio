@@ -7,6 +7,7 @@ import Map from '../map/map';
 // HOOKS
 import useLoadRegion from './hooks/use-load-region';
 import useGetAppState from '../common/hooks/use-get-app-state';
+import useProcessMapPoints from './hooks/use-process-map-points';
 
 const RegionHome = (props:any) => {
   // On mount load the region
@@ -15,6 +16,9 @@ const RegionHome = (props:any) => {
   const state = useGetAppState();
   const isRegionLoaded = state.async.isRegionLoaded;
   const areVendorsLoaded = state.async.areVendorsLoaded;
+
+  // Get all vendors in to the Map Pins on first load
+  useProcessMapPoints(props);
 
   // Render Content
   const map = isRegionLoaded && areVendorsLoaded ? <Map mapType='region' /> : <p>loading</p>
