@@ -1,4 +1,10 @@
+// INTERFACES
 import { MapDefaultState } from "./interfaces";
+
+// CONSTANTS
+import {
+  SET_MAP_PIN,
+} from "../constants/constants"
 
 const defaultState:MapDefaultState = {
   vendorsDisplayedSingle: [],
@@ -8,7 +14,12 @@ const defaultState:MapDefaultState = {
 
 export function mapReducer(state = defaultState, action: any) {
   switch (action.type) {
-  default:
-    return state
-  }
+    case SET_MAP_PIN:
+        return {
+            ...state,
+            vendorsDisplayedSingle: [...state.vendorsDisplayedSingle, action.payload]
+        }
+    default:
+        return state
+    }
 }

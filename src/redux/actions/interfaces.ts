@@ -19,3 +19,11 @@ export type RegionDataAsyncPayload = {
 export type AllVendorsPayload = {
   regionId: string
 }
+
+// Pin on map
+export interface Pin {
+  id: string,
+  vendorId: string,
+  selected: boolean,
+  location: Location,
+}

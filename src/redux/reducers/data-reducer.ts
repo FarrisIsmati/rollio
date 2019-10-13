@@ -4,7 +4,7 @@ import {
     RECIEVE_VENDOR_DATA,
     RECIEVE_ALL_VENDORS,
     POST_VENDOR_COMMENT,
-}                            from "../constants/constants"
+} from "../constants/constants"
 
 // INTERFACES
 import { DataDefaultState } from "./interfaces";
