@@ -1,0 +1,13 @@
+version: '2'
+
+services:
+  app-service-twitter:
+    container_name: rollio-service-twitter
+    build: ./ .
+    env_file:
+      - ./.env
+    environment:
+      - NODE_ENV=DEVELOPMENT_DOCKER
+    restart: always
+    ports: 
+      - '81:3002'
