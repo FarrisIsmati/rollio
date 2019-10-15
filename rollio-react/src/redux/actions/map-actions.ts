@@ -1,9 +1,6 @@
-// DEPENDENCIES
-import uuid  from 'uuid/v1';
-
 // CONSTANTS
 import {
-    SET_MAP_PIN,
+    SET_MAP_PINS,
     SET_MAP_PIN_LOAD_STATE
 } from '../constants/constants'
 
@@ -17,19 +14,11 @@ import {
 // MAP
 // -------
 
-export function setMapPin(payload: PinPayload) {
-    let id = '';
-
-    if (!payload.id) {
-        id = uuid();    
-    }
+export function setMapPins(payload: PinPayload) {
     return {
-        type: SET_MAP_PIN,
+        type: SET_MAP_PINS,
         payload: {
-            id,
-            vendorId: payload.vendorId,
-            selected: payload.selected,
-            location: payload.location,
+            ...payload
         }
     }
 }

@@ -1,4 +1,4 @@
-export interface VendorDataAsyncPayload  {
+export interface VendorDataAsyncPayload {
   regionId: string,
   vendorId: string,
   cb: () => void
@@ -16,16 +16,14 @@ export type RegionDataAsyncPayload = {
   cb: () => void
 }
 
-export type AllVendorsPayload = {
+export interface AllVendorsPayload {
   regionId: string
 }
 
 // Pin on map
 export interface PinPayload {
-  id: string,
-  vendorId: string,
-  selected: boolean,
-  location: Location,
+  vendorsDisplayedSingle: Set<string>,
+  vendorsDisplayedGroup: any[]
 }
 
 export interface MapPinsLoadStatePayload {

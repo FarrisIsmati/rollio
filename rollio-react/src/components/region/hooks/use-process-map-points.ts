@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 
 // ACTIONS
 import { 
-    setMapPin,
+    setMapPins,
     setMapPinsLoadState
  } from '../../../redux/actions/map-actions';
 
@@ -37,33 +37,32 @@ const useProcessMapPoints = (props:any) => {
                     const coordString: string = stringifyCoordinates(vendor.location.coordinates);
                     // Add value to sortedLocations
                     if (sortedLocations[coordString]) {
-                        sortedLocations[coordString].push(vendor);
+                        sortedLocations[coordString].push(vendor.id);
                     } else {
                         sortedLocations[coordString] = [];
-                        sortedLocations[coordString].push(vendor);
+                        sortedLocations[coordString].push(vendor.id);
                     }
                 }
             });
 
-            const singlePins: any[] = [];
+            const singlePins: Set<string> = new Set();
             const groupPins: any[] = [];
-        
-            Object.values(sortedLocations).forEach( (vendor: any[]) => {
+
+            Object.values(sortedLocations).forEach( (vendor: any) => {
                 if (vendor.length > 1) {
                     // add to group map pin
                     groupPins.push(vendor);
                 } else {
-                    // add to single map pin
-                    singlePins.push(vendor);
+                    // add to single map pin to set
+                    // for single pins its the first element
+                    singlePins.add(vendor[0]);
                 }
             })
 
-            // const payload:any = {
-            //     vendorId: vendor[0].id,
-            //     selected: vendor[0].selected,
-            //     location: vendor[0].location,
-            // }
-            // dispatch(setMapPin(payload))
+            dispatch(setMapPins({
+                vendorsDisplayedSingle: singlePins,
+                vendorsDisplayedGroup: groupPins
+            }))
         }
     })
 }
