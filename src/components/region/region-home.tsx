@@ -14,8 +14,8 @@ const RegionHome = (props:any) => {
   useLoadRegion(props);
 
   const state = useGetAppState();
-  const isRegionLoaded = state.async.isRegionLoaded;
-  const areVendorsLoaded = state.async.areVendorsLoaded;
+  const isRegionLoaded = state.loadState.isRegionLoaded;
+  const areVendorsLoaded = state.loadState.areVendorsLoaded;
 
   // Get all vendors in to the Map Pins on first load
   useProcessMapPoints(props);

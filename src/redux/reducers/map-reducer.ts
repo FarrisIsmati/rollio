@@ -3,7 +3,7 @@ import { MapDefaultState } from "./interfaces";
 
 // CONSTANTS
 import {
-  SET_MAP_PIN,
+  SET_MAP_PIN
 } from "../constants/constants"
 
 const defaultState:MapDefaultState = {

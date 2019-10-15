@@ -3,7 +3,10 @@ import { useDispatch  } from 'react-redux';
 import { useEffect } from 'react';
 
 // ACTIONS
-import { setMapPin } from '../../../redux/actions/map-actions';
+import { 
+    setMapPin,
+    setMapPinsLoadState
+ } from '../../../redux/actions/map-actions';
 
 // HOOKS
 import useGetAppState from '../../common/hooks/use-get-app-state';
@@ -21,9 +24,9 @@ const useProcessMapPoints = (props:any) => {
     const allVendors = state.data.vendorsAll
 
     useEffect(() => {
-        // Once vendor data has been loaded run the process only once
-        if (Object.keys(allVendors).length) {
-            // STILL BUILDING CALL SETMAPPINSLOADED TO TRUE AND ADD IT TO THE IF STATEMENT TO PREVENT INFINITE LOOPS
+        // Once vendor data has been loaded & if the map pins have not already been loaded
+        if (Object.keys(allVendors).length && !state.loadState.areMapPinsLoaded) {
+            dispatch(setMapPinsLoadState({areMapPinsLoaded: true}))
 
             const sortedLocations: { [s: string]: any[] } = {};
 
@@ -41,20 +44,26 @@ const useProcessMapPoints = (props:any) => {
                     }
                 }
             });
+
+            const singlePins: any[] = [];
+            const groupPins: any[] = [];
         
             Object.values(sortedLocations).forEach( (vendor: any[]) => {
                 if (vendor.length > 1) {
                     // add to group map pin
+                    groupPins.push(vendor);
                 } else {
                     // add to single map pin
-                    const payload:any = {
-                        vendorId: vendor[0].id,
-                        selected: vendor[0].selected,
-                        location: vendor[0].location,
-                    }
-                    // dispatch(setMapPin(payload))
+                    singlePins.push(vendor);
                 }
             })
+
+            // const payload:any = {
+            //     vendorId: vendor[0].id,
+            //     selected: vendor[0].selected,
+            //     location: vendor[0].location,
+            // }
+            // dispatch(setMapPin(payload))
         }
     })
 }

@@ -88,6 +88,7 @@ export interface MapDefaultState {
     vendorsDisplayedSingle: Pin[],
     vendorsDisplayedGroup: GroupPin[],
     activeFilters: Filter[],
+
 }
 
 // Async
@@ -95,4 +96,6 @@ export interface AsyncDefaultState {
     isRegionLoaded: boolean,
     isVendorLoaded: boolean,
     areVendorsLoaded: boolean,
+    areMapPinsLoaded: boolean
 }
+

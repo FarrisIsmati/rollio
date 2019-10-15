@@ -21,9 +21,13 @@ export type AllVendorsPayload = {
 }
 
 // Pin on map
-export interface Pin {
+export interface PinPayload {
   id: string,
   vendorId: string,
   selected: boolean,
   location: Location,
+}
+
+export interface MapPinsLoadStatePayload {
+  areMapPinsLoaded: boolean
 }
