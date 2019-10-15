@@ -9,6 +9,7 @@ let MONGO_CONNECT;
 let REDIS_HOST;
 let REDIS_PORT;
 let RABBITMQ_CONNECT;
+let TWITTER_CONFIG;
 
 switch (NODE_ENV) {
   case 'PRODUCTION':
@@ -22,6 +23,11 @@ switch (NODE_ENV) {
     REDIS_PORT = process.env.REDIS_PORT_LOCAL;
     REDIS_HOST = process.env.REDIS_HOST_LOCAL;
     RABBITMQ_CONNECT = process.env.RABBITMQ_SERVER_ID_LOCAL;
+    TWITTER_CONFIG = {
+      consumerKey: process.env.TWITTER_CONSUMER_KEY_LOCAL,
+      consumerSecret: process.env.TWITTER_CONSUMER_SECRET_LOCAL,
+      callbackURL: process.env.OAUTH_CALLBACK_LOCAL
+    };
     break;
   case 'TEST_LOCAL':
     MONGO_CONNECT = process.env.MONGO_TEST_LOCAL;
@@ -54,4 +60,5 @@ module.exports = {
   REDIS_PORT,
   REDIS_HOST,
   RABBITMQ_CONNECT,
+  TWITTER_CONFIG
 };
