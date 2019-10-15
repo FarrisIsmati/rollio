@@ -1,0 +1,75 @@
+.vendordata {
+    &__wrapper {
+        display: flex;
+        flex-direction: column;
+        max-width: 600px;
+
+        .col1 {
+            display: flex;
+            align-items: center;
+
+            h1 {
+                margin-left: 16px;
+            }
+        }
+
+        .col2 {
+            margin-top: 17px;
+        }
+
+        .col3 {
+            margin-top: 32px;
+        }
+
+        .col4 {
+            margin-top: 32px;
+            display: flex;
+            justify-content: space-between;
+        }
+    }
+
+    &__vendor_profimg {
+        display: block;
+        max-width:144px;
+        max-height:114px;
+        width: auto;
+        height: auto;
+    }
+}
+
+// APPLIED FONTS
+
+.font__vendordata_title {
+    @include neuzeit-black;
+    color: $color-font-alt;
+    font-size: 42px;
+    font-stretch: normal;
+    line-height: 1.19;
+}
+
+.font__vendordata_description {
+    @include neuzeit-reg;
+    color: $color-font-main;
+    font-size: 18px;
+}
+
+.font__vendordata_link {
+    @include neuzeit-reg;
+    color: $color-font-link;
+    font-size: 18px;
+    text-decoration: none;
+}
+
+// MEDIA QUERY
+
+@media only screen and (max-width: 576px) {
+    .font__vendordata_title {
+        font-size: 26px;
+    }
+
+    .vendordata__wrapper {
+        .col4 {
+            flex-direction: column;
+        }
+    }
+  }

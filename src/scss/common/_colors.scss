@@ -1,0 +1,33 @@
+// COLORS
+$white: #fff;
+$rollioWhite: #fafafa;
+$rollioBlue: #0046c6;
+$rollioBlack: #212121;
+$rollioMedGrey: #4d4d4d;
+$rollioLightGrey: #757575;
+$rollioLighterGrey: #eeeeee;
+$rollioMagenta: #f74774;
+$rollioRed: #f54336;
+
+// FONTS
+$color-font-main: $rollioBlack;
+$color-font-main-light: $rollioMedGrey;
+$color-font-main-light2: $rollioLightGrey;
+$color-font-alt: $rollioMagenta;
+$color-font-error: $rollioRed;
+$color-font-link: $rollioBlue;
+
+// COMPONENTS
+// Main
+$color-background-nav: $white;
+$color-background-main: $rollioWhite;
+// Comments
+$color-comment-icon-text: $rollioBlue;
+$color-comment-background: $white;
+$color-comment-name-border: $rollioLighterGrey;
+// Buttons
+$color-button-default-font: $white;
+$color-button-default-background: $rollioBlue;
+$color-button-default-background-locked: $rollioLighterGrey;
+
+

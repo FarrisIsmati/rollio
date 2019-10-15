@@ -1,0 +1,40 @@
+.button {
+    &__default {
+        width: 82px;
+        height: 40px;
+        border-radius: 8px;
+        background-color: $color-button-default-background;
+        border: none;
+        outline: none;
+        color: $color-button-default-font;
+        transition:background-color .1s ease-in;
+
+        &:hover {
+            cursor: pointer;
+        }
+
+        &_wide {
+            width: 122px;
+        }
+        
+        &_locked {
+            background-color: $color-button-default-background-locked;
+            transition:background-color .1s ease-in;
+            
+            &:hover {
+                cursor: default;
+            }
+        }
+    }
+}
+
+// APPLIED FONTS
+.font__button_comment_add {
+    @include neuzeit-bold;
+    font-size: 18px;
+}
+
+.font__button_comment_showmore {
+    @include neuzeit-bold;
+    font-size: 18px;
+}

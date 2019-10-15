@@ -1,0 +1,23 @@
+.vendorprofile {
+    &__wrapper {
+        
+    }
+
+    &__twitterwidget_wrapper {
+        position: absolute;
+        z-index: 99;
+        height: 710px;
+        width: 360px;
+        right: 0%;
+        background-color: chocolate;
+    }
+
+    &__top_wrapper {
+        background-color: $white;
+        padding: 48px 14.44% 41px 14.44%;
+    }
+
+    &__bottom_wrapper {
+        padding: 39px 14.44%;
+    }
+}

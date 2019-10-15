@@ -1,0 +1,13 @@
+.info {
+    &__category_wrapper {
+        display: inline-block;
+        padding: 1px 8px;
+        border-radius: 12px;
+        margin-right: 4px;
+        margin-top: 4px;
+        background-color: #e0e0e0;
+        
+        @include neuzeit-reg;
+        font-size: 16px;
+    }
+}
