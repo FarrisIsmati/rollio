@@ -24,7 +24,7 @@ const VendorProfile = (props:any) => {
   const comments = useGetAppState().data.selectedVendor.comments
 
   // Render Content
-  const content = useGetAppState().async.isVendorLoaded ?
+  const content = useGetAppState().loadState.isVendorLoaded ?
     <React.Fragment>
       {/* <div className='vendorprofile__twitterwidget_wrapper'>
         tst
