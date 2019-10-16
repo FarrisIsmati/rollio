@@ -1,6 +1,7 @@
 // DEPENDENCIES
 import { useDispatch  } from 'react-redux';
 import { useEffect } from 'react';
+import uuid from 'uuid/v1';
 
 // ACTIONS
 import { 
@@ -12,7 +13,10 @@ import {
 import useGetAppState from '../../common/hooks/use-get-app-state';
 
 // INTERFACES
-import { Pin } from '../../../redux/reducers/interfaces';
+import { 
+    Pin,
+    GroupPin
+} from '../../../redux/reducers/interfaces';
 
 const stringifyCoordinates = (coordinates: {lat:number, long:number}) => {
     return String(coordinates.lat) + String(coordinates.long)
@@ -49,14 +53,15 @@ const useProcessMapPoints = (props:any) => {
             });
 
             const singlePins:  { [key: string]: Pin } = {};
-            const groupPins: any[] = [];
+            const groupPins: { [key: string]: GroupPin } = {};
 
             Object.values(sortedLocations).forEach( (vendor: any) => {
                 if (vendor.length > 1) {
-                    // add to group map pin  
-                    groupPins.push(vendor);
+                    // add to group map pin to obj
+                    // uuid as the id for the react list key
+                    groupPins[uuid()] = vendor;
                 } else {
-                    // add to single map pin to set
+                    // add to single map pin to obj
                     // for single pins its the first element
                     singlePins[vendor[0].vendorId] = vendor[0];
                 }

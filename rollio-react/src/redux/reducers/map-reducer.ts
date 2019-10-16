@@ -7,8 +7,8 @@ import {
 } from "../constants/constants"
 
 const defaultState:MapDefaultState = {
-  vendorsDisplayedSingle: new Set(),
-  vendorsDisplayedGroup: [],
+  vendorsDisplayedSingle: {},
+  vendorsDisplayedGroup: {},
   activeFilters: []
 }
 

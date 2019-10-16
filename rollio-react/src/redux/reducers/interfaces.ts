@@ -81,8 +81,8 @@ export interface DataDefaultState {
 }
 
 export interface MapDefaultState {
-    vendorsDisplayedSingle: Set<string>,
-    vendorsDisplayedGroup: GroupPin[],
+    vendorsDisplayedSingle: { [key: string]: Pin },
+    vendorsDisplayedGroup: { [key: string]: GroupPin },
     activeFilters: Filter[]
 }
 
