@@ -7,9 +7,9 @@ import {
 }                            from "../constants/constants"
 
 // INTERFACES
-import { AsyncDefaultState } from "./interfaces";
+import { LoadStateDefaultState } from "./interfaces";
 
-const defaultState:AsyncDefaultState = {
+const defaultState: LoadStateDefaultState = {
     isRegionLoaded: false,
     isVendorLoaded: false,
     areVendorsLoaded: false,

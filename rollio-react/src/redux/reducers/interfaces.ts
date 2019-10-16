@@ -53,18 +53,14 @@ export interface Comment {
 
 // Pin on map
 export interface Pin {
-    // id: string,
-    vendorId: Set<string>,
-    // selected: boolean,
-    // location: Location,
+    vendorId: string,
+    selected: boolean
 }
 
 // Pin with multiple vendors
 export interface GroupPin {
-    // id: string,
-    vendorIds: string[], // All the vendorsAll[] indecies to quickly look up the data
-    // selected: boolean,
-    // location: Location,
+    vendorIds: any[], // All the vendorsAll[] indecies to quickly look up the data
+    selected: boolean
 }
 
 // Filters for map
@@ -87,12 +83,11 @@ export interface DataDefaultState {
 export interface MapDefaultState {
     vendorsDisplayedSingle: Set<string>,
     vendorsDisplayedGroup: GroupPin[],
-    activeFilters: Filter[],
-
+    activeFilters: Filter[]
 }
 
 // Async
-export interface AsyncDefaultState {
+export interface LoadStateDefaultState {
     isRegionLoaded: boolean,
     isVendorLoaded: boolean,
     areVendorsLoaded: boolean,

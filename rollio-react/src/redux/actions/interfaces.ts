@@ -1,3 +1,6 @@
+// INTERFACES
+import { Pin } from '../reducers/interfaces'
+
 export interface VendorDataAsyncPayload {
   regionId: string,
   vendorId: string,
@@ -22,7 +25,7 @@ export interface AllVendorsPayload {
 
 // Pin on map
 export interface PinPayload {
-  vendorsDisplayedSingle: Set<string>,
+  vendorsDisplayedSingle: { [key: string]: Pin },
   vendorsDisplayedGroup: any[]
 }
 

@@ -11,6 +11,9 @@ import {
 // HOOKS
 import useGetAppState from '../../common/hooks/use-get-app-state';
 
+// INTERFACES
+import { Pin } from '../../../redux/reducers/interfaces';
+
 const stringifyCoordinates = (coordinates: {lat:number, long:number}) => {
     return String(coordinates.lat) + String(coordinates.long)
 } 
@@ -37,25 +40,25 @@ const useProcessMapPoints = (props:any) => {
                     const coordString: string = stringifyCoordinates(vendor.location.coordinates);
                     // Add value to sortedLocations
                     if (sortedLocations[coordString]) {
-                        sortedLocations[coordString].push(vendor.id);
+                        sortedLocations[coordString].push({ vendorId: vendor.id, selected: false });
                     } else {
                         sortedLocations[coordString] = [];
-                        sortedLocations[coordString].push(vendor.id);
+                        sortedLocations[coordString].push({ vendorId: vendor.id, selected: false });
                     }
                 }
             });
 
-            const singlePins: Set<string> = new Set();
+            const singlePins:  { [key: string]: Pin } = {};
             const groupPins: any[] = [];
 
             Object.values(sortedLocations).forEach( (vendor: any) => {
                 if (vendor.length > 1) {
-                    // add to group map pin
+                    // add to group map pin  
                     groupPins.push(vendor);
                 } else {
                     // add to single map pin to set
                     // for single pins its the first element
-                    singlePins.add(vendor[0]);
+                    singlePins[vendor[0].vendorId] = vendor[0];
                 }
             })
 
