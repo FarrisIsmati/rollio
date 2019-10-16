@@ -15,6 +15,7 @@ const server = http.createServer(app);
 // ROUTES
 const region = require('./lib/routes/region');
 const vendor = require('./lib/routes/vendor');
+const login = require('./lib/routes/login');
 
 // MESSAGES
 const receiveVendorsRequest = require('./lib/messaging/receive/receive-vendors-request');
@@ -57,6 +58,7 @@ app.use(cors());
 
 app.use('/region', region);
 app.use('/vendor', vendor);
+app.use('/api', login);
 
 server.listen(app.get('port'), async () => {
   logger.info(`Server on port ${app.get('port')}`);

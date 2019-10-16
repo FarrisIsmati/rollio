@@ -359,3 +359,15 @@
 {"message":true,"level":"info","timestamp":"2019-07-14 13:09:45"}
 {"message":"RabbitMQ: Sent request for vendors","level":"info","timestamp":"2019-07-14 13:09:45"}
 {"message":"Received VendorIDs, length: 8","level":"info","timestamp":"2019-07-14 13:09:45"}
+{"message":"Running DEVELOPMENT_LOCAL","level":"info","timestamp":"2019-10-15 20:32:41"}
+{"message":"Server on port 3002","level":"info","timestamp":"2019-10-15 20:32:41"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-10-15 20:32:41"}
+{"message":"RabbitMQ: Message sent","level":"info","timestamp":"2019-10-15 20:32:41"}
+{"message":true,"level":"info","timestamp":"2019-10-15 20:32:41"}
+{"message":"RabbitMQ: Sent request for vendors","level":"info","timestamp":"2019-10-15 20:32:41"}
+{"message":"Running DEVELOPMENT_LOCAL","level":"info","timestamp":"2019-10-15 20:33:41"}
+{"message":"Server on port 3002","level":"info","timestamp":"2019-10-15 20:33:41"}
+{"message":"RabbitMQ: Successfully connected","level":"info","timestamp":"2019-10-15 20:33:41"}
+{"message":"RabbitMQ: Message sent","level":"info","timestamp":"2019-10-15 20:33:41"}
+{"message":true,"level":"info","timestamp":"2019-10-15 20:33:41"}
+{"message":"RabbitMQ: Sent request for vendors","level":"info","timestamp":"2019-10-15 20:33:41"}
