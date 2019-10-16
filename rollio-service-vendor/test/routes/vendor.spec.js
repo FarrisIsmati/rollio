@@ -11,6 +11,7 @@ const { incrementVendorConsecutiveDaysInactive } = require('../../lib/db/mongo/o
 
 // SEED
 const seed = require('../../lib/db/mongo/seeds/dev-seed');
+const seedData = require('../../lib/db/mongo/data/dev');
 
 // SCHEMAS
 const Region = mongoose.model('Region');
@@ -42,7 +43,7 @@ describe('Vendor Routes', () => {
           .end((err, res) => {
             expect(res).to.have.status(200);
             expect(res.body).to.be.a('array');
-            expect(res.body.length).to.be.equal(8);
+            expect(res.body.length).to.be.equal(seedData.vendors.length);
             done();
           });
       });
@@ -55,7 +56,7 @@ describe('Vendor Routes', () => {
           .end((err, res) => {
             expect(res).to.have.status(200);
             expect(res.body).to.be.an('object');
-            expect(Object.keys(res.body).length).to.be.equal(8);
+            expect(Object.keys(res.body).length).to.be.equal(seedData.vendors.length);
             done();
           });
       });

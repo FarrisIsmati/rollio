@@ -10,6 +10,7 @@ const Vendor = mongoose.model('Vendor');
 
 // SEED
 const seed = require('../../../lib/db/mongo/seeds/dev-seed');
+const seedData = require('../../../lib/db/mongo/data/dev');
 
 describe('Development Seed Operations', () => {
   const seedDB = (done) => { seed.runSeed().then(() => done()); };
@@ -61,7 +62,7 @@ describe('Development Seed Operations', () => {
     it('Expect vendors in WASHINGTONDC to be length to be equal to 8', async () => {
       await seed.seedVendors('WASHINGTONDC');
       const vendorsAfter = await Vendor.find({ regionID });
-      expect(vendorsAfter.length).to.equal(8);
+      expect(vendorsAfter.length).to.equal(seedData.vendors.length);
     });
 
     after(done => emptyDB(done));
