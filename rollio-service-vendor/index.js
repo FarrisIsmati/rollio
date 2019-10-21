@@ -54,7 +54,7 @@ const generalRateLimit = rateLimit({
 app.use(generalRateLimit);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cors({exposedHeaders: ['x-auth-token']}));
 
 app.use('/region', region);
 app.use('/vendor', vendor);

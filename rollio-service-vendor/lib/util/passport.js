@@ -7,14 +7,12 @@ const GoogleTokenStrategy = require('passport-google-token').Strategy;*/
 const { TWITTER_CONFIG } = require('../../config');
 
 module.exports = function () {
-
     passport.use(new TwitterTokenStrategy({
-            consumerKey: TWITTER_CONFIG.callbackURL,
+            consumerKey: TWITTER_CONFIG.consumerKey,
             consumerSecret: TWITTER_CONFIG.consumerSecret,
             includeEmail: true
         },
         function (token, tokenSecret, profile, done) {
-            console.log('upsert twitter user', profile);
             User.upsertTwitterUser(token, tokenSecret, profile, function(err, user) {
                 return done(err, user);
             });

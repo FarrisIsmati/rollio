@@ -4,11 +4,17 @@ import FacebookLogin from 'react-facebook-login';
 import { GoogleLogin } from 'react-google-login';
 import { VENDOR_API } from '../../config';
 
+// NOTE: for this route to work locally, you have to run at http://127.0.0.1:3000/login and not at localhost:3000/login
+// otherwise, you'll get a cross-origin error when the pop-up opens
+
 class Login extends React.Component {
 
     constructor() {
         super();
         this.state = { isAuthenticated: false, user: null, token: ''};
+        this.logout = this.logout.bind(this);
+        this.onFailure = this.onFailure.bind(this);
+        this.twitterResponse = this.twitterResponse.bind(this);
     }
 
     logout = () => {

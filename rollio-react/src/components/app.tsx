@@ -42,7 +42,7 @@ const App:FC = () => {
           <Switch>
             <Route exact path="/region/:regionId" component={ RegionHome } />
             <Route exact path="/region/:regionId/vendor/:vendorId" component={ VendorProfile } />
-            <Route exact path="/" component={ Login } />
+            <Route exact path="/login" component={ Login } />
             <Route exact path="/invalid" component={ PageInvalid } />
             <Route path="/*" component={ PageInvalid } />
           </Switch>

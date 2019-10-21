@@ -10,25 +10,21 @@ router.route('/auth/twitter/reverse')
         request.post({
             url: 'https://api.twitter.com/oauth/request_token',
             oauth: {
-                // this might now work...replaced "http%3A%2F%2Flocalhost%3A3000%2Ftwitter-callback"
                 oauth_callback: TWITTER_CONFIG.callbackURL,
                 consumer_key: TWITTER_CONFIG.consumerKey,
                 consumer_secret: TWITTER_CONFIG.consumerSecret
             }
         }, function (err, r, body) {
-            console.log('err', err);
             if (err) {
                 return res.send(500, { message: e.message });
             }
             const jsonStr = '{ "' + body.replace(/&/g, '", "').replace(/=/g, '": "') + '"}';
-            console.log('jsonStr', jsonStr);
             res.send(JSON.parse(jsonStr));
         });
     });
 
 router.route('/auth/twitter')
     .post((req, res, next) => {
-        console.log('got auth post');
         request.post({
             url: `https://api.twitter.com/oauth/access_token?oauth_verifier`,
             oauth: {
@@ -44,11 +40,9 @@ router.route('/auth/twitter')
 
             const bodyString = '{ "' + body.replace(/&/g, '", "').replace(/=/g, '": "') + '"}';
             const parsedBody = JSON.parse(bodyString);
-            console.log('parsedBody.user', parsedBody);
             req.body['oauth_token'] = parsedBody.oauth_token;
             req.body['oauth_token_secret'] = parsedBody.oauth_token_secret;
             req.body['user_id'] = parsedBody.user_id;
-
             next();
         });
     }, passport.authenticate('twitter-token', {session: false}), function(req, res, next) {
