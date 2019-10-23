@@ -2,7 +2,7 @@ export interface Coordinates {
     lat: number | null,
     long: number | null,
 }
-  
+
 // Preview set of vendor data
 export interface VendorCard {
     id: string,
@@ -78,6 +78,13 @@ export interface DataDefaultState {
     regionTimezone: string,
     vendorsAll: { [key: string]: VendorCard },
     selectedVendor: VendorFull,
+}
+
+export interface UserDefaultState {
+    isAuthenticated: boolean,
+    _id: string,
+    email: string,
+    isAdmin: boolean
 }
 
 export interface MapDefaultState {

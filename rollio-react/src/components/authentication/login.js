@@ -3,7 +3,7 @@ import TwitterLogin from 'react-twitter-auth';
 import FacebookLogin from 'react-facebook-login';
 import { GoogleLogin } from 'react-google-login';
 import { VENDOR_API } from '../../config';
-
+import { login } from './hooks/authentication';
 // NOTE: for this route to work locally, you have to run at http://127.0.0.1:3000/login and not at localhost:3000/login
 // otherwise, you'll get a cross-origin error when the pop-up opens
 
@@ -29,6 +29,8 @@ class Login extends React.Component {
         const token = response.headers.get('x-auth-token');
         response.json().then(user => {
             if (token) {
+                localStorage.token = token;
+                // login(user)
                 this.setState({isAuthenticated: true, user, token});
             }
         });
