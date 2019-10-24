@@ -25,15 +25,12 @@ const Map = (props: MapProps) => {
     })
 
     if ( mapType === 'region') {
-      // CURRENTLY THINKING THROUGH THIS LOGIC
-      // GOING IN THE HOOKS :)
-      // Load up the regional 
-      // Goal is to place all the appropiate vendors from the data.vendorsAll redux object
-      // - into the single and group pins array
-      // First check the filters -- SKIP THIS STEP FOR NOW
-      // Create a coords set, 
-      // Loop through the data.vendorsAll object
-      // 
+      // Consider how map should take in points
+      // What types of maps will be rendered
+        // Region maps, single vendor maps
+        // Should map look at redux or be fed data from Parent => Child props
+        // Currently think I should expand its functionality once I determine what all the parameters will be so scale it after I build it
+        // All data should be takin in from props, not directly from Redux
     }
 
     // create a HTML element for each feature
