@@ -13,6 +13,23 @@ const createToken = function(auth) {
 };
 
 module.exports = {
+    requestTwitterToken: async (req, res)  => {
+        request.post({
+            url: 'https://api.twitter.com/oauth/request_token',
+            oauth: {
+                oauth_callback: TWITTER_CONFIG.callbackURL,
+                consumer_key: TWITTER_CONFIG.consumerKey,
+                consumer_secret: TWITTER_CONFIG.consumerSecret
+            }
+        }, function (err, r, body) {
+            if (err) {
+                console.error(err);
+                return res.send(500, { message: err.message });
+            }
+            const jsonStr = '{ "' + body.replace(/&/g, '", "').replace(/=/g, '": "') + '"}';
+            res.send(JSON.parse(jsonStr));
+        });
+    },
     setRequestAuth: function(req, res, next) {
         if (!req.user) {
             return res.send(401, 'User Not Authenticated');
