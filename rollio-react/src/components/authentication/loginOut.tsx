@@ -1,9 +1,9 @@
 import useGetAppState from "../common/hooks/use-get-app-state";
-import React from "react";
+import React, {useEffect} from "react";
 import TwitterLogin from 'react-twitter-auth';
 import { withRouter } from 'react-router';
 import {VENDOR_API} from "../../config";
-import {setUser, logOut} from "../../redux/actions/user-actions";
+import {setUser, logOut, fetchUser} from "../../redux/actions/user-actions";
 import {useDispatch} from "react-redux";
 
 const Login = (props:any) => {
@@ -28,6 +28,12 @@ const Login = (props:any) => {
             }
         });
     };
+
+    useEffect(() => {
+        if(localStorage.token && localStorage.token.length && !user.isAuthenticated) {
+            dispatch(fetchUser())
+        }
+    });
     // Render Content
     const content = user.isAuthenticated ?
             (
