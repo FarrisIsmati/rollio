@@ -21,7 +21,7 @@ import Navbar from './navbar/navbar';
 import VendorProfile from './vendor-profile/vendor-profile';
 import RegionHome from './region/region-home';
 import PageInvalid from './error/page-invalid';
-import Login from './authentication/login';
+import Login from './authentication/loginOut';
 
 const loggerMiddleware = createLogger()
 
