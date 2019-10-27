@@ -1,9 +1,9 @@
 const router = require('express').Router();
 const { generateToken, sendToken, getTwitterUser, setRequestAuth, requestTwitterToken } = require('../util/token.utils');
-const passport = require('passport');
 const { SECRET } = require('../../config');
 const expressJwt = require('express-jwt');
-require('../util/passport')();
+// any time we want to use passport, just import it from here instead of using require('passport')
+const passport = require('../util/passport');
 const { userRouteOps } = require('./middleware/db-operations');
 
 router.post('/auth/twitter/reverse', requestTwitterToken);
