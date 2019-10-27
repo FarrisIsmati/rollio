@@ -1,12 +1,10 @@
 const mongoose = require('mongoose');
 
-
 const UserSchema = new mongoose.Schema({
-    email: {
-        type: String, required: true,
-        trim: true, unique: true,
-        match: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
-    },
+    email: { type: String, required: true, trim: true, unique: true, match: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/ },
+    type: { type: String, enum: ['user', 'admin', 'vendor'], required: true, default: 'user' },
+    // could make this conditionally required if the user is of type 'vendor', but need to sort out the registration flow first
+    vendorID: { type: mongoose.Schema.Types.ObjectId, required: false, ref: 'vendors' },
     facebookProvider: {
         type: {
             id: String,
@@ -36,37 +34,6 @@ const UserSchema = new mongoose.Schema({
 });
 
 UserSchema.set('toJSON', {getters: true, virtuals: true});
-
-UserSchema.statics.upsertTwitterUser = function(token, tokenSecret, profile, cb) {
-    const that = this;
-    return this.findOne({
-        'twitterProvider.id': profile.id
-    }, function(err, user) {
-        // no user was found, lets create a new one
-        if (!user) {
-            const {id, username, displayName, emails} = profile;
-            const newUser = new that({
-                email: emails[0].value,
-                twitterProvider: {
-                    id,
-                    token,
-                    tokenSecret,
-                    username,
-                    displayName
-                }
-            });
-
-            newUser.save(function(error, savedUser) {
-                if (error) {
-                    console.log(error);
-                }
-                return cb(error, savedUser);
-            });
-        } else {
-            return cb(err, user);
-        }
-    });
-};
 
 UserSchema.statics.upsertFbUser = function(accessToken, refreshToken, profile, cb) {
     const that = this;

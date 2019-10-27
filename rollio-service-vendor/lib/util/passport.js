@@ -1,8 +1,9 @@
 const db = require('../db/mongo/mongoose');
 const passport = require('passport');
 const TwitterTokenStrategy = require('passport-twitter-token');
-const User = db.model('User');
 const { TWITTER_CONFIG } = require('../../config');
+const { upsertTwitterUser } = require('../db/mongo/operations/user-ops');
+
 
 passport.use(new TwitterTokenStrategy({
     consumerKey: TWITTER_CONFIG.consumerKey,
@@ -10,7 +11,7 @@ passport.use(new TwitterTokenStrategy({
     includeEmail: true
 },
 function (token, tokenSecret, profile, done) {
-    User.upsertTwitterUser(token, tokenSecret, profile, function(err, user) {
+    upsertTwitterUser(token, tokenSecret, profile, function(err, user) {
         return done(err, user);
     });
 }));
