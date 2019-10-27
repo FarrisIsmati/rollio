@@ -10,15 +10,20 @@ const UserSchema = new mongoose.Schema({
     facebookProvider: {
         type: {
             id: String,
-            token: String
+            token: String,
+            tokenSecret: String
         },
         select: false
     },
     twitterProvider: {
         type: {
+            // NOTE: this 'id' should match the 'twitterId' field in the vendor-model
             id: String,
-            token: String
+            token: String,
+            username: String,
+            displayName: String
         },
+        // we can decide later if we want to keep the id as 'select' false
         select: false
     },
     googleProvider: {
@@ -39,12 +44,15 @@ UserSchema.statics.upsertTwitterUser = function(token, tokenSecret, profile, cb)
     }, function(err, user) {
         // no user was found, lets create a new one
         if (!user) {
+            const {id, username, displayName, emails} = profile;
             const newUser = new that({
-                email: profile.emails[0].value,
+                email: emails[0].value,
                 twitterProvider: {
-                    id: profile.id,
-                    token: token,
-                    tokenSecret: tokenSecret
+                    id,
+                    token,
+                    tokenSecret,
+                    username,
+                    displayName
                 }
             });
 
