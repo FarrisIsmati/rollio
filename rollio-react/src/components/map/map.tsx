@@ -11,7 +11,7 @@ import { MapProps } from './interfaces';
 
 
 const Map = (props: MapProps) => {
-  const { mapType } = props;
+  const { mapType, mapData } = props;
 
   const renderMap = (mapContainer: any) => {
     //@ts-ignore
@@ -25,6 +25,10 @@ const Map = (props: MapProps) => {
     })
 
     if ( mapType === 'region') {
+      const singleVendors = mapData.vendorsDisplayedSingle;
+      // Review how to add markers to the maps
+      // What happens if you select them
+
       // Consider how map should take in points
       // What types of maps will be rendered
         // Region maps, single vendor maps
