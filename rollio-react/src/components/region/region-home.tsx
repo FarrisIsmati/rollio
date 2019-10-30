@@ -22,7 +22,7 @@ const RegionHome = (props:any) => {
 
   // Render Content
   // Map gets fed data as props instead of reading from redux store so there can be multiple maps rendered at once
-  const map = isRegionLoaded && areVendorsLoaded ? <Map mapType='region' mapData={ state.regionMap } /> : <p>loading</p>
+  const map = isRegionLoaded && areVendorsLoaded ? <Map mapType='region' mapData={ state.regionMap }/> : <p>loading</p>
 
   return (
     <div className='regionhome__wrapper'>
