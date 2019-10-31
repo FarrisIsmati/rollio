@@ -1,56 +1,78 @@
 // DEPENDENCIES
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import mapboxgl from 'mapbox-gl';
 
 // HOOKS
 import useGetAppState from '../../common/hooks/use-get-app-state';
 
+// INTERFACES
+import { AddSingleVendorProps, AddGroupVendorsProps } from './interfaces';
+
+// Adds a single pin marker to map
+const addSingleVendorToMap = ({i, singleVendorsKeys, vendorsData, map} : AddSingleVendorProps) => {
+    // Current vendor key
+    const key = singleVendorsKeys[i]
+    // Current vendor
+    const vendor = vendorsData[key]
+    // Current vendor location data
+    const vendorLocation = vendor.location
+    // Current vendor [lng,lat]
+    const coordinates:[number, number] = [vendorLocation.coordinates.long, vendorLocation.coordinates.lat]
+
+    // // Add marker to map
+    const marker = new mapboxgl.Marker()
+        .setLngLat(coordinates)
+        .addTo(map)
+}
+
+// Adds a grouped pin marker to map
+const addGroupedVendorsToMap = ({i, groupVendorKeys, groupVendors, vendorsData, map}: AddGroupVendorsProps) => {
+    const key = groupVendorKeys[i];
+    const vendors = groupVendors[key];
+
+    // Since all vendors in a grouped pin location currently have the same exact coords (not a area/radius thing) 
+    // Take the first vendors coords and use that to make a marker
+    const firstVendor = vendorsData[vendors[0].vendorId]
+    // First chosen vendor location data
+    const firstVendoLocation = firstVendor.location
+    // First vendor [lng,lat]
+    const coordinates:[number, number] = [firstVendoLocation.coordinates.long, firstVendoLocation.coordinates.lat]
+
+    // Add marker to map
+    const marker = new mapboxgl.Marker()
+        .setLngLat(coordinates)
+        .addTo(map)
+}
+
 const useMapMarkers = (props: any) => {
     const { mapType, mapData, map } = props;
-
-    // Get state
     const state = useGetAppState();
 
-    // Set single map markers
-    const [singleMapMarkers, setSingleMapMarkers] = useState({});
-
+    // General variables
     const vendorsData = state.data.vendorsAll 
 
-    if ( mapType === 'region') {
-        const singleVendors = mapData.vendorsDisplayedSingle;
-        const singleVendorsKeys = Object.keys(mapData.vendorsDisplayedSingle);
-    
-        for (let i = 0; i < singleVendorsKeys.length; i += 1) {
-            // Current vendor key
-            const key = singleVendorsKeys[i]
-            // Current vendor
-            const vendor = vendorsData[key]
-            // Current vendor location data
-            const vendorLocation = vendor.location
-            // Current vendor [lng,lat]
-            const coordinates:[number, number] = [vendorLocation.coordinates.long, vendorLocation.coordinates.lat]
-            console.log(coordinates)
-            // Add marker to map
-            const marker = new mapboxgl.Marker()
-                .setLngLat(coordinates)
-                .addTo(map)
-
-            // Add marker to local map state
-            setSingleMapMarkers({...singleMapMarkers, [key]: marker})
+    // ***~~~ SHOULD BE ONLY INIT ADDING OF MAP MARKERS TO MAP, AFTER ADDED DONT DO IT AGAIN, REST DATA GETS UPDATED FROM WEBHOOKS ~~~~***
+    useEffect(() => {
+        // If the map is rendered
+        if (map) {
+            if ( mapType === 'region') {
+                const singleVendors = mapData.vendorsDisplayedSingle;
+                const singleVendorsKeys = Object.keys(singleVendors);
+                const groupVendors = mapData.vendorsDisplayedGroup;
+                const groupVendorKeys = Object.keys(groupVendors);
+                
+                // Add single vendors to map
+                for (let i = 0; i < singleVendorsKeys.length; i += 1) {
+                    addSingleVendorToMap({i, singleVendorsKeys, vendorsData, map});
+                }
+                
+                // Add grouped pin vendors to map
+                for (let i = 0; i < groupVendorKeys.length; i += 1) {
+                    addGroupedVendorsToMap({i, groupVendorKeys, groupVendors, vendorsData, map});
+                }
+            }
         }
-        // mapMarkers[0]
-        //   .setLngLat([-77.036873, 38.907192])
-        // Review how to add markers to the maps
-        // What happens if you select them
-
-        // Consider how map should take in points
-        // What types of maps will be rendered
-            // Region maps, single vendor maps
-            // Should map look at redux or be fed data from Parent => Child props
-            // Currently think I should expand its functionality once I determine what all the parameters will be so scale it after I build it
-            // All data should be takin in from props, not directly from Redux
-    }
-
+    }, [map])
 }
 
 export default useMapMarkers;

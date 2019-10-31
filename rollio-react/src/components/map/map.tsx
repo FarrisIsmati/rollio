@@ -2,7 +2,7 @@
 import React from 'react';
 import mapboxgl from 'mapbox-gl';
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 // HOOKS
 import useMapMarkers from './hooks/useMapMarkers';
@@ -17,28 +17,38 @@ import { MapProps } from './interfaces';
 const Map = (props: MapProps) => {
   const { mapType, mapData } = props;
 
-  const renderMap = (mapContainer: any) => {
+  const [map, setMap] = useState<any>(null);
+  const mapContainer = useRef<any>(null);
+
+  useEffect(() => {
     //@ts-ignore
     mapboxgl.accessToken = MAPBOX_API_KEY;
-
-    const map = new mapboxgl.Map({
-        container: mapContainer,
+    const initializeMap = ({ setMap, mapContainer } : { setMap: any, mapContainer: any}) => {
+      const map = new mapboxgl.Map({
+        container: mapContainer.current,
         style: 'mapbox://styles/farrisismati/ck04ma9xw0mse1cp25m11fgqs',
         center: [-77.0369, 38.9072],
         zoom: 12,
         interactive: true
-      })
-  }
-  
-  // Cannot put hook in renderMap function
-  // Must think do I not make these functions a hook?
-  // Can the map be stored in state? 
-  // I'm not sure!
-  // useMapMarkers({mapType, mapData, map})
+      });
+
+      map.on("load", () => {
+        setMap(map);
+        map.resize();
+      });
+    };
+
+    // If that map has not been rendered, render it
+    if (!map) initializeMap({ setMap, mapContainer });
+
+  }, [map])
+
+  // Should reupdate everytime the map updates
+  useMapMarkers({...props, map})
 
   return (
     <div className='map__wrapper'>
-      <div ref={renderMap}></div>
+      <div ref={el => (mapContainer.current = el)}></div>
     </div>
   );
 }
