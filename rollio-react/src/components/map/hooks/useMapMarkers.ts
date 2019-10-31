@@ -9,7 +9,7 @@ import useGetAppState from '../../common/hooks/use-get-app-state';
 import { AddSingleVendorProps, AddGroupVendorsProps } from './interfaces';
 
 // Adds a single pin marker to map
-const addSingleVendorToMap = ({i, singleVendorsKeys, vendorsData, map} : AddSingleVendorProps) => {
+const addSingleVendorToMap = ({i, singleVendorsKeys, vendorsData, singleVendorMarkers, setSingleVendorMarkers, map} : AddSingleVendorProps) => {
     // Current vendor key
     const key = singleVendorsKeys[i]
     // Current vendor
@@ -23,10 +23,12 @@ const addSingleVendorToMap = ({i, singleVendorsKeys, vendorsData, map} : AddSing
     const marker = new mapboxgl.Marker()
         .setLngLat(coordinates)
         .addTo(map)
+
+    setSingleVendorMarkers({ ...singleVendorMarkers, [key]: marker })
 }
 
 // Adds a grouped pin marker to map
-const addGroupedVendorsToMap = ({i, groupVendorKeys, groupVendors, vendorsData, map}: AddGroupVendorsProps) => {
+const addGroupedVendorsToMap = ({i, groupVendorKeys, groupVendors, vendorsData, groupVendorMarkers, setGroupVendorMarkers, map}: AddGroupVendorsProps) => {
     const key = groupVendorKeys[i];
     const vendors = groupVendors[key];
 
@@ -42,19 +44,32 @@ const addGroupedVendorsToMap = ({i, groupVendorKeys, groupVendors, vendorsData, 
     const marker = new mapboxgl.Marker()
         .setLngLat(coordinates)
         .addTo(map)
+
+    setGroupVendorMarkers({ ...groupVendorMarkers, [key]: marker })
 }
 
+// useMapMarkers loads the initial vendor markers in a map, all live updates hereforth will be updated form another component TBD
 const useMapMarkers = (props: any) => {
     const { mapType, mapData, map } = props;
     const state = useGetAppState();
 
+    // Initial Map Markers Loaded State
+    const [areMarkersLoaded, setAreMarkersLoaded] = useState(false);
+
+    // Markers State
+    // Keeps track of all markers (Marker data isn't stored on map object)
+    // Reference these markers when updating/removing markers via webhooks
+    const [singleVendorMarkers, setSingleVendorMarkers] = useState(null);
+    const [groupVendorMarkers, setGroupVendorMarkers] = useState(null);
+
     // General variables
     const vendorsData = state.data.vendorsAll 
 
-    // ***~~~ SHOULD BE ONLY INIT ADDING OF MAP MARKERS TO MAP, AFTER ADDED DONT DO IT AGAIN, REST DATA GETS UPDATED FROM WEBHOOKS ~~~~***
     useEffect(() => {
         // If the map is rendered
-        if (map) {
+        if (map && !areMarkersLoaded) {
+            // Ensures when this component is loaded this will only run once
+            setAreMarkersLoaded(true);
             if ( mapType === 'region') {
                 const singleVendors = mapData.vendorsDisplayedSingle;
                 const singleVendorsKeys = Object.keys(singleVendors);
@@ -63,12 +78,12 @@ const useMapMarkers = (props: any) => {
                 
                 // Add single vendors to map
                 for (let i = 0; i < singleVendorsKeys.length; i += 1) {
-                    addSingleVendorToMap({i, singleVendorsKeys, vendorsData, map});
+                    addSingleVendorToMap({i, singleVendorsKeys, vendorsData, singleVendorMarkers, setSingleVendorMarkers, map});
                 }
                 
                 // Add grouped pin vendors to map
                 for (let i = 0; i < groupVendorKeys.length; i += 1) {
-                    addGroupedVendorsToMap({i, groupVendorKeys, groupVendors, vendorsData, map});
+                    addGroupedVendorsToMap({i, groupVendorKeys, groupVendors, vendorsData, groupVendorMarkers, setGroupVendorMarkers, map});
                 }
             }
         }

@@ -2,7 +2,9 @@ export interface AddSingleVendorProps {
     i: any, 
     singleVendorsKeys: any, 
     vendorsData: any, 
-    map: any
+    map: any,
+    singleVendorMarkers: any,
+    setSingleVendorMarkers: any
   }
 
   export interface AddGroupVendorsProps {
@@ -10,5 +12,7 @@ export interface AddSingleVendorProps {
     groupVendorKeys: any, 
     groupVendors: any, 
     vendorsData: any, 
-    map: any
+    map: any,
+    groupVendorMarkers: any, 
+    setGroupVendorMarkers: any
   }
