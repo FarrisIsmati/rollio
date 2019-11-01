@@ -21,7 +21,7 @@ import Navbar from './navbar/navbar';
 import VendorProfile from './vendor-profile/vendor-profile';
 import RegionHome from './region/region-home';
 import PageInvalid from './error/page-invalid';
-import Login from './authentication/loginOut';
+import LoginOut from './authentication/login-out';
 
 const loggerMiddleware = createLogger()
 
@@ -42,7 +42,7 @@ const App:FC = () => {
           <Switch>
             <Route exact path="/region/:regionId" component={ RegionHome } />
             <Route exact path="/region/:regionId/vendor/:vendorId" component={ VendorProfile } />
-            <Route exact path="/login" component={ Login } />
+            <Route exact path="/login" component={ LoginOut } />
             <Route exact path="/invalid" component={ PageInvalid } />
             <Route path="/*" component={ PageInvalid } />
           </Switch>
