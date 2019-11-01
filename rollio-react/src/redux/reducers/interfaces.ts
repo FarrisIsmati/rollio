@@ -82,7 +82,7 @@ export interface DataDefaultState {
 
 export interface UserDefaultState {
     isAuthenticated: boolean,
-    _id: string,
+    id: string,
     email: string,
     isAdmin: boolean
 }

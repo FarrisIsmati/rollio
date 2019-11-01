@@ -8,7 +8,7 @@ import {
 
 const defaultState:UserDefaultState = {
     isAuthenticated: false,
-    _id: '',
+    id: '',
     email: '',
     isAdmin: false
 }
@@ -18,7 +18,7 @@ export function userReducer(state = defaultState, action: any) {
         case RECEIVE_USER:
             return Object.assign({}, state, {
                 isAuthenticated: true,
-                _id: action.payload._id,
+                id: action.payload._id,
                 email: action.payload.email
             })
         case LOG_OUT:
