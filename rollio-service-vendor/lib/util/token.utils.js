@@ -1,4 +1,4 @@
-const { SECRET } = require('../../config');
+const { JWT_SECRET } = require('../../config');
 const jwt = require('jsonwebtoken');
 const request = require('request');
 const { TWITTER_CONFIG } = require('../../config');
@@ -6,7 +6,7 @@ const { TWITTER_CONFIG } = require('../../config');
 const createToken = function(auth) {
     return jwt.sign({
             id: auth.id
-        }, SECRET,
+        }, JWT_SECRET,
         {
             expiresIn: 60 * 120
         });

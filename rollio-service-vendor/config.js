@@ -10,7 +10,7 @@ let REDIS_HOST;
 let REDIS_PORT;
 let RABBITMQ_CONNECT;
 let TWITTER_CONFIG;
-let SECRET;
+let JWT_SECRET;
 
 switch (NODE_ENV) {
   case 'PRODUCTION':
@@ -29,7 +29,7 @@ switch (NODE_ENV) {
       consumerSecret: process.env.TWITTER_CONSUMER_SECRET_LOCAL,
       callbackURL: process.env.OAUTH_CALLBACK_LOCAL
     };
-    SECRET = process.env.SECRET_LOCAL;
+    JWT_SECRET = process.env.SECRET_LOCAL;
     break;
   case 'TEST_LOCAL':
     MONGO_CONNECT = process.env.MONGO_TEST_LOCAL;
@@ -63,5 +63,5 @@ module.exports = {
   REDIS_HOST,
   RABBITMQ_CONNECT,
   TWITTER_CONFIG,
-  SECRET
+  JWT_SECRET
 };
