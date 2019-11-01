@@ -84,7 +84,7 @@ export interface UserDefaultState {
     isAuthenticated: boolean,
     id: string,
     email: string,
-    isAdmin: boolean
+    isAdmin: boolean,
 }
 
 export interface MapDefaultState {
@@ -98,6 +98,7 @@ export interface LoadStateDefaultState {
     isRegionLoaded: boolean,
     isVendorLoaded: boolean,
     areVendorsLoaded: boolean,
-    areMapPinsLoaded: boolean
+    areMapPinsLoaded: boolean,
+    isUserLoaded: boolean
 }
 

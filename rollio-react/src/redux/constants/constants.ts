@@ -19,4 +19,6 @@ export const SET_MAP_PINS = 'SET_MAP_PINS'
 export const SET_MAP_PIN_LOAD_STATE = 'SET_MAP_PIN_LOAD_STATE'
 
 export const RECEIVE_USER = 'RECEIVE_USER'
+export const FETCH_USER_SUCCESS = 'FETCH_USER_SUCESS'
+export const FETCH_USER = 'FETCH_USER'
 export const LOG_OUT = 'LOG_OUT'

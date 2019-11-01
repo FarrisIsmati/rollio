@@ -3,12 +3,12 @@ import React, {useEffect} from "react";
 import TwitterLogin from 'react-twitter-auth';
 import { withRouter } from 'react-router';
 import {VENDOR_API} from "../../config";
-import {setUser, logOut, fetchUser} from "../../redux/actions/user-actions";
+import {receiveUser, logOut, fetchUserAsync, fetchUserSuccess} from "../../redux/actions/user-actions";
 import {useDispatch} from "react-redux";
 
 const Login = (props:any) => {
     const dispatch = useDispatch();
-    const user = useGetAppState().user;
+    const {user} = useGetAppState();
     const twitterLoginUrl = `${VENDOR_API}/api/auth/twitter`;
     const twitterRequestTokenUrl = `${VENDOR_API}/api/auth/twitter/reverse`;
     const logout = () => {
@@ -24,14 +24,15 @@ const Login = (props:any) => {
         response.json().then((user:any) => {
             if (token) {
                 localStorage.token = token;
-                dispatch(setUser(user));
+                dispatch(receiveUser(user));
+                dispatch(fetchUserSuccess());
             }
         });
     };
 
     useEffect(() => {
         if(localStorage.token && localStorage.token.length && !user.isAuthenticated) {
-            dispatch(fetchUser())
+            dispatch(fetchUserAsync())
         }
     });
     // Render Content
