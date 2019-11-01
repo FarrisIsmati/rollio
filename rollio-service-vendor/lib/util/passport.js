@@ -10,10 +10,9 @@ passport.use(new TwitterTokenStrategy({
     consumerSecret: TWITTER_CONFIG.consumerSecret,
     includeEmail: true
 },
-function (token, tokenSecret, profile, done) {
-    upsertTwitterUser(token, tokenSecret, profile, function(err, user) {
-        return done(err, user);
-    });
+async function (token, tokenSecret, profile, done) {
+    const {user, err} = await upsertTwitterUser(token, tokenSecret, profile).catch(err => ({err}));
+    done(err, user);
 }));
 
 module.exports = passport;
