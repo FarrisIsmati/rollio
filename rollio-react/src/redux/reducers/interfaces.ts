@@ -2,7 +2,7 @@ export interface Coordinates {
     lat: number | null,
     long: number | null,
 }
-  
+
 // Preview set of vendor data
 export interface VendorCard {
     id: string,
@@ -80,6 +80,13 @@ export interface DataDefaultState {
     selectedVendor: VendorFull,
 }
 
+export interface UserDefaultState {
+    isAuthenticated: boolean,
+    id: string,
+    email: string,
+    isAdmin: boolean,
+}
+
 export interface MapDefaultState {
     vendorsDisplayedSingle: { [key: string]: Pin },
     vendorsDisplayedGroup: { [key: string]: GroupPin },
@@ -91,6 +98,7 @@ export interface LoadStateDefaultState {
     isRegionLoaded: boolean,
     isVendorLoaded: boolean,
     areVendorsLoaded: boolean,
-    areMapPinsLoaded: boolean
+    areMapPinsLoaded: boolean,
+    isUserLoaded: boolean
 }
 
