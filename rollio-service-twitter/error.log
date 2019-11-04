@@ -26,3 +26,10 @@
 {"level":"error","timestamp":"2019-07-14 12:18:06"}
 {"message":"attempts: 2","level":"error","timestamp":"2019-07-14 12:18:12"}
 {"message":"Twitter: Connection failed trying again`","level":"error","timestamp":"2019-07-14 12:18:12"}
+{"message":"Google Places API Failure: TypeError: Cannot read property 'address_components' of undefined","level":"error","timestamp":"2019-11-03 22:55:59"}
+{"message":"Google Places API Failure: TypeError: Cannot read property 'address_components' of undefined","level":"error","timestamp":"2019-11-03 22:55:59"}
+{"message":"Google Places API Failure: TypeError: Cannot read property 'address_components' of undefined","level":"error","timestamp":"2019-11-03 22:56:19"}
+{"message":"Google Places API Failure: TypeError: Cannot read property 'address_components' of undefined","level":"error","timestamp":"2019-11-03 22:56:19"}
+{"message":"Google Places API Failure: TypeError: Cannot read property 'address_components' of undefined","level":"error","timestamp":"2019-11-03 22:58:22"}
+{"message":"Google Places API Failure: TypeError: Cannot read property 'address_components' of undefined","level":"error","timestamp":"2019-11-03 22:58:22"}
+{"message":"Google Places API Failure: TypeError: Cannot read property 'address_components' of undefined","level":"error","timestamp":"2019-11-03 23:00:08"}
