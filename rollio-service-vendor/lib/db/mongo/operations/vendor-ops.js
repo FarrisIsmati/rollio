@@ -105,7 +105,6 @@ module.exports = {
     }, {
       $set: obj,
     })
-      .populate('tweetHistory')
       .then(async (res) => {
         await redisClient.hdelAsync('vendor', `q::method::GET::path::/${regionID}/${vendorID}`);
         return res;
@@ -137,7 +136,6 @@ module.exports = {
     }, {
       $push: { [field]: payload },
     })
-      .populate('tweetHistory')
       .then(async (res) => {
         await redisClient.hdelAsync('vendor', `q::method::GET::path::/${regionID}/${vendorID}`);
         return res;
@@ -172,8 +170,7 @@ module.exports = {
       },
     }, {
       new: true,
-    })
-      .populate('tweetHistory')
+    }).populate('tweetHistory')
       .then((res) => {
         redisClient.hdelAsync('vendor', `q::method::GET::path::/${regionID}/${vendorID}`);
         return res;
@@ -205,7 +202,6 @@ module.exports = {
       }, {
         $inc: { [updateString]: amount },
       })
-        .populate('tweetHistory')
         .then(async (res) => {
           await redisClient.hdelAsync('vendor', `q::method::GET::path::/${regionID}/${vendorID}`);
           return res;
@@ -234,7 +230,6 @@ module.exports = {
     }, {
       $inc: { consecutiveDaysInactive: 1 },
     })
-      .populate('tweetHistory')
       .then(async (res) => {
         await redisClient.hdelAsync('vendor', `q::method::GET::path::/${regionID}/${vendorID}`);
         return res;

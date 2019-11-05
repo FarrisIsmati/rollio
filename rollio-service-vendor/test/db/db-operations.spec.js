@@ -41,6 +41,8 @@ describe('DB Operations', () => {
           .then((res) => {
             expect(res).to.be.array();
             expect(res[0].regionID).to.have.same.id(regionID);
+            // just testing that it is populating the tweets
+            expect(res.every(vendor => vendor.tweetHistory.every(tweet => tweet.location))).to.be.true;
             done();
           })
           .catch((err) => {
@@ -53,6 +55,8 @@ describe('DB Operations', () => {
         vendorOps.getVendor(regionID, vendor._id)
           .then((res) => {
             expect(res).to.have.same.id(vendor);
+            // just checking that it populates tweets correctly
+            expect(res.tweetHistory.every(tweet => tweet.location)).to.be.true;
             done();
           })
           .catch((err) => {
@@ -151,6 +155,9 @@ describe('DB Operations', () => {
 
         expect(updateCommentsRes.comments[0].name).to.be.equal(commentPayload.name);
         expect(updateCommentsRes.comments[0].text).to.be.equal(commentPayload.text);
+        // just checking that it populates tweets correctly
+        expect(updateCommentsRes.tweetHistory.length).to.be.equal(1);
+        expect(updateCommentsRes.tweetHistory.every(tweet => tweet.location)).to.be.true;
       });
 
       it('expect new tweet to be added to tweetHistory', async () => {
