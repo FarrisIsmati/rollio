@@ -1,15 +1,19 @@
 // DEPENDENCIES
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import mapboxgl from 'mapbox-gl';
 
 // HOOKS
 import useGetAppState from '../../common/hooks/use-get-app-state';
 
-// INTERFACES
-import { AddSingleVendorProps, AddGroupVendorsProps } from './interfaces';
+// Create Marker Style
+const createMapMarker = () => {
+    const mapMarkerEl = document.createElement('div');
+    mapMarkerEl.className = 'map__marker_primary';
+    return mapMarkerEl
+}
 
 // Adds a single pin marker to map
-const addSingleVendorToMap = ({i, singleVendorsKeys, vendorsData, singleVendorMarkers, setSingleVendorMarkers, map} : AddSingleVendorProps) => {
+const addSingleVendorToMap = ({i, singleVendorsKeys, vendorsData, singleVendorMarkers, setSingleVendorMarkers, map} : any) => {
     // Current vendor key
     const key = singleVendorsKeys[i]
     // Current vendor
@@ -20,7 +24,7 @@ const addSingleVendorToMap = ({i, singleVendorsKeys, vendorsData, singleVendorMa
     const coordinates:[number, number] = [vendorLocation.coordinates.long, vendorLocation.coordinates.lat]
 
     // // Add marker to map
-    const marker = new mapboxgl.Marker()
+    const marker = new mapboxgl.Marker(createMapMarker())
         .setLngLat(coordinates)
         .addTo(map)
 
@@ -28,7 +32,7 @@ const addSingleVendorToMap = ({i, singleVendorsKeys, vendorsData, singleVendorMa
 }
 
 // Adds a grouped pin marker to map
-const addGroupedVendorsToMap = ({i, groupVendorKeys, groupVendors, vendorsData, groupVendorMarkers, setGroupVendorMarkers, map}: AddGroupVendorsProps) => {
+const addGroupedVendorsToMap = ({i, groupVendorKeys, groupVendors, vendorsData, groupVendorMarkers, setGroupVendorMarkers, map}: any) => {
     const key = groupVendorKeys[i];
     const vendors = groupVendors[key];
 
@@ -41,10 +45,10 @@ const addGroupedVendorsToMap = ({i, groupVendorKeys, groupVendors, vendorsData, 
     const coordinates:[number, number] = [firstVendoLocation.coordinates.long, firstVendoLocation.coordinates.lat]
 
     // Add marker to map
-    const marker = new mapboxgl.Marker()
+    const marker = new mapboxgl.Marker(createMapMarker())
         .setLngLat(coordinates)
         .addTo(map)
-
+    console.log(marker)
     setGroupVendorMarkers({ ...groupVendorMarkers, [key]: marker })
 }
 
@@ -52,7 +56,6 @@ const addGroupedVendorsToMap = ({i, groupVendorKeys, groupVendors, vendorsData, 
 const useMapMarkers = (props: any) => {
     const { mapType, mapData, map } = props;
     const state = useGetAppState();
-
     // Initial Map Markers Loaded State
     const [areMarkersLoaded, setAreMarkersLoaded] = useState(false);
 

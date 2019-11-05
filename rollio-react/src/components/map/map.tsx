@@ -13,6 +13,7 @@ import { MAPBOX_API_KEY } from '../../config'
 // INTERFACES
 import { MapProps } from './interfaces';
 
+const mapMarkerElement:any = (<div>lol</div>)
 
 const Map = (props: MapProps) => {
   const { mapType, mapData } = props;
@@ -40,11 +41,10 @@ const Map = (props: MapProps) => {
 
     // If that map has not been rendered, render it
     if (!map) initializeMap({ setMap, mapContainer });
-
   }, [map])
 
   // Should reupdate everytime the map updates
-  useMapMarkers({...props, map})
+  useMapMarkers({...props, map, mapMarkerElement})
 
   return (
     <div className='map__wrapper'>
