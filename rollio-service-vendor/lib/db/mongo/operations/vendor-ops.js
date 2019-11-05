@@ -6,6 +6,7 @@ const logger = require('../../../log/index');
 
 // SCHEMA
 const Vendor = mongoose.model('Vendor');
+const Tweet = mongoose.model('Tweet');
 
 module.exports = {
   // Gets all vendors given a regionID
@@ -18,7 +19,7 @@ module.exports = {
 
     return Vendor.find({
       regionID,
-    })
+    }).populate('tweetHistory')
       .catch((err) => {
         const errMsg = new Error(err);
         logger.error(errMsg);
@@ -36,7 +37,7 @@ module.exports = {
     return Vendor.findOne({
       regionID,
       _id: vendorID,
-    })
+    }).populate('tweetHistory')
       .catch((err) => {
         const errMsg = new Error(err);
         logger.error(errMsg);
@@ -54,7 +55,7 @@ module.exports = {
     return Vendor.findOne({
       regionID,
       twitterID,
-    })
+    }).populate('tweetHistory')
       .catch((err) => {
         const errMsg = new Error(err);
         logger.error(errMsg);
@@ -72,6 +73,7 @@ module.exports = {
 
     // Params may contain a query property
     return Vendor.find(params)
+      .populate('tweetHistory')
       .catch((err) => {
         const errMsg = new Error(err);
         logger.error(errMsg);
@@ -103,6 +105,7 @@ module.exports = {
     }, {
       $set: obj,
     })
+      .populate('tweetHistory')
       .then(async (res) => {
         await redisClient.hdelAsync('vendor', `q::method::GET::path::/${regionID}/${vendorID}`);
         return res;
@@ -114,22 +117,27 @@ module.exports = {
       });
   },
   // Pushes a payload to a field of type Array given a regionID, vendorID, field, and payload
-  updateVendorPush(params) {
+  async updateVendorPush(params) {
     const {
-      regionID, vendorID, field, payload,
+      regionID, vendorID, field, payload: originalPayload,
     } = params;
-    if (!regionID || !vendorID || !field || !payload) {
+    if (!regionID || !vendorID || !field || !originalPayload) {
       const err = new Error('Must include a regionID, vendorID, field, & payload properties in params');
       logger.error(err);
       return err;
     }
-
+    let payload = originalPayload;
+    if (field === 'tweetHistory') {
+      const newTweet = await Tweet.create(originalPayload)
+      payload = newTweet._id;
+    }
     return Vendor.update({
       regionID,
       _id: vendorID,
     }, {
       $push: { [field]: payload },
     })
+      .populate('tweetHistory')
       .then(async (res) => {
         await redisClient.hdelAsync('vendor', `q::method::GET::path::/${regionID}/${vendorID}`);
         return res;
@@ -165,6 +173,7 @@ module.exports = {
     }, {
       new: true,
     })
+      .populate('tweetHistory')
       .then((res) => {
         redisClient.hdelAsync('vendor', `q::method::GET::path::/${regionID}/${vendorID}`);
         return res;
@@ -196,6 +205,7 @@ module.exports = {
       }, {
         $inc: { [updateString]: amount },
       })
+        .populate('tweetHistory')
         .then(async (res) => {
           await redisClient.hdelAsync('vendor', `q::method::GET::path::/${regionID}/${vendorID}`);
           return res;
@@ -224,6 +234,7 @@ module.exports = {
     }, {
       $inc: { consecutiveDaysInactive: 1 },
     })
+      .populate('tweetHistory')
       .then(async (res) => {
         await redisClient.hdelAsync('vendor', `q::method::GET::path::/${regionID}/${vendorID}`);
         return res;

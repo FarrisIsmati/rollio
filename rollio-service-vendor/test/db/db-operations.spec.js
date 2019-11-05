@@ -161,7 +161,9 @@ describe('DB Operations', () => {
           location: {
             locationDate: new Date('2017-02-18T08:20:00Z'),
             coordinates: [38.24561, -77.86542],
-          },
+            address: '123 street',
+            accuracy: 1
+          }
         };
 
         const prevDailyTweets = await Vendor.findOne({ _id: vendor._id })
@@ -173,7 +175,7 @@ describe('DB Operations', () => {
         const updateDailyTweetsRes = await vendorOps.updateVendorPush(params)
           .then(res => res);
 
-        const updatedDailyTweets = await Vendor.findOne({ _id: vendor._id })
+        const updatedDailyTweets = await Vendor.findOne({ _id: vendor._id }).populate('tweetHistory')
           .then(vendorUpdated => vendorUpdated.tweetHistory);
 
         expect(updateDailyTweetsRes.nModified).to.equal(1);
@@ -196,7 +198,7 @@ describe('DB Operations', () => {
           regionID, vendorID, field: 'dailyActive', data: true,
         };
         const updateDailyActiveRes = await vendorOps.updateVendorSet(params);
-        
+
         const updatedDailyActive = await Vendor.findOne({ _id: vendorID })
           .then(vendorUpdated => vendorUpdated.dailyActive);
 

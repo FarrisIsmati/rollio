@@ -4,7 +4,7 @@ const UserSchema = new mongoose.Schema({
     email: { type: String, required: true, trim: true, unique: true, match: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/ },
     type: { type: String, enum: ['user', 'admin', 'vendor'], required: true, default: 'user' },
     // could make this conditionally required if the user is of type 'vendor', but need to sort out the registration flow first
-    vendorID: { type: mongoose.Schema.Types.ObjectId, required: false, ref: 'vendors' },
+    vendorID: { type: mongoose.Schema.Types.ObjectId, required: false, ref: 'Vendor' },
     facebookProvider: {
         type: {
             id: String,

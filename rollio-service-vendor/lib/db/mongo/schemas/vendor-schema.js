@@ -30,7 +30,7 @@ const LocationSchema = new mongoose.Schema({
     type: [{ type: Number, required: true }],
     validate: [val => val.length <= 2, '{PATH} exceeds the limit of 2'],
     required: false,
-  },
+  }
 });
 
 // TWEET SCHEMA
@@ -82,7 +82,7 @@ const VendorSchema = new mongoose.Schema({
   yelpId: { type: String, required: false },
   yelpRating: { type: String, required: false },
   twitterID: { type: String, required: false },
-  tweetHistory: [{ type: mongoose.Schema.Types.ObjectId, ref: 'tweets' }],
+  tweetHistory: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tweet' }],
   locationHistory: {
     type: [LocationSchema],
     required: true,
