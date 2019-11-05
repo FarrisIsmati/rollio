@@ -39,6 +39,7 @@ const TweetSchema = new mongoose.Schema({
   date: { type: Date, required: true },
   text: { type: String, required: true },
   location: { type: LocationSchema, required: false },
+  usedForLocation: { type: Boolean, default: false }
 });
 
 const CommentSchema = new mongoose.Schema({
@@ -81,10 +82,7 @@ const VendorSchema = new mongoose.Schema({
   yelpId: { type: String, required: false },
   yelpRating: { type: String, required: false },
   twitterID: { type: String, required: false },
-  tweetHistory: {
-    type: [TweetSchema],
-    required: false,
-  },
+  tweetHistory: [{ type: mongoose.Schema.Types.ObjectId, ref: 'tweets' }],
   locationHistory: {
     type: [LocationSchema],
     required: true,

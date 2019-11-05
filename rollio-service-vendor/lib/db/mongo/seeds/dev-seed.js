@@ -8,10 +8,12 @@ const logger = require('../../../log/index');
 // SCHEMAS
 const Vendor = mongoose.model('Vendor');
 const Region = mongoose.model('Region');
+const Tweet = mongoose.model('Tweet');
 
 // DATA
 const vendorsData = require('../data/dev').vendors;
 const regionsData = require('../data/dev').regions;
+const tweetData = require('../data/dev').tweets;
 
 // const yelpAPIKey = config.YELP_API_KEY;
 // const yelpClient = yelp.client(yelpAPIKey);
@@ -36,6 +38,26 @@ const seedObj = {
         logger.error(err);
         throw err;
       });
+  },
+  emptyTweets() {
+    return Tweet.deleteMany({})
+        .then(() => {
+          if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') { console.log(`Emptied Tweet collection in ${config.NODE_ENV} enviroment`); }
+        })
+        .catch((err) => {
+          logger.error(err);
+          throw err;
+        });
+  },
+  seedTweets() {
+    return Tweet.insertMany(tweetData)
+        .then(() => {
+          if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') { console.log(`Seeded tweets in Tweet collection in ${config.NODE_ENV} enviroment`); }
+        })
+        .catch((err) => {
+          logger.error(err);
+          throw err;
+        });
   },
   emptyVendors() {
     return Vendor.deleteMany({})
@@ -97,7 +119,9 @@ const seedObj = {
     return this.emptyRegions()
       .then(() => this.seedRegions())
       .then(() => this.emptyVendors())
-      .then(() => this.seedVendors('WASHINGTONDC'));
+      .then(() => this.seedVendors('WASHINGTONDC'))
+      .then(() => this.emptyTweets())
+      .then(() => this.seedTweets('WASHINGTONDC'));
   },
 };
 
