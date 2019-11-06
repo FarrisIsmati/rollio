@@ -18,10 +18,10 @@ module.exports = {
       tweetHistory: [
         {
           tweetID: 'laks3n',
-          date: new Date('2016-05-18T16:00:00Z'),
+          date: new Date('2019-11-05T12:10:00Z'),
           text: 'We are at Farragut Square',
           location: {
-            locationDate: new Date('2018-04-12T12:10:00Z'),
+            locationDate: new Date('2019-11-05T12:10:00Z'),
             accuracy: 3,
             address: '28 Ist',
             city: 'Washington, DC',
@@ -31,7 +31,7 @@ module.exports = {
         },
       ],
       locationHistory: [{
-        locationDate: new Date('2018-11-01T12:00:00Z'),
+        locationDate: new Date('2019-11-05T12:10:00Z'),
         accuracy: 3,
         address: '123 Fake Street',
         city: 'Springfield',
@@ -185,11 +185,32 @@ module.exports = {
       profileImageLink: '',
       yelpId: 'chick-fil-a-mobile-washington-4',
       twitterID: '540537070',
-      tweetHistory: [],
-      locationHistory: [],
+      tweetHistory: [
+        {
+          tweetID: '1235fake',
+          date: new Date('2016-05-18T16:00:00Z'),
+          text: 'We are in Noma',
+          location: {
+            locationDate: new Date('2019-11-05T12:10:00Z'),
+            accuracy: 3,
+            address: 'H St NW, Washington, DC 20001',
+            city: 'Washington, DC',
+            neighborhood: 'noma',
+            coordinates: [38.900318, -77.011744],
+          },
+        },
+      ],
+      locationHistory: [{
+        locationDate: new Date('2019-11-05T12:10:00Z'),
+        accuracy: 3,
+        address: 'H St NW, Washington, DC 20001',
+        city: 'Washington, DC',
+        neighborhood: 'noma',
+        coordinates: [38.900318, -77.011744],
+      }],
       userLocationHistory: [],
       comments: [],
-      dailyActive: false,
+      dailyActive: true,
       consecutiveDaysInactive: -1,
       categories: ['Fast Food', 'American', 'Comfort Food', 'Meat', 'Chicken'],
     }, {
@@ -208,10 +229,10 @@ module.exports = {
       tweetHistory: [
         {
           tweetID: '124fake',
-          date: new Date('2016-05-18T16:00:00Z'),
+          date: new Date('2019-11-05T12:10:00Z'),
           text: 'We are in China Town',
           location: {
-            locationDate: new Date('2018-04-12T12:10:00Z'),
+            locationDate: new Date('2019-11-05T12:10:00Z'),
             accuracy: 3,
             address: '600 7th St NW',
             city: 'Washington, DC',
@@ -221,7 +242,7 @@ module.exports = {
         },
       ],
       locationHistory: [{
-        locationDate: new Date('2018-04-12T12:10:00Z'),
+        locationDate: new Date('2019-11-05T12:10:00Z'),
         accuracy: 3,
         address: '600 7th St NW',
         city: 'Washington, DC',
@@ -251,7 +272,7 @@ module.exports = {
           date: new Date('2016-05-17T16:00:00Z'),
           text: 'We are in China Town',
           location: {
-            locationDate: new Date('2018-04-12T12:10:00Z'),
+            locationDate: new Date('2019-11-05T12:10:00Z'),
             accuracy: 3,
             address: '600 7th St NW',
             city: 'Washington, DC',
@@ -261,7 +282,7 @@ module.exports = {
         },
       ],
       locationHistory: [{
-        locationDate: new Date('2018-04-12T12:10:00Z'),
+        locationDate: new Date('2019-11-05T12:10:00Z'),
         accuracy: 3,
         address: '600 7th St NW',
         city: 'Washington, DC',
