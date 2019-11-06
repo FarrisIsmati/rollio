@@ -7,6 +7,7 @@ const logger = require('../../../log/index');
 // SCHEMA
 const Vendor = mongoose.model('Vendor');
 const Tweet = mongoose.model('Tweet');
+const Location = mongoose.model('Location');
 
 module.exports = {
   // Gets all vendors given a regionID
@@ -20,6 +21,8 @@ module.exports = {
     return Vendor.find({
       regionID,
     }).populate('tweetHistory')
+      .populate('locationHistory')
+      .populate('userLocationHistory')
       .catch((err) => {
         const errMsg = new Error(err);
         logger.error(errMsg);
@@ -38,11 +41,13 @@ module.exports = {
       regionID,
       _id: vendorID,
     }).populate('tweetHistory')
+      .populate('locationHistory')
+      .populate('userLocationHistory')
       .catch((err) => {
         const errMsg = new Error(err);
         logger.error(errMsg);
         return err;
-      });
+    });
   },
   // Gets a single vendor given a regionID and vendor twitterID
   getVendorByTwitterID(regionID, twitterID) {
@@ -56,11 +61,13 @@ module.exports = {
       regionID,
       twitterID,
     }).populate('tweetHistory')
+      .populate('locationHistory')
+      .populate('userLocationHistory')
       .catch((err) => {
         const errMsg = new Error(err);
         logger.error(errMsg);
         return err;
-      });
+    });
   },
   // Gets all vendors given a set of Queries
   getVendorsByQuery(params) {
@@ -74,11 +81,13 @@ module.exports = {
     // Params may contain a query property
     return Vendor.find(params)
       .populate('tweetHistory')
+      .populate('locationHistory')
+      .populate('userLocationHistory')
       .catch((err) => {
         const errMsg = new Error(err);
         logger.error(errMsg);
         return err;
-      });
+    });
   },
   // Sets data to a field given a regionID, vendorID, field, and data
   updateVendorSet(params) {
@@ -130,6 +139,10 @@ module.exports = {
       const newTweet = await Tweet.create(originalPayload)
       payload = newTweet._id;
     }
+    if (field === 'locationHistory' || field === 'userLocationHistory') {
+      const newLocation = await Location.create(originalPayload)
+      payload = newLocation._id;
+    }
     return Vendor.update({
       regionID,
       _id: vendorID,
@@ -171,6 +184,8 @@ module.exports = {
     }, {
       new: true,
     }).populate('tweetHistory')
+      .populate('locationHistory')
+      .populate('userLocationHistory')
       .then((res) => {
         redisClient.hdelAsync('vendor', `q::method::GET::path::/${regionID}/${vendorID}`);
         return res;
@@ -190,17 +205,12 @@ module.exports = {
       logger.error(err);
       return err;
     }
-
-    const locationIDQuery = `${type}._id`;
-    const updateString = `${type}.$.accuracy`;
     // Amount can only be 1 or -1
     if (amount === 1 || amount === -1) {
-      return Vendor.update({
-        regionID,
-        _id: vendorID,
-        [locationIDQuery]: locationID,
+      return Location.updateOne({
+        _id: locationID
       }, {
-        $inc: { [updateString]: amount },
+        $inc: { accuracy: amount },
       })
         .then(async (res) => {
           await redisClient.hdelAsync('vendor', `q::method::GET::path::/${regionID}/${vendorID}`);

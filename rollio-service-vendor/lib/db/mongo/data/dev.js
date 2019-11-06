@@ -3,6 +3,10 @@ const { ObjectId } = require('mongoose').Types
 const tweet1Id = ObjectId();
 const tweet2Id = ObjectId();
 const tweet3Id = ObjectId();
+const location1Id = ObjectId();
+const location2Id = ObjectId();
+const location3Id = ObjectId();
+const location4Id = ObjectId();
 
 module.exports = {
   vendors: [
@@ -22,24 +26,8 @@ module.exports = {
       rating: 5,
       twitterID: '1053649707493404678',
       tweetHistory: [tweet1Id],
-      locationHistory: [{
-        locationDate: new Date('2018-11-01T12:00:00Z'),
-        accuracy: 3,
-        address: '123 Fake Street',
-        city: 'Springfield',
-        neighborhood: 'Little Russia',
-        matchMethod: 'Tweet location',
-        coordinates: [39.2934, -77.1234],
-      }],
-      userLocationHistory: [{
-        locationDate: new Date('2018-04-12T12:10:00Z'),
-        accuracy: -4,
-        address: 'Lol Ist',
-        city: 'Tysons, DC',
-        neighborhood: 'Farragut Triangle',
-        matchMethod: 'User Input',
-        coordinates: [4.123, 1.5222],
-      }],
+      locationHistory: [location1Id],
+      userLocationHistory: [location2Id],
       comments: [],
       dailyActive: true,
       consecutiveDaysInactive: 4,
@@ -198,14 +186,7 @@ module.exports = {
       yelpId: 'balkanik-taste-food-truck-and-catering-rockville-3',
       twitterID: '2185580414',
       tweetHistory: [tweet2Id],
-      locationHistory: [{
-        locationDate: new Date('2018-04-12T12:10:00Z'),
-        accuracy: 3,
-        address: '600 7th St NW',
-        city: 'Washington, DC',
-        neighborhood: 'Penn Quarter',
-        coordinates: [38.897182, -77.022013],
-      }],
+      locationHistory: [location3Id],
       comments: [],
       dailyActive: true,
       consecutiveDaysInactive: 4,
@@ -224,14 +205,7 @@ module.exports = {
       yelpId: '',
       twitterID: '204871288',
       tweetHistory: [tweet3Id],
-      locationHistory: [{
-        locationDate: new Date('2018-04-12T12:10:00Z'),
-        accuracy: 3,
-        address: '600 7th St NW',
-        city: 'Washington, DC',
-        neighborhood: 'Penn Quarter',
-        coordinates: [38.897182, -77.022013],
-      }],
+      locationHistory: [location4Id],
       comments: [],
       dailyActive: true,
       consecutiveDaysInactive: 4,
@@ -295,6 +269,46 @@ module.exports = {
         coordinates: [38.897182, -77.022013],
       },
       usedForLocation: false
+    }
+  ],
+  locations: [
+    {
+      _id: location1Id,
+      locationDate: new Date('2018-11-01T12:00:00Z'),
+      accuracy: 3,
+      address: '123 Fake Street',
+      city: 'Springfield',
+      neighborhood: 'Little Russia',
+      matchMethod: 'Tweet location',
+      coordinates: [39.2934, -77.1234],
+    },
+    {
+      _id: location2Id,
+      locationDate: new Date('2018-04-12T12:10:00Z'),
+      accuracy: -4,
+      address: 'Lol Ist',
+      city: 'Tysons, DC',
+      neighborhood: 'Farragut Triangle',
+      matchMethod: 'User Input',
+      coordinates: [4.123, 1.5222],
+    },
+    {
+      _id: location3Id,
+      locationDate: new Date('2018-04-12T12:10:00Z'),
+      accuracy: 3,
+      address: '600 7th St NW',
+      city: 'Washington, DC',
+      neighborhood: 'Penn Quarter',
+      coordinates: [38.897182, -77.022013],
+    },
+    {
+      _id: location4Id,
+      locationDate: new Date('2018-04-12T12:10:00Z'),
+      accuracy: 3,
+      address: '600 7th St NW',
+      city: 'Washington, DC',
+      neighborhood: 'Penn Quarter',
+      coordinates: [38.897182, -77.022013],
     }
   ]
 };

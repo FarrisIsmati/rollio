@@ -9,11 +9,13 @@ const logger = require('../../../log/index');
 const Vendor = mongoose.model('Vendor');
 const Region = mongoose.model('Region');
 const Tweet = mongoose.model('Tweet');
+const Location = mongoose.model('Location');
 
 // DATA
 const vendorsData = require('../data/dev').vendors;
 const regionsData = require('../data/dev').regions;
 const tweetData = require('../data/dev').tweets;
+const locationData = require('../data/dev').locations;
 
 // const yelpAPIKey = config.YELP_API_KEY;
 // const yelpClient = yelp.client(yelpAPIKey);
@@ -53,6 +55,26 @@ const seedObj = {
     return Tweet.insertMany(tweetData)
         .then(() => {
           if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') { console.log(`Seeded tweets in Tweet collection in ${config.NODE_ENV} enviroment`); }
+        })
+        .catch((err) => {
+          logger.error(err);
+          throw err;
+        });
+  },
+  emptyLocations() {
+    return Location.deleteMany({})
+        .then(() => {
+          if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') { console.log(`Emptied Location collection in ${config.NODE_ENV} enviroment`); }
+        })
+        .catch((err) => {
+          logger.error(err);
+          throw err;
+        });
+  },
+  seedLocations() {
+    return Location.insertMany(locationData)
+        .then(() => {
+          if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') { console.log(`Seeded locations in Location collection in ${config.NODE_ENV} enviroment`); }
         })
         .catch((err) => {
           logger.error(err);
@@ -121,7 +143,9 @@ const seedObj = {
       .then(() => this.emptyVendors())
       .then(() => this.seedVendors('WASHINGTONDC'))
       .then(() => this.emptyTweets())
-      .then(() => this.seedTweets('WASHINGTONDC'));
+      .then(() => this.seedTweets())
+      .then(() => this.emptyLocations())
+      .then(() => this.seedLocations());
   },
 };
 

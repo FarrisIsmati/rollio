@@ -14,7 +14,7 @@ dbConnection.model('Vendor', VendorSchema);
 dbConnection.model('Comment', CommentSchema);
 dbConnection.model('Menu', MenuSchema);
 dbConnection.model('Tweet', TweetSchema);
-dbConnection.model('Coordinates', LocationSchema);
+dbConnection.model('Location', LocationSchema);
 dbConnection.model('Region', RegionSchema);
 dbConnection.model('User', UserSchema);
 

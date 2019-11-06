@@ -42,7 +42,7 @@ describe('DB Operations', () => {
             expect(res).to.be.array();
             expect(res[0].regionID).to.have.same.id(regionID);
             // just testing that it is populating the tweets
-            expect(res.every(vendor => vendor.tweetHistory.every(tweet => tweet.location))).to.be.true;
+            expect(res.every(vendor => vendor.tweetHistory.every(tweet => tweet.text))).to.be.true;
             done();
           })
           .catch((err) => {
@@ -56,7 +56,7 @@ describe('DB Operations', () => {
           .then((res) => {
             expect(res).to.have.same.id(vendor);
             // just checking that it populates tweets correctly
-            expect(res.tweetHistory.every(tweet => tweet.location)).to.be.true;
+            expect(res.tweetHistory.every(tweet => tweet.text)).to.be.true;
             done();
           })
           .catch((err) => {
@@ -129,7 +129,7 @@ describe('DB Operations', () => {
         const updateCoordHistRes = await vendorOps.updateVendorPush(params)
           .then(res => res);
 
-        const updatedCoordHist = await Vendor.findOne({ _id: vendor._id })
+        const updatedCoordHist = await Vendor.findOne({ _id: vendor._id }).populate('locationHistory')
           .then(vendorUpdated => vendorUpdated.locationHistory);
 
         expect(updateCoordHistRes.nModified).to.equal(1);
@@ -157,7 +157,7 @@ describe('DB Operations', () => {
         expect(updateCommentsRes.comments[0].text).to.be.equal(commentPayload.text);
         // just checking that it populates tweets correctly
         expect(updateCommentsRes.tweetHistory.length).to.be.equal(1);
-        expect(updateCommentsRes.tweetHistory.every(tweet => tweet.location)).to.be.true;
+        expect(updateCommentsRes.tweetHistory.every(tweet => tweet.text)).to.be.true;
       });
 
       it('expect new tweet to be added to tweetHistory', async () => {
@@ -182,7 +182,8 @@ describe('DB Operations', () => {
         const updateDailyTweetsRes = await vendorOps.updateVendorPush(params)
           .then(res => res);
 
-        const updatedDailyTweets = await Vendor.findOne({ _id: vendor._id }).populate('tweetHistory')
+        const updatedDailyTweets = await Vendor.findOne({ _id: vendor._id })
+          .populate('tweetHistory')
           .then(vendorUpdated => vendorUpdated.tweetHistory);
 
         expect(updateDailyTweetsRes.nModified).to.equal(1);
@@ -235,14 +236,14 @@ describe('DB Operations', () => {
       });
 
       it('expect location accuracy to be incremented by 1', async () => {
-        const prevLocationAccuracy = await Vendor.findOne({ _id: vendor._id })
+        const prevLocationAccuracy = await Vendor.findOne({ _id: vendor._id }).populate('locationHistory')
           .then(vendorPrev => vendorPrev.locationHistory[0].accuracy);
 
         const updateLocationAccuracy = await vendorOps.updateLocationAccuracy({
           regionID, vendorID: vendor._id, type: 'locationHistory', locationID, amount: 1,
         });
 
-        const updatedLocationAccuracy = await Vendor.findOne({ _id: vendor._id })
+        const updatedLocationAccuracy = await Vendor.findOne({ _id: vendor._id }).populate('locationHistory')
           .then(vendorUpdated => vendorUpdated.locationHistory[0].accuracy);
 
         expect(updateLocationAccuracy.nModified).to.equal(1);
@@ -250,14 +251,14 @@ describe('DB Operations', () => {
       });
 
       it('expect location accuracy to be decremented by 1', async () => {
-        const prevLocationAccuracy = await Vendor.findOne({ _id: vendor._id })
+        const prevLocationAccuracy = await Vendor.findOne({ _id: vendor._id }).populate('locationHistory')
           .then(vendorPrev => vendorPrev.locationHistory[0].accuracy);
 
         const updateLocationAccuracy = await vendorOps.updateLocationAccuracy({
           regionID, vendorID: vendor._id, type: 'locationHistory', locationID, amount: -1,
         });
 
-        const updatedLocationAccuracy = await Vendor.findOne({ _id: vendor._id })
+        const updatedLocationAccuracy = await Vendor.findOne({ _id: vendor._id }).populate('locationHistory')
           .then(vendorUpdated => vendorUpdated.locationHistory[0].accuracy);
 
         expect(updateLocationAccuracy.nModified).to.equal(1);
@@ -265,14 +266,14 @@ describe('DB Operations', () => {
       });
 
       it('Expect user location accuracy to be incremented by 1', async () => {
-        const prevLocationAccuracy = await Vendor.findOne({ _id: vendor._id })
+        const prevLocationAccuracy = await Vendor.findOne({ _id: vendor._id }).populate('userLocationHistory')
           .then(vendorPrev => vendorPrev.userLocationHistory[0].accuracy);
 
         const updateLocationAccuracy = await vendorOps.updateLocationAccuracy({
           regionID, vendorID: vendor._id, type: 'userLocationHistory', locationID: userLocationID, amount: 1,
         });
 
-        const updatedLocationAccuracy = await Vendor.findOne({ _id: vendor._id })
+        const updatedLocationAccuracy = await Vendor.findOne({ _id: vendor._id }).populate('userLocationHistory')
           .then(vendorUpdated => vendorUpdated.userLocationHistory[0].accuracy);
 
         expect(updateLocationAccuracy.nModified).to.equal(1);

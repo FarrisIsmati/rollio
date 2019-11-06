@@ -118,7 +118,7 @@ describe('Vendor Routes', () => {
   describe('PUT', () => {
     describe('/vendor/:regionID/:vendorID/locationaccuracy', () => {
       it('expect a vendor locationHistory instance\'s accuracy to be increased by 1', async () => {
-        const prevLocationAccuracy = await Vendor.findOne({ _id: vendor._id })
+        const prevLocationAccuracy = await Vendor.findOne({ _id: vendor._id }).populate('locationHistory')
           .then(vendorPrev => vendorPrev.locationHistory[0].accuracy);
 
         const res = await chai.request(server)
@@ -129,7 +129,7 @@ describe('Vendor Routes', () => {
             amount: 1,
           });
 
-        const updatedLocationAccuracy = await Vendor.findOne({ _id: vendor._id })
+        const updatedLocationAccuracy = await Vendor.findOne({ _id: vendor._id }).populate('locationHistory')
           .then(vendorUpdated => vendorUpdated.locationHistory[0].accuracy);
 
         expect(updatedLocationAccuracy).to.be.equal(prevLocationAccuracy + 1);
@@ -138,7 +138,7 @@ describe('Vendor Routes', () => {
       });
 
       it('expect a vendor locationHistory instance\'s accuracy to be decreased by 1', async () => {
-        const prevLocationAccuracy = await Vendor.findOne({ _id: vendor._id })
+        const prevLocationAccuracy = await Vendor.findOne({ _id: vendor._id }).populate('locationHistory')
           .then(vendorPrev => vendorPrev.locationHistory[0].accuracy);
 
         const res = await chai.request(server)
@@ -149,7 +149,7 @@ describe('Vendor Routes', () => {
             amount: -1,
           });
 
-        const updatedLocationAccuracy = await Vendor.findOne({ _id: vendor._id })
+        const updatedLocationAccuracy = await Vendor.findOne({ _id: vendor._id }).populate('locationHistory')
           .then(vendorUpdated => vendorUpdated.locationHistory[0].accuracy);
 
         expect(updatedLocationAccuracy).to.be.equal(prevLocationAccuracy - 1);
@@ -158,7 +158,7 @@ describe('Vendor Routes', () => {
       });
 
       it('expect a vendor userLocationHistory instance\'s accuracy to be increased by 1', async () => {
-        const prevLocationAccuracy = await Vendor.findOne({ _id: vendor._id })
+        const prevLocationAccuracy = await Vendor.findOne({ _id: vendor._id }).populate('userLocationHistory')
           .then(vendorPrev => vendorPrev.userLocationHistory[0].accuracy);
 
         const res = await chai.request(server)
@@ -169,7 +169,7 @@ describe('Vendor Routes', () => {
             amount: 1,
           });
 
-        const updatedLocationAccuracy = await Vendor.findOne({ _id: vendor._id })
+        const updatedLocationAccuracy = await Vendor.findOne({ _id: vendor._id }).populate('userLocationHistory')
           .then(vendorUpdated => vendorUpdated.userLocationHistory[0].accuracy);
 
         expect(updatedLocationAccuracy).to.be.equal(prevLocationAccuracy + 1);

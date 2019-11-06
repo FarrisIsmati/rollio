@@ -83,14 +83,8 @@ const VendorSchema = new mongoose.Schema({
   yelpRating: { type: String, required: false },
   twitterID: { type: String, required: false },
   tweetHistory: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tweet' }],
-  locationHistory: {
-    type: [LocationSchema],
-    required: true,
-  },
-  userLocationHistory: {
-    type: [LocationSchema],
-    required: true,
-  },
+  locationHistory: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Location' }],
+  userLocationHistory: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Location' }],
   comments: {
     type: [CommentSchema],
     required: false,
