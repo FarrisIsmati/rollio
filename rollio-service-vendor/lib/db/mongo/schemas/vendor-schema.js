@@ -24,6 +24,7 @@ const LocationSchema = new mongoose.Schema({
   address: { type: String, required: true },
   city: { type: String, required: false },
   neighborhood: { type: String, required: false },
+  // possibly replace this with a reference to the tweet in the Tweet collection
   tweetID: { type: String, required: false },
   matchMethod: { type: String, required: false },
   coordinates: {
@@ -38,6 +39,7 @@ const TweetSchema = new mongoose.Schema({
   tweetID: { type: String, required: true },
   date: { type: Date, required: true },
   text: { type: String, required: true },
+  // likely will delete location key here in the future
   location: { type: LocationSchema, required: false },
   usedForLocation: { type: Boolean, default: false }
 });
