@@ -6,9 +6,15 @@ import mapboxgl from 'mapbox-gl';
 import useGetAppState from '../../common/hooks/use-get-app-state';
 
 // Create Marker Style
-const createMapMarker = () => {
+const createMapMarker = (numberOfGroupedVendors: boolean | number = false) => {
     const mapMarkerEl = document.createElement('div');
-    mapMarkerEl.className = 'map__marker_primary';
+    mapMarkerEl.className = 'map__marker_primary font__map_marker_font';
+
+    if (numberOfGroupedVendors) {
+        const textnode = document.createTextNode(numberOfGroupedVendors.toString()); 
+        mapMarkerEl.appendChild(textnode);
+    }
+
     return mapMarkerEl
 }
 
@@ -45,10 +51,10 @@ const addGroupedVendorsToMap = ({i, groupVendorKeys, groupVendors, vendorsData, 
     const coordinates:[number, number] = [firstVendoLocation.coordinates.long, firstVendoLocation.coordinates.lat]
 
     // Add marker to map
-    const marker = new mapboxgl.Marker(createMapMarker())
+    const marker = new mapboxgl.Marker(createMapMarker(vendors.length))
         .setLngLat(coordinates)
         .addTo(map)
-    console.log(marker)
+ 
     setGroupVendorMarkers({ ...groupVendorMarkers, [key]: marker })
 }
 

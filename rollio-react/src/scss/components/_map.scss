@@ -1,8 +1,8 @@
 .map {
     &__wrapper {
         display: inline-block;
-        height: 300px;
-        width: 500px;
+        height: 500px;
+        width: 800px;
     }
 }
 
@@ -16,5 +16,14 @@
     height: 24px;
     border: solid 2px $color-map-marker-primary-second;
     background-color: $color-map-marker-primary-main;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: $color-font-map-marker;
   }
 
+// APPLIED FONTS
+.font__map_marker_font {
+    @include neuzeit-bold;
+    font-size: 18px;
+}
