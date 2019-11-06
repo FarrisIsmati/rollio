@@ -135,13 +135,9 @@ module.exports = {
       return err;
     }
     let payload = originalPayload;
-    if (field === 'tweetHistory') {
-      const newTweet = await Tweet.create(originalPayload)
-      payload = newTweet._id;
-    }
-    if (field === 'locationHistory' || field === 'userLocationHistory') {
-      const newLocation = await Location.create(originalPayload)
-      payload = newLocation._id;
+    if (['tweetHistory', 'locationHistory', 'userLocationHistory'].includes(field)) {
+        const newDocument = field === 'tweetHistory' ? await Tweet.create(originalPayload) : await Location.create(originalPayload);
+        payload = newDocument._id;
     }
     return Vendor.update({
       regionID,
