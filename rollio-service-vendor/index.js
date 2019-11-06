@@ -15,6 +15,7 @@ const server = http.createServer(app);
 // ROUTES
 const region = require('./lib/routes/region');
 const vendor = require('./lib/routes/vendor');
+const login = require('./lib/routes/login');
 
 // MESSAGES
 const receiveVendorsRequest = require('./lib/messaging/receive/receive-vendors-request');
@@ -53,10 +54,11 @@ const generalRateLimit = rateLimit({
 app.use(generalRateLimit);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cors({exposedHeaders: ['x-auth-token']}));
 
 app.use('/region', region);
 app.use('/vendor', vendor);
+app.use('/api', login);
 
 server.listen(app.get('port'), async () => {
   logger.info(`Server on port ${app.get('port')}`);
