@@ -7,7 +7,12 @@ const logger = require('../log/index');
 module.exports = {
   async search(address) {
     return axios.get(`https://maps.googleapis.com/maps/api/place/findplacefromtext/json?key=${config.GOOGLE_PLACES_API_KEY}&input=${address}&inputtype=textquery&fields=formatted_address,geometry/location`)
-      .then(res => res.data.candidates)
+      .then((res) => {
+        if (res.data.error_message) {
+          throw res.data.error_message;
+        }
+        return res.data.candidates;
+      })
       .catch((err) => {
         logger.error(`Google Places API Failure: ${err}`);
         return err;

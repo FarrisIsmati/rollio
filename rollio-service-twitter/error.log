@@ -33,3 +33,8 @@
 {"message":"Google Places API Failure: TypeError: Cannot read property 'address_components' of undefined","level":"error","timestamp":"2019-11-03 22:58:22"}
 {"message":"Google Places API Failure: TypeError: Cannot read property 'address_components' of undefined","level":"error","timestamp":"2019-11-03 22:58:22"}
 {"message":"Google Places API Failure: TypeError: Cannot read property 'address_components' of undefined","level":"error","timestamp":"2019-11-03 23:00:08"}
+{"message":"Google Places API Failure: TypeError: Cannot read property 'address_components' of undefined","level":"error","timestamp":"2019-11-06 22:36:18"}
+{"message":"Google Places API Failure: TypeError: Cannot read property 'address_components' of undefined","level":"error","timestamp":"2019-11-06 22:36:18"}
+{"message":"Google Places API Failure: You have exceeded your daily request quota for this API. If you did not set a custom daily request quota, verify your project has an active billing account: http://g.co/dev/maps-no-account","level":"error","timestamp":"2019-11-06 22:51:39"}
+{"message":"Google Places API Failure: You have exceeded your daily request quota for this API. If you did not set a custom daily request quota, verify your project has an active billing account: http://g.co/dev/maps-no-account","level":"error","timestamp":"2019-11-06 22:51:39"}
+{"message":"Google Places API Failure: You have exceeded your daily request quota for this API. If you did not set a custom daily request quota, verify your project has an active billing account: http://g.co/dev/maps-no-account","level":"error","timestamp":"2019-11-06 22:51:39"}
