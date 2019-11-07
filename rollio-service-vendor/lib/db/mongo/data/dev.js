@@ -1,3 +1,13 @@
+const { ObjectId } = require('mongoose').Types
+
+const tweet1Id = ObjectId();
+const tweet2Id = ObjectId();
+const tweet3Id = ObjectId();
+const location1Id = ObjectId();
+const location2Id = ObjectId();
+const location3Id = ObjectId();
+const location4Id = ObjectId();
+
 module.exports = {
   vendors: [
     {
@@ -15,39 +25,9 @@ module.exports = {
       price: '$$$$$',
       rating: 5,
       twitterID: '1053649707493404678',
-      tweetHistory: [
-        {
-          tweetID: 'laks3n',
-          date: new Date('2016-05-18T16:00:00Z'),
-          text: 'We are at Farragut Square',
-          location: {
-            locationDate: new Date('2018-04-12T12:10:00Z'),
-            accuracy: 3,
-            address: '28 Ist',
-            city: 'Washington, DC',
-            neighborhood: 'Farragut Square',
-            coordinates: [4.123, 1.522],
-          },
-        },
-      ],
-      locationHistory: [{
-        locationDate: new Date('2018-11-01T12:00:00Z'),
-        accuracy: 3,
-        address: '123 Fake Street',
-        city: 'Springfield',
-        neighborhood: 'Little Russia',
-        matchMethod: 'Tweet location',
-        coordinates: [39.2934, -77.1234],
-      }],
-      userLocationHistory: [{
-        locationDate: new Date('2018-04-12T12:10:00Z'),
-        accuracy: -4,
-        address: 'Lol Ist',
-        city: 'Tysons, DC',
-        neighborhood: 'Farragut Triangle',
-        matchMethod: 'User Input',
-        coordinates: [4.123, 1.5222],
-      }],
+      tweetHistory: [tweet1Id],
+      locationHistory: [location1Id],
+      userLocationHistory: [location2Id],
       comments: [],
       dailyActive: true,
       consecutiveDaysInactive: 4,
@@ -205,29 +185,8 @@ module.exports = {
       profileImageLink: 'https://pbs.twimg.com/profile_images/974624453593362432/5fabVcBz_400x400.jpg',
       yelpId: 'balkanik-taste-food-truck-and-catering-rockville-3',
       twitterID: '2185580414',
-      tweetHistory: [
-        {
-          tweetID: '124fake',
-          date: new Date('2016-05-18T16:00:00Z'),
-          text: 'We are in China Town',
-          location: {
-            locationDate: new Date('2018-04-12T12:10:00Z'),
-            accuracy: 3,
-            address: '600 7th St NW',
-            city: 'Washington, DC',
-            neighborhood: 'Penn Quarter',
-            coordinates: [38.897182, -77.022013],
-          },
-        },
-      ],
-      locationHistory: [{
-        locationDate: new Date('2018-04-12T12:10:00Z'),
-        accuracy: 3,
-        address: '600 7th St NW',
-        city: 'Washington, DC',
-        neighborhood: 'Penn Quarter',
-        coordinates: [38.897182, -77.022013],
-      }],
+      tweetHistory: [tweet2Id],
+      locationHistory: [location3Id],
       comments: [],
       dailyActive: true,
       consecutiveDaysInactive: 4,
@@ -245,29 +204,8 @@ module.exports = {
       profileImageLink: 'https://pbs.twimg.com/profile_images/3617068539/0eff682e21f6f495990e3a617c15b66d_400x400.jpeg',
       yelpId: '',
       twitterID: '204871288',
-      tweetHistory: [
-        {
-          tweetID: '124fake',
-          date: new Date('2016-05-17T16:00:00Z'),
-          text: 'We are in China Town',
-          location: {
-            locationDate: new Date('2018-04-12T12:10:00Z'),
-            accuracy: 3,
-            address: '600 7th St NW',
-            city: 'Washington, DC',
-            neighborhood: 'Penn Quarter',
-            coordinates: [38.897182, -77.022013],
-          },
-        },
-      ],
-      locationHistory: [{
-        locationDate: new Date('2018-04-12T12:10:00Z'),
-        accuracy: 3,
-        address: '600 7th St NW',
-        city: 'Washington, DC',
-        neighborhood: 'Penn Quarter',
-        coordinates: [38.897182, -77.022013],
-      }],
+      tweetHistory: [tweet3Id],
+      locationHistory: [location4Id],
       comments: [],
       dailyActive: true,
       consecutiveDaysInactive: 4,
@@ -286,4 +224,91 @@ module.exports = {
       timezone: 'EST',
     },
   ],
+  tweets: [
+    {
+      _id: tweet1Id,
+      tweetID: 'laks3n',
+      date: new Date('2016-05-18T16:00:00Z'),
+      text: 'We are at Farragut Square',
+      location: {
+        locationDate: new Date('2018-04-12T12:10:00Z'),
+        accuracy: 3,
+        address: '28 Ist',
+        city: 'Washington, DC',
+        neighborhood: 'Farragut Square',
+        coordinates: [4.123, 1.522],
+      },
+      usedForLocation: false
+    },
+    {
+      _id: tweet2Id,
+      tweetID: '124fake',
+      date: new Date('2016-05-18T16:00:00Z'),
+      text: 'We are in China Town',
+      location: {
+        locationDate: new Date('2018-04-12T12:10:00Z'),
+        accuracy: 3,
+        address: '600 7th St NW',
+        city: 'Washington, DC',
+        neighborhood: 'Penn Quarter',
+        coordinates: [38.897182, -77.022013],
+      },
+      usedForLocation: false
+    },
+    {
+      _id: tweet3Id,
+      tweetID: '124fake',
+      date: new Date('2016-05-18T16:00:00Z'),
+      text: 'We are in China Town',
+      location: {
+        locationDate: new Date('2018-04-12T12:10:00Z'),
+        accuracy: 3,
+        address: '600 7th St NW',
+        city: 'Washington, DC',
+        neighborhood: 'Penn Quarter',
+        coordinates: [38.897182, -77.022013],
+      },
+      usedForLocation: false
+    }
+  ],
+  locations: [
+    {
+      _id: location1Id,
+      locationDate: new Date('2018-11-01T12:00:00Z'),
+      accuracy: 3,
+      address: '123 Fake Street',
+      city: 'Springfield',
+      neighborhood: 'Little Russia',
+      matchMethod: 'Tweet location',
+      coordinates: [39.2934, -77.1234],
+    },
+    {
+      _id: location2Id,
+      locationDate: new Date('2018-04-12T12:10:00Z'),
+      accuracy: -4,
+      address: 'Lol Ist',
+      city: 'Tysons, DC',
+      neighborhood: 'Farragut Triangle',
+      matchMethod: 'User Input',
+      coordinates: [4.123, 1.5222],
+    },
+    {
+      _id: location3Id,
+      locationDate: new Date('2018-04-12T12:10:00Z'),
+      accuracy: 3,
+      address: '600 7th St NW',
+      city: 'Washington, DC',
+      neighborhood: 'Penn Quarter',
+      coordinates: [38.897182, -77.022013],
+    },
+    {
+      _id: location4Id,
+      locationDate: new Date('2018-04-12T12:10:00Z'),
+      accuracy: 3,
+      address: '600 7th St NW',
+      city: 'Washington, DC',
+      neighborhood: 'Penn Quarter',
+      coordinates: [38.897182, -77.022013],
+    }
+  ]
 };

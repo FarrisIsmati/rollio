@@ -7,7 +7,7 @@ const { expect } = chai;
 // SCHEMAS
 const Comment = mongoose.model('Comment');
 const Region = mongoose.model('Region');
-const Coordinates = mongoose.model('Coordinates');
+const Location = mongoose.model('Location');
 const Vendor = mongoose.model('Vendor');
 
 // TESTS
@@ -24,9 +24,9 @@ describe('Schemas', () => {
     });
   });
 
-  describe('Coordinates Schema', () => {
+  describe('Location Schema', () => {
     it('expect to be invalid if there are more than three values in the coordinates field', (done) => {
-      const coordinates = new Coordinates({
+      const coordinates = new Location({
         coordinates: [3.42424, -42.1414, 3.4114],
       });
       coordinates.validate((err) => {
