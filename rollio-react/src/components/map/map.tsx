@@ -2,6 +2,10 @@
 import React from 'react';
 import mapboxgl from 'mapbox-gl';
 import PropTypes from 'prop-types';
+import { useState, useRef, useEffect } from 'react';
+
+// HOOKS
+import useMapMarkers from './hooks/useMapMarkers';
 
 // CONFIG
 import { MAPBOX_API_KEY } from '../../config'
@@ -9,46 +13,42 @@ import { MAPBOX_API_KEY } from '../../config'
 // INTERFACES
 import { MapProps } from './interfaces';
 
+const mapMarkerElement:any = (<div>lol</div>)
 
 const Map = (props: MapProps) => {
-  const { mapType } = props;
+  const { mapType, mapData } = props;
 
-  const renderMap = (mapContainer: any) => {
+  const [map, setMap] = useState<any>(null);
+  const mapContainer = useRef<any>(null);
+
+  useEffect(() => {
     //@ts-ignore
     mapboxgl.accessToken = MAPBOX_API_KEY;
-    let map = new mapboxgl.Map({
-        container: mapContainer,
+    const initializeMap = ({ setMap, mapContainer } : { setMap: any, mapContainer: any}) => {
+      const map = new mapboxgl.Map({
+        container: mapContainer.current,
         style: 'mapbox://styles/farrisismati/ck04ma9xw0mse1cp25m11fgqs',
         center: [-77.0369, 38.9072],
         zoom: 12,
         interactive: true
-    })
+      });
 
-    if ( mapType === 'region') {
-      // CURRENTLY THINKING THROUGH THIS LOGIC
-      // GOING IN THE HOOKS :)
-      // Load up the regional 
-      // Goal is to place all the appropiate vendors from the data.vendorsAll redux object
-      // - into the single and group pins array
-      // First check the filters -- SKIP THIS STEP FOR NOW
-      // Create a coords set, 
-      // Loop through the data.vendorsAll object
-      // 
-    }
+      map.on("load", () => {
+        setMap(map);
+        map.resize();
+      });
+    };
 
-    // create a HTML element for each feature
-    const el = document.createElement('div');
-    el.className = 'marker';
+    // If that map has not been rendered, render it
+    if (!map) initializeMap({ setMap, mapContainer });
+  }, [map])
 
-    // make a marker for each feature and add to the map
-    new mapboxgl.Marker(el)
-        .setLngLat([-77.032, 38.913])
-        .addTo(map);
-  }
+  // Should reupdate everytime the map updates
+  useMapMarkers({...props, map, mapMarkerElement})
 
   return (
     <div className='map__wrapper'>
-      <div ref={renderMap}></div>
+      <div ref={el => (mapContainer.current = el)}></div>
     </div>
   );
 }

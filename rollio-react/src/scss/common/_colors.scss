@@ -16,6 +16,7 @@ $color-font-main-light2: $rollioLightGrey;
 $color-font-alt: $rollioMagenta;
 $color-font-error: $rollioRed;
 $color-font-link: $rollioBlue;
+$color-font-map-marker: $white;
 
 // COMPONENTS
 // Main
@@ -29,5 +30,7 @@ $color-comment-name-border: $rollioLighterGrey;
 $color-button-default-font: $white;
 $color-button-default-background: $rollioBlue;
 $color-button-default-background-locked: $rollioLighterGrey;
-
+// MAP
+$color-map-marker-primary-main: $rollioBlue;
+$color-map-marker-primary-second: $white;
 

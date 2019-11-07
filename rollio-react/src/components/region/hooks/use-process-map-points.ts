@@ -24,6 +24,7 @@ const stringifyCoordinates = (coordinates: {lat:number, long:number}) => {
 
 // Processes all map points for the given region
 // Currently only groups points if they are at the same exact coordinate
+// Only setup for initial load, not accounting for changes to the map like FILTERS YET
 const useProcessMapPoints = (props:any) => {
     const dispatch = useDispatch();
     const state = useGetAppState();
@@ -33,6 +34,7 @@ const useProcessMapPoints = (props:any) => {
     useEffect(() => {
         // Once vendor data has been loaded & if the map pins have not already been loaded
         if (Object.keys(allVendors).length && !state.loadState.areMapPinsLoaded) {
+            // Sets map pins loaded state to true so this wont be called infinitely 
             dispatch(setMapPinsLoadState({areMapPinsLoaded: true}))
 
             const sortedLocations: { [s: string]: any[] } = {};

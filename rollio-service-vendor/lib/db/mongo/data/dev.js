@@ -1,4 +1,4 @@
-const { ObjectId } = require('mongoose').Types
+const { ObjectId } = require('mongoose').Types;
 
 const tweet1Id = ObjectId();
 const tweet2Id = ObjectId();
@@ -165,11 +165,32 @@ module.exports = {
       profileImageLink: '',
       yelpId: 'chick-fil-a-mobile-washington-4',
       twitterID: '540537070',
-      tweetHistory: [],
-      locationHistory: [],
+      tweetHistory: [
+        {
+          tweetID: '1235fake',
+          date: new Date('2016-05-18T16:00:00Z'),
+          text: 'We are in Noma',
+          location: {
+            locationDate: new Date('2019-11-05T12:10:00Z'),
+            accuracy: 3,
+            address: 'H St NW, Washington, DC 20001',
+            city: 'Washington, DC',
+            neighborhood: 'noma',
+            coordinates: [38.900318, -77.011744],
+          },
+        },
+      ],
+      locationHistory: [{
+        locationDate: new Date('2019-11-05T12:10:00Z'),
+        accuracy: 3,
+        address: 'H St NW, Washington, DC 20001',
+        city: 'Washington, DC',
+        neighborhood: 'noma',
+        coordinates: [38.900318, -77.011744],
+      }],
       userLocationHistory: [],
       comments: [],
-      dailyActive: false,
+      dailyActive: true,
       consecutiveDaysInactive: -1,
       categories: ['Fast Food', 'American', 'Comfort Food', 'Meat', 'Chicken'],
     }, {
@@ -238,7 +259,7 @@ module.exports = {
         neighborhood: 'Farragut Square',
         coordinates: [4.123, 1.522],
       },
-      usedForLocation: false
+      usedForLocation: false,
     },
     {
       _id: tweet2Id,
@@ -253,7 +274,7 @@ module.exports = {
         neighborhood: 'Penn Quarter',
         coordinates: [38.897182, -77.022013],
       },
-      usedForLocation: false
+      usedForLocation: false,
     },
     {
       _id: tweet3Id,
@@ -268,7 +289,7 @@ module.exports = {
         neighborhood: 'Penn Quarter',
         coordinates: [38.897182, -77.022013],
       },
-      usedForLocation: false
+      usedForLocation: false,
     }
   ],
   locations: [
