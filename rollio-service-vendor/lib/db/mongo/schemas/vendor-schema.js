@@ -24,13 +24,14 @@ const LocationSchema = new mongoose.Schema({
   address: { type: String, required: true },
   city: { type: String, required: false },
   neighborhood: { type: String, required: false },
+  // possibly replace this with a reference to the tweet in the Tweet collection
   tweetID: { type: String, required: false },
   matchMethod: { type: String, required: false },
   coordinates: {
     type: [{ type: Number, required: true }],
     validate: [val => val.length <= 2, '{PATH} exceeds the limit of 2'],
     required: false,
-  },
+  }
 });
 
 // TWEET SCHEMA
@@ -38,7 +39,9 @@ const TweetSchema = new mongoose.Schema({
   tweetID: { type: String, required: true },
   date: { type: Date, required: true },
   text: { type: String, required: true },
+  // likely will delete location key here in the future
   location: { type: LocationSchema, required: false },
+  usedForLocation: { type: Boolean, default: false }
 });
 
 const CommentSchema = new mongoose.Schema({
@@ -81,18 +84,9 @@ const VendorSchema = new mongoose.Schema({
   yelpId: { type: String, required: false },
   yelpRating: { type: String, required: false },
   twitterID: { type: String, required: false },
-  tweetHistory: {
-    type: [TweetSchema],
-    required: false,
-  },
-  locationHistory: {
-    type: [LocationSchema],
-    required: true,
-  },
-  userLocationHistory: {
-    type: [LocationSchema],
-    required: true,
-  },
+  tweetHistory: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tweet' }],
+  locationHistory: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Location' }],
+  userLocationHistory: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Location' }],
   comments: {
     type: [CommentSchema],
     required: false,
