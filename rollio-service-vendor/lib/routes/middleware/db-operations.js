@@ -2,7 +2,7 @@
 /* eslint-disable no-console */
 // DEPENDENCIES
 const MongoQS = require('mongo-querystring');
-const logger = require('../../log/index');
+const logger = require('../../log/index')('routes/middleware/db-operations');
 const { TWITTER_CONFIG } = require('../../../config');
 const request = require('request');
 const qs = new MongoQS(); // MongoQS takes req.query and converts it into MongoQuery
@@ -18,7 +18,7 @@ const {
 } = require('../../db/mongo/operations/vendor-ops');
 
 const {
-  findUserById
+  findUserById,
 } = require('../../db/mongo/operations/user-ops');
 
 // Caching data happens on get requests in the middleware,

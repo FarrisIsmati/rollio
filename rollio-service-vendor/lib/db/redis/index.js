@@ -4,7 +4,7 @@ const redis = require('redis');
 const bluebird = require('bluebird');
 const config = require('../../../config');
 const util = require('../../util/util');
-const logger = require('../../log/index');
+const logger = require('../../log/index')('redis/index');
 
 // Creates a promise returning version of all redisClient functions
 bluebird.promisifyAll(redis.RedisClient.prototype);

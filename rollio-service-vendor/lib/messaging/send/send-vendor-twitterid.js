@@ -2,7 +2,7 @@
 // DEPENDENCIES
 const mq = require('../index');
 const config = require('../../../config');
-const logger = require('../../log/index');
+const logger = require('../../log/index')('messaging/send/send-vendor-twitterid');
 
 // OPERATIONS
 const regionOps = require('../../db/mongo/operations/region-ops');

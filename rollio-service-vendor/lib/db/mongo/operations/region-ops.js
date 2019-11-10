@@ -2,7 +2,7 @@
 // DEPENDENCIES
 const mongoose = require('../mongoose/index');
 const redisClient = require('../../../db/redis/index');
-const logger = require('../../../log/index');
+const logger = require('../../../log/index')('mongo/operations/region-ops');
 
 // SCHEMA
 const Region = mongoose.model('Region');

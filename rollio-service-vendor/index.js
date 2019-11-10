@@ -6,11 +6,13 @@ const morgan = require('morgan');
 const cors = require('cors');
 const rateLimit = require('express-rate-limit');
 const http = require('http');
+const socketIO = require('socket.io');
 const config = require('./config');
 const seed = require('./lib/db/mongo/seeds/dev-seed');
-const logger = require('./lib/log/index');
+const logger = require('./lib/log/index')('index');
 
 const server = http.createServer(app);
+const io = socketIO(server);
 
 // ROUTES
 const region = require('./lib/routes/region');
@@ -76,4 +78,4 @@ server.listen(app.get('port'), async () => {
 });
 
 // For testing
-module.exports = app;
+module.exports = { app };

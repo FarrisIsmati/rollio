@@ -3,7 +3,7 @@
 const mongoose = require('mongoose');
 const config = require('../../../config');
 const util = require('../../util/util');
-const logger = require('../../log/index');
+const logger = require('../../log/index')('mongo/index');
 
 const options = {
   autoIndex: false,

@@ -66,6 +66,7 @@
     "sinon": "^6.3.5",
     "sinon-chai": "^3.3.0",
     "sinon-express-mock": "^2.2.0",
+    "socket.io": "^2.3.0",
     "winston": "^3.2.1",
     "yelp-fusion": "^2.2.1"
   }

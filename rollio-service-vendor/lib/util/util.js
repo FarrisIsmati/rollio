@@ -1,5 +1,5 @@
 // DEPENDENCIES
-const logger = require('../log/index');
+const logger = require('../log/index')('/lib/util/util');
 
 /* eslint-disable no-console */
 module.exports = {
