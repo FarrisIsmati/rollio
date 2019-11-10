@@ -14,6 +14,7 @@ module.exports = {
         return res.data.candidates;
       })
       .catch((err) => {
+        console.log(err)
         logger.error(`Google Places API Failure: ${err}`);
         return err;
       });
