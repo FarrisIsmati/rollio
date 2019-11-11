@@ -22,6 +22,7 @@ import VendorProfile from './vendor-profile/vendor-profile';
 import RegionHome from './region/region-home';
 import PageInvalid from './error/page-invalid';
 import LoginOut from './authentication/login-out';
+import TweetTable from './tweets/tweet-table';
 
 const loggerMiddleware = createLogger()
 
@@ -43,6 +44,7 @@ const App:FC = () => {
             <Route exact path="/region/:regionId" component={ RegionHome } />
             <Route exact path="/region/:regionId/vendor/:vendorId" component={ VendorProfile } />
             <Route exact path="/login" component={ LoginOut } />
+            <Route exact path="/tweets" component={ TweetTable } />
             <Route exact path="/invalid" component={ PageInvalid } />
             <Route path="/*" component={ PageInvalid } />
           </Switch>
