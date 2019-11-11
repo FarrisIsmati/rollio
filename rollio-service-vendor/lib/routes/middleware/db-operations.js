@@ -107,6 +107,8 @@ const vendorRouteOpsUtil = {
         neighborhood: vendorLocation.neighborhood,
         municipality: vendorLocation.city,
         accuracy: vendorLocation.accuracy,
+        matchMethod: vendorLocation.matchMethod,
+        tweetID: vendorLocation.tweetID,
       };
     }
 

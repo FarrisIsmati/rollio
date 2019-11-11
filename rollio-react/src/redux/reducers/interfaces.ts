@@ -22,6 +22,8 @@ export interface Location {
     neighborhood: string,
     municipality: string,
     accuracy: number | null,
+    matchMethod: string,
+    tweetID: string | null,
     id: string,
 }
 

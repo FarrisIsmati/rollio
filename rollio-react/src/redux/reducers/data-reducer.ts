@@ -4,6 +4,7 @@ import {
     RECIEVE_VENDOR_DATA,
     RECIEVE_ALL_VENDORS,
     POST_VENDOR_COMMENT,
+    UPDATE_VENDOR
 } from "../constants/constants"
 
 // INTERFACES
@@ -39,6 +40,8 @@ const defaultState:DataDefaultState = {
             address: '',
             neighborhood: '',
             municipality: '',
+            matchMethod: '',
+            tweetID: null,
             accuracy: 0,
         },
         isActive: false,
@@ -62,6 +65,10 @@ export function dataReducer(state = defaultState, action: any) {
         return {
             ...state,
             vendorsAll: { ...action.payload }
+        }
+    case UPDATE_VENDOR:
+        return {
+            ...state,
         }
     case POST_VENDOR_COMMENT:
         return {

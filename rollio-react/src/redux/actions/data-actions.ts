@@ -19,6 +19,8 @@ import {
     FETCH_ALL_VENDORS_SUCCESS,
     RECIEVE_ALL_VENDORS,
 
+    UPDATE_VENDOR,
+
     POST_VENDOR_COMMENT,
 } from '../constants/constants'
 
@@ -256,6 +258,11 @@ export function fetchAllVendorsAsync(payload:any) {
     }
 }
 
-export function updateVendorsAll() {
+export function updateVendor(payload:any) {
+    return {
+        type: UPDATE_VENDOR,
+        payload: {
 
+        }
+    }
 }

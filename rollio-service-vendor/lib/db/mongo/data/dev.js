@@ -6,7 +6,6 @@ const tweet3Id = ObjectId();
 const location1Id = ObjectId();
 const location2Id = ObjectId();
 const location3Id = ObjectId();
-const location4Id = ObjectId();
 
 module.exports = {
   vendors: [
@@ -205,7 +204,7 @@ module.exports = {
       yelpId: '',
       twitterID: '204871288',
       tweetHistory: [tweet3Id],
-      locationHistory: [location4Id],
+      locationHistory: [location3Id],
       comments: [],
       dailyActive: true,
       consecutiveDaysInactive: 4,
@@ -242,7 +241,7 @@ module.exports = {
     },
     {
       _id: tweet2Id,
-      tweetID: '124fake',
+      tweetID: '125fake',
       date: new Date('2016-05-18T16:00:00Z'),
       text: 'We are in China Town',
       location: {
@@ -279,7 +278,8 @@ module.exports = {
       address: '123 Fake Street',
       city: 'Springfield',
       neighborhood: 'Little Russia',
-      matchMethod: 'Tweet location',
+      matchMethod: 'User Input',
+      tweetID: null,
       coordinates: [39.2934, -77.1234],
     },
     {
@@ -289,7 +289,8 @@ module.exports = {
       address: 'Lol Ist',
       city: 'Tysons, DC',
       neighborhood: 'Farragut Triangle',
-      matchMethod: 'User Input',
+      matchMethod: 'Tweet location',
+      tweetID: '125fake',
       coordinates: [4.123, 1.5222],
     },
     {
@@ -299,15 +300,8 @@ module.exports = {
       address: '600 7th St NW',
       city: 'Washington, DC',
       neighborhood: 'Penn Quarter',
-      coordinates: [38.897182, -77.022013],
-    },
-    {
-      _id: location4Id,
-      locationDate: new Date('2018-04-12T12:10:00Z'),
-      accuracy: 3,
-      address: '600 7th St NW',
-      city: 'Washington, DC',
-      neighborhood: 'Penn Quarter',
+      matchMethod: 'Tweet location',
+      tweetID: '124fake',
       coordinates: [38.897182, -77.022013],
     }
   ]
