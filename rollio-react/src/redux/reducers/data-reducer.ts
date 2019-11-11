@@ -67,8 +67,11 @@ export function dataReducer(state = defaultState, action: any) {
             vendorsAll: { ...action.payload }
         }
     case UPDATE_VENDOR:
+        const vendorsAll = { ...state.vendorsAll }
+        
         return {
             ...state,
+            vendorsAll: { ...vendorsAll, [action.payload.vendorID]: { ...vendorsAll[action.payload.vendorID], location: action.payload.location } }
         }
     case POST_VENDOR_COMMENT:
         return {

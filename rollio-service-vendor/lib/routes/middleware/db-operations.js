@@ -96,7 +96,7 @@ const vendorRouteOpsUtil = {
     // Check to see if the vendor was updated and has a location history
     // If so set the location
     if (vendor.dailyActive && vendor.locationHistory.length) {
-      const vendorLocation = vendor.locationHistory[0];
+      const vendorLocation = vendor.locationHistory[vendor.locationHistory.length - 1];
       location = {
         id: vendorLocation._id,
         coordinates: {
