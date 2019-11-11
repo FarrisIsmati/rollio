@@ -99,6 +99,7 @@ export interface LoadStateDefaultState {
     isVendorLoaded: boolean,
     areVendorsLoaded: boolean,
     areMapPinsLoaded: boolean,
-    isUserLoaded: boolean
+    isUserLoaded: boolean,
+    isUserLoading: boolean
 }
 

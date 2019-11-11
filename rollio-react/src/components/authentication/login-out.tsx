@@ -8,7 +8,7 @@ import {useDispatch} from "react-redux";
 
 const Login = (props:any) => {
     const dispatch = useDispatch();
-    const {user} = useGetAppState();
+    const { user, loadState } = useGetAppState();
     const twitterLoginUrl = `${VENDOR_API}/api/auth/twitter`;
     const twitterRequestTokenUrl = `${VENDOR_API}/api/auth/twitter/reverse`;
     const logout = () => {
@@ -31,7 +31,7 @@ const Login = (props:any) => {
     };
 
     useEffect(() => {
-        if(localStorage.token && localStorage.token.length && !user.isAuthenticated) {
+        if(localStorage.token && localStorage.token.length && !user.isAuthenticated && !loadState.isUserLoading) {
             dispatch(fetchUserAsync())
         }
     });

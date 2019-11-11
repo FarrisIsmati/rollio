@@ -22,7 +22,8 @@ export function fetchUserSuccess() {
     return {
         type: FETCH_USER_SUCCESS,
         payload: {
-            isUserLoaded: true
+            isUserLoaded: true,
+            isUserLoading: false
         }
     }
 }
@@ -31,7 +32,8 @@ function fetchUserStart() {
     return {
         type: FETCH_USER,
         payload: {
-            isUserLoaded: false
+            isUserLoaded: false,
+            isUserLoading: true
         }
     }
 }
@@ -40,7 +42,8 @@ export function logOut() {
     return {
         type: LOG_OUT,
         payload: {
-            isUserLoaded: false
+            isUserLoaded: false,
+            isUserLoading: false
         }
     }
 }
