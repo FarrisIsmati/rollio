@@ -16,6 +16,7 @@ const server = http.createServer(app);
 const region = require('./lib/routes/region');
 const vendor = require('./lib/routes/vendor');
 const login = require('./lib/routes/login');
+const tweets = require('./lib/routes/tweets');
 
 // MESSAGES
 const receiveVendorsRequest = require('./lib/messaging/receive/receive-vendors-request');
@@ -59,6 +60,7 @@ app.use(cors({exposedHeaders: ['x-auth-token']}));
 app.use('/region', region);
 app.use('/vendor', vendor);
 app.use('/api', login);
+app.use('/tweets', tweets);
 
 server.listen(app.get('port'), async () => {
   logger.info(`Server on port ${app.get('port')}`);

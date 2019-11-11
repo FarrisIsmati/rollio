@@ -21,6 +21,10 @@ const {
   findUserById
 } = require('../../db/mongo/operations/user-ops');
 
+const {
+  getAllTweets
+} = require('../../db/mongo/operations/tweet-ops');
+
 // Caching data happens on get requests in the middleware,
 // clearing the cache happens in the operations in mongo folder
 const checkCache = async (req, res, payload) => {
@@ -276,4 +280,19 @@ const userRouteOps = {
   }
 };
 
-module.exports = { checkCache, regionRouteOps, vendorRouteOps, userRouteOps };
+const tweetRouteOps = {
+  tweetSearch: async (req, res) => {
+    // TODO: limit to not just any user, but only an admin
+    if (!req.user) {
+      res.send(401, 'User Not Authenticated');
+    }
+    getAllTweets(req.query).then(tweets => {
+      res.json({tweets});
+    }).catch(err => {
+      console.error(err);
+      res.send(401, 'Error fetching tweets');
+    })
+  }
+};
+
+module.exports = { checkCache, regionRouteOps, vendorRouteOps, userRouteOps, tweetRouteOps };
