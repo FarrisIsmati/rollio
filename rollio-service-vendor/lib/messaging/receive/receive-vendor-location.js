@@ -8,7 +8,7 @@ const config = require('../../../config');
 const logger = require('../../log/index')('messaging/receive/receive-vendor-location');
 
 // SOCKET
-const { app } = require('../../../index');
+const { io } = require('../../sockets/index');
 
 const updateTweet = async (payload, region, vendor) => {
   // Formating
@@ -103,8 +103,7 @@ const receiveTweets = async () => {
       console.log(tweetPayload);
       // eslint-disable-next-line max-len
       // Send tweet data, location data, only, everything else will be updated on a get req (comments, ratings, etc)
-      // io.sockets.emit('TWITTER_DATA', tweetPayload);
-      // ^ GET THE IO IMPORT WORKING
+      io.sockets.emit('TWITTER_DATA', { tweet: tweetPayload, vendorID: vendor._id, regionID: region._id });
     } catch (err) {
       logger.error(err);
     }

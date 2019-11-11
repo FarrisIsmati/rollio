@@ -12,7 +12,7 @@ import { DataDefaultState } from "./interfaces";
 const defaultState:DataDefaultState = {
     regionID: '',
     regionName: '',
-    dailyActiveVendors: [],
+    dailyActiveVendors: new Set(),
     regionCoordinates: {
         lat: null,
         long: null

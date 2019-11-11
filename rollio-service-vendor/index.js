@@ -6,13 +6,13 @@ const morgan = require('morgan');
 const cors = require('cors');
 const rateLimit = require('express-rate-limit');
 const http = require('http');
-const socketIO = require('socket.io');
+const socketIO = require('./lib/sockets/index');
 const config = require('./config');
 const seed = require('./lib/db/mongo/seeds/dev-seed');
 const logger = require('./lib/log/index')('index');
 
 const server = http.createServer(app);
-const io = socketIO(server);
+socketIO.setIOServer(server);
 
 // ROUTES
 const region = require('./lib/routes/region');

@@ -148,7 +148,7 @@ export function recieveRegionData(region:any) {
         payload: {
             regionId: region._id,
             regionName: region.name,
-            dailyActiveVendors: region.dailyActiveVendorIDs,
+            dailyActiveVendors: new Set(region.dailyActiveVendorIDs),
             regionCoordinates: {
                 lat: region.coordinates.coordinates[0],
                 long: region.coordinates.coordinates[1]
@@ -202,10 +202,13 @@ export function fetchRegionDataAsync(payload:RegionDataAsyncPayload) {
     }
 }
 
+export function updateRegion() {
+    // UPDATE DAILY ACTIVE VENDOR
+}
+
 // -----------
 // VENDOR DATA
 // -----------
-
 
 export function recieveAllVendors(vendors:any) {
     return {
@@ -251,4 +254,8 @@ export function fetchAllVendorsAsync(payload:any) {
                 console.error(err)
             })
     }
+}
+
+export function updateVendorsAll() {
+
 }
