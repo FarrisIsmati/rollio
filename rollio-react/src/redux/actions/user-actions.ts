@@ -22,8 +22,7 @@ export function fetchUserSuccess() {
     return {
         type: FETCH_USER_SUCCESS,
         payload: {
-            isUserLoaded: true,
-            isUserLoading: false
+            isUserLoaded: true
         }
     }
 }
@@ -32,8 +31,7 @@ function fetchUserStart() {
     return {
         type: FETCH_USER,
         payload: {
-            isUserLoaded: false,
-            isUserLoading: true
+            isUserLoaded: false
         }
     }
 }
@@ -42,13 +40,12 @@ export function logOut() {
     return {
         type: LOG_OUT,
         payload: {
-            isUserLoaded: false,
-            isUserLoading: false
+            isUserLoaded: false
         }
     }
 }
 
-export function fetchUserAsync() {
+export function fetchUserAsync(cb?:any) {
     return function (dispatch:any) {
         dispatch(fetchUserStart());
         return axios({
@@ -59,6 +56,9 @@ export function fetchUserAsync() {
             .then((response: AxiosResponse<any>) => {
                     dispatch(receiveUser(response.data.user))
                     dispatch(fetchUserSuccess());
+                    if (cb) {
+                        cb();
+                    }
                 }
             )
             .catch((err:AxiosError) => {

@@ -17,8 +17,7 @@ const defaultState: LoadStateDefaultState = {
     isVendorLoaded: false,
     areVendorsLoaded: false,
     areMapPinsLoaded: false,
-    isUserLoaded: false,
-    isUserLoading: false
+    isUserLoaded: false
 }
 
 export function loadStateReducer(state = defaultState, action: any) {

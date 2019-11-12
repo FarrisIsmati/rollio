@@ -31,10 +31,10 @@ const Login = (props:any) => {
     };
 
     useEffect(() => {
-        if(localStorage.token && localStorage.token.length && !user.isAuthenticated && !loadState.isUserLoading) {
+        if(localStorage.token && localStorage.token.length && !user.isAuthenticated) {
             dispatch(fetchUserAsync())
         }
-    });
+    }, []);
     // Render Content
     const content = user.isAuthenticated ?
             (
