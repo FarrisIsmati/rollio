@@ -39,6 +39,7 @@ const TweetSchema = new mongoose.Schema({
   tweetID: { type: String, required: true },
   date: { type: Date, required: true },
   text: { type: String, required: true },
+  vendorID: { type: mongoose.Schema.Types.ObjectId, ref: 'Vendor', required: true },
   // likely will delete location key here in the future
   location: { type: LocationSchema, required: false },
   usedForLocation: { type: Boolean, default: false }

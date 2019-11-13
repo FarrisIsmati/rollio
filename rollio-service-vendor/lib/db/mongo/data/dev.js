@@ -3,14 +3,22 @@ const { ObjectId } = require('mongoose').Types;
 const tweet1Id = ObjectId();
 const tweet2Id = ObjectId();
 const tweet3Id = ObjectId();
+const tweet4Id = ObjectId();
 const location1Id = ObjectId();
 const location2Id = ObjectId();
 const location3Id = ObjectId();
 const location4Id = ObjectId();
+const location5Id = ObjectId();
+const vendor1Id = ObjectId();
+const vendor2Id = ObjectId();
+const vendor3Id = ObjectId();
+const vendor4Id = ObjectId();
+
 
 module.exports = {
   vendors: [
     {
+      _id: vendor1Id,
       name: 'DC Foodtruck 1',
       type: 'mobileTruck',
       description: 'A truck for testing',
@@ -153,6 +161,7 @@ module.exports = {
       consecutiveDaysInactive: -1,
       categories: ['Fast Food', 'American', 'Comfort Food', 'Soul Food'],
     }, {
+      _id: vendor4Id,
       name: 'Chick-fil-A Mobile',
       type: 'mobileTruck',
       description: 'The #1 quick service food truck in the DMV!!',
@@ -165,35 +174,15 @@ module.exports = {
       profileImageLink: '',
       yelpId: 'chick-fil-a-mobile-washington-4',
       twitterID: '540537070',
-      tweetHistory: [
-        {
-          tweetID: '1235fake',
-          date: new Date('2016-05-18T16:00:00Z'),
-          text: 'We are in Noma',
-          location: {
-            locationDate: new Date('2019-11-05T12:10:00Z'),
-            accuracy: 3,
-            address: 'H St NW, Washington, DC 20001',
-            city: 'Washington, DC',
-            neighborhood: 'noma',
-            coordinates: [38.900318, -77.011744],
-          },
-        },
-      ],
-      locationHistory: [{
-        locationDate: new Date('2019-11-05T12:10:00Z'),
-        accuracy: 3,
-        address: 'H St NW, Washington, DC 20001',
-        city: 'Washington, DC',
-        neighborhood: 'noma',
-        coordinates: [38.900318, -77.011744],
-      }],
+      tweetHistory: [tweet4Id],
+      locationHistory: [location5Id],
       userLocationHistory: [],
       comments: [],
       dailyActive: true,
       consecutiveDaysInactive: -1,
       categories: ['Fast Food', 'American', 'Comfort Food', 'Meat', 'Chicken'],
     }, {
+      _id: vendor2Id,
       name: 'Balkanik Taste',
       type: 'mobileTruck',
       description: 'Balkanik Taste is a family owned and operated business. We are 100% dedicated to our customers, giving them the best services in the Metro Washington area.',
@@ -213,6 +202,7 @@ module.exports = {
       consecutiveDaysInactive: 4,
       categories: ['Balkan', 'Mediterranean', 'Hearty', 'Meat'],
     }, {
+      _id: vendor3Id,
       name: 'The Big Cheese',
       type: 'mobileTruck',
       description: 'Purveyors of fine grilled cheeses since 2010',
@@ -248,6 +238,7 @@ module.exports = {
   tweets: [
     {
       _id: tweet1Id,
+      vendorID: vendor1Id,
       tweetID: 'laks3n',
       date: new Date('2016-05-18T16:00:00Z'),
       text: 'We are at Farragut Square',
@@ -263,6 +254,7 @@ module.exports = {
     },
     {
       _id: tweet2Id,
+      vendorID: vendor2Id,
       tweetID: '124fake',
       date: new Date('2016-05-18T16:00:00Z'),
       text: 'We are in China Town',
@@ -278,6 +270,7 @@ module.exports = {
     },
     {
       _id: tweet3Id,
+      vendorID: vendor3Id,
       tweetID: '124fake',
       date: new Date('2016-05-18T16:00:00Z'),
       text: 'We are in China Town',
@@ -290,6 +283,21 @@ module.exports = {
         coordinates: [38.897182, -77.022013],
       },
       usedForLocation: false,
+    },
+    {
+      _id: tweet4Id,
+      vendorID: vendor4Id,
+      tweetID: '1235fake',
+      date: new Date('2016-05-18T16:00:00Z'),
+      text: 'We are in Noma',
+      location: {
+        locationDate: new Date('2019-11-05T12:10:00Z'),
+        accuracy: 3,
+        address: 'H St NW, Washington, DC 20001',
+        city: 'Washington, DC',
+        neighborhood: 'noma',
+        coordinates: [38.900318, -77.011744],
+      },
     }
   ],
   locations: [
@@ -330,6 +338,15 @@ module.exports = {
       city: 'Washington, DC',
       neighborhood: 'Penn Quarter',
       coordinates: [38.897182, -77.022013],
+    },
+    {
+      _id: location5Id,
+      locationDate: new Date('2019-11-05T12:10:00Z'),
+      accuracy: 3,
+      address: 'H St NW, Washington, DC 20001',
+      city: 'Washington, DC',
+      neighborhood: 'noma',
+      coordinates: [38.900318, -77.011744],
     }
   ]
 };

@@ -7,6 +7,7 @@ import {useDispatch} from "react-redux";
 import ReactTable from 'react-table';
 import 'react-table/react-table.css'
 import axios, {AxiosResponse} from "axios";
+import moment from 'moment';
 
 const TweetTable = (props:any) => {
     const dispatch = useDispatch();
@@ -39,26 +40,23 @@ const TweetTable = (props:any) => {
 
     const columns = [
         {
-        Header: 'Date',
-        accessor: 'date'
-    },
-    {
-        Header: 'Text',
-        accessor: 'text'
-    }
-    // , {
-    //     Header: 'Age',
-    //     accessor: 'age',
-    //     Cell: (props:any) => <span className='number'>{props.value}</span> // Custom cell components!
-    // }
-    // , {
-    //     id: 'friendName', // Required because our accessor is not a string
-    //     Header: 'Friend Name',
-    //     accessor: (d:any) => d.friend.name // Custom value accessors!
-    // }, {
-    //     Header: (props:any) => <span>Friend Age</span>, // Custom header components!
-    //     accessor: 'friend.age'
-    // }
+            id: 'vendorID',
+            Header: 'Vendor',
+            accessor: (d:any) => d.vendorID.name
+        },
+        {
+            id: 'date',
+            Header: 'Date',
+            accessor: (d:any) => moment(d.date).format('YYYY-MM-DD LT')
+        },
+        {
+            Header: 'Text',
+            accessor: 'text'
+        }, {
+            id: 'usedForLocation',
+            Header: 'Used For Location',
+            accessor: (d:any) => d.usedForLocation ? 'Yes' : 'No'
+        }
     ];
 
 
@@ -78,6 +76,7 @@ const TweetTable = (props:any) => {
                 <ReactTable
                     data={rows}
                     columns={columns}
+                    defaultPageSize={10}
                 />
             </div>
         ) :
