@@ -28,6 +28,13 @@ const updateTweet = async (payload, region, vendor) => {
 // Update the locationHistory property
 // Update the updateDate timestamp
 const updateLocation = async (payload, region, vendor) => {
+  // Clear cache for getVendors route & getRegion route
+  try {
+    await redisClient.hdelAsync('vendor', `q::method::GET::path::/${region._id}/object`);
+  } catch (err) {
+    logger.error(err);
+  }
+
   const paramsVendorPush = {
     regionID: region._id, vendorID: vendor._id, field: 'locationHistory', payload,
   };
@@ -50,13 +57,6 @@ const updateLocation = async (payload, region, vendor) => {
 };
 
 const setVendorActive = async (region, vendor) => {
-  // Clear cache for getVendors route
-  try {
-    await redisClient.hdelAsync('vendor', `q::method::GET::path::/${region._id}`);
-  } catch (err) {
-    logger.error(err);
-  }
-
   // Add vendorID to dailyActiveVendorIDs
   try {
     await regionOps.incrementRegionDailyActiveVendorIDs(

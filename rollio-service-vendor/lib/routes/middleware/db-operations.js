@@ -189,14 +189,15 @@ const vendorRouteOps = {
         if (cb !== null) {
           await cb(formattedVendors);
         }
-
+        
         return res.status(200).json(formattedVendors);
       })
       .catch(err => res.status(500).send(err));
 
     const payload = {
       collectionKey: 'vendor',
-      queryKey: `q::method::${req.method}::path::${req.path}/objects`,
+      // req.path should be {regionID}/object
+      queryKey: `q::method::${req.method}::path::${req.path}`,
       ops: getVendorsOp,
     };
 

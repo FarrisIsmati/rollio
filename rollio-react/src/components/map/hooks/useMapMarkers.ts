@@ -97,6 +97,8 @@ const useMapMarkers = (props: any) => {
             }
         }
     }, [map])
+
+    console.log('OMG A RERENDER DO THIS')
 }
 
 export default useMapMarkers;
