@@ -1,14 +1,16 @@
 // DEPENDENCIES
 import socketIOClient from 'socket.io-client';
+import { useEffect } from 'react';
 import { useDispatch  } from 'react-redux';
 
 // ACTIONS
-import useGetAppState from '../../common/hooks/use-get-app-state';
 import { updateVendor } from '../../../redux/actions/data-actions';
+
+// HOOKS
+import useCustom from './use-current-update-vendor-id-state';
 
 // CONFIG
 import { VENDOR_API } from '../../../config';
-import { useEffect } from 'react';
 
 // @ts-ignore
 const socket = socketIOClient(VENDOR_API);
@@ -16,11 +18,16 @@ const socket = socketIOClient(VENDOR_API);
 const useUpdateRegionVendorData = () => {
     const dispatch = useDispatch();
 
+    // find a way to pass updated vendor id down to the map hook
+    const [globalState, setGlobalState] = useCustom();
+
     useEffect(() => {      
       socket.on('TWITTER_DATA', (data: any) => {
+
           // format vendorsAll then update that 
           if (data.tweet.location) {
             dispatch(updateVendor({ location: data.tweet.location, vendorID: data.vendorID }));
+            // setGlobalState({ vendorID: data.vendorID });
           }
           // Update Region Data
             // If new active Vendor

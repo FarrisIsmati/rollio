@@ -4,6 +4,7 @@ import mapboxgl from 'mapbox-gl';
 
 // HOOKS
 import useGetAppState from '../../common/hooks/use-get-app-state';
+import useCustom from '../../region/hooks/use-current-update-vendor-id-state'
 
 // Create Marker Style
 const createMapMarker = (numberOfGroupedVendors: boolean | number = false) => {
@@ -62,6 +63,12 @@ const addGroupedVendorsToMap = ({i, groupVendorKeys, groupVendors, vendorsData, 
 const useMapMarkers = (props: any) => {
     const { mapType, mapData, map } = props;
     const state = useGetAppState();
+
+    //
+    // const [globalState] = useCustom();
+    //
+
+
     // Initial Map Markers Loaded State
     const [areMarkersLoaded, setAreMarkersLoaded] = useState(false);
 
@@ -98,7 +105,9 @@ const useMapMarkers = (props: any) => {
         }
     }, [map])
 
-    console.log('OMG A RERENDER DO THIS')
+    // Update vendor here
+    console.log(singleVendorMarkers);
+    // console.log(globalState);
 }
 
 export default useMapMarkers;
