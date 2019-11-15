@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js",
-    "local": "NODE_ENV=DEVELOPMENT_LOCAL nodemon index.js --inspect=8001",
+    "local": "NODE_ENV=DEVELOPMENT_LOCAL nodemon --inspect=8001 index.js",
     "startcluster": "pm2 start index.js -i 4",
     "killcluster": "pm2 delete index",
     "test": "set NODE_ENV=TEST_LOCAL&& mocha ./test/**/*spec.js --timeout 10000 --exit",
