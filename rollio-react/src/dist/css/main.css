@@ -318,6 +318,10 @@ p, h1, h2 {
   margin: 5% 15%;
 }
 
+.table_spacing {
+  margin-top: 1%;
+}
+
 .map__wrapper {
   display: inline-block;
   height: 500px;

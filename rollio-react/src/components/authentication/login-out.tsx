@@ -8,7 +8,7 @@ import {useDispatch} from "react-redux";
 
 const Login = (props:any) => {
     const dispatch = useDispatch();
-    const { user, loadState } = useGetAppState();
+    const { user } = useGetAppState();
     const twitterLoginUrl = `${VENDOR_API}/api/auth/twitter`;
     const twitterRequestTokenUrl = `${VENDOR_API}/api/auth/twitter/reverse`;
     const logout = () => {
