@@ -22,7 +22,8 @@ const {
 } = require('../../db/mongo/operations/user-ops');
 
 const {
-  getAllTweets
+  getAllTweets,
+  getVendorsForFiltering
 } = require('../../db/mongo/operations/tweet-ops');
 
 // Caching data happens on get requests in the middleware,
@@ -291,6 +292,18 @@ const tweetRouteOps = {
     }).catch(err => {
       console.error(err);
       res.send(401, 'Error fetching tweets');
+    })
+  },
+  vendorsForFiltering: async (req, res) => {
+    // TODO: limit to not just any user, but only an admin
+    if (!req.user) {
+      res.send(401, 'User Not Authenticated');
+    }
+    getVendorsForFiltering(req.query).then(vendors => {
+      res.json({vendors});
+    }).catch(err => {
+      console.error(err);
+      res.send(401, 'Error fetching vendors');
     })
   }
 };

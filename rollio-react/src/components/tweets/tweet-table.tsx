@@ -14,32 +14,35 @@ import queryString from 'query-string';
 
 const TweetTable = (props:any) => {
     const dispatch = useDispatch();
+
     const now = moment(new Date());
     const remainder = 30 - (now.minute() % 30);
     const initialEndDate = moment(now).add(remainder, "minutes").toDate();
     const initialStartDate = moment(initialEndDate).subtract(1, 'days').toDate();
     const minDate = moment(initialEndDate).subtract(1000000, 'days').toDate();
+
     const [loading, setLoading] = useState<boolean>(true);
     const [rowsLoaded, setRowsLoaded] = useState<boolean>(false);
-    const [vendor, setVendor] = useState<string>('all');
+    const [vendorsLoaded, setVendorsLoaded] = useState<boolean>(false);
+    const [vendorID, setVendorID] = useState<string>('all');
+    const [vendors, setVendors] = useState<any>([]);
     const [startDate, setStartDate] = useState<Date>(initialStartDate);
     const [endDate, setEndDate] = useState<Date>(initialEndDate);
-
     const [rows, setRows] = useState([]);
+
     const {user} = useGetAppState();
-    const tweetSearchUrl = `${VENDOR_API}/tweets/all`;
+    const tweetSearchUrl = `${VENDOR_API}/tweets`;
 
     const fetchTweets = () => {
         setLoading(true);
-        const query = {startDate, endDate};
+        const query = { startDate, endDate, vendorID: vendorID === 'all' ? null : vendorID };
         axios({
             method: "GET",
-            url: `${tweetSearchUrl}/?${queryString.stringify(query)}`,
+            url: `${tweetSearchUrl}/all/?${queryString.stringify(query)}`,
             headers: {'Authorization': "Bearer " + localStorage.token}
         })
             .then((res: AxiosResponse<any>) => {
-                setRows(res.data.tweets);
-                setRowsLoaded(true);
+                mapVendorsOntoTweets(res.data.tweets);
                 setLoading(false);
             }).catch((err:any) => {
                 setLoading(false);
@@ -48,11 +51,45 @@ const TweetTable = (props:any) => {
             })
     };
 
+    const fetchVendors = () => {
+        setLoading(true);
+        axios({
+            method: "GET",
+            url: `${tweetSearchUrl}/vendors`,
+            headers: {'Authorization': "Bearer " + localStorage.token}
+        })
+            .then((res: AxiosResponse<any>) => {
+                setVendors(res.data.vendors);
+                setVendorsLoaded(true);
+            }).catch((err:any) => {
+            console.error(err);
+            throw err;
+        })
+    };
+
+    const selectDate = (date:any, startOrEnd:string) => {
+        if (startOrEnd === 'start') {
+            setStartDate(date);
+        } else {
+            setEndDate(date)
+        }
+    };
+
+
+    const mapVendorsOntoTweets = async (tweets:any) => {
+        const vendorMap = vendors.reduce((acc:any, vendor:any) => {
+            acc[vendor._id] = vendor.name;
+            return acc;
+        }, {});
+        const tweetsWithVendorsMapped = tweets.map((tweet:any) => ({...tweet, vendorName: vendorMap[tweet.vendorID] || 'Unknown Vendor' }));
+        setRows(tweetsWithVendorsMapped);
+        setRowsLoaded(true);
+    };
+
     const columns = [
         {
-            id: 'vendorID',
+            accessor: 'vendorName',
             Header: 'Vendor',
-            accessor: (d:any) => d.vendorID.name
         },
         {
             id: 'date',
@@ -69,39 +106,27 @@ const TweetTable = (props:any) => {
         }
     ];
 
-    const  selectVendor = (e:ChangeEvent<HTMLSelectElement>) => {
-        setVendor(e.target.value);
-    };
-
-    const  selectDate = (date:any, startOrEnd:string) => {
-        if (startOrEnd === 'start') {
-            setStartDate(date);
-        } else {
-            setEndDate(date)
-        }
-        fetchTweets();
-    };
-
     useEffect(() => {
-        if (user.isAuthenticated) {
+        if (vendorsLoaded) {
             fetchTweets();
+        }else if (user.isAuthenticated) {
+            fetchVendors();
         } else if(localStorage.token && localStorage.token.length) {
-            dispatch(fetchUserAsync(fetchTweets));
+            dispatch(fetchUserAsync(fetchVendors));
         } else {
             setLoading(false);
         }
-    }, []);
+    }, [vendorID, startDate, endDate, vendorsLoaded]);
+
     const contentText = !(loading || rowsLoaded) && !user.isAuthenticated ? 'You must be logged in' : 'Loading...';
     const content = rowsLoaded ?
         (
             <div className="table_wrapper">
-                {/* TODO: fill in real options for vendors */}
-                <select value={vendor} onChange={e=>selectVendor(e)}>
+                <select value={vendorID} onChange={e=>setVendorID(e.target.value)}>
                     <option value="all">All Vendors</option>
-                    <option value="grapefruit">Grapefruit</option>
-                    <option value="lime">Lime</option>
-                    <option value="coconut">Coconut</option>
-                    <option value="mango">Mango</option>
+                    {vendors.map((vendor:any) => {
+                        return <option key={vendor._id} value={vendor._id}>{vendor.name}</option>
+                    })}
                 </select>
                 <DatePicker
                     selected={startDate}
