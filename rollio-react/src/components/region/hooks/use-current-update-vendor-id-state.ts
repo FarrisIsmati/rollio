@@ -1,3 +1,5 @@
+// Code Credit https://medium.com/javascript-in-plain-english/state-management-with-react-hooks-no-redux-or-context-api-8b3035ceecf8
+
 import { useState, useEffect } from 'react';
 
 let listeners:any = [];
@@ -14,11 +16,12 @@ const useCustom = () => {
   const newListener = useState()[1];
   useEffect(() => {
     listeners.push(newListener);
+
+    return () => {
+      listeners = listeners.filter((listener:any) => listener !== newListener)
+    }
   }, []);
   return [state, setState];
 };
 
 export default useCustom;
-
-// Replace this with the second global state management code
-// https://medium.com/javascript-in-plain-english/state-management-with-react-hooks-no-redux-or-context-api-8b3035ceecf8
