@@ -38,7 +38,7 @@ const TweetTable = (props:any) => {
         const query = { startDate, endDate, vendorID: vendorID === 'all' ? null : vendorID };
         axios({
             method: "GET",
-            url: `${tweetSearchUrl}/all/?${queryString.stringify(query)}`,
+            url: `${tweetSearchUrl}/filter/?${queryString.stringify(query)}`,
             headers: {'Authorization': "Bearer " + localStorage.token}
         })
             .then((res: AxiosResponse<any>) => {

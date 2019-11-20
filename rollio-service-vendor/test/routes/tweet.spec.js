@@ -37,10 +37,10 @@ describe('Tweet Routes', () => {
     });
 
     describe('GET ALL VENDORS', () => {
-        describe('/tweets/all without authorization', () => {
+        describe('/tweets/filter without authorization', () => {
             it('expect error', (done) => {
                 chai.request(server)
-                    .get(`/tweets/all`)
+                    .get(`/tweets/filter`)
                     .end((err, res) => {
                         expect(res).to.have.status(401);
                         done();
@@ -48,10 +48,10 @@ describe('Tweet Routes', () => {
             });
         });
 
-        describe('/tweets/all if no dates specified', () => {
+        describe('/tweets/filter if no dates specified', () => {
             it('expect to get empty array', (done) => {
                 chai.request(server)
-                    .get(`/tweets/all`)
+                    .get(`/tweets/filter`)
                     .set( 'Authorization', `Bearer ${token}` )
                     .end((err, res) => {
                         expect(res).to.have.status(200);
@@ -62,13 +62,13 @@ describe('Tweet Routes', () => {
         });
 
         // TODO: update this test to really test dates
-        describe('/tweets/all with dates specified', () => {
+        describe('/tweets/filter with dates specified', () => {
             it('expect to get tweets between dates', (done) => {
                 const endDate = new Date();
                 const startDate = new Date(tweets[0].date);
                 const query = queryString.stringify({endDate, startDate});
                 chai.request(server)
-                    .get(`/tweets/all/?${query}`)
+                    .get(`/tweets/filter/?${query}`)
                     .set( 'Authorization', `Bearer ${token}` )
                     .end((err, res) => {
                         expect(res).to.have.status(200);
@@ -79,14 +79,14 @@ describe('Tweet Routes', () => {
             });
         });
 
-        describe('/tweets/all with vendorId', () => {
+        describe('/tweets/filter with vendorId', () => {
             it('expect to get tweets from that vendor only', (done) => {
                 const endDate = new Date();
                 const startDate = new Date(tweets[0].date);
                 const vendorID = vendors[0]._id
                 const query = queryString.stringify({endDate, startDate, vendorID});
                 chai.request(server)
-                    .get(`/tweets/all/?${query}`)
+                    .get(`/tweets/filter/?${query}`)
                     .set( 'Authorization', `Bearer ${token}` )
                     .end((err, res) => {
                         expect(res).to.have.status(200);
