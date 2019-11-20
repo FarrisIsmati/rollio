@@ -2,8 +2,6 @@ const mongoose = require('../mongoose/index');
 const Tweet = mongoose.model('Tweet');
 const Vendor = mongoose.model('Vendor');
 
-// TODO: add tests
-
 module.exports = {
     async getAllTweets(query = {}) {
         const {startDate, endDate, vendorID } = query;

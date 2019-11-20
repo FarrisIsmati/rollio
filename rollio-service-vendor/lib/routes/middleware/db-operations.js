@@ -283,7 +283,7 @@ const userRouteOps = {
 
 const tweetRouteOps = {
   tweetSearch: async (req, res) => {
-    // TODO: limit to not just any user, but only an admin
+    // TODO: limit to not just any user, but only an admin!
     if (!req.user) {
       res.send(401, 'User Not Authenticated');
     }
@@ -295,7 +295,7 @@ const tweetRouteOps = {
     })
   },
   vendorsForFiltering: async (req, res) => {
-    // TODO: limit to not just any user, but only an admin
+    // TODO: limit to not just any user, but only an admin!
     if (!req.user) {
       res.send(401, 'User Not Authenticated');
     }
