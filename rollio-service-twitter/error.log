@@ -40,3 +40,9 @@
 {"message":"Google Places API Failure: You have exceeded your daily request quota for this API. If you did not set a custom daily request quota, verify your project has an active billing account: http://g.co/dev/maps-no-account","level":"error","timestamp":"2019-11-06 22:51:39"}
 {"message":"Google Places API Failure: TypeError: Cannot read property 'address_components' of undefined","level":"error","timestamp":"2019-11-10 12:07:47"}
 {"message":"Google Places API Failure: You have exceeded your daily request quota for this API. If you did not set a custom daily request quota, verify your project has an active billing account: http://g.co/dev/maps-no-account","level":"error","timestamp":"2019-11-10 12:08:55"}
+{"message":"Twitter: Connection failed trying again`","level":"error","timestamp":"2019-11-19 21:44:57"}
+{"level":"error","timestamp":"2019-11-19 21:44:57"}
+{"message":"attempts: 1","level":"error","timestamp":"2019-11-19 21:45:00"}
+{"message":"Twitter: Connection failed trying again`","level":"error","timestamp":"2019-11-19 21:45:00"}
+{"level":"error","timestamp":"2019-11-19 21:45:00"}
+{"message":"attempts: 2","level":"error","timestamp":"2019-11-19 21:45:06"}

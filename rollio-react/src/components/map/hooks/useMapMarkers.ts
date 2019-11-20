@@ -23,11 +23,7 @@ const createMapMarker = (numberOfGroupedVendors: boolean | number = false) => {
 }
 
 // Adds a single pin marker to map
-const addSingleVendorToMap = ({i, singleVendorsKeys, vendorsData, singleVendorMarkers, setSingleVendorMarkers, map} : any) => {
-    // Current vendor key
-    const key = singleVendorsKeys[i]
-    // Current vendor
-    const vendor = vendorsData[key]
+const addSingleVendorToMap = (vendor:any, map:any) => {
     // Current vendor location data
     const vendorLocation = vendor.location
     // Current vendor [lng,lat]
@@ -37,18 +33,12 @@ const addSingleVendorToMap = ({i, singleVendorsKeys, vendorsData, singleVendorMa
     const marker = new mapboxgl.Marker(createMapMarker())
         .setLngLat(coordinates)
         .addTo(map)
-
-    setSingleVendorMarkers({ ...singleVendorMarkers, [key]: marker })
+    
+    return marker
 }
 
 // Adds a grouped pin marker to map
-const addGroupedVendorsToMap = ({i, groupVendorKeys, groupVendors, vendorsData, groupVendorMarkers, setGroupVendorMarkers, map}: any) => {
-    const key = groupVendorKeys[i];
-    const vendors = groupVendors[key];
-
-    // Since all vendors in a grouped pin location currently have the same exact coords (not a area/radius thing) 
-    // Take the first vendors coords and use that to make a marker
-    const firstVendor = vendorsData[vendors[0].vendorId]
+const addGroupedVendorsToMap = ({vendors, firstVendor, map}: any) => {
     // First chosen vendor location data
     const firstVendoLocation = firstVendor.location
     // First vendor [lng,lat]
@@ -58,8 +48,8 @@ const addGroupedVendorsToMap = ({i, groupVendorKeys, groupVendors, vendorsData, 
     const marker = new mapboxgl.Marker(createMapMarker(vendors.length))
         .setLngLat(coordinates)
         .addTo(map)
- 
-    setGroupVendorMarkers({ ...groupVendorMarkers, [key]: marker })
+
+    return marker
 }
 
 // useMapMarkers loads the initial vendor markers in a map, all live updates hereforth will be updated form another component TBD
@@ -76,8 +66,8 @@ const useMapMarkers = (props: any) => {
     // Markers State
     // Keeps track of all markers (Marker data isn't stored on map object)
     // Reference these markers when updating/removing markers via webhooks
-    const [singleVendorMarkers, setSingleVendorMarkers] = useState(null);
-    const [groupVendorMarkers, setGroupVendorMarkers] = useState(null);
+    const [singleVendorMarkers, setSingleVendorMarkers] = useState<any>(null);
+    const [groupVendorMarkers, setGroupVendorMarkers] = useState<any>(null);
 
     // General variables
     const vendorsData = state.data.vendorsAll 
@@ -93,16 +83,28 @@ const useMapMarkers = (props: any) => {
                 const singleVendorsKeys = Object.keys(singleVendors);
                 const groupVendors = mapData.vendorsDisplayedGroup;
                 const groupVendorKeys = Object.keys(groupVendors);
-                
+
+                let singleVendorMarkersTemp = {}
                 // Add single vendors to map
                 for (let i = 0; i < singleVendorsKeys.length; i += 1) {
-                    addSingleVendorToMap({i, singleVendorsKeys, vendorsData, singleVendorMarkers, setSingleVendorMarkers, map});
+                    const key = singleVendorsKeys[i]
+                    const marker = addSingleVendorToMap(vendorsData[key], map);
+                    singleVendorMarkersTemp = { ...singleVendorMarkersTemp, [key]: marker }
                 }
+                setSingleVendorMarkers(singleVendorMarkersTemp)
                 
+                let groupVendorMarkersTemp = {}
                 // Add grouped pin vendors to map
                 for (let i = 0; i < groupVendorKeys.length; i += 1) {
-                    addGroupedVendorsToMap({i, groupVendorKeys, groupVendors, vendorsData, groupVendorMarkers, setGroupVendorMarkers, map});
+                    const key = groupVendorKeys[i];
+                    const vendors = groupVendors[key];
+                    // Since all vendors in a grouped pin location currently have the same exact coords (not a area/radius thing) 
+                    // Take the first vendors coords and use that to make a marker
+                    const firstVendor = vendorsData[vendors[0].vendorId]
+                    const marker = addGroupedVendorsToMap({vendors, firstVendor, map});
+                    groupVendorMarkersTemp = { ...groupVendorMarkersTemp, [key]: marker }
                 }
+                setGroupVendorMarkers(groupVendorMarkersTemp)
             }
         }
     }, [map])
@@ -113,20 +115,35 @@ const useMapMarkers = (props: any) => {
     // For example if the coordinates of the current & previous iterations are the same it will not run, unless it's another vendor
     useEffectMarkerComparisonObject(() => {
         if (currentVendorID) {
+            // Step 1
+            // If current vendor is a single vendor
+                // If current vendor is joining a group
+                // If current vendor is solo
             // @ts-ignore: singleVendorMarkers wont be null
             if (singleVendorMarkers !== null && singleVendorMarkers[currentVendorID]) {
                 console.log('Update Single Vendor')
                 const currentVendorCoords = state.data.vendorsAll[currentVendorID].location.coordinates;
-                // @ts-ignore: singleVendorMarkers wont be null
-                singleVendorMarkers[currentVendorID]
-                    .setLngLat([currentVendorCoords[1], currentVendorCoords[0]]);
+
+                // let shouldUpdateSingleVendorMarkerCoords = true
+                
+                // For all groupedMarkers
+                    // If new coordinates === groupedMarker coords
+                        // Remove vendor from singleVendorMarkers
+                        // Append to correct groupedMarkerVendor
+                        // Inc correct groupedMarker marker's count
+                        // shouldUpdateSingleVendorMarkerCoords = false
+                        // break loop
+
+                // If shouldUpdateSingleVendorMarkerCoords
+                    // @ts-ignore: singleVendorMarkers wont be null
+                    singleVendorMarkers[currentVendorID]
+                        .setLngLat([currentVendorCoords[1], currentVendorCoords[0]]);
             }
-            // If current vendor is a single vendor
-                // If current vendor is joining a group
-                // If current vendor is solo
+            // Step 2
             // If current vendor is in a group
                 // If current vendor is joining a new group
                 // If current vendor is leaving group
+            // Step 3
             // If current vendor is new
                 // If current vendor is solo
                 // If current vendor is joining a group

@@ -3,9 +3,11 @@ const { ObjectId } = require('mongoose').Types;
 const tweet1Id = ObjectId();
 const tweet2Id = ObjectId();
 const tweet3Id = ObjectId();
+const tweet4Id = ObjectId();
 const location1Id = ObjectId();
 const location2Id = ObjectId();
 const location3Id = ObjectId();
+const location4Id = ObjectId();
 
 module.exports = {
   vendors: [
@@ -164,8 +166,8 @@ module.exports = {
       profileImageLink: '',
       yelpId: 'chick-fil-a-mobile-washington-4',
       twitterID: '540537070',
-      tweetHistory: [],
-      locationHistory: [],
+      tweetHistory: [tweet4Id],
+      locationHistory: [location4Id],
       userLocationHistory: [],
       comments: [],
       dailyActive: true,
@@ -238,8 +240,7 @@ module.exports = {
         coordinates: [4.123, 1.522],
       },
       usedForLocation: false,
-    },
-    {
+    }, {
       _id: tweet2Id,
       tweetID: '125fake',
       date: new Date('2016-05-18T16:00:00Z'),
@@ -253,8 +254,7 @@ module.exports = {
         coordinates: [38.897182, -77.022013],
       },
       usedForLocation: false,
-    },
-    {
+    }, {
       _id: tweet3Id,
       tweetID: '124fake',
       date: new Date('2016-05-18T16:00:00Z'),
@@ -268,7 +268,21 @@ module.exports = {
         coordinates: [38.897182, -77.022013],
       },
       usedForLocation: false,
-    }
+    }, {
+      _id: tweet4Id,
+      tweetID: '135Fake',
+      date: new Date('2018-04-12T12:10:00Z'),
+      text: 'Rosslyn Today Yes',
+      location: {
+        locationDate: new Date('2018-04-12T12:10:00Z'),
+        accuracy: 0,
+        address: 'Rosslyn, Virginia 22209',
+        city: 'arlington',
+        neighborhood: 'rosslyn',
+        coordinates: [38.897156, -77.07239],
+      },
+      usedForLocation: false,
+    },
   ],
   locations: [
     {
@@ -281,8 +295,7 @@ module.exports = {
       matchMethod: 'User Input',
       tweetID: null,
       coordinates: [39.2934, -77.1234],
-    },
-    {
+    }, {
       _id: location2Id,
       locationDate: new Date('2018-04-12T12:10:00Z'),
       accuracy: -4,
@@ -292,8 +305,7 @@ module.exports = {
       matchMethod: 'Tweet location',
       tweetID: '125fake',
       coordinates: [4.123, 1.5222],
-    },
-    {
+    }, {
       _id: location3Id,
       locationDate: new Date('2018-04-12T12:10:00Z'),
       accuracy: 3,
@@ -303,6 +315,16 @@ module.exports = {
       matchMethod: 'Tweet location',
       tweetID: '124fake',
       coordinates: [38.897182, -77.022013],
-    }
-  ]
+    }, {
+      _id: location4Id,
+      locationDate: new Date('2018-04-12T12:10:00Z'),
+      accuracy: 0,
+      address: 'Rosslyn, Virginia 22209',
+      city: 'arlington',
+      neighborhood: 'rosslyn',
+      matchMethod: 'Tweet location',
+      tweetID: '135Fake',
+      coordinates: [38.897156, -77.07239],
+    },
+  ],
 };
