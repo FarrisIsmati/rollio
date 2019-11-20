@@ -25,7 +25,7 @@ const TweetTable = (props:any) => {
     const [rowsLoaded, setRowsLoaded] = useState<boolean>(false);
     const [vendorsLoaded, setVendorsLoaded] = useState<boolean>(false);
     const [vendorID, setVendorID] = useState<string>('all');
-    const [vendors, setVendors] = useState<any>([]);
+    const [vendorNameLookup, setVendorNameLookup] = useState<any>({});
     const [startDate, setStartDate] = useState<Date>(initialStartDate);
     const [endDate, setEndDate] = useState<Date>(initialEndDate);
     const [rows, setRows] = useState([]);
@@ -59,7 +59,11 @@ const TweetTable = (props:any) => {
             headers: {'Authorization': "Bearer " + localStorage.token}
         })
             .then((res: AxiosResponse<any>) => {
-                setVendors(res.data.vendors);
+                const vendorNameLookup = res.data.vendors.reduce((acc:any, vendor:any) => {
+                    acc[vendor._id] = vendor.name;
+                    return acc;
+                }, {});
+                setVendorNameLookup(vendorNameLookup);
                 setVendorsLoaded(true);
             }).catch((err:any) => {
             console.error(err);
@@ -77,11 +81,7 @@ const TweetTable = (props:any) => {
 
 
     const mapVendorsOntoTweets = async (tweets:any) => {
-        const vendorMap = vendors.reduce((acc:any, vendor:any) => {
-            acc[vendor._id] = vendor.name;
-            return acc;
-        }, {});
-        const tweetsWithVendorsMapped = tweets.map((tweet:any) => ({...tweet, vendorName: vendorMap[tweet.vendorID] || 'Unknown Vendor' }));
+        const tweetsWithVendorsMapped = tweets.map((tweet:any) => ({...tweet, vendorName: vendorNameLookup[tweet.vendorID] || 'Unknown Vendor' }));
         setRows(tweetsWithVendorsMapped);
         setRowsLoaded(true);
     };
@@ -124,8 +124,9 @@ const TweetTable = (props:any) => {
             <div className="table_wrapper">
                 <select value={vendorID} onChange={e=>setVendorID(e.target.value)}>
                     <option value="all">All Vendors</option>
-                    {vendors.map((vendor:any) => {
-                        return <option key={vendor._id} value={vendor._id}>{vendor.name}</option>
+                    {Object.entries(vendorNameLookup).map((entry:any) => {
+                        const [id, name] = entry;
+                        return <option key={id} value={id}>{name}</option>
                     })}
                 </select>
                 <DatePicker
