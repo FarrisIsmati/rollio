@@ -147,6 +147,12 @@ const seedObj = {
       .then(() => this.emptyLocations())
       .then(() => this.seedLocations());
   },
+    emptySeed() {
+        return this.emptyRegions()
+            .then(() => this.emptyVendors())
+            .then(() => this.emptyTweets())
+            .then(() => this.emptyLocations())
+    }
 };
 
 // seedObj.runSeed();

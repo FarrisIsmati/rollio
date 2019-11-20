@@ -108,7 +108,7 @@ describe('Vendor Routes', () => {
           .end((err, res) => {
             expect(res).to.have.status(200);
             expect(res.body).to.be.a('object');
-            expect(res.body._id).to.have.same.id(vendor._id);
+            expect(String(res.body._id)).to.equal(String(vendor._id));
             done();
           });
       });
@@ -217,8 +217,7 @@ describe('Vendor Routes', () => {
   });
 
   afterEach((done) => {
-    seed.emptyRegions()
-      .then(() => seed.emptyVendors())
+    seed.emptySeed()
       .then(() => done());
   });
 });
