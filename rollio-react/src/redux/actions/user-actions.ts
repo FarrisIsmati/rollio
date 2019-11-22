@@ -45,7 +45,7 @@ export function logOut() {
     }
 }
 
-export function fetchUserAsync() {
+export function fetchUserAsync(cb?:any) {
     return function (dispatch:any) {
         dispatch(fetchUserStart());
         return axios({
@@ -56,6 +56,9 @@ export function fetchUserAsync() {
             .then((response: AxiosResponse<any>) => {
                     dispatch(receiveUser(response.data.user))
                     dispatch(fetchUserSuccess());
+                    if (cb) {
+                        cb();
+                    }
                 }
             )
             .catch((err:AxiosError) => {

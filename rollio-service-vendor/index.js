@@ -16,6 +16,7 @@ const server = http.createServer(app);
 const region = require('./lib/routes/region');
 const vendor = require('./lib/routes/vendor');
 const login = require('./lib/routes/login');
+const tweets = require('./lib/routes/tweets');
 
 // MESSAGES
 const receiveVendorsRequest = require('./lib/messaging/receive/receive-vendors-request');
@@ -45,7 +46,7 @@ if (config.NODE_ENV === 'PRODUCTION') { app.enable('trust proxy'); }// only if b
 // Fixed window rate limiting
 const generalRateLimit = rateLimit({
   windowMs: 30 * 1000, // 30 seconds
-  max: 15,
+  max: config.NODE_ENV === 'PRODUCTION' ? 15 : 50,
   handler(req, res) {
     res.status(429).send('You exceeded the rate limit');
   },
@@ -59,6 +60,7 @@ app.use(cors({exposedHeaders: ['x-auth-token']}));
 app.use('/region', region);
 app.use('/vendor', vendor);
 app.use('/api', login);
+app.use('/tweets', tweets);
 
 server.listen(app.get('port'), async () => {
   logger.info(`Server on port ${app.get('port')}`);
