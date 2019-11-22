@@ -1,7 +1,9 @@
 // CONSTANTS
 import {
     SET_MAP_PINS,
-    SET_MAP_PIN_LOAD_STATE
+    SET_MAP_PIN_LOAD_STATE,
+    SET_VENDORS_DISPLAYED_SINGLE,
+    SET_VENDORS_DISPLAYED_GROUP
 } from '../constants/constants'
 
 // INTERFACES
@@ -29,6 +31,24 @@ export function setMapPinsLoadState(payload: MapPinsLoadStatePayload) {
         type: SET_MAP_PIN_LOAD_STATE,
         payload: {
             areMapPinsLoaded: payload.areMapPinsLoaded
+        }
+    }
+}
+
+export function setVendorsDisplayedSingle(payload: any) {
+    return {
+        type: SET_VENDORS_DISPLAYED_SINGLE,
+        payload: {
+            vendorsDisplayedSingle: payload.vendorsDisplayedSingle
+        }
+    }
+}
+
+export function setVendorsDisplayedGroup(payload: any) {
+    return {
+        type: SET_VENDORS_DISPLAYED_GROUP,
+        payload: {
+            vendorsDisplayedGroup: payload.vendorsDisplayedGroup
         }
     }
 }

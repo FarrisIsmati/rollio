@@ -1,10 +1,18 @@
 // DEPENDENCIES
 import React, { useState, useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
+import uuid from 'uuid/v1';
+import { useDispatch  } from 'react-redux';
 
 // HOOKS
 import useGetAppState from '../../common/hooks/use-get-app-state';
 import useCustom from '../../region/hooks/use-current-update-vendor-id-state'
+
+// ACTIONS
+import { 
+    setVendorsDisplayedSingle, 
+    setVendorsDisplayedGroup 
+} from '../../../redux/actions/map-actions';
 
 // INTERFACES
 import { MarkerComparisonObject } from './interfaces';
@@ -38,11 +46,12 @@ const addSingleVendorToMap = (vendor:any, map:any) => {
 }
 
 // Adds a grouped pin marker to map
-const addGroupedVendorsToMap = ({vendors, firstVendor, map}: any) => {
+const addGroupedVendorsToMap = ({vendors, firstVendor, map}: any) => {  
+    console.log(firstVendor)
     // First chosen vendor location data
-    const firstVendoLocation = firstVendor.location
+    const firstVendorLocation = firstVendor.location
     // First vendor [lng,lat]
-    const coordinates:[number, number] = [firstVendoLocation.coordinates.long, firstVendoLocation.coordinates.lat]
+    const coordinates:[number, number] = [firstVendorLocation.coordinates.long, firstVendorLocation.coordinates.lat]
 
     // Add marker to map
     const marker = new mapboxgl.Marker(createMapMarker(vendors.length))
@@ -56,6 +65,7 @@ const addGroupedVendorsToMap = ({vendors, firstVendor, map}: any) => {
 const useMapMarkers = (props: any) => {
     const { mapType, mapData, map } = props;
     const state = useGetAppState();
+    const dispatch = useDispatch();
     
     // Way to get data from tweet stream without storing it in Redux
     const [globalState] = useCustom();
@@ -111,6 +121,10 @@ const useMapMarkers = (props: any) => {
 
     const currentVendorID = globalState.vendorID;
 
+    for (const key in singleVendorMarkers) {
+        const marker = singleVendorMarkers[key];
+        console.log(marker.getLngLat())
+    }
     // Custom use effect which will only run the update marker coordinates code if it's necessary
     // For example if the coordinates of the current & previous iterations are the same it will not run, unless it's another vendor
     useEffectMarkerComparisonObject(() => {
@@ -119,13 +133,60 @@ const useMapMarkers = (props: any) => {
             // If current vendor is a single vendor
                 // If current vendor is joining a group
                 // If current vendor is solo
+
+
             // @ts-ignore: singleVendorMarkers wont be null
             if (singleVendorMarkers !== null && singleVendorMarkers[currentVendorID]) {
                 console.log('Update Single Vendor')
-                const currentVendorCoords = state.data.vendorsAll[currentVendorID].location.coordinates;
+                const currentVendor = state.data.vendorsAll[currentVendorID]
+                const currentVendorCoords = currentVendor.location.coordinates;
+                console.log(currentVendorCoords)
+                let shouldUpdateSingleVendorMarkerCoords = true
 
-                // let shouldUpdateSingleVendorMarkerCoords = true
-                
+                // If new coordinates are the same as another single vendor's coordinates
+                for (const key in singleVendorMarkers) {
+                    const currentIteratedVendor = state.data.vendorsAll[key]
+                    const marker = singleVendorMarkers[key];
+                    const markerCoords = marker.getLngLat();
+                    if (key !== currentVendorID && markerCoords.lng === currentVendorCoords.long && markerCoords.lat === currentVendorCoords.lat) {
+                        // Remove both single vendor markers from map
+                        marker.remove()
+                        singleVendorMarkers[currentVendorID].remove()
+                        // Remove both single vendors from singleVendorMarkers state
+                        const updatedSingleVendorMarkers = { ...singleVendorMarkers }
+                        delete updatedSingleVendorMarkers[key]
+                        delete updatedSingleVendorMarkers[currentVendorID]
+                        setSingleVendorMarkers(updatedSingleVendorMarkers)
+                        // Remove both single vendors from vendorsDisplayedSingle Redux
+                        const currentSingleVendorMarker = state.regionMap.vendorsDisplayedSingle[currentVendorID]
+                        const iteratedSingleVendorMarker = state.regionMap.vendorsDisplayedSingle[key]
+
+                        const updatedVendorsDisplayedSingle = { ...state.regionMap.vendorsDisplayedSingle }
+                        delete updatedVendorsDisplayedSingle[key]
+                        delete updatedVendorsDisplayedSingle[currentVendorID]
+                        const payload = { vendorsDisplayedSingle: updatedVendorsDisplayedSingle }
+                        dispatch(setVendorsDisplayedSingle(payload))
+                        
+                        // Add grouped vendor marker to map
+                        const groupedMarker = addGroupedVendorsToMap({vendors:[currentVendor, currentIteratedVendor], firstVendor: currentVendor, map});
+                        // Add grouped vendors to groupVendorMarkers state
+                        const newGroupedMarkerID = uuid()
+                        setGroupVendorMarkers({ ...groupVendorMarkers, [newGroupedMarkerID]: groupedMarker })
+                        // Add both vendors to vendorsDisplayedGroup Redux
+                        const updatedVendorsDisplayedGroup = { ...state.regionMap.vendorsDisplayedGroup, [newGroupedMarkerID]: [currentSingleVendorMarker, iteratedSingleVendorMarker] }
+                        const payloadGroup = { vendorsDisplayedGroup: updatedVendorsDisplayedGroup }
+                        dispatch(setVendorsDisplayedGroup(payloadGroup))
+                        shouldUpdateSingleVendorMarkerCoords = false
+                        break
+                    }
+                }
+
+                // For all singleMarkers
+                    // If new coordinates === singleMarker coords
+                        // Remove 
+
+
+
                 // For all groupedMarkers
                     // If new coordinates === groupedMarker coords
                         // Remove vendor from singleVendorMarkers
@@ -134,11 +195,13 @@ const useMapMarkers = (props: any) => {
                         // shouldUpdateSingleVendorMarkerCoords = false
                         // break loop
 
-                // If shouldUpdateSingleVendorMarkerCoords
+                if (shouldUpdateSingleVendorMarkerCoords) {
                     // @ts-ignore: singleVendorMarkers wont be null
                     singleVendorMarkers[currentVendorID]
-                        .setLngLat([currentVendorCoords[1], currentVendorCoords[0]]);
+                        .setLngLat([currentVendorCoords.long, currentVendorCoords.lat]);
+                }
             }
+
             // Step 2
             // If current vendor is in a group
                 // If current vendor is joining a new group
