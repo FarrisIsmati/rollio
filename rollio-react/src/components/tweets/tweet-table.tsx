@@ -1,5 +1,5 @@
 import useGetAppState from "../common/hooks/use-get-app-state";
-import React, {ChangeEvent, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import { withRouter } from 'react-router';
 import {VENDOR_API} from "../../config";
 import {fetchUserAsync} from "../../redux/actions/user-actions";
@@ -31,14 +31,14 @@ const TweetTable = (props:any) => {
     const [rows, setRows] = useState([]);
 
     const {user} = useGetAppState();
-    const tweetSearchUrl = `${VENDOR_API}/tweets`;
+    const tweetUrl = `${VENDOR_API}/tweets`;
 
     const fetchTweets = () => {
         setLoading(true);
         const query = { startDate, endDate, vendorID: vendorID === 'all' ? null : vendorID };
         axios({
             method: "GET",
-            url: `${tweetSearchUrl}/filter/?${queryString.stringify(query)}`,
+            url: `${tweetUrl}/filter/?${queryString.stringify(query)}`,
             headers: {'Authorization': "Bearer " + localStorage.token}
         })
             .then((res: AxiosResponse<any>) => {
@@ -55,7 +55,7 @@ const TweetTable = (props:any) => {
         setLoading(true);
         axios({
             method: "GET",
-            url: `${tweetSearchUrl}/vendors`,
+            url: `${tweetUrl}/vendors`,
             headers: {'Authorization': "Bearer " + localStorage.token}
         })
             .then((res: AxiosResponse<any>) => {
@@ -86,6 +86,10 @@ const TweetTable = (props:any) => {
         setRowsLoaded(true);
     };
 
+    const goToTweetPage = (tweetID:string) => {
+        props.history.push(`tweets/${tweetID}`);
+    };
+
     const columns = [
         {
             accessor: 'vendorName',
@@ -99,10 +103,29 @@ const TweetTable = (props:any) => {
         {
             Header: 'Text',
             accessor: 'text'
-        }, {
+        },
+        {
+            id: 'location',
+            Header: 'Location',
+            accessor: (d:any) => d.location ? d.location.address : 'N/A'
+        },
+        {
             id: 'usedForLocation',
             Header: 'Used For Location',
             accessor: (d:any) => d.usedForLocation ? 'Yes' : 'No'
+        },
+        {
+            id: 'link',
+            Header: 'Link',
+            accessor: (d:any) => ({...d}),
+            Cell: (props:any) => (
+                <button
+                id={props.id}
+                onClick={() => goToTweetPage(props.value._id)}
+                >
+                Use for location
+            </button>
+            )
         }
     ];
 
