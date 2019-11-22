@@ -46,7 +46,7 @@ if (config.NODE_ENV === 'PRODUCTION') { app.enable('trust proxy'); }// only if b
 // Fixed window rate limiting
 const generalRateLimit = rateLimit({
   windowMs: 30 * 1000, // 30 seconds
-  max: 15,
+  max: config.NODE_ENV === 'PRODUCTION' ? 15 : 50,
   handler(req, res) {
     res.status(429).send('You exceeded the rate limit');
   },
