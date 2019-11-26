@@ -5,6 +5,7 @@ const tweet2Id = ObjectId();
 const tweet3Id = ObjectId();
 const tweet4Id = ObjectId();
 const tweet5Id = ObjectId();
+const tweet6Id = ObjectId();
 const location1Id = ObjectId();
 const location2Id = ObjectId();
 const location3Id = ObjectId();
@@ -67,11 +68,11 @@ module.exports = {
       profileImageLink: 'https://pbs.twimg.com/profile_images/595430292627787777/aQF9HgVs_400x400.jpg',
       yelpId: 'arepa-crew-arlington',
       twitterID: '3183153867',
-      tweetHistory: [],
-      locationHistory: [],
+      tweetHistory: [tweet5Id],
+      locationHistory: [location2Id],
       userLocationHistory: [],
       comments: [],
-      dailyActive: false,
+      dailyActive: true,
       consecutiveDaysInactive: -1,
       categories: ['South American', 'Venezuelan', 'Arepa', 'Comfort Food', 'Street Food'],
     }, {
@@ -287,7 +288,21 @@ module.exports = {
       _id: tweet5Id,
       tweetID: '136Fake',
       date: new Date('2018-04-12T12:10:00Z'),
-      text: 'Rosslyn Today Yes',
+      text: 'Farragut Wow Yes',
+      location: {
+        locationDate: new Date('2018-04-12T12:10:00Z'),
+        accuracy: -4,
+        address: '0185W 0800, Washington, DC 20006',
+        city: 'dc',
+        neighborhood: 'farragut square',
+        coordinates: [38.902033, -77.038995],
+      },
+      usedForLocation: false,
+    }, {
+      _id: tweet6Id,
+      tweetID: '137Fake',
+      date: new Date('2018-04-12T12:10:00Z'),
+      text: 'Farragut Yes',
       location: {
         locationDate: new Date('2018-04-12T12:10:00Z'),
         accuracy: -4,
