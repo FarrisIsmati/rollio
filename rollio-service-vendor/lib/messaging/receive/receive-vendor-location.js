@@ -30,7 +30,9 @@ const updateTweet = async (payload, region, vendor) => {
 const updateLocation = async (payload, region, vendor) => {
   // Clear cache for getVendors route & getRegion route
   try {
-    await redisClient.hdelAsync('vendor', `q::method::GET::path::/${region._id}/object`);
+    console.log( `q::method::GET::path::/${region._id}/object`)
+    const resy = await redisClient.hdelAsync('vendor', `q::method::GET::path::/${region._id}/object`);
+    console.log(resy)
   } catch (err) {
     logger.error(err);
   }
