@@ -51,7 +51,7 @@ module.exports = {
       locationHistory: [location2Id],
       userLocationHistory: [],
       comments: [],
-      dailyActive: false,
+      dailyActive: true,
       consecutiveDaysInactive: -1,
       categories: ['Hawaiian', 'Poke', 'Casual', 'Seafood'],
     }, {
