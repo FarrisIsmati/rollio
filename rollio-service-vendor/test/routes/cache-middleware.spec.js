@@ -168,7 +168,7 @@ describe('Cache Middleware', () => {
       const reqGetVendors = mockReq(body);
       
       await vendorRouteOps.getVendorsAsObject(reqGetVendors, res);
-      const isInCacheAfterObject = await client.hgetAsync('vendor', `q::method::GET::path::/${regionId}/objects`)
+      const isInCacheAfterObject = await client.hgetAsync('vendor', `q::method::GET::path::/${regionId}/object`)
         .then(cachedRes => JSON.parse(cachedRes));
 
       await vendorRouteOps.getVendors(reqGetVendors, res);
@@ -185,9 +185,9 @@ describe('Cache Middleware', () => {
     it('expect Vendor Route Operations getVendorsAsObject method to save the req NON QS path into the cache', async () => {
       const reqGetVendors = mockReq(body);
 
-      const isInCacheBefore = await client.hgetAsync('vendor', `q::method::GET::path::/${regionId}/objects`);
+      const isInCacheBefore = await client.hgetAsync('vendor', `q::method::GET::path::/${regionId}/object`);
       await vendorRouteOps.getVendorsAsObject(reqGetVendors, res);
-      const isInCacheAfter = await client.hgetAsync('vendor', `q::method::GET::path::/${regionId}/objects`)
+      const isInCacheAfter = await client.hgetAsync('vendor', `q::method::GET::path::/${regionId}/object`)
         .then(cachedRes => JSON.parse(cachedRes));
 
       const firstKey = Object.keys(isInCacheAfter)[0];

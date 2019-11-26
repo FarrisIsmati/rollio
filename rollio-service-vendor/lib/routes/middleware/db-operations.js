@@ -196,8 +196,7 @@ const vendorRouteOps = {
 
     const payload = {
       collectionKey: 'vendor',
-      // req.path should be {regionID}/object
-      queryKey: `q::method::${req.method}::path::${req.path}`,
+      queryKey: `q::method::${req.method}::path::${req.path}/object`,
       ops: getVendorsOp,
     };
 

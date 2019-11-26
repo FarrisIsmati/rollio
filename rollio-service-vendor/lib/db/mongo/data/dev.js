@@ -4,6 +4,7 @@ const tweet1Id = ObjectId();
 const tweet2Id = ObjectId();
 const tweet3Id = ObjectId();
 const tweet4Id = ObjectId();
+const tweet5Id = ObjectId();
 const location1Id = ObjectId();
 const location2Id = ObjectId();
 const location3Id = ObjectId();
@@ -46,8 +47,8 @@ module.exports = {
       profileImageLink: 'https://pbs.twimg.com/profile_images/1109249231263592448/YXA1EgMG_400x400.jpg',
       yelpId: 'abunai-poke-washington',
       twitterID: '3333907289',
-      tweetHistory: [],
-      locationHistory: [],
+      tweetHistory: [tweet5Id],
+      locationHistory: [location2Id],
       userLocationHistory: [],
       comments: [],
       dailyActive: false,
@@ -282,7 +283,21 @@ module.exports = {
         coordinates: [38.897156, -77.07239],
       },
       usedForLocation: false,
-    },
+    }, {
+      _id: tweet5Id,
+      tweetID: '136Fake',
+      date: new Date('2018-04-12T12:10:00Z'),
+      text: 'Rosslyn Today Yes',
+      location: {
+        locationDate: new Date('2018-04-12T12:10:00Z'),
+        accuracy: -4,
+        address: '0185W 0800, Washington, DC 20006',
+        city: 'dc',
+        neighborhood: 'farragut square',
+        coordinates: [38.902033, -77.038995],
+      },
+      usedForLocation: false,
+    }
   ],
   locations: [
     {
@@ -299,12 +314,12 @@ module.exports = {
       _id: location2Id,
       locationDate: new Date('2018-04-12T12:10:00Z'),
       accuracy: -4,
-      address: 'Lol Ist',
-      city: 'Tysons, DC',
-      neighborhood: 'Farragut Triangle',
+      address: '0185W 0800, Washington, DC 20006',
+      city: 'dc',
+      neighborhood: 'farragut square',
       matchMethod: 'Tweet location',
       tweetID: '125fake',
-      coordinates: [4.123, 1.5222],
+      coordinates: [38.902033, -77.038995],
     }, {
       _id: location3Id,
       locationDate: new Date('2018-04-12T12:10:00Z'),

@@ -50,19 +50,6 @@ describe('Message Receive Vendor Location', () => {
       expect(cacheResAfter).to.be.equal(null);
     });
 
-    it('expect setVendorActive to clear cache for getVendors route', async () => {
-      const query = `q::method::GET::path::/${region._id}`;
-      const collectionKey = 'vendor';
-      await redisClient.hsetAsync(collectionKey, query, '{"test2":"data"}');
-      const cacheResBefore = await redisClient.hgetAsync(collectionKey, query);
-
-      await receiveVendorLocation.setVendorActive(region, vendor);
-      const cacheResAfter = await redisClient.hgetAsync(collectionKey, query);
-
-      expect(cacheResBefore).to.be.equal('{"test2":"data"}');
-      expect(cacheResAfter).to.be.equal(null);
-    });
-
     it('expect setVendorActive to add vendorID to dailyActiveVendorIDs', async () => {
       const dailyActiveVendorIDsLenBefore = region.dailyActiveVendorIDs.length;
       await receiveVendorLocation.setVendorActive(region, vendor);
