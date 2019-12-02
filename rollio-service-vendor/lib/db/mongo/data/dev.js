@@ -6,10 +6,12 @@ const tweet3Id = ObjectId();
 const tweet4Id = ObjectId();
 const tweet5Id = ObjectId();
 const tweet6Id = ObjectId();
+const tweet7Id = ObjectId();
 const location1Id = ObjectId();
 const location2Id = ObjectId();
 const location3Id = ObjectId();
 const location4Id = ObjectId();
+const location5Id = ObjectId();
 
 module.exports = {
   vendors: [
@@ -88,11 +90,11 @@ module.exports = {
       profileImageLink: '',
       yelpId: 'astro-doughnuts-and-fried-chicken-washington',
       twitterID: '890432286',
-      tweetHistory: [],
-      locationHistory: [],
+      tweetHistory: [tweet7Id],
+      locationHistory: [location5Id],
       userLocationHistory: [],
       comments: [],
-      dailyActive: false,
+      dailyActive: true,
       consecutiveDaysInactive: -1,
       categories: ['American', 'Donuts', 'Fried Chicken', 'Comfort Food', 'Street Food'],
     }, {
@@ -312,6 +314,20 @@ module.exports = {
         coordinates: [38.902033, -77.038995],
       },
       usedForLocation: false,
+    }, {
+      _id: tweet7Id,
+      tweetID: '138Fake',
+      date: new Date('2018-04-12T12:10:00Z'),
+      text: 'Capital One Arena today',
+      location: {
+        locationDate: new Date('2018-04-12T12:10:00Z'),
+        accuracy: 0,
+        address: '700 G St NW, Washington, DC 20001',
+        city: 'dc',
+        neighborhood: 'chinatown',
+        coordinates: [38.898482, -77.021965],
+      },
+      usedForLocation: false,
     }
   ],
   locations: [
@@ -355,6 +371,16 @@ module.exports = {
       matchMethod: 'Tweet location',
       tweetID: '135Fake',
       coordinates: [38.897156, -77.07239],
-    },
+    }, {
+      _id: location5Id,
+      locationDate: new Date('2018-04-12T12:10:00Z'),
+      accuracy: 0,
+      address: '700 G St NW, Washington, DC 20001',
+      city: 'dc',
+      neighborhood: 'chinatown',
+      matchMethod: 'Tweet location',
+      tweetID: '138Fake',
+      coordinates: [38.898482, -77.021965],
+    }
   ],
 };
