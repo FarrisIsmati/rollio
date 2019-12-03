@@ -314,14 +314,81 @@ const useUpdateMapMarkers = (props: any) => {
                 setSingleVendorMarkers(updatedSingleVendorMarkers)
 
                 return
-            }
-
-
-            // Step 3
-            // If current vendor is new
+            } else {
+                // If current vendor is new
                 // If new coordinates are the same as another single vendor's coordinates
+                const currentDisplayedVendorData = {
+                    vendorId: currentVendorID,
+                    selected: false
+                }
+                
+                for (const key in singleVendorMarkers) {
+                    const iteratedVendorData = state.data.vendorsAll[key]
+                    const iteratedVendorMarker = singleVendorMarkers[key];
+                    const iteratedVendorMarkerCoords = iteratedVendorMarker.getLngLat();
+                    if (key !== currentVendorID && iteratedVendorMarkerCoords.lng === currentVendorCoords.long && iteratedVendorMarkerCoords.lat === currentVendorCoords.lat) {
+                        // 1. Remove iterated single vendor marker from map
+                        iteratedVendorMarker.remove()
+
+                        // 2. Remove iterated single vendor from singleVendorMarkers state
+                        const updatedSingleVendorMarkers = { ...singleVendorMarkers }
+                        delete updatedSingleVendorMarkers[key]
+                        setSingleVendorMarkers(updatedSingleVendorMarkers)
+                        
+                        // 3. Remove iterated single vendor from vendorsDisplayedSingle Redux
+                        const iteratedDisplayedVendorData =  { ...state.regionMap.vendorsDisplayedSingle[key] }
+
+                        const updatedVendorsDisplayedSingle = { ...state.regionMap.vendorsDisplayedSingle }
+                        delete updatedVendorsDisplayedSingle[key]
+                        const payload = { vendorsDisplayedSingle: updatedVendorsDisplayedSingle }
+                        dispatch(setVendorsDisplayedSingle(payload))
+                        
+                        // 4. Add grouped vendor marker to map
+                        const newMarker = addGroupedVendorsToMap({vendors:[currentVendorData, iteratedVendorData], firstVendor: currentVendorData, map});
+
+                        // 5. Add grouped vendors to groupVendorMarkers state
+                        const newMarkerID = uuid()
+                        setGroupVendorMarkers({ ...groupVendorMarkers, [newMarkerID]: newMarker })
+
+                        // 6. Add both vendors to vendorsDisplayedGroup Redux
+                        const updatedVendorsDisplayedGroup = { ...state.regionMap.vendorsDisplayedGroup, [newMarkerID]: [currentDisplayedVendorData, iteratedDisplayedVendorData] }
+                        const payloadGroup = { vendorsDisplayedGroup: updatedVendorsDisplayedGroup }
+                        dispatch(setVendorsDisplayedGroup(payloadGroup))
+                        return
+                    }
+                }
+
                 // If new coordinates lie within a grouped vendors coordinates
-                // If new coordinates is going to a completely new coordinate
+                for (const key in groupVendorMarkers) {
+                    const iteratedVendorMarker = groupVendorMarkers[key];
+                    const iteratedVendorMarkerCoords = iteratedVendorMarker.getLngLat();
+                    if (iteratedVendorMarkerCoords.lng === currentVendorCoords.long && iteratedVendorMarkerCoords.lat === currentVendorCoords.lat) {
+                        // 1. Increment grouped vendor marker
+                        const vendorsCount = iteratedVendorMarker.getElement().innerHTML
+                        iteratedVendorMarker.getElement().innerHTML = parseInt(vendorsCount) + 1
+                        // 2. Add vendor to vendorsDisplayedGroup Redux
+                        const iteratedDisplayedVendorsData =  [ ...state.regionMap.vendorsDisplayedGroup[key] ]
+                        const updatedVendorsDisplayedGroup = { ...state.regionMap.vendorsDisplayedGroup, [key]: [currentDisplayedVendorData, ...iteratedDisplayedVendorsData] }
+                        const payloadGroup = { vendorsDisplayedGroup: updatedVendorsDisplayedGroup }
+                        dispatch(setVendorsDisplayedGroup(payloadGroup))
+                        return
+                    }
+                }
+
+                // If new coordinates are going to a completely new coordinate
+                // 1. Add current vendor to vendorsDisplayedSingle Redux
+                const updatedVendorsDisplayedSingle = { ...state.regionMap.vendorsDisplayedSingle, [currentVendorID]: currentDisplayedVendorData }
+                const payload = { vendorsDisplayedSingle: updatedVendorsDisplayedSingle }
+                dispatch(setVendorsDisplayedSingle(payload))
+
+                // 4. Create new single vendor marker
+                const marker = addSingleVendorToMap(state.data.vendorsAll[currentVendorID], map)
+
+                // 5. Add new single vendor marker to singleVendorMarkers
+                const updatedSingleVendorMarkers = { ...singleVendorMarkers, [currentVendorID]: marker }
+                setSingleVendorMarkers(updatedSingleVendorMarkers)
+                return
+            }
         }
     }, markerObjectComparisonState(state, currentVendorID))
 }
