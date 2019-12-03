@@ -107,7 +107,8 @@ const useMapMarkers = (props: any) => {
     useUpdateMapMarkers({
         map,
         singleVendorMarkers, 
-        setSingleVendorMarkers, 
+        setSingleVendorMarkers,
+        addSingleVendorToMap, 
         groupVendorMarkers, 
         setGroupVendorMarkers,
         addGroupedVendorsToMap,
