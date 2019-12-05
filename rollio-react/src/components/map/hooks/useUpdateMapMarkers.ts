@@ -257,6 +257,7 @@ const useUpdateMapMarkers = (props: any) => {
                         updatedVendorsDisplayedGroup = { ...updatedVendorsDisplayedGroup, [newMarkerID]: [currentDisplayedVendorData, iteratedDisplayedVendorData] }
                         const payloadGroupNew = { vendorsDisplayedGroup: updatedVendorsDisplayedGroup }
                         dispatch(setVendorsDisplayedGroup(payloadGroupNew))
+                        
                         return
                     }
                 }
@@ -290,6 +291,7 @@ const useUpdateMapMarkers = (props: any) => {
                         // Increment count of current vendors new group marker
                         const newVendorMarkerCount = iteratedVendorMarker.getElement().innerHTML
                         iteratedVendorMarker.getElement().innerHTML = parseInt(newVendorMarkerCount) + 1
+
                         return
                     }
                 }
@@ -324,13 +326,17 @@ const useUpdateMapMarkers = (props: any) => {
                 setSingleVendorMarkers(updatedSingleVendorMarkers)
 
                 return
-            } else { // If current vendor is new
+            } else { 
+                // --------------------------------------------
+                // CASE 3: If current vendor is new
+                // --------------------------------------------    
                 // If new coordinates are the same as another single vendor's coordinates
                 const currentDisplayedVendorData = {
                     vendorId: currentVendorID,
                     selected: false
                 }
                 
+                // If new coordinates are the same as another single vendor's coordinates
                 for (const key in singleVendorMarkers) {
                     const iteratedVendorData = state.data.vendorsAll[key]
                     const iteratedVendorMarker = singleVendorMarkers[key];
@@ -363,6 +369,7 @@ const useUpdateMapMarkers = (props: any) => {
                         const updatedVendorsDisplayedGroup = { ...state.regionMap.vendorsDisplayedGroup, [newMarkerID]: [currentDisplayedVendorData, iteratedDisplayedVendorData] }
                         const payloadGroup = { vendorsDisplayedGroup: updatedVendorsDisplayedGroup }
                         dispatch(setVendorsDisplayedGroup(payloadGroup))
+
                         return
                     }
                 }
@@ -375,11 +382,13 @@ const useUpdateMapMarkers = (props: any) => {
                         // 1. Increment grouped vendor marker
                         const vendorsCount = iteratedVendorMarker.getElement().innerHTML
                         iteratedVendorMarker.getElement().innerHTML = parseInt(vendorsCount) + 1
+
                         // 2. Add vendor to vendorsDisplayedGroup Redux
                         const iteratedDisplayedVendorsData =  [ ...state.regionMap.vendorsDisplayedGroup[key] ]
                         const updatedVendorsDisplayedGroup = { ...state.regionMap.vendorsDisplayedGroup, [key]: [currentDisplayedVendorData, ...iteratedDisplayedVendorsData] }
                         const payloadGroup = { vendorsDisplayedGroup: updatedVendorsDisplayedGroup }
                         dispatch(setVendorsDisplayedGroup(payloadGroup))
+
                         return
                     }
                 }
