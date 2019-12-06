@@ -341,7 +341,6 @@ const useUpdateMapMarkers = (props: any) => {
                     vendorId: currentVendorID,
                     selected: false
                 }
-                
                 // If new coordinates are the same as another single vendor's coordinates
                 for (const key in singleVendorMarkers) {
                     const iteratedVendorData = state.data.vendorsAll[key]
