@@ -45,6 +45,9 @@ const useUpdateMapMarkers = (props: any) => {
             // --------------------------------------------
             // @ts-ignore: singleVendorMarkers wont be null
             if (singleVendorMarkers !== null && singleVendorMarkers[currentVendorID]) {
+                console.log('!!!!!!!!!!!!!!!!!!!!')
+                console.log('UPDATE A SINGLE VENDOR MARKER')
+                console.log('!!!!!!!!!!!!!!!!!!!!')
                 // If new coordinates are the same as another single vendor's coordinates
                 for (const key in singleVendorMarkers) {
                     const iteratedVendorData = state.data.vendorsAll[key]
@@ -88,7 +91,7 @@ const useUpdateMapMarkers = (props: any) => {
                     }
                 }
 
-                // If new coordinates lie within a grouped vendors coordinates
+                // If new coordinates are within a grouped vendors coordinates
                 for (const key in groupVendorMarkers) {
                     const iteratedVendorMarker = groupVendorMarkers[key];
                     const iteratedVendorMarkerCoords = iteratedVendorMarker.getLngLat();
@@ -124,7 +127,7 @@ const useUpdateMapMarkers = (props: any) => {
                     }
                 }
                 
-                // If new coordinates is going to a completely new coordinate
+                // If new coordinates are going to a completely new coordinate
                 // @ts-ignore: singleVendorMarkers wont be null
                 singleVendorMarkers[currentVendorID]
                     .setLngLat([currentVendorCoords.long, currentVendorCoords.lat]);
@@ -214,7 +217,7 @@ const useUpdateMapMarkers = (props: any) => {
                     const iteratedVendorData = state.data.vendorsAll[key]
                     const iteratedVendorMarker = singleVendorMarkers[key];
                     const iteratedVendorMarkerCoords = iteratedVendorMarker.getLngLat();
-                    if (key !== currentVendorID && iteratedVendorMarkerCoords.lng === currentVendorCoords.long && iteratedVendorMarkerCoords.lat === currentVendorCoords.lat) {
+                    if (iteratedVendorMarkerCoords.lng === currentVendorCoords.long && iteratedVendorMarkerCoords.lat === currentVendorCoords.lat) {
                         // 1. Remove single vendor marker from map
                         iteratedVendorMarker.remove()
 
@@ -259,7 +262,7 @@ const useUpdateMapMarkers = (props: any) => {
                         dispatch(setVendorsDisplayedGroup(payloadGroupNew))
                         
                         return
-                    }
+                    } 
                 }
 
                 // If new coordinates lie within a grouped vendors coordinates
@@ -293,9 +296,12 @@ const useUpdateMapMarkers = (props: any) => {
                         iteratedVendorMarker.getElement().innerHTML = parseInt(newVendorMarkerCount) + 1
 
                         return
+                    } else if (key === groupID && iteratedVendorMarkerCoords.lng === currentVendorCoords.long && iteratedVendorMarkerCoords.lat === currentVendorCoords.lat) {
+                        // Do nothing because it's the same location the vendor is already in
+                        return
                     }
                 }
-
+                
                 // If new coordinates is going to a completely new coordinate
                 if (oldGroupExist) {
                     // 1. Remove current vendor from current vendorsDisplayedGroup Redux
@@ -322,7 +328,7 @@ const useUpdateMapMarkers = (props: any) => {
                 const marker = addSingleVendorToMap(state.data.vendorsAll[currentVendorID], map)
 
                 // 5. Add new single vendor marker to singleVendorMarkers
-                const updatedSingleVendorMarkers = { ...singleVendorMarkers, marker }
+                const updatedSingleVendorMarkers = { ...singleVendorMarkers, [currentVendorID]: marker }
                 setSingleVendorMarkers(updatedSingleVendorMarkers)
 
                 return
