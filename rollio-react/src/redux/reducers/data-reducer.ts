@@ -71,7 +71,7 @@ export function dataReducer(state = defaultState, action: any) {
         
         return {
             ...state,
-            vendorsAll: { ...vendorsAll, [action.payload.vendorID]: { ...vendorsAll[action.payload.vendorID], location: action.payload.location } }
+            vendorsAll: { ...vendorsAll, [action.payload.vendorID]: { ...vendorsAll[action.payload.vendorID], location: action.payload.location, isActive: action.payload.isActive } }
         }
     case POST_VENDOR_COMMENT:
         return {

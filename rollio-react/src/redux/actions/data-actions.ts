@@ -27,7 +27,8 @@ import {
 // INTERFACES
 import {
     VendorDataAsyncPayload,
-    RegionDataAsyncPayload
+    RegionDataAsyncPayload,
+    UpdateVendorPayload
 } from './interfaces';
 
 // -------
@@ -257,7 +258,7 @@ export function fetchAllVendorsAsync(payload:any) {
     }
 }
 
-export function updateVendor(payload:any) {
+export function updateVendor(payload:UpdateVendorPayload) {
     return {
         type: UPDATE_VENDOR,
         payload

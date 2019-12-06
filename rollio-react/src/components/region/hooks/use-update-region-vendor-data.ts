@@ -28,7 +28,7 @@ const useUpdateRegionVendorData = () => {
           if (data.tweet.location) {
             const location = data.tweet.location
             location.coordinates = { lat: location.coordinates[0], long: location.coordinates[1] }
-            dispatch(updateVendor({ location, vendorID: data.vendorID }));
+            dispatch(updateVendor({ location, vendorID: data.vendorID, isActive: true }));
             setGlobalState({ vendorID: data.vendorID });
           }
           // Update Region Data
