@@ -32,6 +32,10 @@ export interface UpdateVendorPayload {
   isActive: boolean
 }
 
+export interface UpdateDailyActiveVendorsPayload {
+  vendorID: string
+}
+
 // Pin on map
 export interface PinPayload {
   vendorsDisplayedSingle: { [key: string]: Pin },

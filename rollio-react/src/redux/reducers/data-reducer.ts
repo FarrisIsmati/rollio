@@ -4,7 +4,8 @@ import {
     RECIEVE_VENDOR_DATA,
     RECIEVE_ALL_VENDORS,
     POST_VENDOR_COMMENT,
-    UPDATE_VENDOR
+    UPDATE_VENDOR,
+    UPDATE_DAILY_ACTIVE_VENDORS
 } from "../constants/constants"
 
 // INTERFACES
@@ -72,6 +73,11 @@ export function dataReducer(state = defaultState, action: any) {
         return {
             ...state,
             vendorsAll: { ...vendorsAll, [action.payload.vendorID]: { ...vendorsAll[action.payload.vendorID], location: action.payload.location, isActive: action.payload.isActive } }
+        }
+    case UPDATE_DAILY_ACTIVE_VENDORS:
+        return {
+            ...state,
+            dailyActiveVendors: state.dailyActiveVendors.add(action.payload.vendorID)
         }
     case POST_VENDOR_COMMENT:
         return {

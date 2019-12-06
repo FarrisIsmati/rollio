@@ -4,7 +4,10 @@ import { useEffect } from 'react';
 import { useDispatch  } from 'react-redux';
 
 // ACTIONS
-import { updateVendor } from '../../../redux/actions/data-actions';
+import { 
+  updateVendor,
+  updateDailyActiveVendors
+} from '../../../redux/actions/data-actions';
 
 // HOOKS
 import useCustom from './use-current-update-vendor-id-state';
@@ -29,6 +32,7 @@ const useUpdateRegionVendorData = () => {
             const location = data.tweet.location
             location.coordinates = { lat: location.coordinates[0], long: location.coordinates[1] }
             dispatch(updateVendor({ location, vendorID: data.vendorID, isActive: true }));
+            dispatch(updateDailyActiveVendors({ vendorID: data.vendorID }))
             setGlobalState({ vendorID: data.vendorID });
           }
           // Update Region Data

@@ -21,6 +21,8 @@ import {
 
     UPDATE_VENDOR,
 
+    UPDATE_DAILY_ACTIVE_VENDORS,
+
     POST_VENDOR_COMMENT,
 } from '../constants/constants'
 
@@ -28,7 +30,8 @@ import {
 import {
     VendorDataAsyncPayload,
     RegionDataAsyncPayload,
-    UpdateVendorPayload
+    UpdateVendorPayload,
+    UpdateDailyActiveVendorsPayload
 } from './interfaces';
 
 // -------
@@ -190,6 +193,7 @@ export function fetchRegionDataAsync(payload:RegionDataAsyncPayload) {
         dispatch(fetchRegionDataStart());
         axios.get(route)
         .then((res: AxiosResponse<any>) => {
+            console.log(res)
             dispatch(recieveRegionData(res.data));
             dispatch(fetchRegionDataSuccess());
             if ( shouldFetchVendors ) {
@@ -241,7 +245,7 @@ function fetchAllVendorsStart() {
 }
 
 // Get all vendors with a region ID
-export function fetchAllVendorsAsync(payload:any) {
+export function fetchAllVendorsAsync(payload: any) {
     const { regionId } = payload;
 
     return (dispatch:any) => {
@@ -258,9 +262,18 @@ export function fetchAllVendorsAsync(payload:any) {
     }
 }
 
-export function updateVendor(payload:UpdateVendorPayload) {
+// Update the vendorsAll data
+export function updateVendor(payload: UpdateVendorPayload) {
     return {
         type: UPDATE_VENDOR,
+        payload
+    }
+}
+
+// Add a vendorID to dailyActiveVendors
+export function updateDailyActiveVendors(payload: UpdateDailyActiveVendorsPayload) {
+    return {
+        type: UPDATE_DAILY_ACTIVE_VENDORS,
         payload
     }
 }
