@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 // DEPENDENCIES
 const mongoose = require('../mongoose/index');
-const redisClient = require('../../..//redis/index');
+const { client: redisClient } = require('../../..//redis/index');
 const logger = require('../../../log/index')('mongo/operations/region-ops');
 
 // SCHEMA

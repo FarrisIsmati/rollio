@@ -3,9 +3,15 @@
 const mq = require('../index');
 const regionOps = require('../../db/mongo/operations/region-ops');
 const vendorOps = require('../../db/mongo/operations/vendor-ops');
-const redisClient = require('../..//redis/index');
+const { client: redisClient, pub } = require('../..//redis/index');
 const config = require('../../../config');
 const logger = require('../../log/index')('messaging/receive/receive-vendor-location');
+
+// CONFIG
+const {
+  REDIS_TWITTER_CHANNEL,
+  SERVER_ID,
+} = require('../../../config');
 
 // SOCKET
 const { io } = require('../../sockets/index');
@@ -30,7 +36,7 @@ const updateTweet = async (payload, region, vendor) => {
 const updateLocation = async (payload, region, vendor) => {
   // Clear cache for getVendors route & getRegion route
   try {
-    console.log( `q::method::GET::path::/${region._id}/object`)
+    console.log(`q::method::GET::path::/${region._id}/object`);
     const resy = await redisClient.hdelAsync('vendor', `q::method::GET::path::/${region._id}/object`);
     console.log(resy)
   } catch (err) {
@@ -103,6 +109,20 @@ const receiveTweets = async () => {
     try {
       await updateTweet(tweetPayload, region, vendor);
       console.log(tweetPayload);
+
+      try {
+        // Send the tweetPayload to all subscribed instances
+        const redisTwitterChannelMessage = {
+          serverID: SERVER_ID,
+          tweetPayload,
+          vendorID: vendor._id,
+          regionID: region._id,
+        };
+        pub.publish(REDIS_TWITTER_CHANNEL, JSON.stringify(redisTwitterChannelMessage));
+      } catch (err) {
+        logger.error(err);
+      }
+
       // eslint-disable-next-line max-len
       // Send tweet data, location data, only, everything else will be updated on a get req (comments, ratings, etc)
       io.sockets.emit('TWITTER_DATA', { tweet: tweetPayload, vendorID: vendor._id, regionID: region._id });

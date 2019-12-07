@@ -166,8 +166,8 @@ describe('DB Operations', () => {
             locationDate: new Date('2017-02-18T08:20:00Z'),
             coordinates: [38.24561, -77.86542],
             address: '123 street',
-            accuracy: 1
-          }
+            accuracy: 1,
+          },
         };
 
         const prevDailyTweets = await Vendor.findOne({ _id: vendor._id })
