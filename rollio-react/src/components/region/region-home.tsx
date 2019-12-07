@@ -13,21 +13,21 @@ import useUpdateRegionVendorData from './hooks/use-update-region-vendor-data';
 const RegionHome = (props:any) => {
   // Load the region
   useLoadRegion(props);
-
+  
   // Set socket listeners
   useUpdateRegionVendorData();
-
+  
   const state = useGetAppState();
   const isRegionLoaded = state.loadState.isRegionLoaded;
   const areVendorsLoaded = state.loadState.areVendorsLoaded;
-
+  
   // Get all vendors in to the Map Pins on first load
   useProcessMapPoints(props);
-
+  
   // Render Content
   // Map gets fed data as props instead of reading from redux store so there can be multiple maps rendered at once
   const map = isRegionLoaded && areVendorsLoaded ? <Map mapType='region' mapData={ state.regionMap }/> : <p>loading</p>
-
+  
   return (
     <div className='regionhome__wrapper'>
       { map }

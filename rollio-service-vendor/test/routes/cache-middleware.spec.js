@@ -7,7 +7,7 @@ const sinonExpressMock = require('sinon-express-mock');
 const mongoose = require('../../lib/db/mongo/mongoose/index');
 
 const { mockReq, mockRes } = sinonExpressMock;
-const client = require('../../lib/db/redis/index');
+const client = require('../../lib/redis/index');
 
 // MIDDLEWARE
 const { checkCache, regionRouteOps, vendorRouteOps } = require('../../lib/routes/middleware/db-operations');
@@ -165,7 +165,7 @@ describe('Cache Middleware', () => {
     });
 
     it('expect Vendor Route Operations getVendorsAsObject method to return an object of equal length that of getVendors operation', async () => {
-      const bodyObj = { ...body, path: `${body.path}/object`}
+      const bodyObj = { ...body, path: `${body.path}/object` };
       const reqGetVendorsObj = mockReq(bodyObj);
       const reqGetVendors = mockReq(body);
 
@@ -185,7 +185,7 @@ describe('Cache Middleware', () => {
     });
 
     it('expect Vendor Route Operations getVendorsAsObject method to save the req NON QS path into the cache', async () => {
-      const bodyObj = { ...body, path: `${body.path}/object`}
+      const bodyObj = { ...body, path: `${body.path}/object` };
       const reqGetVendorsObj = mockReq(bodyObj);
 
       const isInCacheBefore = await client.hgetAsync('vendor', `q::method::GET::path::/${regionId}/object`);

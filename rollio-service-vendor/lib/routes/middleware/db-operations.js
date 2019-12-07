@@ -3,10 +3,10 @@
 // DEPENDENCIES
 const MongoQS = require('mongo-querystring');
 const logger = require('../../log/index')('routes/middleware/db-operations');
-const { TWITTER_CONFIG } = require('../../../config');
-const request = require('request');
+
 const qs = new MongoQS(); // MongoQS takes req.query and converts it into MongoQuery
-const redisClient = require('../../db/redis/index');
+const redisClient = require('../..//redis/index');
+
 // OPERATIONS
 const { getRegion, getRegionByName } = require('../../db/mongo/operations/region-ops');
 const {
@@ -265,17 +265,22 @@ const vendorRouteOps = {
 
 const userRouteOps = {
   getUser: async (req, res) => {
-    findUserById(req.user.id).then(user => {
+    findUserById(req.user.id).then((user) => {
       if (user) {
-        res.json({user});
+        res.json({ user });
       } else {
         res.send(401, 'User Not Authenticated');
       }
-    }).catch(err => {
+    }).catch((err) => {
       console.error(err);
       res.send(401, 'User Not Authenticated');
-    })
-  }
+    });
+  },
 };
 
-module.exports = { checkCache, regionRouteOps, vendorRouteOps, userRouteOps };
+module.exports = {
+  checkCache,
+  regionRouteOps,
+  vendorRouteOps,
+  userRouteOps,
+};

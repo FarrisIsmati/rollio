@@ -7,7 +7,7 @@ const mongoose = require('../../lib/db/mongo/mongoose/index');
 
 const { expect } = chai;
 const receiveVendorLocation = require('../../lib/messaging/receive/receive-vendor-location.js');
-const redisClient = require('../../lib/db/redis/index');
+const redisClient = require('../../lib/redis/index');
 const vendorOps = require('../../lib/db/mongo/operations/vendor-ops');
 
 // SCHEMAS

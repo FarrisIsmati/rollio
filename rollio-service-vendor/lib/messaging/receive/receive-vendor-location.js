@@ -3,7 +3,7 @@
 const mq = require('../index');
 const regionOps = require('../../db/mongo/operations/region-ops');
 const vendorOps = require('../../db/mongo/operations/vendor-ops');
-const redisClient = require('../../db/redis/index');
+const redisClient = require('../..//redis/index');
 const config = require('../../../config');
 const logger = require('../../log/index')('messaging/receive/receive-vendor-location');
 

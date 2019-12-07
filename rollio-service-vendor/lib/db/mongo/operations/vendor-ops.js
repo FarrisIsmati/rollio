@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 // DEPENDENCIES
 const mongoose = require('../mongoose/index');
-const redisClient = require('../../../db/redis/index');
+const redisClient = require('../../..//redis/index');
 const logger = require('../../../log/index')('mongo/operations/vendor-ops');
 
 // SCHEMA
@@ -204,7 +204,7 @@ module.exports = {
     // Amount can only be 1 or -1
     if (amount === 1 || amount === -1) {
       return Location.updateOne({
-        _id: locationID
+        _id: locationID,
       }, {
         $inc: { accuracy: amount },
       })

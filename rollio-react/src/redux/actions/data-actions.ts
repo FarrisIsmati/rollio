@@ -187,13 +187,12 @@ export function fetchRegionDataAsync(payload:RegionDataAsyncPayload) {
     const { regionName, regionId, shouldFetchVendors, cb } = payload;
     // Set route based on payload params
     const route = regionId === '' || regionId === undefined ? `${VENDOR_API}/region/name/${regionName}` : `${VENDOR_API}/region/${regionId}`
-
+    console.log(route)
     return (dispatch:any) => {
         // Set region load status to false when fetching a new region
         dispatch(fetchRegionDataStart());
         axios.get(route)
         .then((res: AxiosResponse<any>) => {
-            console.log(res)
             dispatch(recieveRegionData(res.data));
             dispatch(fetchRegionDataSuccess());
             if ( shouldFetchVendors ) {

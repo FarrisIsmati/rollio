@@ -155,9 +155,6 @@ describe('DB Operations', () => {
 
         expect(updateCommentsRes.comments[0].name).to.be.equal(commentPayload.name);
         expect(updateCommentsRes.comments[0].text).to.be.equal(commentPayload.text);
-        // just checking that it populates tweets correctly
-        expect(updateCommentsRes.tweetHistory.length).to.be.equal(1);
-        expect(updateCommentsRes.tweetHistory.every(tweet => tweet.text)).to.be.true;
       });
 
       it('expect new tweet to be added to tweetHistory', async () => {

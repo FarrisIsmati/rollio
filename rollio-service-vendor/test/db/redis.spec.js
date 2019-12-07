@@ -2,7 +2,7 @@
 const chai = require('chai');
 
 const { expect } = chai;
-const client = require('../../lib/db/redis/index');
+const client = require('../../lib/redis/index');
 
 // TESTS
 describe('Redis Config', () => {
