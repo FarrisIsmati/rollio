@@ -14,11 +14,14 @@ import queryString from 'query-string';
 
 const TweetTable = (props:any) => {
     const dispatch = useDispatch();
-
+    // the dates below are just used for the date filtering functionality, where we only display tweets during a certain time period
     const now = moment(new Date());
     const remainder = 30 - (now.minute() % 30);
+    // initialStartDate is the default date/time of the earliest tweet to show (can be adjusted by user)
+    // initialEndDate is the default date/time of the last tweet to show (can be adjusted by user)
     const initialEndDate = moment(now).add(remainder, "minutes").toDate();
     const initialStartDate = moment(initialEndDate).subtract(1, 'days').toDate();
+    // minDate is as far back in the calendar as a user can go when filtering dates.  It's arbitrary
     const minDate = moment(initialEndDate).subtract(1000000, 'days').toDate();
 
     const [loading, setLoading] = useState<boolean>(true);
