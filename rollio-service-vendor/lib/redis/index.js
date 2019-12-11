@@ -32,12 +32,13 @@ const redisConnect = {
     const pub = redis.createClient(redisConfig);
 
     // Client for caching and rate limiting
-    client.on('error', (err) => {
+    client.on('error', async (err) => {
       if (this.connectAttempts < 8) {
         this.connectAttempts += 1;
         util.backoff(this.backoffMultiplyer);
         this.backoffMultiplyer *= 1.5;
         logger.error(`Redis Client: Connection failed trying again, attempts: ${this.connectAttempts}`);
+
         return this.connect();
       }
       logger.error('Redis Client: I couldn`t connect, sorry man I fucked up');
