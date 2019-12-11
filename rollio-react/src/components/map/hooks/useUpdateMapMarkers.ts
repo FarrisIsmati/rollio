@@ -45,9 +45,6 @@ const useUpdateMapMarkers = (props: any) => {
             // --------------------------------------------
             // @ts-ignore: singleVendorMarkers wont be null
             if (singleVendorMarkers !== null && singleVendorMarkers[currentVendorID]) {
-                console.log('!!!!!!!!!!!!!!!!!!!!')
-                console.log('UPDATE A SINGLE VENDOR MARKER')
-                console.log('!!!!!!!!!!!!!!!!!!!!')
                 // If new coordinates are the same as another single vendor's coordinates
                 for (const key in singleVendorMarkers) {
                     const iteratedVendorData = state.data.vendorsAll[key]
