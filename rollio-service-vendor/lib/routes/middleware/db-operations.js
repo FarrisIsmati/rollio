@@ -5,7 +5,7 @@ const MongoQS = require('mongo-querystring');
 const logger = require('../../log/index')('routes/middleware/db-operations');
 
 const qs = new MongoQS(); // MongoQS takes req.query and converts it into MongoQuery
-const { client: redisClient } = require('../..//redis/index');
+const { client: redisClient } = require('../../redis/index');
 
 // OPERATIONS
 const { getRegion, getRegionByName } = require('../../db/mongo/operations/region-ops');

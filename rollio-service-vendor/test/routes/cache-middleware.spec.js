@@ -7,7 +7,7 @@ const sinonExpressMock = require('sinon-express-mock');
 const mongoose = require('../../lib/db/mongo/mongoose/index');
 
 const { mockReq, mockRes } = sinonExpressMock;
-const client = require('../../lib/redis/index');
+const { client } = require('../../lib/redis/index');
 
 // MIDDLEWARE
 const { checkCache, regionRouteOps, vendorRouteOps } = require('../../lib/routes/middleware/db-operations');
