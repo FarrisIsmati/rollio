@@ -7,7 +7,6 @@ const phoneNumberValidate = (number) => {
     return true;
   }
   try {
-    console.log(PhoneNumber)
     // Region Code currently only US
     const pn = new PhoneNumber(number, '1');
     return pn.isValid();
