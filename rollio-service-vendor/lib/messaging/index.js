@@ -8,7 +8,9 @@ const logger = require('../log/index');
 const amqp = util.retryExternalServiceConnection(
   () => amqplib.connect(config.RABBITMQ_CONNECT)
     .then((conn) => {
-      logger.info('RabbitMQ: Successfully connected');
+      if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') {
+        logger.info('RabbitMQ: Successfully connected');
+      }
       return conn.createChannel();
     })
     .catch(() => false),
@@ -20,15 +22,19 @@ module.exports = {
     const channel = await amqp;
     channel.assertQueue(chName, { durable: false });
     channel.sendToQueue(chName, Buffer.from(JSON.stringify(data)));
-    logger.info('Message sent');
-    logger.info(data);
+    if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') {
+      logger.info('Message sent');
+      logger.info(data);
+    }
     return channel;
   },
   receive: async (chName, cb) => {
     const channel = await amqp;
     channel.assertQueue(chName, { durable: false });
     channel.consume(chName, cb, { noAck: true });
-    logger.info('Message recieved');
+    if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') {
+      logger.info('Message recieved');
+    }
     return channel;
   },
   amqp,

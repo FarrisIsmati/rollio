@@ -34,7 +34,9 @@ const redisConnect = {
     client.on('ready', () => {
       this.backoffMultiplyer = 2;
       this.connectAttempts = 0;
-      logger.info('Redis: Successfully connected');
+      if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') {
+        logger.info('Redis: Successfully connected');
+      }
       return true;
     });
 
