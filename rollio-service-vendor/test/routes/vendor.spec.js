@@ -28,7 +28,9 @@ describe('Vendor Routes', () => {
   beforeEach((done) => {
     seed.runSeed().then(async () => {
       regionID = await Region.findOne().then(region => region._id);
-      vendor = await Vendor.findOne({ regionID: await regionID });
+      vendor = await Vendor.findOne({
+        regionID: await regionID, 'locationHistory.0': { '$exists': true }, 'userLocationHistory.0': { '$exists': true }
+      });
       locationID = vendor.locationHistory[0]._id;
       userLocationID = vendor.userLocationHistory[0]._id;
       done();
