@@ -11,7 +11,7 @@ const options = {
 };
 
 let connectionStatus = false;
-
+console.log(config.MONGO_CONNECT)
 // Connect to MongoDB exponential backoff
 const connectToMongoDB = () => util.retryExternalServiceConnection(
   () => mongoose.connect(config.MONGO_CONNECT, options)
