@@ -3,7 +3,7 @@
 // const yelp = require('yelp-fusion');
 const mongoose = require('../mongoose/index');
 const config = require('../../../../config');
-const logger = require('../../../log/index');
+const logger = require('../../../log/index')('mongo/seeds/dev-seed');
 
 // SCHEMAS
 const Vendor = mongoose.model('Vendor');
@@ -43,43 +43,43 @@ const seedObj = {
   },
   emptyTweets() {
     return Tweet.deleteMany({})
-        .then(() => {
-          if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') { console.log(`Emptied Tweet collection in ${config.NODE_ENV} enviroment`); }
-        })
-        .catch((err) => {
-          logger.error(err);
-          throw err;
-        });
+      .then(() => {
+        if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') { console.log(`Emptied Tweet collection in ${config.NODE_ENV} enviroment`); }
+      })
+      .catch((err) => {
+        logger.error(err);
+        throw err;
+      });
   },
   seedTweets() {
     return Tweet.insertMany(tweetData)
-        .then(() => {
-          if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') { console.log(`Seeded tweets in Tweet collection in ${config.NODE_ENV} enviroment`); }
-        })
-        .catch((err) => {
-          logger.error(err);
-          throw err;
-        });
+      .then(() => {
+        if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') { console.log(`Seeded tweets in Tweet collection in ${config.NODE_ENV} enviroment`); }
+      })
+      .catch((err) => {
+        logger.error(err);
+        throw err;
+      });
   },
   emptyLocations() {
     return Location.deleteMany({})
-        .then(() => {
-          if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') { console.log(`Emptied Location collection in ${config.NODE_ENV} enviroment`); }
-        })
-        .catch((err) => {
-          logger.error(err);
-          throw err;
-        });
+      .then(() => {
+        if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') { console.log(`Emptied Location collection in ${config.NODE_ENV} enviroment`); }
+      })
+      .catch((err) => {
+        logger.error(err);
+        throw err;
+      });
   },
   seedLocations() {
     return Location.insertMany(locationData)
-        .then(() => {
-          if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') { console.log(`Seeded locations in Location collection in ${config.NODE_ENV} enviroment`); }
-        })
-        .catch((err) => {
-          logger.error(err);
-          throw err;
-        });
+      .then(() => {
+        if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') { console.log(`Seeded locations in Location collection in ${config.NODE_ENV} enviroment`); }
+      })
+      .catch((err) => {
+        logger.error(err);
+        throw err;
+      });
   },
   emptyVendors() {
     return Vendor.deleteMany({})
@@ -110,8 +110,10 @@ const seedObj = {
           throw err;
         }),
     );
+    
     // Resolve all promises within vendorsAsyncUpdated
     const vendorsAsyncUpdatedResolved = await Promise.all(vendorsAsyncUpdated);
+
     // Seed all vendors into collection
     return Vendor.insertMany(vendorsAsyncUpdatedResolved)
       .then(() => {

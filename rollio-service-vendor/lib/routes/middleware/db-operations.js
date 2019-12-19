@@ -2,11 +2,11 @@
 /* eslint-disable no-console */
 // DEPENDENCIES
 const MongoQS = require('mongo-querystring');
-const logger = require('../../log/index');
-const { TWITTER_CONFIG } = require('../../../config');
-const request = require('request');
+const logger = require('../../log/index')('routes/middleware/db-operations');
+
 const qs = new MongoQS(); // MongoQS takes req.query and converts it into MongoQuery
-const redisClient = require('../../db/redis/index');
+const { client: redisClient } = require('../../redis/index');
+
 // OPERATIONS
 const { getRegion, getRegionByName } = require('../../db/mongo/operations/region-ops');
 const {
@@ -18,12 +18,12 @@ const {
 } = require('../../db/mongo/operations/vendor-ops');
 
 const {
-  findUserById
+  findUserById,
 } = require('../../db/mongo/operations/user-ops');
 
 const {
   getAllTweets,
-  getVendorsForFiltering
+  getVendorsForFiltering,
 } = require('../../db/mongo/operations/tweet-ops');
 
 // Caching data happens on get requests in the middleware,
@@ -101,7 +101,7 @@ const vendorRouteOpsUtil = {
     // Check to see if the vendor was updated and has a location history
     // If so set the location
     if (vendor.dailyActive && vendor.locationHistory.length) {
-      const vendorLocation = vendor.locationHistory[0];
+      const vendorLocation = vendor.locationHistory[vendor.locationHistory.length - 1];
       location = {
         id: vendorLocation._id,
         coordinates: {
@@ -112,6 +112,8 @@ const vendorRouteOpsUtil = {
         neighborhood: vendorLocation.neighborhood,
         municipality: vendorLocation.city,
         accuracy: vendorLocation.accuracy,
+        matchMethod: vendorLocation.matchMethod,
+        tweetID: vendorLocation.tweetID,
       };
     }
 
@@ -199,7 +201,7 @@ const vendorRouteOps = {
 
     const payload = {
       collectionKey: 'vendor',
-      queryKey: `q::method::${req.method}::path::${req.path}/objects`,
+      queryKey: `q::method::${req.method}::path::${req.path}`,
       ops: getVendorsOp,
     };
 
@@ -268,17 +270,17 @@ const vendorRouteOps = {
 
 const userRouteOps = {
   getUser: async (req, res) => {
-    findUserById(req.user.id).then(user => {
+    findUserById(req.user.id).then((user) => {
       if (user) {
-        res.json({user});
+        res.json({ user });
       } else {
         res.send(401, 'User Not Authenticated');
       }
-    }).catch(err => {
+    }).catch((err) => {
       console.error(err);
       res.send(401, 'User Not Authenticated');
-    })
-  }
+    });
+  },
 };
 
 const tweetRouteOps = {
@@ -287,25 +289,31 @@ const tweetRouteOps = {
     if (!req.user) {
       res.send(401, 'User Not Authenticated');
     }
-    getAllTweets(req.query).then(tweets => {
-      res.json({tweets});
-    }).catch(err => {
+    getAllTweets(req.query).then((tweets) => {
+      res.json({ tweets });
+    }).catch((err) => {
       console.error(err);
       res.send(401, 'Error fetching tweets');
-    })
+    });
   },
   vendorsForFiltering: async (req, res) => {
     // TODO: limit to not just any user, but only an admin!
     if (!req.user) {
       res.send(401, 'User Not Authenticated');
     }
-    getVendorsForFiltering(req.query).then(vendors => {
-      res.json({vendors});
-    }).catch(err => {
+    getVendorsForFiltering(req.query).then((vendors) => {
+      res.json({ vendors });
+    }).catch((err) => {
       console.error(err);
       res.send(401, 'Error fetching vendors');
-    })
-  }
+    });
+  },
 };
 
-module.exports = { checkCache, regionRouteOps, vendorRouteOps, userRouteOps, tweetRouteOps };
+module.exports = {
+  checkCache,
+  regionRouteOps,
+  vendorRouteOps,
+  userRouteOps,
+  tweetRouteOps,
+};

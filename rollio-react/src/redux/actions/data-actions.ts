@@ -19,13 +19,19 @@ import {
     FETCH_ALL_VENDORS_SUCCESS,
     RECIEVE_ALL_VENDORS,
 
+    UPDATE_VENDOR,
+
+    UPDATE_DAILY_ACTIVE_VENDORS,
+
     POST_VENDOR_COMMENT,
 } from '../constants/constants'
 
 // INTERFACES
 import {
     VendorDataAsyncPayload,
-    RegionDataAsyncPayload
+    RegionDataAsyncPayload,
+    UpdateVendorPayload,
+    UpdateDailyActiveVendorsPayload
 } from './interfaces';
 
 // -------
@@ -35,10 +41,10 @@ import {
 // Gets the detailed set of vendor profile data
 export function recieveVendorData(vendor:any) {
     let location = null;
-
+    
     // If the most recently updated of the vendor location history is today
-    if (vendor.locationHistory.length && moment(Date.now()).isSame(vendor.locationHistory[0].locationDate, 'day')) {
-        location = vendor.locationHistory[0];
+    if (vendor.locationHistory.length && moment(Date.now()).isSame(vendor.locationHistory[vendor.locationHistory.length - 1].locationDate, 'day')) {
+        location = vendor.locationHistory[vendor.locationHistory.length - 1];
     }
     // LOCATION HISTORY ONLY IF IT'S LOCATION IS TODAY CREATE THAT CHECK
     const profile = {
@@ -129,7 +135,6 @@ export function requestPostVendorComment(payload:any) {
                 name,
                 text,
             }))
-            console.log(res)
             return res;
         })
         .catch((err:AxiosError) => {
@@ -148,7 +153,7 @@ export function recieveRegionData(region:any) {
         payload: {
             regionId: region._id,
             regionName: region.name,
-            dailyActiveVendors: region.dailyActiveVendorIDs,
+            dailyActiveVendors: new Set(region.dailyActiveVendorIDs),
             regionCoordinates: {
                 lat: region.coordinates.coordinates[0],
                 long: region.coordinates.coordinates[1]
@@ -182,7 +187,7 @@ export function fetchRegionDataAsync(payload:RegionDataAsyncPayload) {
     const { regionName, regionId, shouldFetchVendors, cb } = payload;
     // Set route based on payload params
     const route = regionId === '' || regionId === undefined ? `${VENDOR_API}/region/name/${regionName}` : `${VENDOR_API}/region/${regionId}`
-
+    console.log(route)
     return (dispatch:any) => {
         // Set region load status to false when fetching a new region
         dispatch(fetchRegionDataStart());
@@ -202,10 +207,13 @@ export function fetchRegionDataAsync(payload:RegionDataAsyncPayload) {
     }
 }
 
+export function updateRegion() {
+    // UPDATE DAILY ACTIVE VENDOR
+}
+
 // -----------
 // VENDOR DATA
 // -----------
-
 
 export function recieveAllVendors(vendors:any) {
     return {
@@ -236,7 +244,7 @@ function fetchAllVendorsStart() {
 }
 
 // Get all vendors with a region ID
-export function fetchAllVendorsAsync(payload:any) {
+export function fetchAllVendorsAsync(payload: any) {
     const { regionId } = payload;
 
     return (dispatch:any) => {
@@ -250,5 +258,21 @@ export function fetchAllVendorsAsync(payload:any) {
             .catch((err:AxiosError) => {
                 console.error(err)
             })
+    }
+}
+
+// Update the vendorsAll data
+export function updateVendor(payload: UpdateVendorPayload) {
+    return {
+        type: UPDATE_VENDOR,
+        payload
+    }
+}
+
+// Add a vendorID to dailyActiveVendors
+export function updateDailyActiveVendors(payload: UpdateDailyActiveVendorsPayload) {
+    return {
+        type: UPDATE_DAILY_ACTIVE_VENDORS,
+        payload
     }
 }

@@ -2,7 +2,7 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const mongoose = require('../../lib/db/mongo/mongoose/index');
-const server = require('../../index');
+const { app } = require('../../index');
 
 const { expect } = chai;
 
@@ -27,7 +27,7 @@ describe('Region Routes', () => {
   describe('GET', () => {
     describe('/region/:id', () => {
       it('expect to get a region', (done) => {
-        chai.request(server)
+        chai.request(app)
           .get(`/region/${regionID}`)
           .end((err, res) => {
             expect(res).to.have.status(200);
@@ -41,7 +41,7 @@ describe('Region Routes', () => {
   describe('GET', () => {
     describe('/region/name/:name', () => {
       it('expect to get a region by name', (done) => {
-        chai.request(server)
+        chai.request(app)
           .get('/region/name/WASHINGTONDC')
           .end((err, res) => {
             expect(res).to.have.status(200);

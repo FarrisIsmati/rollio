@@ -3,7 +3,7 @@
 const amqplib = require('amqplib');
 const util = require('../util/util');
 const config = require('../../config');
-const logger = require('../log/index');
+const logger = require('../log/index')('messaging/index');
 
 const amqp = util.retryExternalServiceConnection(
   () => amqplib.connect(config.RABBITMQ_CONNECT)

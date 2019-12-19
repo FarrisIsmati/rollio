@@ -7,7 +7,7 @@ const mongoose = require('../../lib/db/mongo/mongoose/index');
 
 const { expect } = chai;
 const receiveVendorLocation = require('../../lib/messaging/receive/receive-vendor-location.js');
-const redisClient = require('../../lib/db/redis/index');
+const { client: redisClient } = require('../../lib/redis/index');
 const vendorOps = require('../../lib/db/mongo/operations/vendor-ops');
 
 // SCHEMAS
@@ -47,19 +47,6 @@ describe('Message Receive Vendor Location', () => {
       const cacheResAfter = await redisClient.hgetAsync(collectionKey, query);
 
       expect(cacheResBefore).to.be.equal('{"test":"data"}');
-      expect(cacheResAfter).to.be.equal(null);
-    });
-
-    it('expect setVendorActive to clear cache for getVendors route', async () => {
-      const query = `q::method::GET::path::/${region._id}`;
-      const collectionKey = 'vendor';
-      await redisClient.hsetAsync(collectionKey, query, '{"test2":"data"}');
-      const cacheResBefore = await redisClient.hgetAsync(collectionKey, query);
-
-      await receiveVendorLocation.setVendorActive(region, vendor);
-      const cacheResAfter = await redisClient.hgetAsync(collectionKey, query);
-
-      expect(cacheResBefore).to.be.equal('{"test2":"data"}');
       expect(cacheResAfter).to.be.equal(null);
     });
 

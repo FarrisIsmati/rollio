@@ -2,7 +2,7 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const mongoose = require('../../lib/db/mongo/mongoose/index');
-const server = require('../../index');
+const { app } = require('../../index');
 
 const { expect } = chai;
 
@@ -38,7 +38,7 @@ describe('Vendor Routes', () => {
   describe('GET', () => {
     describe('/vendor/:regionID', () => {
       it('expect to get all food trucks', (done) => {
-        chai.request(server)
+        chai.request(app)
           .get(`/vendor/${regionID}`)
           .end((err, res) => {
             expect(res).to.have.status(200);
@@ -51,7 +51,7 @@ describe('Vendor Routes', () => {
 
     describe('/vendor/:regionID/object', () => {
       it('expect to get an object back', (done) => {
-        chai.request(server)
+        chai.request(app)
           .get(`/vendor/${regionID}/object`)
           .end((err, res) => {
             expect(res).to.have.status(200);
@@ -65,7 +65,7 @@ describe('Vendor Routes', () => {
     describe('Query String Route', () => {
       describe('/vendor/:regionID/?querystring', () => {
         it('expect to get a vendor with the specified Query String: ?categories[]=Venezuelan&categories[]=Arepa', (done) => {
-          chai.request(server)
+          chai.request(app)
             .get(`/vendor/${regionID}/?categories[]=Venezuelan&categories[]=Arepa`)
             .end((err, res) => {
               expect(res).to.have.status(200);
@@ -80,7 +80,7 @@ describe('Vendor Routes', () => {
 
       describe('/vendor/:regionID/?querystring test that it returns updated data after searching for it (Making sure deleting cache functionality worked)', () => {
         it('expect to get a vendor with the specified Query String: ?categories[]=Venezuelan&categories[]=Arepa with incremented consecutive days inactive', async () => {
-          const queryResBefore = await chai.request(server)
+          const queryResBefore = await chai.request(app)
             .get(`/vendor/${regionID}/?categories[]=Venezuelan&categories[]=Arepa`);
 
           const queryResParsedBefore = JSON.parse(queryResBefore.res.text);
@@ -89,7 +89,7 @@ describe('Vendor Routes', () => {
 
           await incrementVendorConsecutiveDaysInactive(regionID, vendorID);
 
-          const queryResAfter = await chai.request(server)
+          const queryResAfter = await chai.request(app)
             .get(`/vendor/${regionID}/?categories[]=Venezuelan&categories[]=Arepa`);
 
           const queryResParsedAfter = JSON.parse(queryResAfter.res.text);
@@ -103,7 +103,7 @@ describe('Vendor Routes', () => {
 
     describe('/vendor/:regionID/:vendorID', () => {
       it('expect to get a vendor', (done) => {
-        chai.request(server)
+        chai.request(app)
           .get(`/vendor/${regionID}/${vendor._id}`)
           .end((err, res) => {
             expect(res).to.have.status(200);
@@ -121,7 +121,7 @@ describe('Vendor Routes', () => {
         const prevLocationAccuracy = await Vendor.findOne({ _id: vendor._id }).populate('locationHistory')
           .then(vendorPrev => vendorPrev.locationHistory[0].accuracy);
 
-        const res = await chai.request(server)
+        const res = await chai.request(app)
           .put(`/vendor/${regionID}/${vendor._id}/locationaccuracy`)
           .send({
             type: 'locationHistory',
@@ -141,7 +141,7 @@ describe('Vendor Routes', () => {
         const prevLocationAccuracy = await Vendor.findOne({ _id: vendor._id }).populate('locationHistory')
           .then(vendorPrev => vendorPrev.locationHistory[0].accuracy);
 
-        const res = await chai.request(server)
+        const res = await chai.request(app)
           .put(`/vendor/${regionID}/${vendor._id}/locationaccuracy`)
           .send({
             type: 'locationHistory',
@@ -161,7 +161,7 @@ describe('Vendor Routes', () => {
         const prevLocationAccuracy = await Vendor.findOne({ _id: vendor._id }).populate('userLocationHistory')
           .then(vendorPrev => vendorPrev.userLocationHistory[0].accuracy);
 
-        const res = await chai.request(server)
+        const res = await chai.request(app)
           .put(`/vendor/${regionID}/${vendor._id}/locationaccuracy`)
           .send({
             type: 'userLocationHistory',
@@ -187,7 +187,7 @@ describe('Vendor Routes', () => {
       beforeEach(async () => {
         prevComments = await Vendor.findOne({ _id: vendor._id })
           .then(vendorPrev => vendorPrev.comments);
-        res = await chai.request(server)
+        res = await chai.request(app)
           .put(`/vendor/${regionID}/${vendor._id}/comments`)
           .send({
             text: commentText,

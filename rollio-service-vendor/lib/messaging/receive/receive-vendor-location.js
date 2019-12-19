@@ -3,9 +3,18 @@
 const mq = require('../index');
 const regionOps = require('../../db/mongo/operations/region-ops');
 const vendorOps = require('../../db/mongo/operations/vendor-ops');
-const redisClient = require('../../db/redis/index');
+const { client: redisClient, pub } = require('../..//redis/index');
 const config = require('../../../config');
-const logger = require('../../log/index');
+const logger = require('../../log/index')('messaging/receive/receive-vendor-location');
+
+// CONFIG
+const {
+  REDIS_TWITTER_CHANNEL,
+  SERVER_ID,
+} = require('../../../config');
+
+// SOCKET
+const { io } = require('../../sockets/index');
 
 const updateTweet = async (payload, region, vendor) => {
   // Formating
@@ -15,12 +24,25 @@ const updateTweet = async (payload, region, vendor) => {
   const params = {
     regionID: region._id, vendorID: vendor._id, field: 'tweetHistory', payload,
   };
-  await vendorOps.updateVendorPush(params);
+  try {
+    await vendorOps.updateVendorPush(params);
+  } catch (err) {
+    logger.error(err);
+  }
 };
 
 // Update the locationHistory property
 // Update the updateDate timestamp
 const updateLocation = async (payload, region, vendor) => {
+  // Clear cache for getVendors route & getRegion route
+  try {
+    console.log(`q::method::GET::path::/${region._id}/object`);
+    const resy = await redisClient.hdelAsync('vendor', `q::method::GET::path::/${region._id}/object`);
+    console.log(resy)
+  } catch (err) {
+    logger.error(err);
+  }
+
   const paramsVendorPush = {
     regionID: region._id, vendorID: vendor._id, field: 'locationHistory', payload,
   };
@@ -43,16 +65,23 @@ const updateLocation = async (payload, region, vendor) => {
 };
 
 const setVendorActive = async (region, vendor) => {
-  // Clear cache for getVendors route
-  await redisClient.hdelAsync('vendor', `q::method::GET::path::/${region._id}`);
   // Add vendorID to dailyActiveVendorIDs
-  await regionOps.incrementRegionDailyActiveVendorIDs(
-    { regionID: region._id, vendorID: vendor._id },
-  );
+  try {
+    await regionOps.incrementRegionDailyActiveVendorIDs(
+      { regionID: region._id, vendorID: vendor._id },
+    );
+  } catch (err) {
+    logger.error(err);
+  }
+
   // Set daily active of vendor to true AND reset consecutive days inactive of vendor
-  await vendorOps.updateVendorSet({
-    regionID: region._id, vendorID: vendor._id, field: ['dailyActive', 'consecutiveDaysInactive'], data: [true, -1],
-  });
+  try {
+    await vendorOps.updateVendorSet({
+      regionID: region._id, vendorID: vendor._id, field: ['dailyActive', 'consecutiveDaysInactive'], data: [true, -1],
+    });
+  } catch (err) {
+    logger.error(err);
+  }
 };
 
 const receiveTweets = async () => {
@@ -70,15 +99,43 @@ const receiveTweets = async () => {
       twitterID: message.twitterID,
       date: message.date,
     };
+
     if (message.match) {
       tweetPayload.location = { ...message.location, tweetID: message.tweetID };
       await updateLocation({ ...tweetPayload.location }, region, vendor);
       await setVendorActive(region, vendor);
     }
-    await updateTweet(tweetPayload, region, vendor);
+
+    try {
+      await updateTweet(tweetPayload, region, vendor);
+      console.log(tweetPayload);
+
+      try {
+        // Send the tweetPayload to all subscribed instances
+        const redisTwitterChannelMessage = {
+          serverID: SERVER_ID,
+          tweetPayload,
+          vendorID: vendor._id,
+          regionID: region._id,
+        };
+        pub.publish(REDIS_TWITTER_CHANNEL, JSON.stringify(redisTwitterChannelMessage));
+      } catch (err) {
+        logger.error(err);
+      }
+
+      // eslint-disable-next-line max-len
+      // Send tweet data, location data, only, everything else will be updated on a get req (comments, ratings, etc)
+      io.sockets.emit('TWITTER_DATA', { tweet: tweetPayload, vendorID: vendor._id, regionID: region._id });
+    } catch (err) {
+      logger.error(err);
+    }
 
     // Clear cache for getVendorID route
-    await redisClient.hdelAsync('vendor', `q::method::GET::path::/${region._id}/${vendor._id}`);
+    try {
+      await redisClient.hdelAsync('vendor', `q::method::GET::path::/${region._id}/${vendor._id}`);
+    } catch (err) {
+      logger.error(err);
+    }
   });
 };
 

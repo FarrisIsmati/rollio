@@ -155,9 +155,6 @@ describe('DB Operations', () => {
 
         expect(updateCommentsRes.comments[0].name).to.be.equal(commentPayload.name);
         expect(updateCommentsRes.comments[0].text).to.be.equal(commentPayload.text);
-        // just checking that it populates tweets correctly
-        expect(updateCommentsRes.tweetHistory.length).to.be.equal(1);
-        expect(updateCommentsRes.tweetHistory.every(tweet => tweet.text)).to.be.true;
       });
 
       it('expect new tweet to be added to tweetHistory', async () => {
@@ -169,8 +166,8 @@ describe('DB Operations', () => {
             locationDate: new Date('2017-02-18T08:20:00Z'),
             coordinates: [38.24561, -77.86542],
             address: '123 street',
-            accuracy: 1
-          }
+            accuracy: 1,
+          },
         };
 
         const prevDailyTweets = await Vendor.findOne({ _id: vendor._id })
