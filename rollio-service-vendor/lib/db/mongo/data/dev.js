@@ -12,6 +12,10 @@ const location2Id = ObjectId();
 const location3Id = ObjectId();
 const location4Id = ObjectId();
 const location5Id = ObjectId();
+const vendor1Id = ObjectId();
+const vendor2Id = ObjectId();
+const vendor3Id = ObjectId();
+const vendor4Id = ObjectId();
 
 module.exports = {
   vendors: [
