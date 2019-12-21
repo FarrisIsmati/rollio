@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 // DEPENDENCIES
 const mongoose = require('../mongoose/index');
-const { client: redisClient } = require('../../..//redis/index');
+const { client: redisClient } = require('../../../redis/index');
 const logger = require('../../../log/index')('mongo/operations/vendor-ops');
 
 // SCHEMA
@@ -136,7 +136,8 @@ module.exports = {
     }
     let payload = originalPayload;
     if (['tweetHistory', 'locationHistory', 'userLocationHistory'].includes(field)) {
-        const newDocument = field === 'tweetHistory' ? await Tweet.create(originalPayload) : await Location.create(originalPayload);
+        const createPayload = { ...originalPayload, vendorID };
+        const newDocument = field === 'tweetHistory' ? await Tweet.create(createPayload) : await Location.create(createPayload);
         payload = newDocument._id;
     }
     return Vendor.update({

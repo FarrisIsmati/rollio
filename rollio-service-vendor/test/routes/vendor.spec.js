@@ -28,7 +28,9 @@ describe('Vendor Routes', () => {
   beforeEach((done) => {
     seed.runSeed().then(async () => {
       regionID = await Region.findOne().then(region => region._id);
-      vendor = await Vendor.findOne({ regionID: await regionID });
+      vendor = await Vendor.findOne({
+        regionID: await regionID, 'locationHistory.0': { '$exists': true }, 'userLocationHistory.0': { '$exists': true }
+      });
       locationID = vendor.locationHistory[0]._id;
       userLocationID = vendor.userLocationHistory[0]._id;
       done();
@@ -108,7 +110,7 @@ describe('Vendor Routes', () => {
           .end((err, res) => {
             expect(res).to.have.status(200);
             expect(res.body).to.be.a('object');
-            expect(res.body._id).to.have.same.id(vendor._id);
+            expect(String(res.body._id)).to.equal(String(vendor._id));
             done();
           });
       });
@@ -217,8 +219,7 @@ describe('Vendor Routes', () => {
   });
 
   afterEach((done) => {
-    seed.emptyRegions()
-      .then(() => seed.emptyVendors())
+    seed.emptySeed()
       .then(() => done());
   });
 });

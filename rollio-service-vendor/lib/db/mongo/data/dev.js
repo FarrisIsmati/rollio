@@ -7,15 +7,27 @@ const tweet4Id = ObjectId();
 const tweet5Id = ObjectId();
 const tweet6Id = ObjectId();
 const tweet7Id = ObjectId();
+const tweet8Id = ObjectId();
 const location1Id = ObjectId();
 const location2Id = ObjectId();
 const location3Id = ObjectId();
 const location4Id = ObjectId();
 const location5Id = ObjectId();
+const location6Id = ObjectId();
+const vendor1Id = ObjectId();
+const vendor2Id = ObjectId();
+const vendor3Id = ObjectId();
+const vendor4Id = ObjectId();
+const vendor5Id = ObjectId();
+const vendor6Id = ObjectId();
+const vendor7Id = ObjectId();
+const vendor8Id = ObjectId();
+
 
 module.exports = {
   vendors: [
     {
+      _id: vendor1Id,
       name: 'DC Foodtruck 1',
       type: 'mobileTruck',
       description: 'A truck for testing',
@@ -60,6 +72,7 @@ module.exports = {
       consecutiveDaysInactive: 0,
       categories: ['Luxury', 'Caviar', 'Lobster', 'Michelan Star'],
     }, {
+      _id: vendor5Id,
       name: 'Abunai',
       type: 'mobileTruck',
       description: 'Modern Hawaiian cuisine in D.C. Catering, pop-ups, food truck, and UberEATS!',
@@ -80,6 +93,7 @@ module.exports = {
       consecutiveDaysInactive: -1,
       categories: ['Hawaiian', 'Poke', 'Casual', 'Seafood'],
     }, {
+      _id: vendor6Id,
       name: 'Arepa Crew',
       type: 'mobileTruck',
       description: 'A taste of Venezuela for the Washington Metropolitan area!',
@@ -100,6 +114,7 @@ module.exports = {
       consecutiveDaysInactive: -1,
       categories: ['South American', 'Venezuelan', 'Arepa', 'Comfort Food', 'Street Food'],
     }, {
+      _id: vendor7Id,
       name: 'Astro Donuts',
       type: 'mobileTruck',
       description: "Fried chicken and doughnuts in the nation's capital, Falls Church, VA and a pretty awesome food truck on a corner near you. NOW OPEN in Los Angeles!",
@@ -120,6 +135,7 @@ module.exports = {
       consecutiveDaysInactive: -1,
       categories: ['American', 'Donuts', 'Fried Chicken', 'Comfort Food', 'Street Food'],
     }, {
+      _id: vendor8Id,
       name: 'Ball or Nothing',
       type: 'mobileTruck',
       description: 'Balls on Wheels hitting a spot near you. We have something for everyone. If everyone likes balls.',
@@ -132,7 +148,7 @@ module.exports = {
       profileImageLink: 'https://pbs.twimg.com/profile_images/730417770039414785/xOgGK3FM_400x400.jpg',
       yelpId: 'ball-or-nothing-washington',
       twitterID: '488727238',
-      tweetHistory: [tweet7Id],
+      tweetHistory: [tweet8Id],
       locationHistory: [location5Id],
       userLocationHistory: [],
       comments: [],
@@ -180,6 +196,7 @@ module.exports = {
       consecutiveDaysInactive: -1,
       categories: ['Fast Food', 'American', 'Comfort Food', 'Soul Food'],
     }, {
+      _id: vendor4Id,
       name: 'Chick-fil-A Mobile',
       type: 'mobileTruck',
       description: 'The #1 quick service food truck in the DMV!!',
@@ -200,6 +217,7 @@ module.exports = {
       consecutiveDaysInactive: -1,
       categories: ['Fast Food', 'American', 'Comfort Food', 'Meat', 'Chicken'],
     }, {
+      _id: vendor2Id,
       name: 'Balkanik Taste',
       type: 'mobileTruck',
       description: 'Balkanik Taste is a family owned and operated business. We are 100% dedicated to our customers, giving them the best services in the Metro Washington area.',
@@ -219,6 +237,7 @@ module.exports = {
       consecutiveDaysInactive: 4,
       categories: ['Balkan', 'Mediterranean', 'Hearty', 'Meat'],
     }, {
+      _id: vendor3Id,
       name: 'The Big Cheese',
       type: 'mobileTruck',
       description: 'Purveyors of fine grilled cheeses since 2010',
@@ -254,6 +273,7 @@ module.exports = {
   tweets: [
     {
       _id: tweet1Id,
+      vendorID: vendor1Id,
       tweetID: 'laks3n',
       date: new Date('2016-05-18T16:00:00Z'),
       text: 'We are at Farragut Square',
@@ -268,7 +288,8 @@ module.exports = {
       usedForLocation: false,
     }, {
       _id: tweet2Id,
-      tweetID: '125fake',
+      vendorID: vendor2Id,
+      tweetID: '124fake',
       date: new Date('2016-05-18T16:00:00Z'),
       text: 'We are in China Town',
       location: {
@@ -282,6 +303,7 @@ module.exports = {
       usedForLocation: false,
     }, {
       _id: tweet3Id,
+      vendorID: vendor3Id,
       tweetID: '124fake',
       date: new Date('2016-05-18T16:00:00Z'),
       text: 'We are in China Town',
@@ -296,6 +318,7 @@ module.exports = {
       usedForLocation: false,
     }, {
       _id: tweet4Id,
+      vendorID: vendor4Id,
       tweetID: '135Fake',
       date: new Date('2018-04-12T12:10:00Z'),
       text: 'Rosslyn Today Yes',
@@ -310,6 +333,7 @@ module.exports = {
       usedForLocation: false,
     }, {
       _id: tweet5Id,
+      vendorID: vendor5Id,
       tweetID: '136Fake',
       date: new Date('2018-04-12T12:10:00Z'),
       text: 'Farragut Wow Yes',
@@ -324,6 +348,7 @@ module.exports = {
       usedForLocation: false,
     }, {
       _id: tweet6Id,
+      vendorID: vendor6Id,
       tweetID: '137Fake',
       date: new Date('2018-04-12T12:10:00Z'),
       text: 'Farragut Yes',
@@ -338,7 +363,23 @@ module.exports = {
       usedForLocation: false,
     }, {
       _id: tweet7Id,
+      vendorID: vendor7Id,
       tweetID: '138Fake',
+      date: new Date('2018-04-12T12:10:00Z'),
+      text: 'Capital One Arena today',
+      location: {
+        locationDate: new Date('2018-04-12T12:10:00Z'),
+        accuracy: 0,
+        address: '700 G St NW, Washington, DC 20001',
+        city: 'dc',
+        neighborhood: 'chinatown',
+        coordinates: [38.898482, -77.021965],
+      },
+      usedForLocation: false,
+    }, {
+      _id: tweet8Id,
+      vendorID: vendor8Id,
+      tweetID: '139Fake',
       date: new Date('2018-04-12T12:10:00Z'),
       text: 'Capital One Arena today',
       location: {
@@ -403,6 +444,16 @@ module.exports = {
       matchMethod: 'Tweet location',
       tweetID: '138Fake',
       coordinates: [38.898482, -77.021965],
-    }
+    }, {
+      _id: location6Id,
+      locationDate: new Date('2018-04-12T12:10:00Z'),
+      accuracy: 0,
+      address: '700 G St NW, Washington, DC 20001',
+      city: 'dc',
+      neighborhood: 'chinatown',
+      matchMethod: 'Tweet location',
+      tweetID: '139Fake',
+      coordinates: [38.898482, -77.021965],
+    },
   ],
 };

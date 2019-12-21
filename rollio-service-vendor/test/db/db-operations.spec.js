@@ -110,7 +110,9 @@ describe('DB Operations', () => {
       beforeEach((done) => {
         seed.runSeed().then(async () => {
           regionID = await Region.findOne().then(region => region._id);
-          vendor = await Vendor.findOne({ regionID: await regionID });
+          vendor = await Vendor.findOne({ 
+            regionID: await regionID, 'locationHistory.0': { '$exists': true }, 'userLocationHistory.0': { '$exists': true } 
+          });
           locationID = vendor.locationHistory[vendor.locationHistory.length - 1]._id;
           userLocationID = vendor.userLocationHistory[vendor.userLocationHistory.length - 1]._id;
           done();

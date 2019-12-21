@@ -31,7 +31,7 @@ describe('Region Routes', () => {
           .get(`/region/${regionID}`)
           .end((err, res) => {
             expect(res).to.have.status(200);
-            expect(res.body._id).to.have.same.id(regionID);
+            expect(String(res.body._id)).to.equal(String(regionID));
             done();
           });
       });
@@ -53,8 +53,7 @@ describe('Region Routes', () => {
   });
 
   after((done) => {
-    seed.emptyRegions()
-      .then(() => seed.emptyVendors())
+    seed.emptySeed()
       .then(() => done());
   });
 });

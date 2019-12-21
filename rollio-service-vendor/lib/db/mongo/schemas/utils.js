@@ -1,3 +1,4 @@
+// DEPENDENCIES
 const PhoneNumber = require('awesome-phonenumber');
 
 const phoneNumberValidate = (number) => {
@@ -5,9 +6,15 @@ const phoneNumberValidate = (number) => {
   if (number === '') {
     return true;
   }
-  // Region Code currently only US
-  const pn = new PhoneNumber(number, 1);
-  return pn.isValid();
+  try {
+    // Region Code currently only US
+    const pn = new PhoneNumber(number, '1');
+    return pn.isValid();
+  } catch (err) {
+    console.error(err)
+    return false
+  }
+
 };
 
 module.exports = {
