@@ -174,6 +174,8 @@ const useUpdateMapMarkers = (props: any) => {
                 let updatedVendorsDisplayedSingle = state.regionMap.vendorsDisplayedSingle;
                 // Stand in for state.regionMap.vendorsDisplayedGroup
                 let updatedVendorsDisplayedGroup = state.regionMap.vendorsDisplayedGroup;
+                // Stand in for 
+                let updatedSingleVendorMarkers = { ...singleVendorMarkers }
 
                 // If current vendor leaving group makes current group a single vendor
                 // @ts-ignore
@@ -191,7 +193,7 @@ const useUpdateMapMarkers = (props: any) => {
                     setGroupVendorMarkers(updatedGroupVendorMakers);
 
                     // 2. Move current groupVendorMarker in singleVendorMarker State
-                    const updatedSingleVendorMarkers = { ...singleVendorMarkers, [vendorStayingData.vendorId]: currentVendorMarker };
+                    updatedSingleVendorMarkers = { ...updatedSingleVendorMarkers, [vendorStayingData.vendorId]: currentVendorMarker };
                     setSingleVendorMarkers(updatedSingleVendorMarkers);
 
                     // 3. Update new singleVendorMarker to not have number showing on marker
@@ -222,7 +224,6 @@ const useUpdateMapMarkers = (props: any) => {
                         iteratedVendorMarker.remove()
 
                         // 2. Remove single vendor marker from singleVendorMarkers
-                        const updatedSingleVendorMarkers = { ...singleVendorMarkers }
                         delete updatedSingleVendorMarkers[key]
                         setSingleVendorMarkers(updatedSingleVendorMarkers)
 
@@ -328,7 +329,7 @@ const useUpdateMapMarkers = (props: any) => {
                 const marker = addSingleVendorToMap(state.data.vendorsAll[currentVendorID], map)
 
                 // 5. Add new single vendor marker to singleVendorMarkers
-                const updatedSingleVendorMarkers = { ...singleVendorMarkers, [currentVendorID]: marker }
+                updatedSingleVendorMarkers = { ...updatedSingleVendorMarkers, [currentVendorID]: marker }
                 setSingleVendorMarkers(updatedSingleVendorMarkers)
 
                 return
