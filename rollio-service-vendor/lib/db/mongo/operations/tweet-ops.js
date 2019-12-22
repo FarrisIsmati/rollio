@@ -10,5 +10,12 @@ module.exports = {
     },
     async getVendorsForFiltering() {
         return Vendor.find({}).select('name _id').sort([['name', 1]]);
+    },
+    async getTweetWithPopulatedVendor(id) {
+        return Tweet.findById(id).populate('vendorID');
+    },
+    async deleteTweetLocation(id) {
+        // TODO: also do logic to update the Vendor to dailyActive false and remove the location from the locationHistory
+        return Tweet.updateOne({_id: id}, { location: null }).populate('vendorID');
     }
 };

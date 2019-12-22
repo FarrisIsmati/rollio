@@ -23,7 +23,9 @@ const {
 
 const {
   getAllTweets,
-  getVendorsForFiltering
+  getVendorsForFiltering,
+  getTweetWithPopulatedVendor,
+  deleteTweetLocation
 } = require('../../db/mongo/operations/tweet-ops');
 
 // Caching data happens on get requests in the middleware,
@@ -303,6 +305,30 @@ const tweetRouteOps = {
     }
     getVendorsForFiltering(req.query).then(vendors => {
       res.json({vendors});
+    }).catch(err => {
+      console.error(err);
+      res.send(401, 'Error fetching vendors');
+    })
+  },
+  getTweetWithPopulatedVendor: async (req, res) => {
+    // TODO: limit to not just any user, but only an admin!
+    if (!req.user) {
+      res.send(401, 'User Not Authenticated');
+    }
+    getTweetWithPopulatedVendor(req.params.tweetId).then(tweet => {
+      res.json({tweet});
+    }).catch(err => {
+      console.error(err);
+      res.send(401, 'Error fetching vendors');
+    })
+  },
+  deleteLocation: async (req, res) => {
+    // TODO: limit to not just any user, but only an admin!
+    if (!req.user) {
+      res.send(401, 'User Not Authenticated');
+    }
+    deleteTweetLocation(req.params.tweetId).then(tweet => {
+      res.json({tweet});
     }).catch(err => {
       console.error(err);
       res.send(401, 'Error fetching vendors');

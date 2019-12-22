@@ -118,15 +118,15 @@ const TweetTable = (props:any) => {
             accessor: (d:any) => d.usedForLocation ? 'Yes' : 'No'
         },
         {
-            id: 'link',
-            Header: 'Link',
+            id: 'actions',
+            Header: 'Actions',
             accessor: (d:any) => ({...d}),
             Cell: (props:any) => (
                 <button
                 id={props.id}
                 onClick={() => goToTweetPage(props.value._id)}
                 >
-                Use for location
+                Edit Tweet
             </button>
             )
         }
