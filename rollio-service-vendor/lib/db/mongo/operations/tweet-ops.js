@@ -15,7 +15,22 @@ module.exports = {
         return Tweet.findById(id).populate('vendorID');
     },
     async deleteTweetLocation(id) {
-        // TODO: also do logic to update the Vendor to dailyActive false and remove the location from the locationHistory
+        // TODO
+        /*
+            1. remove location from locationHistory
+            2. set overriden key to true on the location (or some other key...need to add it)
+            3. set dailyActive to false on the tweet (if it is today)
+         */
+        return Tweet.updateOne({_id: id}, { location: null }).populate('vendorID');
+    },
+    async createTweetLocation(id, newLocationData) {
+        // TODO
+        /*
+            1. deleteTweetLocation (if necessary)
+            2. create location
+            3. add location reference to the top of tweetLocationHistory
+            4. set dailyActive to true (if necessary)
+         */
         return Tweet.updateOne({_id: id}, { location: null }).populate('vendorID');
     }
 };

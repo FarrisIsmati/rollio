@@ -8,16 +8,16 @@ import "react-datepicker/dist/react-datepicker.css";
 import axios, {AxiosResponse} from "axios";
 import {fetchUserAsync} from "../../redux/actions/user-actions";
 import moment from 'moment';
-
+import Autocomplete from 'react-google-autocomplete';
 
 const UpdateLocation = (props:any) => {
     const dispatch = useDispatch();
     const [loading, setLoading] = useState<boolean>(true);
     const [tweet, setTweet] = useState<any>(null);
-    const [searching, setSearching] = useState<boolean>(true);
+    const [searchedLocation, setSearchedLocation] = useState<any>(null);
     const {user} = useGetAppState();
     const tweetUrl = `${VENDOR_API}/tweets`;
-    const fetchTweets = () => {
+    const fetchTweet = () => {
         setLoading(true);
         axios({
             method: "GET",
@@ -42,7 +42,8 @@ const UpdateLocation = (props:any) => {
             headers: {'Authorization': "Bearer " + localStorage.token}
         })
             .then((res: AxiosResponse<any>) => {
-                // TODO: might need to also update the state.data.allVendors
+                // TODO: need to also update the state.data.allVendors somehow
+                // TODO: show success, somehow
                 setTweet(res.data.tweet);
                 setLoading(false);
             }).catch((err:any) => {
@@ -52,18 +53,31 @@ const UpdateLocation = (props:any) => {
         })
     };
 
-    const searchForNewLocation = () => {
-        setSearching(true);
-    };
-
-    const handlePlaceChanged = () => {
+    const saveSearchedLocation = () => {
+        setLoading(true);
+        axios({
+            method: "POST",
+            data: searchedLocation,
+            url: `${tweetUrl}/createnewlocation/${props.match.params.tweetId}`,
+            headers: {'Authorization': "Bearer " + localStorage.token}
+        })
+            .then((res: AxiosResponse<any>) => {
+                // TODO: need to also update the state.data.allVendors somehow
+                // TODO: show success, somehow
+                setTweet(res.data.tweet);
+                setLoading(false);
+            }).catch((err:any) => {
+            setLoading(false);
+            console.error(err);
+            throw err;
+        })
     };
 
     useEffect(() => {
         if (user.isAuthenticated) {
-            fetchTweets();
+            fetchTweet();
         } else if(localStorage.token && localStorage.token.length) {
-            dispatch(fetchUserAsync(fetchTweets));
+            dispatch(fetchUserAsync(fetchTweet));
         } else {
             setLoading(false);
         }
@@ -104,27 +118,25 @@ const UpdateLocation = (props:any) => {
                                     </td>
                                 </tr>
                         }
-                        {
-                            usedForLocation &&
-                            <tr>
-                                <td>
-                                    <button
-                                        onClick={() => searchForNewLocation()}
-                                    >
-                                        Update the location for this tweet
-                                    </button>
-                                </td>
-                            </tr>
-                        }
                     </tbody>
                 </table>
-                {
-                    searching &&
-                    <div>
-                        SEARCHBOX
-                    </div>
-                }
-
+                {/* TODO: possibly restrict based on region of vendor */}
+                <Autocomplete
+                    style={{width: '30%'}}
+                    onPlaceSelected={(place:any) => {
+                        setSearchedLocation(place);
+                    }}
+                    types={['address']}
+                    componentRestrictions={{country: "us"}}
+                />
+                <div>
+                    <button
+                        disabled={!searchedLocation}
+                        onClick={saveSearchedLocation}
+                    >
+                        Update the location for this tweet
+                    </button>
+                </div>
             </div>
         ) :
         (

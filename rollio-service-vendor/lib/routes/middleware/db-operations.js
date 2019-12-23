@@ -25,7 +25,8 @@ const {
   getAllTweets,
   getVendorsForFiltering,
   getTweetWithPopulatedVendor,
-  deleteTweetLocation
+  deleteTweetLocation,
+  createTweetLocation
 } = require('../../db/mongo/operations/tweet-ops');
 
 // Caching data happens on get requests in the middleware,
@@ -98,6 +99,7 @@ const vendorRouteOpsUtil = {
   // Returned a remapped vendor
   // Data is used to format the get all vendors calls
   formatData: (vendor) => {
+    // TODO: this is where location gets set
     let location = null;
 
     // Check to see if the vendor was updated and has a location history
@@ -333,7 +335,19 @@ const tweetRouteOps = {
       console.error(err);
       res.send(401, 'Error fetching vendors');
     })
-  }
+  },
+    createNewLocation: async (req, res) => {
+        // TODO: limit to not just any user, but only an admin!
+        if (!req.user) {
+            res.send(401, 'User Not Authenticated');
+        }
+        createTweetLocation(req.params.tweetId, req.body).then(tweet => {
+            res.json({tweet});
+        }).catch(err => {
+            console.error(err);
+            res.send(401, 'Error fetching vendors');
+        })
+    }
 };
 
 module.exports = { checkCache, regionRouteOps, vendorRouteOps, userRouteOps, tweetRouteOps };
