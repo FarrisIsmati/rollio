@@ -7,15 +7,15 @@ const Location = mongoose.model('Location');
 const deleteTweetLocation = async _id => {
     // look up tweet
     const originalTweet = await Tweet.findById(_id).lean(true);
-    // delete the old location
-    await Tweet.updateOne({ _id }, { $unset: { location: 1 }});
     // set previously used location to overriden
-    await Location.updateOne({_id: originalTweet.location }, { $set: { overriden: true } });
+    await Location.findOneAndUpdate({_id: originalTweet.location }, { $set: { overriden: true } });
     // pull location from vendor's location history, set usedForLocation to false, and if tweet is from today, set dailyActive to false
     const tweetIsFromToday = moment(Date.now()).isSame(moment(originalTweet.date), 'days');
-    const dailyActiveUpdate = tweetIsFromToday ? { dailyActive: false } : {};
-    // TODO: figure out why this is erroring...'$set' is empty. You must specify a field like so: {$set: {<field>: ...}}
-    return Vendor.updateOne({ _id }, { $set: { ...dailyActiveUpdate, usedForLocation: false }, $pull: { locationHistory: { _id: originalTweet.location } } }).populate('vendorID').populate('location');
+    const dailyActiveUpdate = tweetIsFromToday ? { $set: { dailyActive: false }} : {};
+    // update vendor
+    await Vendor.findOneAndUpdate({ _id: originalTweet.vendorID }, { ...dailyActiveUpdate, $pull: { locationHistory: { _id: originalTweet.location } } });
+    // delete the old location and set usedForLocation to false
+    return Tweet.findOneAndUpdate({ _id }, { $unset: { location: 1 }, $set: { usedForLocation: false }}).populate('vendorID').populate('location').lean(true);
 };
 
 module.exports = {
@@ -37,15 +37,15 @@ module.exports = {
             await deleteTweetLocation(id)
         }
         const newLocation = await Location.create({ ...newLocationData, matchMethod: 'Manual from Tweet' });
-        await Vendor.updateOne({ _id: originalTweet.vendorID }, {
+        await Vendor.findOneAndUpdate({ _id: originalTweet.vendorID }, {
             $push: {
                 locationHistory: {
                     $each: [newLocation._id],
                     $position: 0
                 }
             },
-            dailyActive: true,
+            $set: { dailyActive: true },
         });
-        return Tweet.updateOne({ _id: id }, { location: newLocation._id, usedForLocation: true }).populate('vendorID').populate('location');
+        return Tweet.findOneAndUpdate({ _id: id }, { $set: { location: newLocation._id, usedForLocation: true } }).populate('vendorID').populate('location');
     }
 };
