@@ -10,6 +10,9 @@ const Tweet = mongoose.model('Tweet');
 const Location = mongoose.model('Location');
 
 module.exports = {
+  async createLocation(locationData) {
+    return Location.create(locationData);
+  },
   // Gets all vendors given a regionID
   getVendors(regionID) {
     if (!arguments.length) {
@@ -135,7 +138,7 @@ module.exports = {
       return err;
     }
     let payload = originalPayload;
-    if (['tweetHistory', 'locationHistory', 'userLocationHistory'].includes(field)) {
+    if (['tweetHistory', 'userLocationHistory'].includes(field)) {
         const createPayload = { ...originalPayload, vendorID };
         const newDocument = field === 'tweetHistory' ? await Tweet.create(createPayload) : await Location.create(createPayload);
         payload = newDocument._id;

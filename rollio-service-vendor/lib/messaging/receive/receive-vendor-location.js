@@ -101,8 +101,9 @@ const receiveTweets = async () => {
     };
 
     if (message.match) {
-      tweetPayload.location = { ...message.location, tweetID: message.tweetID };
-      await updateLocation({ ...tweetPayload.location }, region, vendor);
+      const newLocation = await vendorOps.createLocation({ ...message.location, tweetID: message.tweetID });
+      tweetPayload.location = newLocation._id;
+      await updateLocation(newLocation._id, region, vendor);
       await setVendorActive(region, vendor);
     }
 

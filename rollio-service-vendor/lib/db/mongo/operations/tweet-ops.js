@@ -1,36 +1,51 @@
+const moment = require('moment');
 const mongoose = require('../mongoose/index');
 const Tweet = mongoose.model('Tweet');
 const Vendor = mongoose.model('Vendor');
+const Location = mongoose.model('Location');
+
+const deleteTweetLocation = async _id => {
+    // look up tweet
+    const originalTweet = await Tweet.findById(_id).lean(true);
+    // delete the old location
+    await Tweet.updateOne({ _id }, { $unset: { location: 1 }});
+    // set previously used location to overriden
+    await Location.updateOne({_id: originalTweet.location }, { $set: { overriden: true } });
+    // pull location from vendor's location history, set usedForLocation to false, and if tweet is from today, set dailyActive to false
+    const tweetIsFromToday = moment(Date.now()).isSame(moment(originalTweet.date), 'days');
+    const dailyActiveUpdate = tweetIsFromToday ? { dailyActive: false } : {};
+    // TODO: figure out why this is erroring...'$set' is empty. You must specify a field like so: {$set: {<field>: ...}}
+    return Vendor.updateOne({ _id }, { $set: { ...dailyActiveUpdate, usedForLocation: false }, $pull: { locationHistory: { _id: originalTweet.location } } }).populate('vendorID').populate('location');
+};
 
 module.exports = {
     async getAllTweets(query = {}) {
         const {startDate, endDate, vendorID } = query;
         const vendorIDQuery = vendorID ? {vendorID} : {};
-        return Tweet.find({date: { $gte: startDate, $lt: endDate }, ...vendorIDQuery}).sort([['date', -1]])
+        return Tweet.find({date: { $gte: startDate, $lt: endDate }, ...vendorIDQuery}).sort([['date', -1]]).populate('location')
     },
     async getVendorsForFiltering() {
         return Vendor.find({}).select('name _id').sort([['name', 1]]);
     },
-    async getTweetWithPopulatedVendor(id) {
-        return Tweet.findById(id).populate('vendorID');
+    async getTweetWithPopulatedVendorAndLocation(id) {
+        return Tweet.findById(id).populate('vendorID').populate('location');
     },
-    async deleteTweetLocation(id) {
-        // TODO
-        /*
-            1. remove location from locationHistory
-            2. set overriden key to true on the location (or some other key...need to add it)
-            3. set dailyActive to false on the tweet (if it is today)
-         */
-        return Tweet.updateOne({_id: id}, { location: null }).populate('vendorID');
-    },
+    deleteTweetLocation,
     async createTweetLocation(id, newLocationData) {
-        // TODO
-        /*
-            1. deleteTweetLocation (if necessary)
-            2. create location
-            3. add location reference to the top of tweetLocationHistory
-            4. set dailyActive to true (if necessary)
-         */
-        return Tweet.updateOne({_id: id}, { location: null }).populate('vendorID');
+        const originalTweet = await Tweet.findById(id).lean(true);
+        if (originalTweet.location) {
+            await deleteTweetLocation(id)
+        }
+        const newLocation = await Location.create({ ...newLocationData, matchMethod: 'Manual from Tweet' });
+        await Vendor.updateOne({ _id: originalTweet.vendorID }, {
+            $push: {
+                locationHistory: {
+                    $each: [newLocation._id],
+                    $position: 0
+                }
+            },
+            dailyActive: true,
+        });
+        return Tweet.updateOne({ _id: id }, { location: newLocation._id, usedForLocation: true }).populate('vendorID').populate('location');
     }
 };

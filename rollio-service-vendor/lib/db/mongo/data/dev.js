@@ -14,6 +14,10 @@ const location3Id = ObjectId();
 const location4Id = ObjectId();
 const location5Id = ObjectId();
 const location6Id = ObjectId();
+const location7Id = ObjectId();
+const location8Id = ObjectId();
+const location9Id = ObjectId();
+const location10Id = ObjectId();
 const vendor1Id = ObjectId();
 const vendor2Id = ObjectId();
 const vendor3Id = ObjectId();
@@ -42,6 +46,9 @@ module.exports = {
       price: '$$$$$',
       rating: 5,
       twitterID: '1053649707493404678',
+      // tweetHistory: [tweet1Id],
+      // locationHistory: [location1Id],
+      // userLocationHistory: [location2Id],
       tweetHistory: [],
       locationHistory: [location2Id],
       userLocationHistory: [location3Id],
@@ -277,14 +284,7 @@ module.exports = {
       tweetID: 'laks3n',
       date: new Date('2016-05-18T16:00:00Z'),
       text: 'We are at Farragut Square',
-      location: {
-        locationDate: new Date('2018-04-12T12:10:00Z'),
-        accuracy: 3,
-        address: '28 Ist',
-        city: 'Washington, DC',
-        neighborhood: 'Farragut Square',
-        coordinates: [4.123, 1.522],
-      },
+      location: location1Id,
       usedForLocation: false,
     }, {
       _id: tweet2Id,
@@ -292,14 +292,7 @@ module.exports = {
       tweetID: '124fake',
       date: new Date('2016-05-18T16:00:00Z'),
       text: 'We are in China Town',
-      location: {
-        locationDate: new Date('2018-04-12T12:10:00Z'),
-        accuracy: 3,
-        address: '600 7th St NW',
-        city: 'Washington, DC',
-        neighborhood: 'Penn Quarter',
-        coordinates: [38.897182, -77.022013],
-      },
+      location: location3Id,
       usedForLocation: false,
     }, {
       _id: tweet3Id,
@@ -307,29 +300,19 @@ module.exports = {
       tweetID: '124fake',
       date: new Date('2016-05-18T16:00:00Z'),
       text: 'We are in China Town',
-      location: {
-        locationDate: new Date('2018-04-12T12:10:00Z'),
-        accuracy: 3,
-        address: '600 7th St NW',
-        city: 'Washington, DC',
-        neighborhood: 'Penn Quarter',
-        coordinates: [38.897182, -77.022013],
-      },
+      location: location4Id,
       usedForLocation: false,
     }, {
       _id: tweet4Id,
       vendorID: vendor4Id,
+      tweetID: '1235fake',
+      date: new Date('2016-05-18T16:00:00Z'),
+      text: 'We are in Noma',
+      location: location5Id,
       tweetID: '135Fake',
       date: new Date('2018-04-12T12:10:00Z'),
       text: 'Rosslyn Today Yes',
-      location: {
-        locationDate: new Date('2018-04-12T12:10:00Z'),
-        accuracy: 0,
-        address: 'Rosslyn, Virginia 22209',
-        city: 'arlington',
-        neighborhood: 'rosslyn',
-        coordinates: [38.897156, -77.07239],
-      },
+      location: location4Id,
       usedForLocation: false,
     }, {
       _id: tweet5Id,
@@ -337,14 +320,7 @@ module.exports = {
       tweetID: '136Fake',
       date: new Date('2018-04-12T12:10:00Z'),
       text: 'Farragut Wow Yes',
-      location: {
-        locationDate: new Date('2018-04-12T12:10:00Z'),
-        accuracy: -4,
-        address: '0185W 0800, Washington, DC 20006',
-        city: 'dc',
-        neighborhood: 'farragut square',
-        coordinates: [38.902033, -77.038995],
-      },
+      location: location7Id,
       usedForLocation: false,
     }, {
       _id: tweet6Id,
@@ -352,14 +328,7 @@ module.exports = {
       tweetID: '137Fake',
       date: new Date('2018-04-12T12:10:00Z'),
       text: 'Farragut Yes',
-      location: {
-        locationDate: new Date('2018-04-12T12:10:00Z'),
-        accuracy: -4,
-        address: '0185W 0800, Washington, DC 20006',
-        city: 'dc',
-        neighborhood: 'farragut square',
-        coordinates: [38.902033, -77.038995],
-      },
+      location: location8Id,
       usedForLocation: false,
     }, {
       _id: tweet7Id,
@@ -367,14 +336,7 @@ module.exports = {
       tweetID: '138Fake',
       date: new Date('2018-04-12T12:10:00Z'),
       text: 'Capital One Arena today',
-      location: {
-        locationDate: new Date('2018-04-12T12:10:00Z'),
-        accuracy: 0,
-        address: '700 G St NW, Washington, DC 20001',
-        city: 'dc',
-        neighborhood: 'chinatown',
-        coordinates: [38.898482, -77.021965],
-      },
+      location: location9Id,
       usedForLocation: false,
     }, {
       _id: tweet8Id,
@@ -382,14 +344,7 @@ module.exports = {
       tweetID: '139Fake',
       date: new Date('2018-04-12T12:10:00Z'),
       text: 'Capital One Arena today',
-      location: {
-        locationDate: new Date('2018-04-12T12:10:00Z'),
-        accuracy: 0,
-        address: '700 G St NW, Washington, DC 20001',
-        city: 'dc',
-        neighborhood: 'chinatown',
-        coordinates: [38.898482, -77.021965],
-      },
+      location: location10Id,
       usedForLocation: false,
     }
   ],
@@ -404,6 +359,8 @@ module.exports = {
       matchMethod: 'User Input',
       tweetID: null,
       coordinates: [39.2934, -77.1234],
+    },
+    {
     }, {
       _id: location2Id,
       locationDate: new Date('2018-04-12T12:10:00Z'),
@@ -422,8 +379,10 @@ module.exports = {
       city: 'Washington, DC',
       neighborhood: 'Penn Quarter',
       matchMethod: 'Tweet location',
-      tweetID: '124fake',
       coordinates: [38.897182, -77.022013],
+      tweetID: '124fake'
+    },
+    {
     }, {
       _id: location4Id,
       locationDate: new Date('2018-04-12T12:10:00Z'),
@@ -455,5 +414,45 @@ module.exports = {
       tweetID: '139Fake',
       coordinates: [38.898482, -77.021965],
     },
+    {
+      _id: location7Id,
+      locationDate: new Date('2018-04-12T12:10:00Z'),
+      accuracy: -4,
+      address: '0185W 0800, Washington, DC 20006',
+      city: 'dc',
+      neighborhood: 'farragut square',
+      tweetID: '136Fake',
+      coordinates: [38.902033, -77.038995],
+    },
+    {
+      _id: location8Id,
+      locationDate: new Date('2018-04-12T12:10:00Z'),
+      accuracy: -4,
+      address: '0185W 0800, Washington, DC 20006',
+      city: 'dc',
+      neighborhood: 'farragut square',
+      tweetID: '137Fake',
+      coordinates: [38.902033, -77.038995],
+    },
+    {
+      _id: location9Id,
+      locationDate: new Date('2018-04-12T12:10:00Z'),
+      accuracy: 0,
+      address: '700 G St NW, Washington, DC 20001',
+      city: 'dc',
+      neighborhood: 'chinatown',
+      tweetID: '138Fake',
+      coordinates: [38.898482, -77.021965],
+    },
+    {
+      _id: location10Id,
+      locationDate: new Date('2018-04-12T12:10:00Z'),
+      accuracy: 0,
+      address: '700 G St NW, Washington, DC 20001',
+      city: 'dc',
+      neighborhood: 'chinatown',
+      coordinates: [38.898482, -77.021965],
+      tweetID: '139Fake'
+    }
   ],
 };

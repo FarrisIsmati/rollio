@@ -5,7 +5,7 @@ const chaid = require('chaid');
 const dateTime = require('chai-datetime');
 const assertArrays = require('chai-arrays');
 const mongoose = require('../../lib/db/mongo/mongoose/index');
-
+const { ObjectId } = require('mongoose').Types;
 const { expect } = chai;
 
 // OPERATIONS
@@ -15,6 +15,7 @@ const regionOps = require('../../lib/db/mongo/operations/region-ops');
 // SCHEMAS
 const Vendor = mongoose.model('Vendor');
 const Region = mongoose.model('Region');
+const Location = mongoose.model('Location');
 
 // SEED
 const seed = require('../../lib/db/mongo/seeds/dev-seed');
@@ -110,8 +111,8 @@ describe('DB Operations', () => {
       beforeEach((done) => {
         seed.runSeed().then(async () => {
           regionID = await Region.findOne().then(region => region._id);
-          vendor = await Vendor.findOne({ 
-            regionID: await regionID, 'locationHistory.0': { '$exists': true }, 'userLocationHistory.0': { '$exists': true } 
+          vendor = await Vendor.findOne({
+            regionID: await regionID, 'locationHistory.0': { '$exists': true }, 'userLocationHistory.0': { '$exists': true }
           });
           locationID = vendor.locationHistory[vendor.locationHistory.length - 1]._id;
           userLocationID = vendor.userLocationHistory[vendor.userLocationHistory.length - 1]._id;
@@ -121,12 +122,14 @@ describe('DB Operations', () => {
 
       it('expect new coordinate object pushed into locationHistory', async () => {
         const coordinatesPayload = { locationDate: new Date('2018-02-18T16:22:00Z'), address: '28 Ist', coordinates: [1.123, 4.523] };
+        const newLocation = await Location.create({...coordinatesPayload, TweetID: 'blah'});
+
 
         const prevCoordHist = await Vendor.findOne({ _id: vendor._id })
           .then(vendorPrev => vendorPrev.locationHistory);
 
         const params = {
-          regionID, vendorID: vendor._id, field: 'locationHistory', payload: coordinatesPayload,
+          regionID, vendorID: vendor._id, field: 'locationHistory', payload: newLocation._id,
         };
         const updateCoordHistRes = await vendorOps.updateVendorPush(params)
           .then(res => res);
@@ -157,6 +160,9 @@ describe('DB Operations', () => {
 
         expect(updateCommentsRes.comments[0].name).to.be.equal(commentPayload.name);
         expect(updateCommentsRes.comments[0].text).to.be.equal(commentPayload.text);
+        // just checking that it populates tweets correctly
+        expect(updateCommentsRes.tweetHistory.length).to.be.equal(1);
+        expect(updateCommentsRes.tweetHistory.every(tweet => tweet.text)).to.be.true;
       });
 
       it('expect new tweet to be added to tweetHistory', async () => {
@@ -164,12 +170,13 @@ describe('DB Operations', () => {
           tweetID: '1xtwittera7v2',
           date: new Date('2017-02-18T08:20:00Z'),
           text: 'test tweet',
-          location: {
-            locationDate: new Date('2017-02-18T08:20:00Z'),
-            coordinates: [38.24561, -77.86542],
-            address: '123 street',
-            accuracy: 1,
-          },
+          location: new ObjectId(),
+          // location: {
+          //   locationDate: new Date('2017-02-18T08:20:00Z'),
+          //   coordinates: [38.24561, -77.86542],
+          //   address: '123 street',
+          //   accuracy: 1,
+          // }
         };
 
         const prevDailyTweets = await Vendor.findOne({ _id: vendor._id })

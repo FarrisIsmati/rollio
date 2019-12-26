@@ -55,9 +55,17 @@ const UpdateLocation = (props:any) => {
 
     const saveSearchedLocation = () => {
         setLoading(true);
+        const { locationDate, tweetID } = tweet;
+        const data = {
+            locationDate,
+            tweetID,
+            address: searchedLocation.formatted_address,
+            city: searchedLocation.address_components.find((component:any) => component.types.includes('locality') || component.types.includes('political')).long_name,
+            coordinates: [searchedLocation.geometry.location.lat(), searchedLocation.geometry.location.lng()]
+        };
         axios({
             method: "POST",
-            data: searchedLocation,
+            data,
             url: `${tweetUrl}/createnewlocation/${props.match.params.tweetId}`,
             headers: {'Authorization': "Bearer " + localStorage.token}
         })
@@ -105,6 +113,10 @@ const UpdateLocation = (props:any) => {
                         <tr>
                             <td>UsedForLocation</td>
                             <td>{tweet.usedForLocation ? 'Yes' : 'No'}</td>
+                        </tr>
+                        <tr>
+                            <td>Location</td>
+                            <td>{tweet.location ? tweet.location.address : 'N/A'}</td>
                         </tr>
                         {
                             usedForLocation &&
