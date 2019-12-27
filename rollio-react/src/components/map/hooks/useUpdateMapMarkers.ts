@@ -36,7 +36,6 @@ const useUpdateMapMarkers = (props: any) => {
     // Custom use effect which will only run the update marker coordinates code if it's necessary
     // For example if the coordinates of the current & previous iterations are the same it will not run, unless it's another vendor
     useEffectMarkerComparisonObject(() => {
-        console.log('DING DONG DING DONG')
         if (currentVendorID) {
             const currentVendorData = state.data.vendorsAll[currentVendorID]
             const currentVendorCoords = currentVendorData.location.coordinates;
@@ -166,7 +165,6 @@ const useUpdateMapMarkers = (props: any) => {
             })()
             
             if (groupVendorMarkers !== null && isCurrentVendorInGroup.continue) {
-                console.log('CASE2')
                 const { groupID, index, currentDisplayedVendorData } = isCurrentVendorInGroup;
                 // @ts-ignore: Create type for this in future
                 const currentVendorMarker = groupVendorMarkers[groupID];
@@ -267,14 +265,12 @@ const useUpdateMapMarkers = (props: any) => {
                         // 8. Add grouped vendors to groupVendorMarkers state
                         const newMarkerID = uuid()
                         setGroupVendorMarkers({ ...groupVendorMarkers, [newMarkerID]: newMarker })
-                        console.log('b4')
-                        console.log(updatedVendorsDisplayedGroup)
-                        // 8. Add both vendors to vendorsDisplayedGroup Redux
+
+                        // 9. Add both vendors to vendorsDisplayedGroup Redux
                         updatedVendorsDisplayedGroup = { ...updatedVendorsDisplayedGroup, [newMarkerID]: [currentDisplayedVendorData, iteratedDisplayedVendorData] }
                         const payloadGroupNew = { vendorsDisplayedGroup: updatedVendorsDisplayedGroup }
                         dispatch(setVendorsDisplayedGroup(payloadGroupNew))
-                        console.log('after')
-                        console.log(updatedVendorsDisplayedGroup)
+
                         return
                     } 
                 }
@@ -457,11 +453,7 @@ const useEffectMarkerComparisonObject = (fn:any, deps:MarkerComparisonObject) =>
         {
             isSame = true;
         }
-        console.log(prevDeps.current)
-        console.log(`${prevDeps.current.currentVendorID} === ${deps.currentVendorID}`)
-        console.log(`${prevDeps.current.coordinates.lat} === ${deps.coordinates.lat}`)
-        console.log(`${prevDeps.current.coordinates.long} === ${deps.coordinates.long}`)
-        console.log(isSame)
+
         if (isFirst.current || !isSame) {
             fn();
         }
