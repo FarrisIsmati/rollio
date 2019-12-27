@@ -20,7 +20,7 @@ const useUpdateMapMarkers = (props: any) => {
     // Way to get data from tweet stream without storing it in Redux
     const [globalState] = useCustom();
     const dispatch = useDispatch();
-    let state = useGetAppState();
+    const state = useGetAppState();
     const currentVendorID = globalState.vendorID;
 
     const {
@@ -36,6 +36,7 @@ const useUpdateMapMarkers = (props: any) => {
     // Custom use effect which will only run the update marker coordinates code if it's necessary
     // For example if the coordinates of the current & previous iterations are the same it will not run, unless it's another vendor
     useEffectMarkerComparisonObject(() => {
+        console.log('DING DONG DING DONG')
         if (currentVendorID) {
             const currentVendorData = state.data.vendorsAll[currentVendorID]
             const currentVendorCoords = currentVendorData.location.coordinates;
@@ -45,9 +46,6 @@ const useUpdateMapMarkers = (props: any) => {
             // --------------------------------------------
             // @ts-ignore: singleVendorMarkers wont be null
             if (singleVendorMarkers !== null && singleVendorMarkers[currentVendorID]) {
-                console.log('!!!!!!!!!!!!!!!!!!!!')
-                console.log('UPDATE A SINGLE VENDOR MARKER')
-                console.log('!!!!!!!!!!!!!!!!!!!!')
                 // If new coordinates are the same as another single vendor's coordinates
                 for (const key in singleVendorMarkers) {
                     const iteratedVendorData = state.data.vendorsAll[key]
@@ -88,6 +86,9 @@ const useUpdateMapMarkers = (props: any) => {
                         dispatch(setVendorsDisplayedGroup(payloadGroup))
                         
                         return
+                    } else if (key === currentVendorID && iteratedVendorMarkerCoords.lng === currentVendorCoords.long && iteratedVendorMarkerCoords.lat === currentVendorCoords.lat) {
+                        // Do nothing because it's the same location the vendor is already in
+                        return
                     }
                 }
 
@@ -107,6 +108,8 @@ const useUpdateMapMarkers = (props: any) => {
                         // 3. Remove single vendor from vendorsDisplayedSingle Redux
                         // Getting a copy of the redux data before it's removed to use later for the new group
                         const currentDisplayedVendorData = { ...state.regionMap.vendorsDisplayedSingle[currentVendorID] }
+                        console.log(key)
+                        console.log(state.regionMap.vendorsDisplayedGroup)
                         const iteratedDisplayedVendorsData =  [ ...state.regionMap.vendorsDisplayedGroup[key] ]
 
                         const updatedVendorsDisplayedSingle = { ...state.regionMap.vendorsDisplayedSingle }
@@ -126,7 +129,7 @@ const useUpdateMapMarkers = (props: any) => {
                         return
                     }
                 }
-                
+
                 // If new coordinates are going to a completely new coordinate
                 // @ts-ignore: singleVendorMarkers wont be null
                 singleVendorMarkers[currentVendorID]
@@ -163,6 +166,7 @@ const useUpdateMapMarkers = (props: any) => {
             })()
             
             if (groupVendorMarkers !== null && isCurrentVendorInGroup.continue) {
+                console.log('CASE2')
                 const { groupID, index, currentDisplayedVendorData } = isCurrentVendorInGroup;
                 // @ts-ignore: Create type for this in future
                 const currentVendorMarker = groupVendorMarkers[groupID];
@@ -180,6 +184,13 @@ const useUpdateMapMarkers = (props: any) => {
                 // If current vendor leaving group makes current group a single vendor
                 // @ts-ignore
                 if (updatedVendorsDisplayedGroup[groupID].length === 2) {
+                    // @ts-ignore
+                    const currentVendorMarkerCoords = groupVendorMarkers[groupID].getLngLat();
+                    if (currentVendorMarkerCoords.lng === currentVendorCoords.long && currentVendorMarkerCoords.lat === currentVendorCoords.lat) {
+                        // Do nothing because it's the same location the vendor is already in
+                        return;
+                    }
+
                     // 1. Get data of vendor not to be relocated
                     // @ts-ignore
                     const currentDisplayedVendorGroupData = { ...updatedVendorsDisplayedGroup[groupID] };
@@ -256,12 +267,14 @@ const useUpdateMapMarkers = (props: any) => {
                         // 8. Add grouped vendors to groupVendorMarkers state
                         const newMarkerID = uuid()
                         setGroupVendorMarkers({ ...groupVendorMarkers, [newMarkerID]: newMarker })
-
+                        console.log('b4')
+                        console.log(updatedVendorsDisplayedGroup)
                         // 8. Add both vendors to vendorsDisplayedGroup Redux
                         updatedVendorsDisplayedGroup = { ...updatedVendorsDisplayedGroup, [newMarkerID]: [currentDisplayedVendorData, iteratedDisplayedVendorData] }
                         const payloadGroupNew = { vendorsDisplayedGroup: updatedVendorsDisplayedGroup }
                         dispatch(setVendorsDisplayedGroup(payloadGroupNew))
-                        
+                        console.log('after')
+                        console.log(updatedVendorsDisplayedGroup)
                         return
                     } 
                 }
@@ -302,7 +315,7 @@ const useUpdateMapMarkers = (props: any) => {
                         return
                     }
                 }
-                
+
                 // If new coordinates is going to a completely new coordinate
                 if (oldGroupExist) {
                     // 1. Remove current vendor from current vendorsDisplayedGroup Redux
@@ -427,7 +440,7 @@ const markerObjectComparisonState = (state:any, currentVendorID:string) => {
     } 
     return {
         currentVendorID: 'undefined',
-        coordinates: {lat: 0, lng: 0}
+        coordinates: {lat: 0, long: 0}
     }
 }
 
@@ -435,17 +448,20 @@ const markerObjectComparisonState = (state:any, currentVendorID:string) => {
 const useEffectMarkerComparisonObject = (fn:any, deps:MarkerComparisonObject) => {
     const isFirst = useRef(true);
     const prevDeps = useRef(deps);
-
     useEffect(() => {
         let isSame = false;
         if (
             prevDeps.current.currentVendorID === deps.currentVendorID && 
             prevDeps.current.coordinates.lat === deps.coordinates.lat && 
-            prevDeps.current.coordinates.lng === deps.coordinates.lng) 
+            prevDeps.current.coordinates.long === deps.coordinates.long) 
         {
             isSame = true;
         }
-
+        console.log(prevDeps.current)
+        console.log(`${prevDeps.current.currentVendorID} === ${deps.currentVendorID}`)
+        console.log(`${prevDeps.current.coordinates.lat} === ${deps.coordinates.lat}`)
+        console.log(`${prevDeps.current.coordinates.long} === ${deps.coordinates.long}`)
+        console.log(isSame)
         if (isFirst.current || !isSame) {
             fn();
         }

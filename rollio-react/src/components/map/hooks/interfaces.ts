@@ -1,5 +1,5 @@
 // INTERFACES
 export interface MarkerComparisonObject  {
-    coordinates: {lat: number, lng: number},
+    coordinates: {lat: number, long: number},
     currentVendorID: string
   }
