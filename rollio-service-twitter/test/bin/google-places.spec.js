@@ -19,7 +19,7 @@ describe('Google Places', async () => {
 
     it('expect googlePlaces search to resolve an array of length 1 given the address h and 22nd, dc', async () => {
       const res = await googlePlaces.search('h and 22nd, dc');
-      expect(res.length).to.be.equal(1);
+      expect(res.length).to.be.equal(2);
     });
 
   //   it('expect googlePlaces search to resolve the address "22nd St NW, Washington, DC, USA"', async () => {
