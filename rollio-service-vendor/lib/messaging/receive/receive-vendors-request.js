@@ -1,6 +1,6 @@
 // DEPENDENCIES
 const mq = require('../index');
-const logger = require('../../log/index');
+const logger = require('../../log/index')('messaging/receive/receive-vendors-request');
 
 // LIB
 const sendVendorTwitterIDs = require('../send/send-vendor-twitterid');

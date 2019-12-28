@@ -1,5 +1,5 @@
 // DEPENDENCIES
-const client = require('../../db/redis/index');
+const { client } = require('../../redis/index');
 const config = require('../../../config');
 
 // Limit this route to one request, gets reset

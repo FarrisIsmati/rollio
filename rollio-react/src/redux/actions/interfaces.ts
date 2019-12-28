@@ -26,6 +26,16 @@ export interface AllVendorsPayload {
   regionId: string
 }
 
+export interface UpdateVendorPayload {
+  location: { lat: number, long: number },
+  vendorID: string,
+  isActive: boolean
+}
+
+export interface UpdateDailyActiveVendorsPayload {
+  vendorID: string
+}
+
 // Pin on map
 export interface PinPayload {
   vendorsDisplayedSingle: { [key: string]: Pin },

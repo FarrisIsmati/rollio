@@ -6,7 +6,7 @@ const sinonChai = require('sinon-chai');
 const sinonExpressMock = require('sinon-express-mock');
 
 const { mockReq, mockRes } = sinonExpressMock;
-const client = require('../../lib/db/redis/index');
+const { client } = require('../../lib/redis/index');
 const { routeLimitVendorOp } = require('../../lib/routes/middleware/rate-limit');
 
 chai.use(sinonChai);

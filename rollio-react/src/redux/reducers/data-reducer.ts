@@ -4,6 +4,8 @@ import {
     RECIEVE_VENDOR_DATA,
     RECIEVE_ALL_VENDORS,
     POST_VENDOR_COMMENT,
+    UPDATE_VENDOR,
+    UPDATE_DAILY_ACTIVE_VENDORS
 } from "../constants/constants"
 
 // INTERFACES
@@ -12,7 +14,7 @@ import { DataDefaultState } from "./interfaces";
 const defaultState:DataDefaultState = {
     regionID: '',
     regionName: '',
-    dailyActiveVendors: [],
+    dailyActiveVendors: new Set(),
     regionCoordinates: {
         lat: null,
         long: null
@@ -39,6 +41,8 @@ const defaultState:DataDefaultState = {
             address: '',
             neighborhood: '',
             municipality: '',
+            matchMethod: '',
+            tweetID: null,
             accuracy: 0,
         },
         isActive: false,
@@ -62,6 +66,18 @@ export function dataReducer(state = defaultState, action: any) {
         return {
             ...state,
             vendorsAll: { ...action.payload }
+        }
+    case UPDATE_VENDOR:
+        const vendorsAll = { ...state.vendorsAll }
+        
+        return {
+            ...state,
+            vendorsAll: { ...vendorsAll, [action.payload.vendorID]: { ...vendorsAll[action.payload.vendorID], location: action.payload.location, isActive: action.payload.isActive } }
+        }
+    case UPDATE_DAILY_ACTIVE_VENDORS:
+        return {
+            ...state,
+            dailyActiveVendors: state.dailyActiveVendors.add(action.payload.vendorID)
         }
     case POST_VENDOR_COMMENT:
         return {
