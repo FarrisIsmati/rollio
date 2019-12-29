@@ -13,8 +13,8 @@ const useLoadRegion = (props:any) => {
     const dispatch = useDispatch();
 
     // Gets vendor profile data, if it fails redirects to an error page
-    const getRegionDataFromRegionId = () => {
-        const regionId = getRouteIds(props).regionId;
+    const getRegionDataFromRegionName = () => {
+        const regionName = getRouteIds(props).regionName;
 
         // Call Back function that will reroute incase something goes awry in the fetRegionDataAsync method
         const reRouteCb = () => {
@@ -22,7 +22,7 @@ const useLoadRegion = (props:any) => {
         }
 
         const payload = {
-            regionId,
+            regionName,
             shouldFetchVendors: true,
             cb: reRouteCb
         }
@@ -32,7 +32,7 @@ const useLoadRegion = (props:any) => {
 
     useEffect(() => {
         // On mount get the region data
-        getRegionDataFromRegionId();
+        getRegionDataFromRegionName();
     }, [])
 }
 
