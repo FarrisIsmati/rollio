@@ -8,7 +8,12 @@ import { getRouteIds } from '../../../util/index';
 // REDUX
 import { requestPostVendorComment } from '../../../redux/actions/data-actions';
 
+// HOOKS
+import useGetAppState from '../../common/hooks/use-get-app-state';
+
 const useCommentAdd = (props:any) => {
+    const state = useGetAppState();
+
     const [commentActive, setCommentActive] = useState<boolean>(false);
     const [commentBody, setCommentBody] = useState<string>('');
     const [commentName, setCommentName] = useState<string>('');
@@ -71,7 +76,7 @@ const useCommentAdd = (props:any) => {
             return
         }
 
-        const regionId = getRouteIds(props).regionId;
+        const regionId = state.data.regionId;
         const vendorId = getRouteIds(props).vendorId;
 
         try {

@@ -196,7 +196,7 @@ export function fetchRegionDataAsync(payload:RegionDataAsyncPayload) {
             dispatch(recieveRegionData(res.data));
             dispatch(fetchRegionDataSuccess());
             if ( shouldFetchVendors ) {
-                dispatch(fetchAllVendorsAsync({regionId}))
+                dispatch(fetchAllVendorsAsync({regionId: res.data._id}))
             }
         })
         .catch((err:AxiosError) => {

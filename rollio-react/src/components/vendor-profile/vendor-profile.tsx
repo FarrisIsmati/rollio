@@ -14,8 +14,10 @@ import useGetVendorData from './hooks/use-get-vendor-data';
 import useGetAppState from '../common/hooks/use-get-app-state';
 
 const VendorProfile = (props:any) => {
+  const state = useGetAppState();
+
   useGetVendorData({ 
-    regionId: getRouteIds(props).regionId,
+    regionId: state.data.regionId,
     vendorId: getRouteIds(props).vendorId,
     history: props.history
   })

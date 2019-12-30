@@ -42,8 +42,8 @@ const App:FC = () => {
         <div className="App">
           <Navbar/>
           <Switch>
-            <Route exact path="/region/:regionId" component={ RegionHome } />
-            <Route exact path="/region/:regionId/vendor/:vendorId" component={ VendorProfile } />
+            <Route exact path="/region/:regionName" component={ RegionHome } />
+            {/* <Route exact path="/region/:regionId/vendor/:vendorId" component={ VendorProfile } /> */}
             <Route exact path="/login" component={ LoginOut } />
             <Route exact path="/tweets" component={ TweetTable } />
             <Route exact path="/tweets/:tweetId" component={ UpdateLocation } />
