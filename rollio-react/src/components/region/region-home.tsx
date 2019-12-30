@@ -3,14 +3,20 @@ import React, { useEffect } from 'react';
 
 // COMPONENTS
 import Map from '../map/map';
+import RegionMenuDesktop from './region-menu-desktop';
+import RegionMenuMobile from './region-menu-mobile'
 
 // HOOKS
 import useLoadRegion from './hooks/use-load-region';
 import useGetAppState from '../common/hooks/use-get-app-state';
 import useProcessMapPoints from './hooks/use-process-map-points';
 import useUpdateRegionVendorData from './hooks/use-update-region-vendor-data';
+import useWindowWidth from '../common/hooks/use-window-width';
 
 const RegionHome = (props:any) => {
+  // Gets width to render desktop or tablet/mobile version of region menu
+  const width = useWindowWidth();
+
   // Load the region
   useLoadRegion(props);
   
@@ -29,7 +35,10 @@ const RegionHome = (props:any) => {
   const map = isRegionLoaded && areVendorsLoaded ? <Map mapType='region' mapData={ state.regionMap }/> : <p>loading</p>
   
   return (
-    <div className='regionhome__wrapper'>
+    <div className={ width > 768 ? 'region__wrapper' : 'region__wrapper_mobile' }>
+      { /* Mobile Responsiveness */ }
+      { width > 768 ? <RegionMenuDesktop /> : <RegionMenuMobile /> }
+      
       { map }
     </div>
   );

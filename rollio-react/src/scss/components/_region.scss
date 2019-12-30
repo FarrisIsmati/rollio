@@ -1,0 +1,15 @@
+.region {
+    &__wrapper {
+        display: flex;
+        height: 100%;
+
+        &_mobile {
+            @extend .region__wrapper;
+            flex-direction: column;
+        }
+    }
+
+    &__menu_wrapper {
+        width: 400px;
+    }
+}

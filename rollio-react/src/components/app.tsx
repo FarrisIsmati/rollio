@@ -40,7 +40,7 @@ const App:FC = () => {
     <Provider store={store}>
       <BrowserRouter>
         <div className="App">
-          <Navbar/>
+          {/* <Navbar/> */}
           <Switch>
             <Route exact path="/region/:regionName" component={ RegionHome } />
             {/* <Route exact path="/region/:regionId/vendor/:vendorId" component={ VendorProfile } /> */}
