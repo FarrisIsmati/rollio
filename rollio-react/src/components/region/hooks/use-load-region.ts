@@ -16,7 +16,7 @@ const useLoadRegion = (props:any) => {
     const getRegionDataFromRegionName = () => {
         const regionName = getRouteIds(props).regionName;
 
-        // Call Back function that will reroute incase something goes awry in the fetRegionDataAsync method
+        // Call Back function that will reroute incase something goes awry in the fetchRegionDataAsync method
         const reRouteCb = () => {
             props.history.replace('/invalid');
         }
