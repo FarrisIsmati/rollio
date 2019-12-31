@@ -17,7 +17,6 @@ import {
 import rootReducer from '../redux/reducers/root-reducer';
 
 // COMPONENTS
-import Navbar from './navbar/navbar';
 import VendorProfile from './vendor-profile/vendor-profile';
 import RegionHome from './region/region-home';
 import PageInvalid from './error/page-invalid';
@@ -40,7 +39,6 @@ const App:FC = () => {
     <Provider store={store}>
       <BrowserRouter>
         <div className="App">
-          {/* <Navbar/> */}
           <Switch>
             <Route exact path="/region/:regionName" component={ RegionHome } />
             {/* <Route exact path="/region/:regionId/vendor/:vendorId" component={ VendorProfile } /> */}

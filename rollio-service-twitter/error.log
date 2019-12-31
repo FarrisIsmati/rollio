@@ -55,3 +55,4 @@
 {"message":"Twitter: Connection failed trying again`","level":"error","timestamp":"2019-12-07 11:08:25"}
 {"code":"ENOTFOUND","errno":"ENOTFOUND","syscall":"getaddrinfo","hostname":"stream.twitter.com","host":"stream.twitter.com","port":443,"level":"error","timestamp":"2019-12-07 11:08:25"}
 {"message":"attempts: 3","level":"error","timestamp":"2019-12-07 11:08:37"}
+{"message":"Twitter: Connection failed trying again`","level":"error","timestamp":"2019-12-30 18:27:24"}

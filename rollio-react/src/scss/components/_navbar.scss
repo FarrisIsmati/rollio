@@ -3,7 +3,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 80px;
+        height: 56px;
         background-color: $color-background-nav;
     }
 
@@ -11,16 +11,11 @@
         display: flex;
         justify-content: space-between;
         width: 100%;
-        margin: 0 $body-margin-sides;
+        margin: 0 16px;
     }
 
     &__logo_wrapper {
-        margin: 12px 0 0 18px;
 
-        img {
-            height: 31px;
-            width: 111px;
-        }
     }
 
     &__links_wrapper {
@@ -35,7 +30,7 @@
             align-self: center;
 
             svg {
-                fill: $color-font-main-light;
+                fill: $color-font-alt;
                 height: 2em;
             }
         }
@@ -46,7 +41,6 @@
 // APPLIED FONTS
 
 .font__navbar {
-    @include neuzeit-bold;
-    color: $color-font-main;
+    @include neuzeit-black;
+    color: $color-font-alt;
 }
-

@@ -7,8 +7,8 @@ import logo from '../../img/logo-rollio-beta.png';
 const RegionMenuDesktop = (props:any) => {
   return (
     <div className="region__menu_wrapper">
-        <div className="navbar__logo_wrapper">
-            <img alt="Rollio Logo" src={logo} />
+        <div>
+          <h1 className="font__navbar">ROLLIO</h1>
         </div>
     </div>
   );

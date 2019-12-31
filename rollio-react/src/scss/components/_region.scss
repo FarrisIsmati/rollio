@@ -2,7 +2,7 @@
     &__wrapper {
         display: flex;
         height: 100%;
-
+        
         &_mobile {
             @extend .region__wrapper;
             flex-direction: column;
@@ -10,6 +10,7 @@
     }
 
     &__menu_wrapper {
+        margin: 16px;
         width: 400px;
     }
 }

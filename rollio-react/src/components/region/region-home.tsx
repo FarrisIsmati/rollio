@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 // COMPONENTS
 import Map from '../map/map';
 import RegionMenuDesktop from './region-menu-desktop';
-import RegionMenuMobile from './region-menu-mobile'
+import RegionNavbarMobile from './region-navbar-mobile'
 
 // HOOKS
 import useLoadRegion from './hooks/use-load-region';
@@ -37,8 +37,7 @@ const RegionHome = (props:any) => {
   return (
     <div className={ width > 768 ? 'region__wrapper' : 'region__wrapper_mobile' }>
       { /* Mobile Responsiveness */ }
-      { width > 768 ? <RegionMenuDesktop /> : <RegionMenuMobile /> }
-      
+      { width > 768 ? <RegionMenuDesktop /> : <RegionNavbarMobile /> }
       { map }
     </div>
   );
