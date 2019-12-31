@@ -4,6 +4,7 @@ import React, { useEffect } from 'react';
 // COMPONENTS
 import Map from '../map/map';
 import RegionMenuDesktop from './region-menu-desktop';
+import RegionMenuMobile from './region-menu-mobile';
 import RegionNavbarMobile from './region-navbar-mobile'
 
 // HOOKS
@@ -35,10 +36,11 @@ const RegionHome = (props:any) => {
   const map = isRegionLoaded && areVendorsLoaded ? <Map mapType='region' mapData={ state.regionMap }/> : <p>loading</p>
   
   return (
-    <div className={ width > 768 ? 'region__wrapper' : 'region__wrapper_mobile' }>
+    <div className={ width > 768 ? 'region__wrapper' : 'region_mobile__wrapper' }>
       { /* Mobile Responsiveness */ }
       { width > 768 ? <RegionMenuDesktop /> : <RegionNavbarMobile /> }
       { map }
+      { width < 768 ? <RegionMenuMobile /> : null }
     </div>
   );
 }
