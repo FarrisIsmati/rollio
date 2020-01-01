@@ -13,6 +13,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import queryString from 'query-string';
 
 const TweetTable = (props:any) => {
+    // TODO: move much of the logic into a /hooks folder
     const dispatch = useDispatch();
     // the dates below are just used for the date filtering functionality, where we only display tweets during a certain time period
     const now = moment(new Date());

@@ -11,6 +11,7 @@ import moment from 'moment';
 import Autocomplete from 'react-google-autocomplete';
 
 const UpdateLocation = (props:any) => {
+    // TODO: move much of the logic into a /hooks folder
     const dispatch = useDispatch();
     const [loading, setLoading] = useState<boolean>(true);
     const [tweet, setTweet] = useState<any>(null);
