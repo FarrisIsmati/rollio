@@ -476,8 +476,8 @@ describe('DB Operations', () => {
         allVendors = await Vendor.find();
         tweetID = vendor.tweetHistory[0];
         tweet = await Tweet.findById(tweetID).populate('location').populate('vendorID');
+        // note: locationId should be equal to vendor.locationHistory[0]
         locationID = tweet.location._id;
-        // expect(locationID).to.equal(vendor.locationHistory[0]);
         done();
       });
     });

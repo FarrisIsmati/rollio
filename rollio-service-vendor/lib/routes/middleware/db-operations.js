@@ -99,7 +99,6 @@ const vendorRouteOpsUtil = {
   // Returned a remapped vendor
   // Data is used to format the get all vendors calls
   formatData: (vendor) => {
-    // TODO: this is where location gets set
     let location = null;
 
     // Check to see if the vendor was updated and has a location history
