@@ -43,7 +43,6 @@ const UpdateLocation = (props:any) => {
         })
             .then((res: AxiosResponse<any>) => {
                 // TODO: need to also update the state.data.allVendors somehow
-                // TODO: show success, somehow
                 setTweet(res.data.tweet);
                 setLoading(false);
             }).catch((err:any) => {
@@ -71,7 +70,6 @@ const UpdateLocation = (props:any) => {
         })
             .then((res: AxiosResponse<any>) => {
                 // TODO: need to also update the state.data.allVendors somehow
-                // TODO: show success, somehow
                 setTweet(res.data.tweet);
                 setLoading(false);
             }).catch((err:any) => {
