@@ -3,7 +3,6 @@
         display: inline-block;
         height: 100%;
         width: 100%;
-        margin-bottom: 56px;
     }
 }
 
@@ -28,3 +27,13 @@
     @include neuzeit-bold;
     font-size: 18px;
 }
+
+// MEDIA QUERIES
+
+@media only screen and (max-width: 768px) {
+    .map {
+        &__wrapper {
+            margin-bottom: 56px;
+        }
+    }
+  }

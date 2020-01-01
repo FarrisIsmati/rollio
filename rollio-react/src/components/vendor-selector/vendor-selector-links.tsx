@@ -1,7 +1,13 @@
 // DEPENDENCIES
 import React, { FC } from 'react';
 
-const VendorSelectorLink:FC = () => {
+// HOOKS
+import useGetAppState from '../common/hooks/use-get-app-state';
+
+// INTERFACES
+import { VendorSelectedLinkProps } from './interfaces';
+
+const VendorSelectorLink = (props:VendorSelectedLinkProps) => {
   return (
     // Mobile resize this flex centers
     <div className="menu_link__wrapper"> 
@@ -13,12 +19,23 @@ const VendorSelectorLink:FC = () => {
   )
 }
 
-const VendorSelectorLinks:FC = (props:any) => {
-  console.log(props)
+const VendorSelectorLinks:FC = () => {
+  const state = useGetAppState();
+  let links = null;
+  const allVendors = Object.values(state.data.vendorsAll);
+
+  if (allVendors.length) {
+    links = allVendors.map((vendor:any) => {
+      return <VendorSelectorLink name={vendor.name} id={vendor.id} />
+    })
+  }
+
   return (
     // Mobile resize this flex centers
     <div className="menu_links__wrapper"> 
-      <p>lol</p>
+      {
+        links ? links : <p>loading</p>
+      }
     </div>
   );
 }
