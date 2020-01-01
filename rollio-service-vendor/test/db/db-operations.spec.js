@@ -2,6 +2,7 @@
 // DEPENDENCIES
 const chai = require('chai');
 const chaid = require('chaid');
+const { sortBy } = require('lodash');
 const dateTime = require('chai-datetime');
 const assertArrays = require('chai-arrays');
 const mongoose = require('../../lib/db/mongo/mongoose/index');
@@ -11,11 +12,13 @@ const { expect } = chai;
 // OPERATIONS
 const vendorOps = require('../../lib/db/mongo/operations/vendor-ops');
 const regionOps = require('../../lib/db/mongo/operations/region-ops');
+const tweetOps = require('../../lib/db/mongo/operations/tweet-ops');
 
 // SCHEMAS
 const Vendor = mongoose.model('Vendor');
 const Region = mongoose.model('Region');
 const Location = mongoose.model('Location');
+const Tweet = mongoose.model('Tweet');
 
 // SEED
 const seed = require('../../lib/db/mongo/seeds/dev-seed');
@@ -114,8 +117,8 @@ describe('DB Operations', () => {
           vendor = await Vendor.findOne({
             regionID: await regionID, 'locationHistory.0': { '$exists': true }, 'userLocationHistory.0': { '$exists': true }
           });
-          locationID = vendor.locationHistory[vendor.locationHistory.length - 1]._id;
-          userLocationID = vendor.userLocationHistory[vendor.userLocationHistory.length - 1]._id;
+          locationID = vendor.locationHistory[vendor.locationHistory.length - 1];
+          userLocationID = vendor.userLocationHistory[vendor.userLocationHistory.length - 1];
           done();
         });
       });
@@ -461,4 +464,151 @@ describe('DB Operations', () => {
       });
     });
   });
+
+  describe('Tweet DB Operations', () => {
+    let regionID, vendor, allTweets, allVendors, locationID, tweetID, tweet;
+
+    beforeEach((done) => {
+      seed.runSeed().then(async () => {
+        regionID = await Region.findOne().then(region => region._id);
+        vendor = await Vendor.findOne({ regionID: await regionID });
+        allTweets = await Tweet.find().sort([['date', -1]]);
+        allVendors = await Vendor.find();
+        tweetID = vendor.tweetHistory[0];
+        tweet = await Tweet.findById(tweetID).populate('location').populate('vendorID');
+        locationID = tweet.location._id;
+        // expect(locationID).to.equal(vendor.locationHistory[0]);
+        done();
+      });
+    });
+
+    afterEach((done) => {
+      seed.emptySeed()
+          .then(() => done());
+    });
+
+    describe('Get Tweet Operations', () => {
+
+      it('expect getAllTweets to return empty arary if no query passed', (done) => {
+        tweetOps.getAllTweets()
+            .then((res) => {
+              expect(res).to.be.array();
+              expect(res.length).to.be.equal(0);
+              done();
+            })
+            .catch(err => console.error(err));
+      });
+
+      it('expect getAllTweets to return all if date range wide enough; must populate location', (done) => {
+        tweetOps.getAllTweets({ startDate: allTweets[0].date, endDate: allTweets[allTweets.length - 1].date })
+            .then((res) => {
+              expect(res).to.be.array();
+              expect(res.length).to.be.equal(allTweets.length);
+              expect(res.every(tweet => tweet.location.coordinates)).to.be.true;
+              done();
+            })
+            .catch(err => console.error(err));
+      });
+
+      it('expect getAllTweets to filter by vendorID if passed', (done) => {
+        const vendorID = allTweets[0].vendorID;
+        tweetOps.getAllTweets({ vendorID })
+            .then((res) => {
+              expect(res.every(tweet => tweet.vendorID === vendorID)).to.be.true;
+              done();
+            })
+            .catch(err => console.error(err));
+      });
+
+      it('expect getVendorsForFiltering to select name and id for all vendors and sort by name', (done) => {
+        tweetOps.getVendorsForFiltering()
+            .then((res) => {
+              expect(res).to.be.array();
+              expect(res.length).to.be.equal(allVendors.length);
+              expect(JSON.stringify(res)).to.be.equal(JSON.stringify(sortBy(allVendors.map(vendor => ({ _id: vendor._id, name: vendor.name })), 'name')))
+              done();
+            })
+            .catch(err => console.error(err));
+      });
+
+      it('expect getTweetWithPopulatedVendorAndLocation to find tweet by ID and populate location and vendorID', (done) => {
+        tweetOps.getTweetWithPopulatedVendorAndLocation(tweetID)
+            .then((res) => {
+              expect(JSON.stringify(res)).to.be.equal(JSON.stringify(tweet));
+              done();
+            })
+            .catch(err => console.error(err));
+      });
+    });
+
+    // TODO: left off here!!!!
+    describe('Update Tweet Operations', () => {
+
+      it('expect deleteTweetLocation to delete old tweet location and set dailyActive to false if tweet is from today', (done) => {
+        // // look up tweet
+        // const originalTweet = await Tweet.findById(_id).lean(true);
+        // // set previously used location to overriden
+        // await Location.findOneAndUpdate({_id: originalTweet.location }, { $set: { overriden: true } });
+        // // pull location from vendor's location history, set usedForLocation to false, and if tweet is from today, set dailyActive to false
+        // const tweetIsFromToday = moment(Date.now()).isSame(moment(originalTweet.date), 'days');
+        // const dailyActiveUpdate = tweetIsFromToday ? { $set: { dailyActive: false }} : {};
+        // // update vendor
+        // await Vendor.findOneAndUpdate({ _id: originalTweet.vendorID }, { ...dailyActiveUpdate, $pull: { locationHistory: { _id: originalTweet.location } } });
+        // // delete the old location and set usedForLocation to false
+        // return Tweet.findOneAndUpdate({ _id }, { $unset: { location: 1 }, $set: { usedForLocation: false }}).populate('vendorID').populate('location').lean(true);
+
+
+        tweetOps.deleteTweetLocation()
+            .then((res) => {
+              done();
+            })
+            .catch(err => console.error(err));
+      });
+
+      it('expect deleteTweetLocation to delete old tweet location and NOT set dailyActive to false if tweet is NOT from today', (done) => {
+        // // look up tweet
+        // const originalTweet = await Tweet.findById(_id).lean(true);
+        // // set previously used location to overriden
+        // await Location.findOneAndUpdate({_id: originalTweet.location }, { $set: { overriden: true } });
+        // // pull location from vendor's location history, set usedForLocation to false, and if tweet is from today, set dailyActive to false
+        // const tweetIsFromToday = moment(Date.now()).isSame(moment(originalTweet.date), 'days');
+        // const dailyActiveUpdate = tweetIsFromToday ? { $set: { dailyActive: false }} : {};
+        // // update vendor
+        // await Vendor.findOneAndUpdate({ _id: originalTweet.vendorID }, { ...dailyActiveUpdate, $pull: { locationHistory: { _id: originalTweet.location } } });
+        // // delete the old location and set usedForLocation to false
+        // return Tweet.findOneAndUpdate({ _id }, { $unset: { location: 1 }, $set: { usedForLocation: false }}).populate('vendorID').populate('location').lean(true);
+
+
+        tweetOps.deleteTweetLocation()
+            .then((res) => {
+              done();
+            })
+            .catch(err => console.error(err));
+      });
+
+      it('expect createTweetLocation to delete old tweet location if there is one', (done) => {
+        tweetOps.createTweetLocation()
+            .then((res) => {
+              done();
+            })
+            .catch(err => console.error(err));
+      });
+
+      it('expect createTweetLocation to create new tweet and update as appropriate', (done) => {
+        // create new location
+        // add to location history of vendor and setDailyActive to true if from today
+        // update tweet's location and set usedForLocation to true / populate vendorID and location
+        tweetOps.createTweetLocation()
+            .then((res) => {
+              done();
+            })
+            .catch(err => console.error(err));
+      });
+
+    });
+
+
+  });
+
+
 });

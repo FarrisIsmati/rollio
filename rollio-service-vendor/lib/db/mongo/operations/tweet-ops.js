@@ -22,7 +22,7 @@ module.exports = {
     async getAllTweets(query = {}) {
         const {startDate, endDate, vendorID } = query;
         const vendorIDQuery = vendorID ? {vendorID} : {};
-        return Tweet.find({date: { $gte: startDate, $lt: endDate }, ...vendorIDQuery}).sort([['date', -1]]).populate('location')
+        return Tweet.find({date: { $gte: startDate, $lte: endDate }, ...vendorIDQuery}).sort([['date', -1]]).populate('location')
     },
     async getVendorsForFiltering() {
         return Vendor.find({}).select('name _id').sort([['name', 1]]);
