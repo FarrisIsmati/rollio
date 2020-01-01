@@ -52,6 +52,14 @@ const UpdateLocation = (props:any) => {
         })
     };
 
+    const goToAllTweets = () => {
+        props.history.push(`/tweets`);
+    };
+
+    const goToLoginPage = () => {
+        props.history.push('/login');
+    };
+
     const saveSearchedLocation = () => {
         setLoading(true);
         const { locationDate, tweetID } = tweet;
@@ -59,7 +67,7 @@ const UpdateLocation = (props:any) => {
             locationDate,
             tweetID,
             address: searchedLocation.formatted_address,
-            city: searchedLocation.address_components.find((component:any) => component.types.includes('locality') || component.types.includes('political')).long_name,
+            city: searchedLocation.address_components.find((component:any) => component.types.includes('locality')).long_name,
             coordinates: [searchedLocation.geometry.location.lat(), searchedLocation.geometry.location.lng()]
         };
         axios({
@@ -147,11 +155,25 @@ const UpdateLocation = (props:any) => {
                         Update the location for this tweet
                     </button>
                 </div>
+                <div>
+                    <button
+                        onClick={goToAllTweets}
+                    >
+                        Return to all tweets
+                    </button>
+                </div>
             </div>
         ) :
         (
             <div>
                 <p>{contentText}</p>
+                { !user.isAuthenticated &&
+                    <button
+                        onClick={() => goToLoginPage()}
+                    >
+                        Login
+                    </button>
+                }
             </div>
         );
 

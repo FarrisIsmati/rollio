@@ -93,6 +93,10 @@ const TweetTable = (props:any) => {
         props.history.push(`tweets/${tweetID}`);
     };
 
+    const goToLoginPage = () => {
+        props.history.push('/login');
+    };
+
     const columns = [
         {
             accessor: 'vendorName',
@@ -183,6 +187,13 @@ const TweetTable = (props:any) => {
         (
             <div>
                 <p>{contentText}</p>
+                { !user.isAuthenticated &&
+                    <button
+                        onClick={() => goToLoginPage()}
+                    >
+                        Login
+                    </button>
+                }
             </div>
         );
 
