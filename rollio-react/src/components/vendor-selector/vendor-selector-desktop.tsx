@@ -1,7 +1,10 @@
 // DEPENDENCIES
 import React from 'react';
 
-const RegionMenuDesktop = (props:any) => {
+// COMPONENTS
+import VendorSelectorLinks from './vendor-selector-links';
+
+const VendorSelectorDesktop = (props:any) => {
   return (
     <div className="menu__wrapper">
         <div>
@@ -11,4 +14,4 @@ const RegionMenuDesktop = (props:any) => {
   );
 }
 
-export default RegionMenuDesktop;
+export default VendorSelectorDesktop;

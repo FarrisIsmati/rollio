@@ -2,7 +2,7 @@
 import React, { FC } from 'react';
 import { FaChevronUp } from 'react-icons/fa';
 
-const RegionMenuMobile:FC = () => {
+const VendorSelectorMobile:FC = () => {
   return (
       // Mobile resize this flex centers
     <div className="menu_mobile__wrapper"> 
@@ -19,4 +19,4 @@ const RegionMenuMobile:FC = () => {
 }
 
 
-export default RegionMenuMobile;
+export default VendorSelectorMobile;

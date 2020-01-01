@@ -3,8 +3,8 @@ import React, { useEffect } from 'react';
 
 // COMPONENTS
 import Map from '../map/map';
-import RegionMenuDesktop from '../menu/menu-desktop';
-import RegionMenuMobile from '../menu/menu-mobile';
+import VendorSelectorDesktop from '../vendor-selector/vendor-selector-desktop';
+import VendorSelectorMobile from '../vendor-selector/vendor-selector-mobile';
 import RegionNavbarMobile from './region-navbar-mobile'
 
 // HOOKS
@@ -38,9 +38,9 @@ const RegionHome = (props:any) => {
   return (
     <div className={ width > 768 ? 'region__wrapper' : 'region_mobile__wrapper' }>
       { /* Mobile Responsiveness */ }
-      { width > 768 ? <RegionMenuDesktop /> : <RegionNavbarMobile /> }
+      { width > 768 ? <VendorSelectorDesktop /> : <RegionNavbarMobile /> }
       { map }
-      { width < 768 ? <RegionMenuMobile /> : null }
+      { width < 768 ? <VendorSelectorMobile /> : null }
     </div>
   );
 }
