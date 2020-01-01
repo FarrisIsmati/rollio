@@ -8,14 +8,15 @@ const deleteTweetLocation = async _id => {
     // look up tweet
     const originalTweet = await Tweet.findById(_id).lean(true);
     // set previously used location to overriden
-    await Location.findOneAndUpdate({_id: originalTweet.location }, { $set: { overriden: true } });
+    await Location.updateOne({_id: originalTweet.location }, { $set: { overriden: true } });
     // pull location from vendor's location history, set usedForLocation to false, and if tweet is from today, set dailyActive to false
     const tweetIsFromToday = moment(Date.now()).isSame(moment(originalTweet.date), 'days');
     const dailyActiveUpdate = tweetIsFromToday ? { $set: { dailyActive: false }} : {};
     // update vendor
-    await Vendor.findOneAndUpdate({ _id: originalTweet.vendorID }, { ...dailyActiveUpdate, $pull: { locationHistory: { _id: originalTweet.location } } });
+    await Vendor.updateOne({ _id: originalTweet.vendorID }, { ...dailyActiveUpdate, $pull: { locationHistory: { _id: originalTweet.location } } });
     // delete the old location and set usedForLocation to false
-    return Tweet.findOneAndUpdate({ _id }, { $unset: { location: 1 }, $set: { usedForLocation: false }}).populate('vendorID').populate('location').lean(true);
+    await Tweet.updateOne({ _id }, { $unset: { location: 1 }, $set: { usedForLocation: false }});
+    return Tweet.findById(_id).populate('vendorID').populate('location').lean(true);
 };
 
 module.exports = {
@@ -39,7 +40,7 @@ module.exports = {
         const tweetIsFromToday = moment(Date.now()).isSame(moment(newLocationData.locationDate), 'days');
         const newLocation = await Location.create({ ...newLocationData, matchMethod: 'Manual from Tweet' });
         const dailyActiveUpdate = tweetIsFromToday ? { $set: { dailyActive: true } } : {};
-        await Vendor.findOneAndUpdate({ _id: originalTweet.vendorID }, {
+        await Vendor.updateOne({ _id: originalTweet.vendorID }, {
             $push: {
                 locationHistory: {
                     $each: [newLocation._id],
@@ -48,6 +49,7 @@ module.exports = {
             },
             ...dailyActiveUpdate
         });
-        return Tweet.findOneAndUpdate({ _id: id }, { $set: { location: newLocation._id, usedForLocation: true } }).populate('vendorID').populate('location');
+        await Tweet.updateOne({ _id: id }, { $set: { location: newLocation._id, usedForLocation: true } });
+        return Tweet.findById(id).populate('vendorID').populate('location');
     }
 };

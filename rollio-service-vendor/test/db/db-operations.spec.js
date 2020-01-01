@@ -551,9 +551,8 @@ describe('DB Operations', () => {
                 .then(async res => {
                   // populates vendorID in the response
                   expect(res.vendorID.name).to.be.equal(vendor.name);
-                  const updatedTweet = await Tweet.findById(tweetID);
-                  expect(updatedTweet.location).to.be.an('undefined');
-                  expect(updatedTweet.usedForLocation).to.be.false;
+                  expect(res.location).to.be.an('undefined');
+                  expect(res.usedForLocation).to.be.false;
                   const updatedLocation = await Location.findById(locationID);
                   expect(updatedLocation.overriden).to.be.true;
                   const updatedVendor = await Vendor.findById(vendor._id);
@@ -572,9 +571,8 @@ describe('DB Operations', () => {
               .then(async res => {
                 // populates vendorID in the response
                 expect(res.vendorID.name).to.be.equal(vendor.name);
-                const updatedTweet = await Tweet.findById(tweetID);
-                expect(updatedTweet.location).to.be.an('undefined');
-                expect(updatedTweet.usedForLocation).to.be.false;
+                expect(res.location).to.be.an('undefined');
+                expect(res.usedForLocation).to.be.false;
                 const updatedLocation = await Location.findById(locationID);
                 expect(updatedLocation.overriden).to.be.true;
                 const updatedVendor = await Vendor.findById(vendor._id);
@@ -593,15 +591,14 @@ describe('DB Operations', () => {
             .then(async res => {
               // populates vendorID in the response
               expect(res.vendorID.name).to.be.equal(vendor.name);
-              const updatedTweet = await Tweet.findById(tweetID);
-              expect(updatedTweet.usedForLocation).to.be.true;
+              expect(res.usedForLocation).to.be.true;
               const updatedLocation = await Location.findById(locationID);
-              const newLocation = await Location.findById(updatedTweet.location);
+              const newLocation = await Location.findById(res.location);
               expect(JSON.stringify(newLocation.toObject())).to.be.equal(JSON.stringify({...newLocationData, _id: newLocation._id, matchMethod: 'Manual from Tweet'}));
               expect(updatedLocation.overriden).to.be.true;
               const updatedVendor = await Vendor.findById(vendor._id);
               expect(!!updatedVendor.locationHistory.find(location => location.toString() === tweetID.toString())).to.be.false;
-              expect(!!updatedVendor.locationHistory.find(location => location.toString() === updatedTweet.location._id.toString())).to.be.true;
+              expect(!!updatedVendor.locationHistory.find(location => location.toString() === res.location._id.toString())).to.be.true;
               expect(updatedVendor.dailyActive).to.be.true;
               done();
             })
@@ -615,16 +612,15 @@ describe('DB Operations', () => {
               .then(async res => {
                 // populates vendorID in the response
                 expect(res.vendorID.name).to.be.equal(vendor.name);
-                const updatedTweet = await Tweet.findById(tweetID);
-                expect(updatedTweet.usedForLocation).to.be.true;
-                const newLocation = await Location.findById(updatedTweet.location);
+                expect(res.usedForLocation).to.be.true;
+                const newLocation = await Location.findById(res.location);
                 expect(JSON.stringify(newLocation.toObject())).to.be.equal(JSON.stringify({
                   ...newLocationData,
                   _id: newLocation._id,
                   matchMethod: 'Manual from Tweet'
                 }));
                 const updatedVendor = await Vendor.findById(vendor._id);
-                expect(!!updatedVendor.locationHistory.find(location => location.toString() === updatedTweet.location._id.toString())).to.be.true;
+                expect(!!updatedVendor.locationHistory.find(location => location.toString() === res.location._id.toString())).to.be.true;
                 // doesn't updated dailyActive to true, as tweet was not from today
                 expect(updatedVendor.dailyActive).to.be.false;
                 done();
