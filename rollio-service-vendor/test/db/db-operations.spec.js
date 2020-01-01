@@ -541,68 +541,96 @@ describe('DB Operations', () => {
       });
     });
 
-    // TODO: left off here!!!!
+    // TODO: left off here!!!!!
     describe('Update Tweet Operations', () => {
 
-      it('expect deleteTweetLocation to delete old tweet location and set dailyActive to false if tweet is from today', (done) => {
-        // // look up tweet
-        // const originalTweet = await Tweet.findById(_id).lean(true);
-        // // set previously used location to overriden
-        // await Location.findOneAndUpdate({_id: originalTweet.location }, { $set: { overriden: true } });
-        // // pull location from vendor's location history, set usedForLocation to false, and if tweet is from today, set dailyActive to false
-        // const tweetIsFromToday = moment(Date.now()).isSame(moment(originalTweet.date), 'days');
-        // const dailyActiveUpdate = tweetIsFromToday ? { $set: { dailyActive: false }} : {};
-        // // update vendor
-        // await Vendor.findOneAndUpdate({ _id: originalTweet.vendorID }, { ...dailyActiveUpdate, $pull: { locationHistory: { _id: originalTweet.location } } });
-        // // delete the old location and set usedForLocation to false
-        // return Tweet.findOneAndUpdate({ _id }, { $unset: { location: 1 }, $set: { usedForLocation: false }}).populate('vendorID').populate('location').lean(true);
+      it('expect deleteTweetLocation to delete old tweet location and set dailyActive to false if tweet is from today', done => {
+        Tweet.updateOne({_id: tweetID}, { date: new Date() }).then(() => {
+          Vendor.updateOne({_id: vendor._id}, { dailyActive: true }).then(() => {
+            tweetOps.deleteTweetLocation(tweetID)
+                .then(async res => {
+                  // populates vendorID in the response
+                  expect(res.vendorID.name).to.be.equal(vendor.name);
+                  const updatedTweet = await Tweet.findById(tweetID);
+                  expect(updatedTweet.location).to.be.an('undefined');
+                  expect(updatedTweet.usedForLocation).to.be.false;
+                  const updatedLocation = await Location.findById(locationID);
+                  expect(updatedLocation.overriden).to.be.true;
+                  const updatedVendor = await Vendor.findById(vendor._id);
+                  expect(updatedVendor.locationHistory.find(location => location.toString() === tweetID.toString())).to.be.an('undefined');
+                  expect(updatedVendor.dailyActive).to.be.false;
+                  done();
+                })
+                .catch(err => console.error(err));
+          })
+        });
+      });
 
+      it('expect deleteTweetLocation to delete old tweet location and set NOT dailyActive to false if tweet is NOT from today', done => {
+        Vendor.updateOne({_id: vendor._id}, { dailyActive: true }).then(() => {
+          tweetOps.deleteTweetLocation(tweetID)
+              .then(async res => {
+                // populates vendorID in the response
+                expect(res.vendorID.name).to.be.equal(vendor.name);
+                const updatedTweet = await Tweet.findById(tweetID);
+                expect(updatedTweet.location).to.be.an('undefined');
+                expect(updatedTweet.usedForLocation).to.be.false;
+                const updatedLocation = await Location.findById(locationID);
+                expect(updatedLocation.overriden).to.be.true;
+                const updatedVendor = await Vendor.findById(vendor._id);
+                expect(updatedVendor.locationHistory.find(location => location.toString() === tweetID.toString())).to.be.an('undefined');
+                expect(updatedVendor.dailyActive).to.be.true;
+                done();
+              })
+              .catch(err => console.error(err));
+        })
+      });
 
-        tweetOps.deleteTweetLocation()
-            .then((res) => {
+      it('expect createTweetLocation to delete old tweet location if there is one, create new tweet, and update as appropriate', (done) => {
+        const locationDate = new Date();
+        const newLocationData = {...tweet.location.toObject(), locationDate, coordinates: [0, 0], _id: undefined };
+        tweetOps.createTweetLocation(tweetID, newLocationData)
+            .then(async res => {
+              // populates vendorID in the response
+              expect(res.vendorID.name).to.be.equal(vendor.name);
+              const updatedTweet = await Tweet.findById(tweetID);
+              expect(updatedTweet.usedForLocation).to.be.true;
+              const updatedLocation = await Location.findById(locationID);
+              const newLocation = await Location.findById(updatedTweet.location);
+              expect(JSON.stringify(newLocation.toObject())).to.be.equal(JSON.stringify({...newLocationData, _id: newLocation._id, matchMethod: 'Manual from Tweet'}));
+              expect(updatedLocation.overriden).to.be.true;
+              const updatedVendor = await Vendor.findById(vendor._id);
+              expect(!!updatedVendor.locationHistory.find(location => location.toString() === tweetID.toString())).to.be.false;
+              expect(!!updatedVendor.locationHistory.find(location => location.toString() === updatedTweet.location._id.toString())).to.be.true;
+              expect(updatedVendor.dailyActive).to.be.true;
               done();
             })
             .catch(err => console.error(err));
       });
 
-      it('expect deleteTweetLocation to delete old tweet location and NOT set dailyActive to false if tweet is NOT from today', (done) => {
-        // // look up tweet
-        // const originalTweet = await Tweet.findById(_id).lean(true);
-        // // set previously used location to overriden
-        // await Location.findOneAndUpdate({_id: originalTweet.location }, { $set: { overriden: true } });
-        // // pull location from vendor's location history, set usedForLocation to false, and if tweet is from today, set dailyActive to false
-        // const tweetIsFromToday = moment(Date.now()).isSame(moment(originalTweet.date), 'days');
-        // const dailyActiveUpdate = tweetIsFromToday ? { $set: { dailyActive: false }} : {};
-        // // update vendor
-        // await Vendor.findOneAndUpdate({ _id: originalTweet.vendorID }, { ...dailyActiveUpdate, $pull: { locationHistory: { _id: originalTweet.location } } });
-        // // delete the old location and set usedForLocation to false
-        // return Tweet.findOneAndUpdate({ _id }, { $unset: { location: 1 }, $set: { usedForLocation: false }}).populate('vendorID').populate('location').lean(true);
-
-
-        tweetOps.deleteTweetLocation()
-            .then((res) => {
-              done();
-            })
-            .catch(err => console.error(err));
-      });
-
-      it('expect createTweetLocation to delete old tweet location if there is one', (done) => {
-        tweetOps.createTweetLocation()
-            .then((res) => {
-              done();
-            })
-            .catch(err => console.error(err));
-      });
-
-      it('expect createTweetLocation to create new tweet and update as appropriate', (done) => {
-        // create new location
-        // add to location history of vendor and setDailyActive to true if from today
-        // update tweet's location and set usedForLocation to true / populate vendorID and location
-        tweetOps.createTweetLocation()
-            .then((res) => {
-              done();
-            })
-            .catch(err => console.error(err));
+      it('expect createTweetLocation to create new tweet, and update as appropriate, even if no old tweet', (done) => {
+        const newLocationData = {...tweet.location.toObject(), coordinates: [0, 0], _id: undefined };
+        Vendor.updateOne({_id: vendor._id}, { dailyActive: false }).then(() => {
+          tweetOps.createTweetLocation(tweetID, newLocationData)
+              .then(async res => {
+                // populates vendorID in the response
+                expect(res.vendorID.name).to.be.equal(vendor.name);
+                const updatedTweet = await Tweet.findById(tweetID);
+                expect(updatedTweet.usedForLocation).to.be.true;
+                const newLocation = await Location.findById(updatedTweet.location);
+                expect(JSON.stringify(newLocation.toObject())).to.be.equal(JSON.stringify({
+                  ...newLocationData,
+                  _id: newLocation._id,
+                  matchMethod: 'Manual from Tweet'
+                }));
+                const updatedVendor = await Vendor.findById(vendor._id);
+                expect(!!updatedVendor.locationHistory.find(location => location.toString() === updatedTweet.location._id.toString())).to.be.true;
+                // doesn't updated dailyActive to true, as tweet was not from today
+                expect(updatedVendor.dailyActive).to.be.false;
+                done();
+              })
+              .catch(err => console.error(err));
+        })
       });
 
     });

@@ -36,7 +36,9 @@ module.exports = {
         if (originalTweet.location) {
             await deleteTweetLocation(id)
         }
+        const tweetIsFromToday = moment(Date.now()).isSame(moment(newLocationData.locationDate), 'days');
         const newLocation = await Location.create({ ...newLocationData, matchMethod: 'Manual from Tweet' });
+        const dailyActiveUpdate = tweetIsFromToday ? { $set: { dailyActive: true } } : {};
         await Vendor.findOneAndUpdate({ _id: originalTweet.vendorID }, {
             $push: {
                 locationHistory: {
@@ -44,7 +46,7 @@ module.exports = {
                     $position: 0
                 }
             },
-            $set: { dailyActive: true },
+            ...dailyActiveUpdate
         });
         return Tweet.findOneAndUpdate({ _id: id }, { $set: { location: newLocation._id, usedForLocation: true } }).populate('vendorID').populate('location');
     }
