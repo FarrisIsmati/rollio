@@ -3,8 +3,8 @@ import React, { useEffect } from 'react';
 
 // COMPONENTS
 import Map from '../map/map';
-import RegionMenuDesktop from './region-menu-desktop';
-import RegionMenuMobile from './region-menu-mobile';
+import RegionMenuDesktop from '../menu/menu-desktop';
+import RegionMenuMobile from '../menu/menu-mobile';
 import RegionNavbarMobile from './region-navbar-mobile'
 
 // HOOKS
