@@ -12,11 +12,11 @@ import useLoadRegion from './hooks/use-load-region';
 import useGetAppState from '../common/hooks/use-get-app-state';
 import useProcessMapPoints from './hooks/use-process-map-points';
 import useUpdateRegionVendorData from './hooks/use-update-region-vendor-data';
-import useWindowWidth from '../common/hooks/use-window-width';
+import windowSizeEffects from '../common/hooks/use-window-size';
 
 const RegionHome = (props:any) => {
   // Gets width to render desktop or tablet/mobile version of region menu
-  const width = useWindowWidth();
+  const width = windowSizeEffects.useWindowWidth();
 
   // Load the region
   useLoadRegion(props);

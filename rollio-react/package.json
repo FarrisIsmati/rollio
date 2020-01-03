@@ -45,6 +45,7 @@
     "socket.io-client": "^2.3.0",
     "typescript": "^3.5.3",
     "underscore": "^1.9.1",
+    "use-callback-ref": "^1.2.1",
     "uuid": "^3.3.3"
   },
   "devDependencies": {

@@ -1,11 +1,28 @@
 .menu {
     &__wrapper {
-        margin: 16px;
+        margin: 16px 16px 0px 16px;
         width: 400px;
     }
 
-    // MOBILE
+    // Collection of links
+    &_links__wrapper {
+        overflow-y: auto;
+        margin-top: 10px;
+    }
+    
+    // Individual Link
+    &_link__wrapper {
+        display: flex;
+        align-items: center;
+        margin-bottom: 16px;
 
+        h2 {
+            margin-left: 16px;
+        }
+    }
+    
+
+    // MOBILE
     &_mobile {
         &__wrapper {
             height: 56px;
