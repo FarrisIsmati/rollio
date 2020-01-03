@@ -8,8 +8,8 @@ import VendorSelectorLinks from './vendor-selector-links';
 const VendorSelectorDesktop:FC = () => {
   // Create ref to figure out set size of the menu to allow scrolling
   // Set size of menu will be screen height - (div above menu links)
-  const ref = useCallbackRef(null, () => {console.log('do diiiiis nigger')})
-
+  // Callback ref runs after component is mounted
+  const ref = useCallbackRef(null, () => {})
 
   return (
     <div className="menu__wrapper">
