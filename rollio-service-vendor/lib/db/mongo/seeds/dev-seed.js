@@ -10,6 +10,8 @@ const Vendor = mongoose.model('Vendor');
 const Region = mongoose.model('Region');
 const Tweet = mongoose.model('Tweet');
 const Location = mongoose.model('Location');
+const User = mongoose.model('User');
+
 
 // DATA
 const vendorsData = require('../data/dev').vendors;
@@ -21,6 +23,16 @@ const locationData = require('../data/dev').locations;
 // const yelpClient = yelp.client(yelpAPIKey);
 
 const seedObj = {
+  emptyUsers() {
+    return User.deleteMany({})
+        .then(() => {
+          if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') { console.log(`Emptied User collection in ${config.NODE_ENV} enviroment`); }
+        })
+        .catch((err) => {
+          logger.error(err);
+          throw err;
+        });
+  },
   emptyRegions() {
     return Region.deleteMany({})
       .then(() => {
@@ -110,7 +122,7 @@ const seedObj = {
           throw err;
         }),
     );
-    
+
     // Resolve all promises within vendorsAsyncUpdated
     const vendorsAsyncUpdatedResolved = await Promise.all(vendorsAsyncUpdated);
 
@@ -140,20 +152,23 @@ const seedObj = {
     return payload;
   },
   runSeed() {
-    return this.emptyRegions()
+    return this.emptySeed()
       .then(() => this.seedRegions())
-      .then(() => this.emptyVendors())
       .then(() => this.seedVendors('WASHINGTONDC'))
-      .then(() => this.emptyTweets())
       .then(() => this.seedTweets())
-      .then(() => this.emptyLocations())
-      .then(() => this.seedLocations());
+      .then(() => this.seedLocations())
+      .catch(err => {
+        console.log(`error seeing DB: ${err}`);
+        throw err;
+      });
+
   },
     emptySeed() {
         return this.emptyRegions()
             .then(() => this.emptyVendors())
             .then(() => this.emptyTweets())
             .then(() => this.emptyLocations())
+            .then(() => this.emptyUsers())
     }
 };
 
