@@ -201,7 +201,7 @@ describe('DB Operations', () => {
         expect(updatedDailyTweets[updatedDailyTweets.length - 1].date)
           .to.equalDate(tweetPayload.date);
         expect(updatedDailyTweets[updatedDailyTweets.length - 1]
-          .location.locationDate).to.deep.equal(tweetPayload.location.locationDate);
+          .location.toString()).to.equal(tweetPayload.location.toString());
         expect(updatedDailyTweets.length).to.equal(prevDailyTweets.length + 1);
       });
 
@@ -472,7 +472,7 @@ describe('DB Operations', () => {
       seed.runSeed().then(async () => {
         regionID = await Region.findOne().then(region => region._id);
         vendor = await Vendor.findOne({ regionID: await regionID });
-        allTweets = await Tweet.find().sort([['date', -1]]);
+        allTweets = await Tweet.find().sort([['date', 1]]);
         allVendors = await Vendor.find();
         tweetID = vendor.tweetHistory[0];
         tweet = await Tweet.findById(tweetID).populate('location').populate('vendorID');
@@ -500,7 +500,9 @@ describe('DB Operations', () => {
       });
 
       it('expect getAllTweets to return all if date range wide enough; must populate location', (done) => {
-        tweetOps.getAllTweets({ startDate: allTweets[0].date, endDate: allTweets[allTweets.length - 1].date })
+        const startDate = allTweets[0].date;
+        const endDate = allTweets[allTweets.length - 1].date;
+        tweetOps.getAllTweets({ startDate, endDate })
             .then((res) => {
               expect(res).to.be.array();
               expect(res.length).to.be.equal(allTweets.length);
@@ -541,7 +543,6 @@ describe('DB Operations', () => {
       });
     });
 
-    // TODO: left off here!!!!!
     describe('Update Tweet Operations', () => {
 
       it('expect deleteTweetLocation to delete old tweet location and set dailyActive to false if tweet is from today', done => {
