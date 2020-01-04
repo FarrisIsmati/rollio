@@ -38,7 +38,7 @@ const updateLocation = async (payload, region, vendor) => {
   try {
     console.log(`q::method::GET::path::/${region._id}/object`);
     const resy = await redisClient.hdelAsync('vendor', `q::method::GET::path::/${region._id}/object`);
-    console.log(resy)
+    console.log(resy);
   } catch (err) {
     logger.error(err);
   }
@@ -100,8 +100,10 @@ const receiveTweets = async () => {
       date: message.date,
     };
 
+    let newLocation = null;
+
     if (message.match) {
-      const newLocation = await vendorOps.createLocation({ ...message.location, tweetID: message.tweetID });
+      newLocation = await vendorOps.createLocation({ ...message.location, tweetID: message.tweetID });
       tweetPayload.location = newLocation._id;
       await updateLocation(newLocation._id, region, vendor);
       await setVendorActive(region, vendor);
@@ -111,14 +113,21 @@ const receiveTweets = async () => {
       await updateTweet(tweetPayload, region, vendor);
       console.log(tweetPayload);
 
+      const tweetPayloadLocationUpdate = { ...tweetPayload };
+
+      // Change location from id to full location body
+      if (newLocation) {
+        tweetPayloadLocationUpdate.location = newLocation;
+      }
+      // Send the tweetPayload to all subscribed instances
+      const redisTwitterChannelMessage = {
+        serverID: SERVER_ID,
+        tweetPayload: tweetPayloadLocationUpdate,
+        vendorID: vendor._id,
+        regionID: region._id,
+      };
+
       try {
-        // Send the tweetPayload to all subscribed instances
-        const redisTwitterChannelMessage = {
-          serverID: SERVER_ID,
-          tweetPayload,
-          vendorID: vendor._id,
-          regionID: region._id,
-        };
         pub.publish(REDIS_TWITTER_CHANNEL, JSON.stringify(redisTwitterChannelMessage));
       } catch (err) {
         logger.error(err);
@@ -126,7 +135,7 @@ const receiveTweets = async () => {
 
       // eslint-disable-next-line max-len
       // Send tweet data, location data, only, everything else will be updated on a get req (comments, ratings, etc)
-      io.sockets.emit('TWITTER_DATA', { tweet: tweetPayload, vendorID: vendor._id, regionID: region._id });
+      io.sockets.emit('TWITTER_DATA', { tweet: tweetPayloadLocationUpdate, vendorID: vendor._id, regionID: region._id });
     } catch (err) {
       logger.error(err);
     }
