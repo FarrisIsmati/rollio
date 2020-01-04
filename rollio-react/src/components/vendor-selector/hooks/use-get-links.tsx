@@ -16,11 +16,11 @@ const VendorSelectorLink = (props:VendorSelectedLinkProps) => {
     <div className="menu_link__wrapper"> 
       <div className="menu_link__image_wrapper">
           <div className="menu_link__image">
-            <img src={img} />
+            <img alt={`${name} logo`} src={img} />
           </div>
       </div>
       <div>
-        <h2>{name}</h2>
+        <h2 className="font__menu_link">{name}</h2>
       </div>
     </div>
   )

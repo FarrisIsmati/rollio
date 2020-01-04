@@ -68,3 +68,6 @@
 {"message":"Twitter: Connection failed trying again`","level":"error","timestamp":"2020-01-03 20:07:43"}
 {"code":"ECONNRESET","errno":"ECONNRESET","syscall":"read","level":"error","timestamp":"2020-01-03 20:07:43"}
 {"message":"attempts: 2","level":"error","timestamp":"2020-01-03 20:07:46"}
+{"message":"Twitter: Connection failed trying again`","level":"error","timestamp":"2020-01-04 09:46:51"}
+{"code":"ECONNRESET","errno":"ECONNRESET","syscall":"read","level":"error","timestamp":"2020-01-04 09:46:51"}
+{"message":"attempts: 3","level":"error","timestamp":"2020-01-04 09:46:57"}
