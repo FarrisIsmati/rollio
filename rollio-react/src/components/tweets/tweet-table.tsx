@@ -13,12 +13,16 @@ import "react-datepicker/dist/react-datepicker.css";
 import queryString from 'query-string';
 
 const TweetTable = (props:any) => {
+    // TODO: move much of the logic into a /hooks folder
     const dispatch = useDispatch();
-
+    // the dates below are just used for the date filtering functionality, where we only display tweets during a certain time period
     const now = moment(new Date());
     const remainder = 30 - (now.minute() % 30);
+    // initialStartDate is the default date/time of the earliest tweet to show (can be adjusted by user)
+    // initialEndDate is the default date/time of the last tweet to show (can be adjusted by user)
     const initialEndDate = moment(now).add(remainder, "minutes").toDate();
     const initialStartDate = moment(initialEndDate).subtract(1, 'days').toDate();
+    // minDate is as far back in the calendar as a user can go when filtering dates.  It's arbitrary
     const minDate = moment(initialEndDate).subtract(1000000, 'days').toDate();
 
     const [loading, setLoading] = useState<boolean>(true);
@@ -90,6 +94,10 @@ const TweetTable = (props:any) => {
         props.history.push(`tweets/${tweetID}`);
     };
 
+    const goToLoginPage = () => {
+        props.history.push('/login');
+    };
+
     const columns = [
         {
             accessor: 'vendorName',
@@ -115,15 +123,15 @@ const TweetTable = (props:any) => {
             accessor: (d:any) => d.usedForLocation ? 'Yes' : 'No'
         },
         {
-            id: 'link',
-            Header: 'Link',
+            id: 'actions',
+            Header: 'Actions',
             accessor: (d:any) => ({...d}),
             Cell: (props:any) => (
                 <button
                 id={props.id}
                 onClick={() => goToTweetPage(props.value._id)}
                 >
-                Use for location
+                Edit Tweet
             </button>
             )
         }
@@ -180,6 +188,13 @@ const TweetTable = (props:any) => {
         (
             <div>
                 <p>{contentText}</p>
+                { !user.isAuthenticated &&
+                    <button
+                        onClick={() => goToLoginPage()}
+                    >
+                        Login
+                    </button>
+                }
             </div>
         );
 

@@ -26,7 +26,6 @@ const useUpdateRegionVendorData = () => {
 
     useEffect(() => {      
       socket.on('TWITTER_DATA', (data: any) => {
-
           // format vendorsAll then update that 
           if (data.tweet.location) {
             const location = data.tweet.location
@@ -35,17 +34,6 @@ const useUpdateRegionVendorData = () => {
             dispatch(updateDailyActiveVendors({ vendorID: data.vendorID }))
             setGlobalState({ vendorID: data.vendorID });
           }
-          // Update Region Data
-            // If new active Vendor
-              // Append to Daily Active Vendors
-          // Update All Vendor Data
-            // If vendor exists 
-              // Update data
-            // If vendor is new
-              // Append to object
-    
-          // ------------------------------
-          // ^ This should Rerender Map Pins
         })
     }, [])
 }
