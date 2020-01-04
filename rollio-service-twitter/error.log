@@ -65,3 +65,6 @@
 {"message":"Twitter: Connection failed trying again`","level":"error","timestamp":"2020-01-01 20:18:36"}
 {"code":"ENOENT","errno":"ENOENT","syscall":"getaddrinfo","hostname":"stream.twitter.com","host":"stream.twitter.com","port":443,"level":"error","timestamp":"2020-01-01 20:18:36"}
 {"message":"attempts: 3","level":"error","timestamp":"2020-01-01 20:18:48"}
+{"message":"Twitter: Connection failed trying again`","level":"error","timestamp":"2020-01-03 20:07:43"}
+{"code":"ECONNRESET","errno":"ECONNRESET","syscall":"read","level":"error","timestamp":"2020-01-03 20:07:43"}
+{"message":"attempts: 2","level":"error","timestamp":"2020-01-03 20:07:46"}

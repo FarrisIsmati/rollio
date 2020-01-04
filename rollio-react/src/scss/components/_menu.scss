@@ -11,13 +11,31 @@
     }
     
     // Individual Link
-    &_link__wrapper {
-        display: flex;
-        align-items: center;
-        margin-bottom: 16px;
+    &_link {
+        &__wrapper {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+    
+            h2 {
+                margin-left: 16px;
+            }
+        }
 
-        h2 {
-            margin-left: 16px;
+        &__image {
+            width: 56px;
+            height: 56px;
+
+            &_wrapper {
+                min-width: 56px;
+                min-height: 56px;
+                background-color: $color-vendor-selector-blank-image;
+            }
+
+            img {
+                max-width: 100%;
+                max-height: 100%;
+            }
         }
     }
     

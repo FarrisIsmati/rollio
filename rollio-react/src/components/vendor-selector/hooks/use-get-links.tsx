@@ -15,7 +15,9 @@ const VendorSelectorLink = (props:VendorSelectedLinkProps) => {
     // Mobile resize this flex centers
     <div className="menu_link__wrapper"> 
       <div className="menu_link__image_wrapper">
-          <img alt={`${name} logo`} src={'https://via.placeholder.com/56x56'} />
+          <div className="menu_link__image">
+            <img src={img} />
+          </div>
       </div>
       <div>
         <h2>{name}</h2>
@@ -32,7 +34,7 @@ const useGetLinks = () => {
 
     if (allVendors.length) {
       links = allVendors.map((vendor:any) => {
-        return <VendorSelectorLink name={vendor.name} id={vendor.id} key={vendor.id}/>
+        return <VendorSelectorLink name={vendor.name} id={vendor.id} img={vendor.profileImageLink} key={vendor.id}/>
       })
     }
 
