@@ -80,11 +80,11 @@
 // APPLIED FONTS
 
 .font__menu_link {
-    @include neuzeit-bold;
+    @include font-bold;
     color: $color-font-main;
 }
 
 .font__menu_topbar {
-    @include neuzeit-bold;
+    @include font-bold;
     color: $color-font-main;
 }

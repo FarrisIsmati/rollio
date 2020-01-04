@@ -2,19 +2,23 @@
 // DEPENDENCIES
 const chai = require('chai');
 const chaid = require('chaid');
+const { sortBy } = require('lodash');
 const dateTime = require('chai-datetime');
 const assertArrays = require('chai-arrays');
 const mongoose = require('../../lib/db/mongo/mongoose/index');
-
+const { ObjectId } = require('mongoose').Types;
 const { expect } = chai;
 
 // OPERATIONS
 const vendorOps = require('../../lib/db/mongo/operations/vendor-ops');
 const regionOps = require('../../lib/db/mongo/operations/region-ops');
+const tweetOps = require('../../lib/db/mongo/operations/tweet-ops');
 
 // SCHEMAS
 const Vendor = mongoose.model('Vendor');
 const Region = mongoose.model('Region');
+const Location = mongoose.model('Location');
+const Tweet = mongoose.model('Tweet');
 
 // SEED
 const seed = require('../../lib/db/mongo/seeds/dev-seed');
@@ -110,23 +114,25 @@ describe('DB Operations', () => {
       beforeEach((done) => {
         seed.runSeed().then(async () => {
           regionID = await Region.findOne().then(region => region._id);
-          vendor = await Vendor.findOne({ 
-            regionID: await regionID, 'locationHistory.0': { '$exists': true }, 'userLocationHistory.0': { '$exists': true } 
+          vendor = await Vendor.findOne({
+            regionID: await regionID, 'locationHistory.0': { '$exists': true }, 'userLocationHistory.0': { '$exists': true }
           });
-          locationID = vendor.locationHistory[vendor.locationHistory.length - 1]._id;
-          userLocationID = vendor.userLocationHistory[vendor.userLocationHistory.length - 1]._id;
+          locationID = vendor.locationHistory[vendor.locationHistory.length - 1];
+          userLocationID = vendor.userLocationHistory[vendor.userLocationHistory.length - 1];
           done();
         });
       });
 
       it('expect new coordinate object pushed into locationHistory', async () => {
         const coordinatesPayload = { locationDate: new Date('2018-02-18T16:22:00Z'), address: '28 Ist', coordinates: [1.123, 4.523] };
+        const newLocation = await Location.create({...coordinatesPayload, TweetID: 'blah'});
+
 
         const prevCoordHist = await Vendor.findOne({ _id: vendor._id })
           .then(vendorPrev => vendorPrev.locationHistory);
 
         const params = {
-          regionID, vendorID: vendor._id, field: 'locationHistory', payload: coordinatesPayload,
+          regionID, vendorID: vendor._id, field: 'locationHistory', payload: newLocation._id,
         };
         const updateCoordHistRes = await vendorOps.updateVendorPush(params)
           .then(res => res);
@@ -157,6 +163,9 @@ describe('DB Operations', () => {
 
         expect(updateCommentsRes.comments[0].name).to.be.equal(commentPayload.name);
         expect(updateCommentsRes.comments[0].text).to.be.equal(commentPayload.text);
+        // just checking that it populates tweets correctly
+        expect(updateCommentsRes.tweetHistory.length).to.be.equal(1);
+        expect(updateCommentsRes.tweetHistory.every(tweet => tweet.text)).to.be.true;
       });
 
       it('expect new tweet to be added to tweetHistory', async () => {
@@ -164,12 +173,7 @@ describe('DB Operations', () => {
           tweetID: '1xtwittera7v2',
           date: new Date('2017-02-18T08:20:00Z'),
           text: 'test tweet',
-          location: {
-            locationDate: new Date('2017-02-18T08:20:00Z'),
-            coordinates: [38.24561, -77.86542],
-            address: '123 street',
-            accuracy: 1,
-          },
+          location: new ObjectId()
         };
 
         const prevDailyTweets = await Vendor.findOne({ _id: vendor._id })
@@ -191,7 +195,7 @@ describe('DB Operations', () => {
         expect(updatedDailyTweets[updatedDailyTweets.length - 1].date)
           .to.equalDate(tweetPayload.date);
         expect(updatedDailyTweets[updatedDailyTweets.length - 1]
-          .location.locationDate).to.deep.equal(tweetPayload.location.locationDate);
+          .location.toString()).to.equal(tweetPayload.location.toString());
         expect(updatedDailyTweets.length).to.equal(prevDailyTweets.length + 1);
       });
 
@@ -454,4 +458,176 @@ describe('DB Operations', () => {
       });
     });
   });
+
+  describe('Tweet DB Operations', () => {
+    let regionID, vendor, allTweets, allVendors, locationID, tweetID, tweet;
+
+    beforeEach((done) => {
+      seed.runSeed().then(async () => {
+        regionID = await Region.findOne().then(region => region._id);
+        vendor = await Vendor.findOne({ regionID: await regionID });
+        allTweets = await Tweet.find().sort([['date', 1]]);
+        allVendors = await Vendor.find();
+        tweetID = vendor.tweetHistory[0];
+        tweet = await Tweet.findById(tweetID).populate('location').populate('vendorID');
+        // note: locationId should be equal to vendor.locationHistory[0]
+        locationID = tweet.location._id;
+        done();
+      });
+    });
+
+    afterEach((done) => {
+      seed.emptySeed()
+          .then(() => done());
+    });
+
+    describe('Get Tweet Operations', () => {
+
+      it('expect getAllTweets to return empty arary if no query passed', (done) => {
+        tweetOps.getAllTweets()
+            .then((res) => {
+              expect(res).to.be.array();
+              expect(res.length).to.be.equal(0);
+              done();
+            })
+            .catch(err => console.error(err));
+      });
+
+      it('expect getAllTweets to return all if date range wide enough; must populate location', (done) => {
+        const startDate = allTweets[0].date;
+        const endDate = allTweets[allTweets.length - 1].date;
+        tweetOps.getAllTweets({ startDate, endDate })
+            .then((res) => {
+              expect(res).to.be.array();
+              expect(res.length).to.be.equal(allTweets.length);
+              expect(res.every(tweet => tweet.location.coordinates)).to.be.true;
+              done();
+            })
+            .catch(err => console.error(err));
+      });
+
+      it('expect getAllTweets to filter by vendorID if passed', (done) => {
+        const vendorID = allTweets[0].vendorID;
+        tweetOps.getAllTweets({ vendorID })
+            .then((res) => {
+              expect(res.every(tweet => tweet.vendorID === vendorID)).to.be.true;
+              done();
+            })
+            .catch(err => console.error(err));
+      });
+
+      it('expect getVendorsForFiltering to select name and id for all vendors and sort by name', (done) => {
+        tweetOps.getVendorsForFiltering()
+            .then((res) => {
+              expect(res).to.be.array();
+              expect(res.length).to.be.equal(allVendors.length);
+              expect(JSON.stringify(res)).to.be.equal(JSON.stringify(sortBy(allVendors.map(vendor => ({ _id: vendor._id, name: vendor.name })), 'name')))
+              done();
+            })
+            .catch(err => console.error(err));
+      });
+
+      it('expect getTweetWithPopulatedVendorAndLocation to find tweet by ID and populate location and vendorID', (done) => {
+        tweetOps.getTweetWithPopulatedVendorAndLocation(tweetID)
+            .then((res) => {
+              expect(JSON.stringify(res)).to.be.equal(JSON.stringify(tweet));
+              done();
+            })
+            .catch(err => console.error(err));
+      });
+    });
+
+    describe('Update Tweet Operations', () => {
+
+      it('expect deleteTweetLocation to delete old tweet location and set dailyActive to false if tweet is from today', done => {
+        Tweet.updateOne({_id: tweetID}, { date: new Date() }).then(() => {
+          Vendor.updateOne({_id: vendor._id}, { dailyActive: true }).then(() => {
+            tweetOps.deleteTweetLocation(tweetID)
+                .then(async res => {
+                  // populates vendorID in the response
+                  expect(res.vendorID.name).to.be.equal(vendor.name);
+                  expect(res.location).to.be.an('undefined');
+                  expect(res.usedForLocation).to.be.false;
+                  const updatedLocation = await Location.findById(locationID);
+                  expect(updatedLocation.overriden).to.be.true;
+                  const updatedVendor = await Vendor.findById(vendor._id);
+                  expect(updatedVendor.locationHistory.find(location => location.toString() === tweetID.toString())).to.be.an('undefined');
+                  expect(updatedVendor.dailyActive).to.be.false;
+                  done();
+                })
+                .catch(err => console.error(err));
+          })
+        });
+      });
+
+      it('expect deleteTweetLocation to delete old tweet location and set NOT dailyActive to false if tweet is NOT from today', done => {
+        Vendor.updateOne({_id: vendor._id}, { dailyActive: true }).then(() => {
+          tweetOps.deleteTweetLocation(tweetID)
+              .then(async res => {
+                // populates vendorID in the response
+                expect(res.vendorID.name).to.be.equal(vendor.name);
+                expect(res.location).to.be.an('undefined');
+                expect(res.usedForLocation).to.be.false;
+                const updatedLocation = await Location.findById(locationID);
+                expect(updatedLocation.overriden).to.be.true;
+                const updatedVendor = await Vendor.findById(vendor._id);
+                expect(updatedVendor.locationHistory.find(location => location.toString() === tweetID.toString())).to.be.an('undefined');
+                expect(updatedVendor.dailyActive).to.be.true;
+                done();
+              })
+              .catch(err => console.error(err));
+        })
+      });
+
+      it('expect createTweetLocation to delete old tweet location if there is one, create new tweet, and update as appropriate', (done) => {
+        const locationDate = new Date();
+        const newLocationData = {...tweet.location.toObject(), locationDate, coordinates: [0, 0], _id: undefined };
+        tweetOps.createTweetLocation(tweetID, newLocationData)
+            .then(async res => {
+              // populates vendorID in the response
+              expect(res.vendorID.name).to.be.equal(vendor.name);
+              expect(res.usedForLocation).to.be.true;
+              const updatedLocation = await Location.findById(locationID);
+              const newLocation = await Location.findById(res.location);
+              expect(JSON.stringify(newLocation.toObject())).to.be.equal(JSON.stringify({...newLocationData, _id: newLocation._id, matchMethod: 'Manual from Tweet'}));
+              expect(updatedLocation.overriden).to.be.true;
+              const updatedVendor = await Vendor.findById(vendor._id);
+              expect(!!updatedVendor.locationHistory.find(location => location.toString() === tweetID.toString())).to.be.false;
+              expect(!!updatedVendor.locationHistory.find(location => location.toString() === res.location._id.toString())).to.be.true;
+              expect(updatedVendor.dailyActive).to.be.true;
+              done();
+            })
+            .catch(err => console.error(err));
+      });
+
+      it('expect createTweetLocation to create new tweet, and update as appropriate, even if no old tweet', (done) => {
+        const newLocationData = {...tweet.location.toObject(), coordinates: [0, 0], _id: undefined };
+        Vendor.updateOne({_id: vendor._id}, { dailyActive: false }).then(() => {
+          tweetOps.createTweetLocation(tweetID, newLocationData)
+              .then(async res => {
+                // populates vendorID in the response
+                expect(res.vendorID.name).to.be.equal(vendor.name);
+                expect(res.usedForLocation).to.be.true;
+                const newLocation = await Location.findById(res.location);
+                expect(JSON.stringify(newLocation.toObject())).to.be.equal(JSON.stringify({
+                  ...newLocationData,
+                  _id: newLocation._id,
+                  matchMethod: 'Manual from Tweet'
+                }));
+                const updatedVendor = await Vendor.findById(vendor._id);
+                expect(!!updatedVendor.locationHistory.find(location => location.toString() === res.location._id.toString())).to.be.true;
+                // doesn't updated dailyActive to true, as tweet was not from today
+                expect(updatedVendor.dailyActive).to.be.false;
+                done();
+              })
+              .catch(err => console.error(err));
+        })
+      });
+
+    });
+
+
+  });
+
+
 });

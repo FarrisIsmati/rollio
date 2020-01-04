@@ -24,6 +24,9 @@ const {
 const {
   getAllTweets,
   getVendorsForFiltering,
+  getTweetWithPopulatedVendorAndLocation,
+  deleteTweetLocation,
+  createTweetLocation,
 } = require('../../db/mongo/operations/tweet-ops');
 
 // Caching data happens on get requests in the middleware,
@@ -286,7 +289,7 @@ const userRouteOps = {
 
 const tweetRouteOps = {
   tweetSearch: async (req, res) => {
-    // TODO: limit to not just any user, but only an admin!
+    // TODO: limit to not just any user, but only an admin
     if (!req.user) {
       res.send(401, 'User Not Authenticated');
     }
@@ -298,7 +301,7 @@ const tweetRouteOps = {
     });
   },
   vendorsForFiltering: async (req, res) => {
-    // TODO: limit to not just any user, but only an admin!
+    // TODO: limit to not just any user, but only an admin
     if (!req.user) {
       res.send(401, 'User Not Authenticated');
     }
@@ -307,6 +310,42 @@ const tweetRouteOps = {
     }).catch((err) => {
       console.error(err);
       res.send(401, 'Error fetching vendors');
+    });
+  },
+  getTweetWithPopulatedVendorAndLocation: async (req, res) => {
+    // TODO: limit to not just any user, but only an admin
+    if (!req.user) {
+      res.send(401, 'User Not Authenticated');
+    }
+    getTweetWithPopulatedVendorAndLocation(req.params.tweetId).then((tweet) => {
+      res.json({ tweet });
+    }).catch((err) => {
+      console.error(err);
+      res.send(401, 'Error fetching tweet');
+    });
+  },
+  deleteLocation: async (req, res) => {
+    // TODO: limit to not just any user, but only an admin
+    if (!req.user) {
+      res.send(401, 'User Not Authenticated');
+    }
+    deleteTweetLocation(req.params.tweetId).then((tweet) => {
+      res.json({ tweet });
+    }).catch((err) => {
+      console.error(err);
+      res.send(401, 'Error deleting location');
+    });
+  },
+  createNewLocation: async (req, res) => {
+    // TODO: limit to not just any user, but only an admin
+    if (!req.user) {
+      res.send(401, 'User Not Authenticated');
+    }
+    createTweetLocation(req.params.tweetId, req.body).then((tweet) => {
+      res.json({ tweet });
+    }).catch((err) => {
+      console.error(err);
+      res.send(401, 'Error creating new location');
     });
   },
 };

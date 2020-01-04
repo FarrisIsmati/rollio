@@ -63,7 +63,7 @@ const tweetParser = {
           city,
           neighborhood,
           coordinates: [address[0].geometry.location.lat, address[0].geometry.location.lng],
-          matchMethod: 'Tweet regex match',
+          matchMethod: 'Tweet location',
         },
       };
     }
@@ -109,7 +109,7 @@ const tweetParser = {
                 city,
                 neighborhood: curLocation.neighborhood,
                 coordinates: curLocation.location.coordinates,
-                matchMethod: 'Tweet regex match',
+                matchMethod: 'Tweet location',
               },
             };
             break;

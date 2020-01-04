@@ -40,7 +40,7 @@
 // APPLIED FONTS
 
 .font__vendordata_title {
-    @include neuzeit-black;
+    @include font-black;
     color: $color-font-alt;
     font-size: 42px;
     font-stretch: normal;
@@ -48,13 +48,13 @@
 }
 
 .font__vendordata_description {
-    @include neuzeit-reg;
+    @include font-reg;
     color: $color-font-main;
     font-size: 18px;
 }
 
 .font__vendordata_link {
-    @include neuzeit-reg;
+    @include font-reg;
     color: $color-font-link;
     font-size: 18px;
     text-decoration: none;

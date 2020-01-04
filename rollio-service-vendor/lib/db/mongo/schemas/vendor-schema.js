@@ -25,8 +25,10 @@ const LocationSchema = new mongoose.Schema({
   city: { type: String, required: false },
   neighborhood: { type: String, required: false },
   // possibly replace this with a reference to the tweet in the Tweet collection
+  // possibly make required if matchMethod is Tweet Location or Manual from Tweet
   tweetID: { type: String, required: false },
-  matchMethod: { type: String, required: false },
+  matchMethod: { type: String, enum: ['Tweet location', 'User Input', 'Manual from Tweet'], default: 'Tweet location', required: false },
+  overriden: { type: Boolean, default: false },
   coordinates: {
     type: [{ type: Number, required: true }],
     validate: [val => val.length <= 2, '{PATH} exceeds the limit of 2'],
@@ -39,9 +41,8 @@ const TweetSchema = new mongoose.Schema({
   tweetID: { type: String, required: true },
   date: { type: Date, required: true },
   text: { type: String, required: true },
+  location: { type: mongoose.Schema.Types.ObjectId, ref: 'Location', required: false },
   vendorID: { type: mongoose.Schema.Types.ObjectId, ref: 'Vendor', required: true },
-  // likely will delete location key here in the future
-  location: { type: LocationSchema, required: false },
   usedForLocation: { type: Boolean, default: false }
 });
 

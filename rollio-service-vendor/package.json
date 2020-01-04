@@ -9,7 +9,7 @@
     "startcluster": "pm2 start index.js -i 4",
     "killcluster": "pm2 delete index",
     "test": "set NODE_ENV=TEST_LOCAL&& mocha ./test/**/*spec.js --timeout 10000 --exit",
-    "testunix": "export NODE_ENV=TEST_LOCAL&& mocha ./test/**/*spec.js --timeout 10000 --exit",
+    "testunix": "NODE_ENV=TEST_LOCAL&& mocha ./test/**/*spec.js --timeout 10000 --exit",
     "seeddev": "node -e require('./lib/db/mongo/seeds/dev-seed.js').runSeed()"
   },
   "repository": {
@@ -51,8 +51,10 @@
     "express": "^4.17.0",
     "express-jwt": "^5.3.1",
     "express-rate-limit": "^3.5.1",
+    "faker": "^4.1.0",
     "jsonwebtoken": "^8.5.1",
     "mocha": "^5.2.0",
+    "moment": "^2.24.0",
     "mongo-querystring": "^4.1.1",
     "mongoose": "^5.5.10",
     "morgan": "^1.9.1",
