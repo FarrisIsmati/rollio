@@ -17,7 +17,6 @@ import {
 import rootReducer from '../redux/reducers/root-reducer';
 
 // COMPONENTS
-import VendorProfile from './vendor-profile/vendor-profile';
 import RegionHome from './region/region-home';
 import PageInvalid from './error/page-invalid';
 import LoginOut from './authentication/login-out';
@@ -41,7 +40,6 @@ const App:FC = () => {
         <div className="App">
           <Switch>
             <Route exact path="/region/:regionName" component={ RegionHome } />
-            {/* <Route exact path="/region/:regionId/vendor/:vendorId" component={ VendorProfile } /> */}
             <Route exact path="/login" component={ LoginOut } />
             <Route exact path="/tweets" component={ TweetTable } />
             <Route exact path="/tweets/:tweetId" component={ UpdateLocation } />

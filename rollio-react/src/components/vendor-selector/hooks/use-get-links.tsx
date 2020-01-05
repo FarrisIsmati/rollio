@@ -1,30 +1,12 @@
 // DEPENDENCIES
 import React from 'react';
 
+// COMPONENTS
+import VendorSelectorLink from '../vendor-selector-link';
+
 // HOOKS
 import useGetAppState from '../../common/hooks/use-get-app-state';
 import windowSizeEffects from '../../common/hooks/use-window-size';
-
-// INTERFACES
-import { VendorSelectedLinkProps } from '../interfaces';
-
-const VendorSelectorLink = (props:VendorSelectedLinkProps) => {
-  const { name, id, img } = props;
-
-  return (
-    // Mobile resize this flex centers
-    <div className="menu_link__wrapper"> 
-      <div className="menu_link__image_wrapper">
-          <div className="menu_link__image">
-            <img alt={`${name} logo`} src={img} />
-          </div>
-      </div>
-      <div>
-        <h2 className="font__menu_link">{name}</h2>
-      </div>
-    </div>
-  )
-}
 
 // Get data from redux state
 const useGetLinks = () => {
