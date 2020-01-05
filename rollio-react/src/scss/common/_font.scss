@@ -1,24 +1,27 @@
 // Mixins
 
-@mixin neuzeit-bold {
-    font-family: neuzeit-grotesk, sans-serif;
-    font-weight: 700;
+@mixin font-light {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
     font-style: normal;
-    letter-spacing: 0.75px;
 }
 
-@mixin neuzeit-reg {
-    font-family: neuzeit-grotesk, sans-serif;
+@mixin font-reg {
+    font-family: 'Roboto', sans-serif;
     font-weight: 500;
     font-style: normal;
-    letter-spacing: 0.75px;
 }
 
-@mixin neuzeit-black {
-    font-family: neuzeit-grotesk, sans-serif;
+@mixin font-bold {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+@mixin font-black {
+    font-family: 'Roboto', sans-serif;
     font-weight: 900;
     font-style: normal;
-    letter-spacing: 0.75px;
 }
 
 p, h1, h2 {

@@ -1,0 +1,12 @@
+.region {
+    &__wrapper {
+        display: flex;
+        height: 100%;
+    }
+
+    // MOBILE
+    &_mobile__wrapper {
+        @extend .region__wrapper;
+        flex-direction: column;
+    }
+}

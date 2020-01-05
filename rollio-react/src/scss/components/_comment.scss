@@ -132,7 +132,7 @@
 
 .font__comment_add {
     &_content {
-        @include neuzeit-reg;
+        @include font-reg;
         color: $color-font-main;
 
         &::placeholder,::-moz-placeholder,:-moz-placeholder,::-webkit-input-placeholder,:-ms-input-placeholder  {
@@ -141,29 +141,29 @@
     }
 
     &_error {
-        @include neuzeit-reg;
+        @include font-reg;
         color: $color-font-error;
     }
 }
 
 .font__comment_posted {
     &_name {
-        @include neuzeit-bold;
+        @include font-bold;
         color: $color-font-main;
     }
 
     &_time {
-        @include neuzeit-reg;
+        @include font-reg;
         color: $color-font-main-light2;
     }
 
     &_content {
-        @include neuzeit-reg;
+        @include font-reg;
         color: $color-font-main;
     }
 
     &_empty {
-        @include neuzeit-reg;
+        @include font-reg;
         color: $color-font-main-light2;
     }
 }

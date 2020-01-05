@@ -5,7 +5,7 @@ const PageInvalid = () => {
   console.log('yep invalid')
     return (
     <div className='pageinvalid__wrapper'>
-        THIS PAGE DOESN'T EXIST YOU FUCKER!
+      Sorry, this is totaly messed up but we don't have this page.
     </div>
   );
 }

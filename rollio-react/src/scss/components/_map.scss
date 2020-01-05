@@ -1,8 +1,8 @@
 .map {
     &__wrapper {
         display: inline-block;
-        height: 500px;
-        width: 800px;
+        height: 100%;
+        width: 100%;
     }
 }
 
@@ -24,6 +24,16 @@
 
 // APPLIED FONTS
 .font__map_marker_font {
-    @include neuzeit-bold;
+    @include font-bold;
     font-size: 18px;
 }
+
+// MEDIA QUERIES
+
+@media only screen and (max-width: 768px) {
+    .map {
+        &__wrapper {
+            margin-bottom: 56px;
+        }
+    }
+  }

@@ -35,5 +35,4 @@ const ButtonDefault = (props: ButtonProps) => {
 
 // ADD OPTION FOR BUTTON LOCK STATE 
 
-
 export default ButtonDefault;
