@@ -2,10 +2,9 @@
 import React from 'react';
 
 const PageInvalid = () => {
-  console.log('yep invalid')
     return (
     <div className='pageinvalid__wrapper'>
-      Sorry, this is totaly messed up but we don't have this page.
+      THIS PAGE DOESN'T EXIST YOU FUCKER! DON'T EVER TRY TO GET BACK ON THIS PAGE OR I'LL FUCKING SHOOT YOU.
     </div>
   );
 }

@@ -212,7 +212,6 @@ export function fetchRegionDataAsync(payload:RegionDataAsyncPayload) {
 // -----------
 
 export function recieveAllVendors(vendors:any) {
-    console.log(vendors)
     return {
         type: RECIEVE_ALL_VENDORS,
         payload: {
