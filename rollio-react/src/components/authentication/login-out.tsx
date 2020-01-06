@@ -5,6 +5,8 @@ import { withRouter } from 'react-router';
 import {VENDOR_API} from "../../config";
 import {receiveUser, logOut, fetchUserAsync, fetchUserSuccess} from "../../redux/actions/user-actions";
 import {useDispatch} from "react-redux";
+import { IconContext } from 'react-icons';
+import { IoLogoTwitter } from 'react-icons/io';
 
 const Login = (props:any) => {
     const dispatch = useDispatch();
@@ -30,10 +32,6 @@ const Login = (props:any) => {
         });
     };
 
-    const goToAllTweets = () => {
-        props.history.push(`/tweets`);
-    };
-
     useEffect(() => {
         if(localStorage.token && localStorage.token.length && !user.isAuthenticated) {
             dispatch(fetchUserAsync())
@@ -48,10 +46,7 @@ const Login = (props:any) => {
                         {user.email}
                     </div>
                     <div>
-                        <button onClick={goToAllTweets} className="button">
-                            See tweets
-                        </button>
-                        <button onClick={logout} className="button">
+                        <button onClick={logout} className="twitter_login_button">
                             Log out
                         </button>
                     </div>
@@ -64,7 +59,17 @@ const Login = (props:any) => {
                         onFailure={onFailure}
                         onSuccess={twitterResponse}
                         requestTokenUrl={twitterRequestTokenUrl}
-                    />
+                        style={{margin: '0 0', padding: '0 0', border: '0'}}
+                    >
+                        <div className="twitter_login_button">
+                            <IconContext.Provider value={{ size: '32', color: 'white' }}>
+                                <div className="twitter_login_content">
+                                    <IoLogoTwitter/>
+                                    CONTINUE WITH TWITTER
+                                </div>
+                            </IconContext.Provider>
+                        </div>
+                    </TwitterLogin>
                 </div>
             );
 
