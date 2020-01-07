@@ -9,9 +9,9 @@ const useGetVendorData = (props:any) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        const { regionId, vendorId, history } = props;
+        const { regionId, vendorId } = props;
         const reRouteCb = () => {
-            history.replace('/invalid');
+            console.error('Invalid Vendor ID')
         }
         const payload = { 
             regionId,

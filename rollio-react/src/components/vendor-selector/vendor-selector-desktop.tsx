@@ -1,12 +1,6 @@
 // DEPENDENCIES
 import React, {FC} from 'react';
 import { useCallbackRef } from 'use-callback-ref';
-import {
-  Route,
-  Switch,
-  BrowserRouter
-} from 'react-router-dom';
-
 
 // COMPONENTS
 import VendorSelectorLinks from './vendor-selector-links';
@@ -27,8 +21,8 @@ const VendorSelectorDesktop:FC = () => {
             <h2 className="font__menu_link">Food Trucks</h2>
           </div>
         </div>
-        {/* https://tylermcginnis.com/react-router-nested-routes/ */}
-        {/* <Route exact path="/region/:regionName/vendor/:vendorId" component={ VendorProfile } /> */}
+        {/* If selected Vendor, render Vendor Profile */}
+        {/* <VendorProfile /> */}
         <VendorSelectorLinks ref={ref} />
     </div>
   );

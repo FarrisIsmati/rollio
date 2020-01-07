@@ -39,7 +39,7 @@ const App:FC = () => {
       <BrowserRouter>
         <div className="App">
           <Switch>
-            <Route exact path="/region/:regionName" component={ RegionHome } />
+            <Route path="/region/:regionName" component={ RegionHome } />
             <Route exact path="/login" component={ LoginOut } />
             <Route exact path="/tweets" component={ TweetTable } />
             <Route exact path="/tweets/:tweetId" component={ UpdateLocation } />

@@ -34,81 +34,6 @@ import {
     UpdateDailyActiveVendorsPayload
 } from './interfaces';
 
-// -------
-// PROFILE
-// -------
-
-// Gets the detailed set of vendor profile data
-export function recieveVendorData(vendor:any) {
-    let location = null;
-    
-    // If the most recently updated of the vendor location history is today
-    if (vendor.locationHistory.length && moment(Date.now()).isSame(vendor.locationHistory[vendor.locationHistory.length - 1].locationDate, 'day')) {
-        location = vendor.locationHistory[vendor.locationHistory.length - 1];
-    }
-    // LOCATION HISTORY ONLY IF IT'S LOCATION IS TODAY CREATE THAT CHECK
-    const profile = {
-        categories: vendor.categories,
-        comments: vendor.comments,
-        creditCard: vendor.creditCard,
-        description: vendor.description,
-        email: vendor.email,
-        id: vendor._id,
-        location,
-        name: vendor.name,
-        phonenumber: vendor.phonenumber,
-        profileImageLink: vendor.profileImageLink,
-        price: vendor.price,
-        rating: vendor.rating,
-        twitterID: vendor.twitterID,
-        website: vendor.website,
-        isActive: vendor.dailyActive,
-        lastUpdated: vendor.updateDate,
-    }
-
-    return {
-        type: RECIEVE_VENDOR_DATA,
-        payload: {
-            ...profile
-        }
-    }
-}
-
-function fetchVendorDataSuccess() {
-    return {
-        type: FETCH_VENDOR_DATA_SUCCESS,
-        payload: {
-            isVendorLoaded: true
-        }
-    }
-}
-
-function fetchVendorDataStart() {
-    return {
-        type: FETCH_VENDOR_DATA,
-        payload: {
-            isVendorLoaded: false
-        }
-    }
-}
-
-export function fetchVendorDataAsync(payload:VendorDataAsyncPayload) {
-    const { regionId, vendorId, cb } = payload;
-
-    return (dispatch:any) => {
-        dispatch(fetchVendorDataStart())
-        axios.get(`${VENDOR_API}/vendor/${regionId}/${vendorId}`)
-            .then((res: AxiosResponse<any>) => {
-                dispatch(recieveVendorData(res.data));
-                dispatch(fetchVendorDataSuccess());
-            })
-            .catch((err:any) => {
-                console.error(err)
-                cb()
-            })
-    }
-}
-
 // --------
 // COMMENTS
 // --------
@@ -270,5 +195,81 @@ export function updateDailyActiveVendors(payload: UpdateDailyActiveVendorsPayloa
     return {
         type: UPDATE_DAILY_ACTIVE_VENDORS,
         payload
+    }
+}
+
+
+// -------
+// VENDOR PROFILE
+// -------
+
+// Gets the detailed set of vendor profile data
+export function recieveVendorData(vendor:any) {
+    let location = null;
+    
+    // If the most recently updated of the vendor location history is today
+    if (vendor.locationHistory.length && moment(Date.now()).isSame(vendor.locationHistory[vendor.locationHistory.length - 1].locationDate, 'day')) {
+        location = vendor.locationHistory[vendor.locationHistory.length - 1];
+    }
+    // LOCATION HISTORY ONLY IF IT'S LOCATION IS TODAY CREATE THAT CHECK
+    const profile = {
+        categories: vendor.categories,
+        comments: vendor.comments,
+        creditCard: vendor.creditCard,
+        description: vendor.description,
+        email: vendor.email,
+        id: vendor._id,
+        location,
+        name: vendor.name,
+        phonenumber: vendor.phonenumber,
+        profileImageLink: vendor.profileImageLink,
+        price: vendor.price,
+        rating: vendor.rating,
+        twitterID: vendor.twitterID,
+        website: vendor.website,
+        isActive: vendor.dailyActive,
+        lastUpdated: vendor.updateDate,
+    }
+
+    return {
+        type: RECIEVE_VENDOR_DATA,
+        payload: {
+            ...profile
+        }
+    }
+}
+
+function fetchVendorDataSuccess() {
+    return {
+        type: FETCH_VENDOR_DATA_SUCCESS,
+        payload: {
+            isVendorLoaded: true
+        }
+    }
+}
+
+function fetchVendorDataStart() {
+    return {
+        type: FETCH_VENDOR_DATA,
+        payload: {
+            isVendorLoaded: false
+        }
+    }
+}
+
+export function fetchVendorDataAsync(payload:VendorDataAsyncPayload) {
+    const { regionId, vendorId, cb } = payload;
+
+    return (dispatch:any) => {
+        dispatch(fetchVendorDataStart())
+        axios.get(`${VENDOR_API}/vendor/${regionId}/${vendorId}`)
+            .then((res: AxiosResponse<any>) => {
+                dispatch(recieveVendorData(res.data));
+                dispatch(fetchVendorDataSuccess());
+            })
+            .catch((err:any) => {
+                console.error(err)
+                cb()
+            })
     }
 }

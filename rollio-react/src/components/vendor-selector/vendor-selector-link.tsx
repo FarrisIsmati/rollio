@@ -1,19 +1,33 @@
 // DEPENDENCIES
 import React from 'react';
+import { useDispatch } from 'react-redux';
 
 // INTERFACES
 import { VendorSelectedLinkProps } from './interfaces';
 
-const openVendorProfile = (id:any) => {
-    console.log(id);
+// HOOKS
+import useGetAppState from '../common/hooks/use-get-app-state';
+
+// ACTIONS
+import { fetchVendorDataAsync } from '../../redux/actions/data-actions';
+
+const selectVendorProfile = (dispatch:any, regionID:string, vendorID:string) => {
+
+  dispatch(fetchVendorDataAsync({ 
+    regionId: regionID,
+    vendorId: vendorID,
+    cb: () => console.error('Invalid ID')
+  }))
 }
 
 const VendorSelectorLink = (props:VendorSelectedLinkProps) => {
-  const { name, id, img } = props;
+  const { name, id: vendorID, img } = props;
+  const state = useGetAppState();
+  const dispatch = useDispatch();
 
   return (
     // Mobile resize this flex centers
-    <div onClick={() => { openVendorProfile(id) }} className="menu_link__wrapper"> 
+    <div onClick={() => { selectVendorProfile(dispatch, state.data.regionId, vendorID) }} className="menu_link__wrapper"> 
       <div className="menu_link__image_wrapper">
           <div className="menu_link__image">
             <img alt={`${name} logo`} src={img} />
