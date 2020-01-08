@@ -21,6 +21,7 @@ import VendorProfile from './vendor-profile/vendor-profile';
 import RegionHome from './region/region-home';
 import PageInvalid from './error/page-invalid';
 import LoginOut from './authentication/login-out';
+import Profile from './authentication/profile';
 import TweetTable from './tweets/tweet-table';
 import UpdateLocation from './tweets/update-location'
 
@@ -44,6 +45,7 @@ const App:FC = () => {
             {/* <Route exact path="/region/:regionId/vendor/:vendorId" component={ VendorProfile } /> */}
             <Route exact path="/login" component={ () => <LoginOut isLogin={true}/> } />
             <Route exact path="/signup" component={ () => <LoginOut isLogin={false}/> } />
+            <Route exact path="/profile" component={ Profile } />
             <Route exact path="/tweets" component={ TweetTable } />
             <Route exact path="/tweets/:tweetId" component={ UpdateLocation } />
             <Route exact path="/invalid" component={ PageInvalid } />

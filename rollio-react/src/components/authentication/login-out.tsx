@@ -45,7 +45,7 @@ const Login = (props:any) => {
     const getRegionInfo = (regionID:string) => [].find((region:any) => region._id.toString() === regionID) || { name: 'WASHINGTONDC' };
 
     const redirectToNewPage = () => {
-        const { type = '', regionID = '', vendorID = '', hasAllRequiredFields = false } = user || {};
+        const { type = 'customer', regionID = '', vendorID = '', hasAllRequiredFields = false } = user || {};
         if (!hasAllRequiredFields) {
             props.history.push('/profile');
         } else if (type === 'customer') {
@@ -94,11 +94,11 @@ const Login = (props:any) => {
         </div>
     );
 
-    const loginFrame = (
+    const loginFrame = (userType:string) => (
         <div className="twitter_login__button_wrapper">
             <h2> { userType.charAt(0).toUpperCase() + userType.slice(1) } {loginOrSetUp}</h2>
             <TwitterLogin
-                loginUrl={twitterLoginUrl}
+                loginUrl={`${twitterLoginUrl}/${userType}/`}
                 onFailure={onFailure}
                 onSuccess={twitterResponse}
                 requestTokenUrl={twitterRequestTokenUrl}
@@ -119,7 +119,7 @@ const Login = (props:any) => {
 
     return (
         <div className="twitter_login__wrapper">
-            { userType ? loginFrame : chooseUserType }
+            { userType ? loginFrame(userType) : chooseUserType }
         </div>
     );
 }

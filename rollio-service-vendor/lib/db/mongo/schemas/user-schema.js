@@ -38,7 +38,7 @@ const UserSchema = new mongoose.Schema({
 UserSchema.virtual('hasAllRequiredFields').get(function() {
     const requiredFields = ['email', 'type'];
     // vendorID is needed if the user is a vendor; regionID is needed if the user is a 'customer' (or 'admin')
-    return requiredFields.every(field => this[field]) && this.type === 'vendor' ? this.vendorID : this.regionID;
+    return requiredFields.every(field => this[field]) && !!(this.type === 'vendor' ? this.vendorID : this.regionID);
 });
 
 UserSchema.set('toJSON', {getters: true, virtuals: true});

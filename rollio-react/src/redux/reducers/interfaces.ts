@@ -89,6 +89,7 @@ export interface UserDefaultState {
     type: string,
     vendorID: string,
     regionID: string,
+    twitterID: string,
     hasAllRequiredFields: boolean
 }
 

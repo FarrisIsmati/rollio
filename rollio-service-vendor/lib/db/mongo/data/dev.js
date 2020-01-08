@@ -34,12 +34,14 @@ const vendor5Id = ObjectId();
 const vendor6Id = ObjectId();
 const vendor7Id = ObjectId();
 const vendor8Id = ObjectId();
+const region1Id = ObjectId();
 
 
 module.exports = {
   vendors: [
     {
       _id: vendor1Id,
+      regionID: region1Id,
       name: 'DC Foodtruck 1',
       type: 'mobileTruck',
       description: 'A truck for testing',
@@ -64,6 +66,7 @@ module.exports = {
     },
     {
       _id: vendor2Id,
+      regionID: region1Id,
       name: 'Balkanik Taste',
       type: 'mobileTruck',
       description: 'Balkanik Taste is a family owned and operated business. We are 100% dedicated to our customers, giving them the best services in the Metro Washington area.',
@@ -85,6 +88,7 @@ module.exports = {
     },
     {
       _id: vendor3Id,
+      regionID: region1Id,
       name: 'The Big Cheese',
       type: 'mobileTruck',
       description: 'Purveyors of fine grilled cheeses since 2010',
@@ -106,6 +110,7 @@ module.exports = {
     },
     {
       _id: vendor4Id,
+      regionID: region1Id,
       name: 'Chick-fil-A Mobile',
       type: 'mobileTruck',
       description: 'The #1 quick service food truck in the DMV!!',
@@ -128,6 +133,7 @@ module.exports = {
     },
     {
       _id: vendor5Id,
+      regionID: region1Id,
       name: 'Abunai',
       type: 'mobileTruck',
       description: 'Modern Hawaiian cuisine in D.C. Catering, pop-ups, food truck, and UberEATS!',
@@ -150,6 +156,7 @@ module.exports = {
     },
     {
       _id: vendor6Id,
+      regionID: region1Id,
       name: 'Arepa Crew',
       type: 'mobileTruck',
       description: 'A taste of Venezuela for the Washington Metropolitan area!',
@@ -172,6 +179,7 @@ module.exports = {
     },
     {
       _id: vendor7Id,
+      regionID: region1Id,
       name: 'Astro Donuts',
       type: 'mobileTruck',
       description: "Fried chicken and doughnuts in the nation's capital, Falls Church, VA and a pretty awesome food truck on a corner near you. NOW OPEN in Los Angeles!",
@@ -194,6 +202,7 @@ module.exports = {
     },
     {
       _id: vendor8Id,
+      regionID: region1Id,
       name: 'Ball or Nothing',
       type: 'mobileTruck',
       description: 'Balls on Wheels hitting a spot near you. We have something for everyone. If everyone likes balls.',
@@ -215,6 +224,7 @@ module.exports = {
       categories: ['Italian', 'Fried Chicken', 'Pasta', 'Meat'],
     },
     {
+      regionID: region1Id,
       name: 'DC Foodtruck 2',
       type: 'mobileTruck',
       description: 'A truck for testing again',
@@ -238,6 +248,7 @@ module.exports = {
       categories: ['Luxury', 'Caviar', 'Lobster', 'Michelan Star'],
     },
     {
+      regionID: region1Id,
       name: 'BBQ Bus',
       type: 'mobileTruck',
       description: 'Catch us curbside, order delivery or visit us at new Smokehouse, our job is same: Fill you up on eats you love surrounded by ones you care for most.',
@@ -259,6 +270,7 @@ module.exports = {
       categories: ['Barbeque', 'American', 'Comfort Food', 'Meat'],
     },
     {
+      regionID: region1Id,
       name: 'Capital Chicken & Waffles',
       type: 'mobileTruck',
       description: "The DC area's first & only chicken & waffles food truck! Stay tuned for updates, locations, coupons & much, much more. We are open every day: 8am to 10pm.",
@@ -282,6 +294,7 @@ module.exports = {
   ],
   regions: [
     {
+      _id: region1Id,
       name: 'WASHINGTONDC',
       coordinates: {
         locationDate: new Date('2018-04-12T12:10:00Z'),
