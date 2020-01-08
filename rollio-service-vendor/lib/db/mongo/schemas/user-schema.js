@@ -6,6 +6,9 @@ const UserSchema = new mongoose.Schema({
     // could make this conditionally required if the user is of type 'vendor', but need to sort out the registration flow first
     vendorID: { type: mongoose.Schema.Types.ObjectId, required: false, ref: 'Vendor' },
     regionID: { type: mongoose.Schema.Types.ObjectId, required: false, ref: 'Region' },
+    // saving twitterID outside of the twitterProvider so that we can easily serve it up to the client
+    // if the user is a 'vendor', then it should match the vendor's twitterID
+    twitterID: { type: String, required: false },
     facebookProvider: {
         type: {
             id: String,
@@ -16,8 +19,6 @@ const UserSchema = new mongoose.Schema({
     },
     twitterProvider: {
         type: {
-            // NOTE: this 'id' should match the 'twitterId' field in the vendor-model
-            id: String,
             token: String,
             username: String,
             displayName: String
@@ -38,7 +39,7 @@ const UserSchema = new mongoose.Schema({
 UserSchema.virtual('hasAllRequiredFields').get(function() {
     const requiredFields = ['email', 'type'];
     // vendorID is needed if the user is a vendor; regionID is needed if the user is a 'customer' (or 'admin')
-    return requiredFields.every(field => this[field]) && !!(this.type === 'vendor' ? this.vendorID : this.regionID);
+    return requiredFields.every(field => this[field]) && !!(this.type === 'vendor' ? this.vendorID && this.twitterID : this.regionID);
 });
 
 UserSchema.set('toJSON', {getters: true, virtuals: true});
