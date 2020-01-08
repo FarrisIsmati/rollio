@@ -1,5 +1,5 @@
 import useGetAppState from "../common/hooks/use-get-app-state";
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import TwitterLogin from 'react-twitter-auth';
 import { withRouter } from 'react-router';
 import {VENDOR_API} from "../../config";
@@ -7,14 +7,20 @@ import {receiveUser, logOut, fetchUserAsync, fetchUserSuccess} from "../../redux
 import {useDispatch} from "react-redux";
 import { IconContext } from 'react-icons';
 import { IoLogoTwitter } from 'react-icons/io';
+const SIGN_IN = 'Sign In';
+const SIGN_UP = 'Sign Up';
 
+
+// TODO: add back a logout route
 const Login = (props:any) => {
+    const isLogin = !!props.isLogin;
     const dispatch = useDispatch();
+    const [userType, setUserType] = useState<string>('');
     const { user } = useGetAppState();
     const twitterLoginUrl = `${VENDOR_API}/api/auth/twitter`;
     const twitterRequestTokenUrl = `${VENDOR_API}/api/auth/twitter/reverse`;
     const logout = () => {
-        localStorage.clear()
+        localStorage.clear();
         dispatch(logOut());
     };
     const onFailure = (error:any) => {
@@ -32,51 +38,88 @@ const Login = (props:any) => {
         });
     };
 
+    const goToOtherLoginPage = () => {
+        props.history.push(isLogin ? '/signup' : '/login');
+    };
+
+    const getRegionInfo = (regionID:string) => [].find((region:any) => region._id.toString() === regionID) || { name: 'WASHINGTONDC' };
+
+    const redirectToNewPage = () => {
+        const { type = '', regionID = '', vendorID = '', hasAllRequiredFields = false } = user || {};
+        if (!hasAllRequiredFields) {
+            props.history.push('/profile');
+        } else if (type === 'customer') {
+            const { name } = getRegionInfo(regionID);
+            props.history.push(`/region/${name}`);
+        } else if (type === 'admin') {
+            props.history.push('/tweets');
+        } else if (type === 'vendor') {
+            props.history.push(`/region/${regionID}/vendor/${vendorID}`);
+        }
+    };
+
+    const loginOrSetUp = isLogin ? SIGN_IN : SIGN_UP;
+
     useEffect(() => {
         if(localStorage.token && localStorage.token.length && !user.isAuthenticated) {
-            dispatch(fetchUserAsync())
+            dispatch(fetchUserAsync());
+        } else if (user.isAuthenticated) {
+            redirectToNewPage();
         }
-    }, []);
-    // Render Content
-    const content = user.isAuthenticated ?
-            (
-                <div>
-                    <p>Authenticated</p>
-                    <div>
-                        {user.email}
-                    </div>
-                    <div>
-                        <button onClick={logout} className="twitter_login_button">
-                            Log out
-                        </button>
-                    </div>
-                </div>
-            ) :
-            (
-                <div>
-                    <TwitterLogin
-                        loginUrl={twitterLoginUrl}
-                        onFailure={onFailure}
-                        onSuccess={twitterResponse}
-                        requestTokenUrl={twitterRequestTokenUrl}
-                        style={{margin: '0 0', padding: '0 0', border: '0'}}
-                    >
-                        <div className="twitter_login_button">
-                            <IconContext.Provider value={{ size: '32', color: 'white' }}>
-                                <div className="twitter_login_content">
-                                    <IoLogoTwitter/>
-                                    CONTINUE WITH TWITTER
-                                </div>
-                            </IconContext.Provider>
-                        </div>
-                    </TwitterLogin>
-                </div>
-            );
+    }, [user]);
 
+    const typeDescription = {
+        [SIGN_IN]: {
+            vendor: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do...',
+            customer: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do...'
+        },
+        [SIGN_UP]: {
+            vendor: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do...',
+            customer: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do...'
+        }
+    };
+
+    const chooseUserType = (
+        <div>
+            <div style={ {display: 'flex', flexDirection: 'row', margin: '10px 20%'} }>
+                <div style={ {margin: '0 50px'}}>
+                    <h4 className="twitter_login__pointer" onClick={() => setUserType('vendor')}>Vendor {loginOrSetUp}</h4>
+                        <p>{typeDescription[loginOrSetUp].vendor}</p>
+                </div>
+                <div style={ {margin: '0 50px'}}>
+                    <h4 className="twitter_login__pointer" onClick={() => setUserType('customer')}>Customer {loginOrSetUp}</h4>
+                    <p>{typeDescription[loginOrSetUp].customer}</p>
+                </div>
+            </div>
+        </div>
+    );
+
+    const loginFrame = (
+        <div className="twitter_login__button_wrapper">
+            <h2> { userType.charAt(0).toUpperCase() + userType.slice(1) } {loginOrSetUp}</h2>
+            <TwitterLogin
+                loginUrl={twitterLoginUrl}
+                onFailure={onFailure}
+                onSuccess={twitterResponse}
+                requestTokenUrl={twitterRequestTokenUrl}
+                style={{margin: '0 0', padding: '0 0', border: '0'}}
+            >
+                <div className="twitter_login__login_button">
+                    <IconContext.Provider value={{ size: '32', color: 'white' }}>
+                        <div className="twitter_login__login_content twitter_login__pointer">
+                            <IoLogoTwitter/>
+                            CONTINUE WITH TWITTER
+                        </div>
+                    </IconContext.Provider>
+                </div>
+            </TwitterLogin>
+            <p>{isLogin ? "Don't" : "Already"} have an account? <a className="twitter_login__sign_up_link twitter_login__pointer" onClick={goToOtherLoginPage}>{ isLogin ? SIGN_UP : SIGN_IN }</a></p>
+        </div>
+    );
 
     return (
-        <div>
-            { content }
+        <div className="twitter_login__wrapper">
+            { userType ? loginFrame : chooseUserType }
         </div>
     );
 }

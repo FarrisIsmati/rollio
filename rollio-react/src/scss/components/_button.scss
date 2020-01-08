@@ -38,20 +38,3 @@
     @include font-bold;
     font-size: 18px;
 }
-
-.twitter_login_button {
-    background-color: #1DA0F2;
-    color: white;
-    font-weight: bold;
-    padding: 5px 5px;
-}
-
-.twitter_login_button:hover {
-    cursor: pointer;
-}
-
-.twitter_login_content {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}

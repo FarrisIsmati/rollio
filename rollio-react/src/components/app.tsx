@@ -42,7 +42,8 @@ const App:FC = () => {
           <Switch>
             <Route exact path="/region/:regionName" component={ RegionHome } />
             {/* <Route exact path="/region/:regionId/vendor/:vendorId" component={ VendorProfile } /> */}
-            <Route exact path="/login" component={ LoginOut } />
+            <Route exact path="/login" component={ () => <LoginOut isLogin={true}/> } />
+            <Route exact path="/signup" component={ () => <LoginOut isLogin={false}/> } />
             <Route exact path="/tweets" component={ TweetTable } />
             <Route exact path="/tweets/:tweetId" component={ UpdateLocation } />
             <Route exact path="/invalid" component={ PageInvalid } />

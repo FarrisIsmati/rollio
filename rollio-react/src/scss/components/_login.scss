@@ -1,0 +1,33 @@
+.twitter_login {
+    &__wrapper {
+        margin: 0 auto;
+        width: 100%;
+    }
+
+    &__button_wrapper {
+        margin: auto auto;
+        max-width: 250px;
+        text-align: center;
+    }
+
+    &__login_button {
+        background-color: #1DA0F2;
+        color: white;
+        font-weight: bold;
+        padding: 5px 5px;
+    }
+
+    &__login_content {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    &__sign_up_link {
+        color: $color-font-link;
+    }
+
+    &__pointer:hover {
+        cursor: pointer;
+    }
+}

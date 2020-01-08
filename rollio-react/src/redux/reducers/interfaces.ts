@@ -86,7 +86,10 @@ export interface UserDefaultState {
     isAuthenticated: boolean,
     id: string,
     email: string,
-    isAdmin: boolean,
+    type: string,
+    vendorID: string,
+    regionID: string,
+    hasAllRequiredFields: boolean
 }
 
 export interface MapDefaultState {
