@@ -1,15 +1,35 @@
 .twitter_login {
-    &__wrapper {
+    &__margin_20_20 {
+        margin: 20% 20%;
+    }
+
+    &__flex_grid {
         display: flex;
-        flex-direction: row;
-        justify-content: center;
-        width: 100%;
+        justify-content: space-between;
+    }
+    &__col {
+        width: 45%;
+        border: solid 1px black;
+        padding: 10px 10px;
+        margin: 10px 10px;
+    }
+
+    @media (max-width: 400px) {
+        &__flex_grid {
+            display: block;
+        }
+
+        &__col {
+            width: 100%;
+            margin: 0 0 10px 0;
+        }
     }
 
     &__button_wrapper {
-        margin: auto auto;
+        margin: 10% auto;
         max-width: 250px;
         text-align: center;
+        padding: 10px 10px;
     }
 
     &__login_button {
@@ -31,10 +51,5 @@
 
     &__pointer:hover {
         cursor: pointer;
-    }
-
-    &__flex_row {
-        display: flex;
-        flex-direction: row;
     }
 }

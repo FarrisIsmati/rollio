@@ -80,16 +80,14 @@ const Login = (props:any) => {
     };
 
     const chooseUserType = (
-        <div>
-            <div className="twitter_login__flex_row">
-                <div style={ { margin: '0 50px', maxWidth: '250px' }}>
-                    <h4 className="twitter_login__pointer" onClick={() => setUserType('vendor')}>Vendor {loginOrSetUp}</h4>
-                        <p>{typeDescription[loginOrSetUp].vendor}</p>
-                </div>
-                <div style={ { margin: '0 50px', maxWidth: '250px' }}>
-                    <h4 className="twitter_login__pointer" onClick={() => setUserType('customer')}>Customer {loginOrSetUp}</h4>
-                    <p>{typeDescription[loginOrSetUp].customer}</p>
-                </div>
+        <div className="twitter_login__flex_grid twitter_login__margin_20_20">
+            <div className="twitter_login__col">
+                <h4 className="twitter_login__pointer" onClick={() => setUserType('vendor')}>Vendor {loginOrSetUp}</h4>
+                    <p>{typeDescription[loginOrSetUp].vendor}</p>
+            </div>
+            <div className="twitter_login__col">
+                <h4 className="twitter_login__pointer" onClick={() => setUserType('customer')}>Customer {loginOrSetUp}</h4>
+                <p>{typeDescription[loginOrSetUp].customer}</p>
             </div>
         </div>
     );
@@ -118,7 +116,7 @@ const Login = (props:any) => {
     );
 
     return (
-        <div className="twitter_login__wrapper">
+        <div>
             { userType ? loginFrame(userType) : chooseUserType }
         </div>
     );
