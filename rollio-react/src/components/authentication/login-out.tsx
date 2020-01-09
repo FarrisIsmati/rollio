@@ -70,11 +70,11 @@ const Login = (props:any) => {
 
     const typeDescription = {
         [SIGN_IN]: {
-            vendor: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do...',
+            vendor: "You must sign in using your food truck's official twitter account.  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do...",
             customer: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do...'
         },
         [SIGN_UP]: {
-            vendor: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do...',
+            vendor: "You must sign up using your food truck's official twitter account.  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do...",
             customer: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do...'
         }
     };

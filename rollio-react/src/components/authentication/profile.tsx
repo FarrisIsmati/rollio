@@ -8,7 +8,9 @@ const Profile = (props:any) => {
     const dispatch = useDispatch();
     const [userType, setUserType] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(true);
-    const { user } = useGetAppState();
+    const appState = useGetAppState();
+    console.log('appState', appState);
+    const user = appState.user;
 
     useEffect(() => {
         if (!user.isAuthenticated && localStorage.token && localStorage.token.length) {
@@ -28,9 +30,16 @@ const Profile = (props:any) => {
     //
     const vendorFields = [ { value: '', label: '', type: 'text'} ];
 
-    const content = loading ? 'loading...' : (
-        userType
-    );
+    let content;
+    if (loading) {
+        content = 'Loading...';
+    } else if (userType === 'vendor' && !user.vendorID) {
+        content = 'Need to select vendor or create one';
+    } else if (userType === 'vendor') {
+        content = 'Need to fill in missing user profile info (for a vendor), whatever that might be';
+    } else if (userType === 'customer') {
+        content = 'Need to fill in missing user profile info (for a customer), whatever that might be';
+    }
 
     return (
         <div className="twitter_login__wrapper">

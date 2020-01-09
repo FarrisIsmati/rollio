@@ -13,7 +13,6 @@ const defaultState:UserDefaultState = {
     type: '',
     vendorID: '',
     regionID: '',
-    twitterID: '',
     hasAllRequiredFields: false
 };
 
@@ -27,7 +26,6 @@ export function userReducer(state = defaultState, action: any) {
                 type: action.payload.type,
                 vendorID: action.payload.vendorID || '',
                 regionID: action.payload.regionID || 'WASHINGTONDC',
-                twitterID: action.payload.twitterID || '',
                 hasAllRequiredFields: !!action.payload.hasAllRequiredFields
             });
         case LOG_OUT:
