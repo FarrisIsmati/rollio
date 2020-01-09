@@ -8,14 +8,14 @@ module.exports = {
     },
     async upsertTwitterUser(token, tokenSecret, profile, type) {
         const { id, username, displayName, emails } = profile;
-        let user = await User.findOne({ 'twitterProvider.id': id });
-        if (user) {
+        const existingUser = await User.findOne({ 'twitterProvider.id': id });
+        if (existingUser) {
         // TODO: think about how to allow users to change 'type' if they want to.  For now, they are locked in after the first time
-            return { user };
+            return { user: existingUser };
         }
         const vendor = await Vendor.findOne({ twitterID: id });
         const vendorIdUpdate = vendor ? { vendorID: vendor._id } : {};
-        const newUser = new User({
+        const newUser = await new User({
             email: emails[0].value,
             twitterProvider: {
                 id,
@@ -26,8 +26,10 @@ module.exports = {
             },
             ...vendorIdUpdate,
             type
-        });
-        user = await newUser.save();
+        }).save();
+        const user = newUser.toJSON();
+        // annoyingly, .save doesn't seem to honor the 'select: false' on the schema.  So, just deleting here
+        delete user.twitterProvider;
         return { user };
     }
 };

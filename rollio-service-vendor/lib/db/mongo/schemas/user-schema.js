@@ -43,7 +43,7 @@ UserSchema.virtual('hasAllRequiredFields').get(function() {
     return requiredFields.every(field => this[field]);
 });
 
-UserSchema.set('toJSON', {getters: true, virtuals: true});
+UserSchema.set('toJSON', { getters: true, virtuals: true });
 
 UserSchema.statics.upsertFbUser = function(accessToken, refreshToken, profile, cb) {
     const that = this;
