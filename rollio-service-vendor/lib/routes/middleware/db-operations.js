@@ -8,7 +8,7 @@ const qs = new MongoQS(); // MongoQS takes req.query and converts it into MongoQ
 const { client: redisClient } = require('../../redis/index');
 
 // OPERATIONS
-const { getRegion, getRegionByName } = require('../../db/mongo/operations/region-ops');
+const { getAllRegions, getRegion, getRegionByName } = require('../../db/mongo/operations/region-ops');
 const {
   getVendors,
   getVendor,
@@ -49,6 +49,11 @@ const checkCache = async (req, res, payload) => {
 };
 
 const regionRouteOps = {
+  async getAllRegions(req, res) {
+    getAllRegions().then(regions => {
+      return res.status(200).json({regions});
+    })
+  },
   async getRegionId(req, res) {
     const getRegionIdOp = async (req, res, cb = null) => getRegion(req.params.id)
       .then(async (regions) => {

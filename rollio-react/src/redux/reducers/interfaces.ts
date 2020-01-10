@@ -47,6 +47,11 @@ export interface VendorFull {
     lastUpdated: Date | null,
 }
 
+export interface Region {
+    id: string,
+    name: string
+}
+
 export interface Comment {
     name: string,
     date: string,
@@ -79,6 +84,7 @@ export interface DataDefaultState {
     regionCoordinates: Coordinates,
     regionTimezone: string,
     vendorsAll: { [key: string]: VendorCard },
+    regionsAll: Region[],
     selectedVendor: VendorFull,
 }
 
@@ -103,6 +109,7 @@ export interface LoadStateDefaultState {
     isRegionLoaded: boolean,
     isVendorLoaded: boolean,
     areVendorsLoaded: boolean,
+    areRegionsLoaded: boolean,
     areMapPinsLoaded: boolean,
     isUserLoaded: boolean
 }

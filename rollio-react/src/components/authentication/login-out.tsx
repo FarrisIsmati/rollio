@@ -4,6 +4,7 @@ import TwitterLogin from 'react-twitter-auth';
 import { withRouter } from 'react-router';
 import {VENDOR_API} from "../../config";
 import {receiveUser, logOut, fetchUserAsync, fetchUserSuccess} from "../../redux/actions/user-actions";
+import {fetchAllRegionsAsync} from "../../redux/actions/data-actions";
 import {useDispatch} from "react-redux";
 import { IconContext } from 'react-icons';
 import { IoLogoTwitter } from 'react-icons/io';
@@ -16,7 +17,9 @@ const Login = (props:any) => {
     const isLogin = !!props.isLogin;
     const dispatch = useDispatch();
     const [userType, setUserType] = useState<string>('');
-    const { user } = useGetAppState();
+    const { user, data, loadState } = useGetAppState();
+    const { areRegionsLoaded } = loadState;
+    const { regionsAll } = data;
     const twitterLoginUrl = `${VENDOR_API}/api/auth/twitter`;
     const twitterRequestTokenUrl = `${VENDOR_API}/api/auth/twitter/reverse`;
     const logout = () => {
@@ -42,7 +45,7 @@ const Login = (props:any) => {
         props.history.push(isLogin ? '/signup' : '/login');
     };
 
-    const getRegionInfo = (regionID:string) => [].find((region:any) => region._id.toString() === regionID) || { name: 'WASHINGTONDC' };
+    const getRegionInfo = (regionID:string) => regionsAll.find((region:any) => region.id.toString() === regionID) || { name: 'WASHINGTONDC' };
 
     const redirectToNewPage = () => {
         const { type = 'customer', regionID = '', vendorID = '', hasAllRequiredFields = false } = user || {};
@@ -63,10 +66,13 @@ const Login = (props:any) => {
     useEffect(() => {
         if(localStorage.token && localStorage.token.length && !user.isAuthenticated) {
             dispatch(fetchUserAsync());
-        } else if (user.isAuthenticated) {
+        } else if (user.isAuthenticated && areRegionsLoaded) {
             redirectToNewPage();
         }
-    }, [user]);
+        if (!areRegionsLoaded) {
+            dispatch(fetchAllRegionsAsync());
+        }
+    }, [user, areRegionsLoaded]);
 
     const typeDescription = {
         [SIGN_IN]: {

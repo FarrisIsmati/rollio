@@ -3,6 +3,7 @@ import {
     RECIEVE_REGION_DATA,
     RECIEVE_VENDOR_DATA,
     RECIEVE_ALL_VENDORS,
+    RECEIVE_ALL_REGIONS,
     POST_VENDOR_COMMENT,
     UPDATE_VENDOR,
     UPDATE_DAILY_ACTIVE_VENDORS
@@ -21,6 +22,7 @@ const defaultState:DataDefaultState = {
     },
     regionTimezone: '',
     vendorsAll: {},
+    regionsAll: [],
     selectedVendor: {
         id: '',
         name: '',
@@ -59,7 +61,7 @@ export function dataReducer(state = defaultState, action: any) {
         }
     case RECIEVE_VENDOR_DATA:
         return {
-            ...state, 
+            ...state,
             selectedVendor: { ...state.selectedVendor, ...action.payload }
         }
     case RECIEVE_ALL_VENDORS:
@@ -67,9 +69,14 @@ export function dataReducer(state = defaultState, action: any) {
             ...state,
             vendorsAll: { ...action.payload }
         }
+    case RECEIVE_ALL_REGIONS:
+        return {
+            ...state,
+            regionsAll: [ ...action.payload.map((region:any) => ({id: region._id, name: region.name})) ]
+        }
     case UPDATE_VENDOR:
         const vendorsAll = { ...state.vendorsAll }
-        
+
         return {
             ...state,
             vendorsAll: { ...vendorsAll, [action.payload.vendorID]: { ...vendorsAll[action.payload.vendorID], location: action.payload.location, isActive: action.payload.isActive } }
@@ -94,4 +101,3 @@ export function dataReducer(state = defaultState, action: any) {
         return state
     }
 }
-  
