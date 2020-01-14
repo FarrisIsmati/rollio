@@ -3,6 +3,7 @@ import {
     RECIEVE_REGION_DATA,
     RECIEVE_VENDOR_DATA,
     RECIEVE_ALL_VENDORS,
+    CLEAR_SELECTED_VENDOR,
     POST_VENDOR_COMMENT,
     UPDATE_VENDOR,
     UPDATE_DAILY_ACTIVE_VENDORS
@@ -66,6 +67,11 @@ export function dataReducer(state = defaultState, action: any) {
         return {
             ...state,
             vendorsAll: { ...action.payload }
+        }
+    case CLEAR_SELECTED_VENDOR:
+        return {
+            ...state,
+            selectedVendor: { ...defaultState.selectedVendor, location: { ...defaultState.selectedVendor.location, coordinates: { lat: null, long: null } } }
         }
     case UPDATE_VENDOR:
         const vendorsAll = { ...state.vendorsAll }

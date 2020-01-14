@@ -12,7 +12,6 @@ import useGetAppState from '../common/hooks/use-get-app-state';
 import { fetchVendorDataAsync } from '../../redux/actions/data-actions';
 
 const selectVendorProfile = (dispatch:any, regionID:string, vendorID:string) => {
-
   dispatch(fetchVendorDataAsync({ 
     regionId: regionID,
     vendorId: vendorID,

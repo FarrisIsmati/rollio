@@ -19,6 +19,8 @@ import {
     FETCH_ALL_VENDORS_SUCCESS,
     RECIEVE_ALL_VENDORS,
 
+    CLEAR_SELECTED_VENDOR,
+
     UPDATE_VENDOR,
 
     UPDATE_DAILY_ACTIVE_VENDORS,
@@ -206,12 +208,12 @@ export function updateDailyActiveVendors(payload: UpdateDailyActiveVendorsPayloa
 // Gets the detailed set of vendor profile data
 export function recieveVendorData(vendor:any) {
     let location = null;
-    
-    // If the most recently updated of the vendor location history is today
-    if (vendor.locationHistory.length && moment(Date.now()).isSame(vendor.locationHistory[vendor.locationHistory.length - 1].locationDate, 'day')) {
+
+    // If the vendor is active set its location
+    if (vendor.dailyActive) {
         location = vendor.locationHistory[vendor.locationHistory.length - 1];
     }
-    // LOCATION HISTORY ONLY IF IT'S LOCATION IS TODAY CREATE THAT CHECK
+
     const profile = {
         categories: vendor.categories,
         comments: vendor.comments,
@@ -271,5 +273,11 @@ export function fetchVendorDataAsync(payload:VendorDataAsyncPayload) {
                 console.error(err)
                 cb()
             })
+    }
+}
+
+export function clearSelectedVendor() {
+    return {
+        type: CLEAR_SELECTED_VENDOR
     }
 }

@@ -3,6 +3,7 @@ import {
     FETCH_REGION_DATA_SUCCESS,
     FETCH_VENDOR_DATA_SUCCESS,
     FETCH_ALL_VENDORS_SUCCESS,
+    CLEAR_SELECTED_VENDOR,
     SET_MAP_PIN_LOAD_STATE,
     FETCH_USER_SUCCESS,
     FETCH_USER,
@@ -36,6 +37,11 @@ export function loadStateReducer(state = defaultState, action: any) {
         return {
             ...state,
             ...action.payload
+        }
+    case CLEAR_SELECTED_VENDOR:
+        return {
+            ...state,
+            isVendorLoaded: false
         }
     case SET_MAP_PIN_LOAD_STATE:
         return {
