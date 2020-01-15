@@ -1,34 +1,24 @@
 // DEPENDENCIES
-import React, { useEffect, useState, FC } from 'react';
+import React, { FC } from 'react';
+import { useDispatch  } from 'react-redux';
 import { FaChevronUp, FaTimes } from 'react-icons/fa';
 
+// ACTIONS
+import { toggleMobileMenu } from '../../redux/actions/ui-actions';
+
 // HOOKS
-import useWindowSize from '../common/hooks/use-window-size';
+import useSetMobileMenuStyle from './hooks/use-set-mobile-menu-style';
 
 // TO DO: ONCE NAVBAR IS SET PERMANATLEY THEN SET HEIGHT TO A PERCENTAGE OF WIDNOWHEIGHT - NAVBAR HEIGHT
 
 const VendorSelectorMobile:FC = () => {
-    
-    const [isMenuExpanded, setIsMenuExpanded] = useState<boolean>(false);
-
-    const windowHeight = useWindowSize.useWindowHeight();
-
-    const expandedMenuStyle = {
-        // .81 golden ratio number
-        height: `${windowHeight * .81}px`,
-        transition: 'height .25s',
-        'transition-timing-function': 'ease-in'
-    }
-
-    const contractedMenuStyle = {
-        height: '56px',
-        transition: 'height .15s',
-        'transition-timing-function': 'ease-out'
-    }
+    const dispatch = useDispatch();
 
     const toggleMenuState = () => {
-        setIsMenuExpanded(!isMenuExpanded);
+        dispatch(toggleMobileMenu())
     }
+
+    const { isMenuExpanded, expandedMenuStyle, contractedMenuStyle} = useSetMobileMenuStyle();
 
   return (
       // Mobile resize this flex centers

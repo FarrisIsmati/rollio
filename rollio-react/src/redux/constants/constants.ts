@@ -34,3 +34,6 @@ export const FETCH_USER_SUCCESS = 'FETCH_USER_SUCESS'
 export const FETCH_USER = 'FETCH_USER'
 
 export const LOG_OUT = 'LOG_OUT'
+
+// UI ACTIONS
+export const TOGGLE_MOBILE_MENU = 'TOGGLE_MOBILE_MENU'

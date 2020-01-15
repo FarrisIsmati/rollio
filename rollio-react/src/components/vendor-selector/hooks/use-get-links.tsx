@@ -6,7 +6,6 @@ import VendorSelectorLink from '../vendor-selector-link';
 
 // HOOKS
 import useGetAppState from '../../common/hooks/use-get-app-state';
-import windowSizeEffects from '../../common/hooks/use-window-size';
 
 // Get data from redux state
 const useGetLinks = () => {
