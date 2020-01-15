@@ -30,6 +30,10 @@ const Login = (props:any) => {
         });
     };
 
+    const goToAllTweets = () => {
+        props.history.push(`/tweets`);
+    };
+
     useEffect(() => {
         if(localStorage.token && localStorage.token.length && !user.isAuthenticated) {
             dispatch(fetchUserAsync())
@@ -44,6 +48,9 @@ const Login = (props:any) => {
                         {user.email}
                     </div>
                     <div>
+                        <button onClick={goToAllTweets} className="button">
+                            See tweets
+                        </button>
                         <button onClick={logout} className="button">
                             Log out
                         </button>
