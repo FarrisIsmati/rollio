@@ -19,6 +19,7 @@ const {
 
 const {
   findUserById,
+  patchUser
 } = require('../../db/mongo/operations/user-ops');
 
 const {
@@ -290,6 +291,18 @@ const userRouteOps = {
       res.send(401, 'User Not Authenticated');
     });
   },
+  updateUser: async (req, res) => {
+    patchUser(req.user.id, req.body).then((user) => {
+      if (user) {
+        res.json({ user });
+      } else {
+        res.send(401, 'User Not Authenticated');
+      }
+    }).catch((err) => {
+      console.error(err);
+      res.send(401, 'User Not Authenticated');
+    });
+  }
 };
 
 const tweetRouteOps = {

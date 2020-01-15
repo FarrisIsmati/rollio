@@ -6,6 +6,14 @@ module.exports = {
     async findUserById(userId) {
         return User.findById(userId);
     },
+    async patchUser(_id, data) {
+        let unsetUpdate = {};
+        if (data.type !== 'vendor') {
+            unsetUpdate = { $unset: { vendorID : 1 } };
+            delete data.vendorID;
+        }
+        return User.findOneAndUpdate({_id}, { $set: data, ...unsetUpdate }, {new: true});
+    },
     async upsertTwitterUser(token, tokenSecret, profile, type) {
         const { id, username, displayName, emails } = profile;
         const existingUser = await User.findOne({ 'twitterProvider.id': id });

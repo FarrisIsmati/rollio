@@ -5,11 +5,10 @@ import {fetchUserAsync} from "../../redux/actions/user-actions";
 import {useDispatch} from "react-redux";
 import {fetchAllRegionsAsync} from "../../redux/actions/data-actions";
 
-// TODO: abstract out vendor stuff into it's own component!!!!!
-// TODO: dumb!  don't have separate set... for each.  Just have one object representing the user or vendor
+// TODO: BUILD THIS ALL OUT
 
 
-const Profile = (props:any) => {
+const UserProfile = (props:any) => {
     const dispatch = useDispatch();
     const { user, data, loadState } = useGetAppState();
     const { areRegionsLoaded } = loadState;
@@ -60,10 +59,6 @@ const Profile = (props:any) => {
         }
     }, [user, areRegionsLoaded]);
 
-    const handleCustomerSubmit = () => {
-        //
-    };
-
     const handleNewVendorSubmit = () => {
         //
     };
@@ -71,7 +66,7 @@ const Profile = (props:any) => {
     let formContent;
     if (loading) {
         formContent = 'Loading...';
-    } else if (type === 'vendor' && !user.vendorID) {
+    } else if (type === 'vendor' || type === 'admin') {
         formContent = (
             <form onSubmit={handleNewVendorSubmit}>
                 <label>
@@ -159,23 +154,8 @@ const Profile = (props:any) => {
                 <input disabled={vendorDisabled} type="submit" value="Submit" />
             </form>
         )
-    } else if (type === 'vendor') {
-        formContent = 'Need to fill in missing vendor info';
-    } else if (type === 'customer') {
-        formContent = (
-            <form onSubmit={handleCustomerSubmit}>
-                <label>
-                    Pick your region:
-                    <select value={stateRegionID} onChange={e=>setStateRegionID(e.target.value)}>
-                        { regionsAll.map((region:any) => {
-                            const {id, name} = region;
-                            return <option key={id} value={id}>{name}</option>
-                        })}
-                    </select>
-                </label>
-                <input disabled={!regionID} type="submit" value="Submit" />
-            </form>
-        )
+    } else {
+        formContent = 'Only vendors or admins can edit vendor content';
     }
 
     return (
@@ -185,4 +165,4 @@ const Profile = (props:any) => {
     )
 };
 
-export default withRouter(Profile);
+export default withRouter(UserProfile);

@@ -38,7 +38,7 @@ const UserSchema = new mongoose.Schema({
 UserSchema.virtual('hasAllRequiredFields').get(function() {
     const requiredForEverybody = ['email', 'type'];
     const requiredForCustomersOnly = ['regionID'];
-    const requiredForVendorsOnly = ['vendorID'];
+    const requiredForVendorsOnly = [];
     const requiredFields = [...requiredForEverybody, ...(this.type === 'vendor' ? requiredForVendorsOnly : requiredForCustomersOnly)];
     return requiredFields.every(field => this[field]);
 });

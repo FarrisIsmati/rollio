@@ -50,14 +50,16 @@ const Login = (props:any) => {
     const redirectToNewPage = () => {
         const { type = 'customer', regionID = '', vendorID = '', hasAllRequiredFields = false } = user || {};
         if (!hasAllRequiredFields) {
-            props.history.push('/profile');
+            props.history.push('/profile/user');
         } else if (type === 'customer') {
             const { name } = getRegionInfo(regionID);
             props.history.push(`/region/${name}`);
         } else if (type === 'admin') {
             props.history.push('/tweets');
-        } else if (type === 'vendor') {
+        } else if (type === 'vendor' && vendorID) {
             props.history.push(`/region/${regionID}/vendor/${vendorID}`);
+        } else if (type === 'vendor') {
+            props.history.push('/profile/vendor');
         }
     };
 

@@ -13,5 +13,7 @@ router.post('/auth/twitter/:type', getTwitterUser,
     },
     setRequestAuth, generateToken, sendToken);
 router.get('/auth/users', expressJwt({ secret: JWT_SECRET }), userRouteOps.getUser);
+router.post('/auth/users', expressJwt({ secret: JWT_SECRET }), userRouteOps.updateUser);
+
 
 module.exports = router;
