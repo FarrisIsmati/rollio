@@ -158,17 +158,21 @@ const seedObj = {
       .then(() => this.seedTweets())
       .then(() => this.seedLocations())
       .catch(err => {
-        console.log(`error seeing DB: ${err}`);
+        console.log(`error seeding DB: ${err}`);
         throw err;
       });
 
   },
-    emptySeed() {
-        return this.emptyRegions()
-            .then(() => this.emptyVendors())
-            .then(() => this.emptyTweets())
-            .then(() => this.emptyLocations())
-            .then(() => this.emptyUsers())
+  emptySeed() {
+    return this.emptyRegions()
+        .then(() => this.emptyVendors())
+        .then(() => this.emptyTweets())
+        .then(() => this.emptyLocations())
+        .then(() => this.emptyUsers())
+        .catch(err => {
+          console.log(`error emptying DB: ${err}`);
+          throw err;
+        });
     }
 };
 
