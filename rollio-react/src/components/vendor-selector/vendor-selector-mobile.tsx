@@ -37,5 +37,4 @@ const VendorSelectorMobile:FC = () => {
   );
 }
 
-
 export default VendorSelectorMobile;
