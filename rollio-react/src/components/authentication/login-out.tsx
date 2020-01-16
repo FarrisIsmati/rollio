@@ -12,7 +12,8 @@ const SIGN_IN = 'Sign In';
 const SIGN_UP = 'Sign Up';
 
 
-// TODO: add back a logout route
+// TODO: add back a logout route!
+// TODO: abstract out the re-route logic, which is shared
 const Login = (props:any) => {
     const isLogin = !!props.isLogin;
     const dispatch = useDispatch();
@@ -59,7 +60,7 @@ const Login = (props:any) => {
         } else if (type === 'vendor' && vendorID) {
             props.history.push(`/region/${regionID}/vendor/${vendorID}`);
         } else if (type === 'vendor') {
-            props.history.push('/profile/vendor');
+            props.history.push(`/profile/${regionID}/vendor`);
         }
     };
 

@@ -100,7 +100,7 @@ export function fetchVendorDataAsync(payload:VendorDataAsyncPayload) {
     const { regionId, vendorId, cb } = payload;
 
     return (dispatch:any) => {
-        dispatch(fetchVendorDataStart())
+        dispatch(fetchVendorDataStart());
         axios.get(`${VENDOR_API}/vendor/${regionId}/${vendorId}`)
             .then((res: AxiosResponse<any>) => {
                 dispatch(recieveVendorData(res.data));

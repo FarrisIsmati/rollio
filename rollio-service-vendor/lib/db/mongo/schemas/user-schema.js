@@ -36,8 +36,9 @@ const UserSchema = new mongoose.Schema({
 
 // we can update the list of required fields as we go.  If all these fields aren't filled in, then the user will be asked to fill them in on login
 UserSchema.virtual('hasAllRequiredFields').get(function() {
-    const requiredForEverybody = ['email', 'type'];
-    const requiredForCustomersOnly = ['regionID'];
+    const requiredForEverybody = ['email', 'type', 'regionID'];
+    // in case some fields are only required for customers and some only for vendors
+    const requiredForCustomersOnly = [];
     const requiredForVendorsOnly = [];
     const requiredFields = [...requiredForEverybody, ...(this.type === 'vendor' ? requiredForVendorsOnly : requiredForCustomersOnly)];
     return requiredFields.every(field => this[field]);

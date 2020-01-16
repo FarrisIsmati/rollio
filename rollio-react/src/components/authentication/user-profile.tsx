@@ -60,7 +60,7 @@ const UserProfile = (props:any) => {
         } else if (type === 'vendor' && vendorID) {
             props.history.push(`/region/${regionID}/vendor/${vendorID}`);
         } else if (type === 'vendor') {
-            props.history.push('/profile/vendor');
+            props.history.push(`/profile/${regionID}/vendor`);
         }
     };
 

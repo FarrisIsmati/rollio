@@ -63,6 +63,7 @@ module.exports = {
       dailyActive: false,
       consecutiveDaysInactive: 4,
       categories: ['Luxury', 'Caviar', 'Lobster', 'Michelan Star'],
+      approved: true
     },
     {
       _id: vendor2Id,
@@ -85,6 +86,7 @@ module.exports = {
       dailyActive: true,
       consecutiveDaysInactive: 4,
       categories: ['Balkan', 'Mediterranean', 'Hearty', 'Meat'],
+      approved: true
     },
     {
       _id: vendor3Id,
@@ -107,6 +109,7 @@ module.exports = {
       dailyActive: true,
       consecutiveDaysInactive: 4,
       categories: ['Cheese', 'Comfort', 'Hearty', 'Bread'],
+      approved: true
     },
     {
       _id: vendor4Id,
@@ -130,6 +133,7 @@ module.exports = {
       dailyActive: true,
       consecutiveDaysInactive: -1,
       categories: ['Fast Food', 'American', 'Comfort Food', 'Meat', 'Chicken'],
+      approved: true
     },
     {
       _id: vendor5Id,
@@ -153,6 +157,7 @@ module.exports = {
       dailyActive: true,
       consecutiveDaysInactive: -1,
       categories: ['Hawaiian', 'Poke', 'Casual', 'Seafood'],
+      approved: true
     },
     {
       _id: vendor6Id,
@@ -176,6 +181,7 @@ module.exports = {
       dailyActive: true,
       consecutiveDaysInactive: -1,
       categories: ['South American', 'Venezuelan', 'Arepa', 'Comfort Food', 'Street Food'],
+      approved: true
     },
     {
       _id: vendor7Id,
@@ -199,6 +205,7 @@ module.exports = {
       dailyActive: true,
       consecutiveDaysInactive: -1,
       categories: ['American', 'Donuts', 'Fried Chicken', 'Comfort Food', 'Street Food'],
+      approved: true
     },
     {
       _id: vendor8Id,
@@ -222,6 +229,7 @@ module.exports = {
       dailyActive: true,
       consecutiveDaysInactive: -1,
       categories: ['Italian', 'Fried Chicken', 'Pasta', 'Meat'],
+      approved: true
     },
     {
       regionID: region1Id,
@@ -246,6 +254,7 @@ module.exports = {
       dailyActive: false,
       consecutiveDaysInactive: 0,
       categories: ['Luxury', 'Caviar', 'Lobster', 'Michelan Star'],
+      approved: true
     },
     {
       regionID: region1Id,
@@ -268,6 +277,7 @@ module.exports = {
       dailyActive: false,
       consecutiveDaysInactive: -1,
       categories: ['Barbeque', 'American', 'Comfort Food', 'Meat'],
+      approved: true
     },
     {
       regionID: region1Id,
@@ -290,6 +300,7 @@ module.exports = {
       dailyActive: false,
       consecutiveDaysInactive: -1,
       categories: ['Fast Food', 'American', 'Comfort Food', 'Soul Food'],
+      approved: true
     }
   ],
   regions: [

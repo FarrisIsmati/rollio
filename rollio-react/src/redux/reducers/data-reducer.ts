@@ -25,6 +25,7 @@ const defaultState:DataDefaultState = {
     regionsAll: [],
     selectedVendor: {
         id: '',
+        type: '',
         name: '',
         description: '',
         email: '',
@@ -36,7 +37,7 @@ const defaultState:DataDefaultState = {
         rating: null,
         twitterID: '',
         comments: [],
-        creditCard: null,
+        creditCard: 'u',
         location: {
             id: '',
             coordinates: { lat: null, long: null },

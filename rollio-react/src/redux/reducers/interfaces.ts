@@ -30,6 +30,7 @@ export interface Location {
 // Full set of vendor data
 export interface VendorFull {
     id: string,
+    type: string,
     name: string,
     description: string,
     email: string,
@@ -41,7 +42,7 @@ export interface VendorFull {
     rating: number | null,
     twitterID: string,
     comments: Comment[],
-    creditCard: boolean | null,
+    creditCard: string | null,
     location: Location[] | Location | null,
     isActive: boolean,
     lastUpdated: Date | null,
