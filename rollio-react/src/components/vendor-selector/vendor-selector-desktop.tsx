@@ -6,11 +6,16 @@ import { useCallbackRef } from 'use-callback-ref';
 import VendorSelectorLinks from './vendor-selector-links';
 import VendorProfile from '../vendor-profile/vendor-profile'
 
+// HOOKS
+import windowSizeEffects from '../common/hooks/use-window-size';
+
 const VendorSelectorDesktop:FC = () => {
   // Create ref to figure out set size of the menu to allow scrolling
   // Set size of menu will be screen height - (div above menu links)
   // Callback ref runs after component is mounted
   const ref = useCallbackRef(null, () => {});
+
+  const vendorSelectorLinksHeight = windowSizeEffects.useWindowHeight() - 26
 
   return (
     <div className="menu__wrapper">
@@ -23,7 +28,7 @@ const VendorSelectorDesktop:FC = () => {
         </div>
         {/* If selected Vendor, render Vendor Profile */}
         {/* <VendorProfile /> */}
-        <VendorSelectorLinks ref={ref} />
+        <VendorSelectorLinks ref={ref} {...{vendorSelectorLinksHeight}}/>
     </div>
   );
 }
