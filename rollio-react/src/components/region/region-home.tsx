@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 
 // COMPONENTS
 import Map from '../map/map';
+import VendorProfile from '../vendor-profile/vendor-profile';
 import VendorSelectorDesktop from '../vendor-selector/vendor-selector-desktop';
 import VendorSelectorMobile from '../vendor-selector/vendor-selector-mobile';
 import RegionNavbarMobile from './region-navbar-mobile'
@@ -39,7 +40,10 @@ const RegionHome = (props:any) => {
     <div className={ width > 768 ? 'region__wrapper' : 'region_mobile__wrapper' }>
       { /* Mobile Responsiveness */ }
       { width > 768 ? 
+      <div className='region__vendor_menu_wrapper'>
+        <VendorProfile />
         <VendorSelectorDesktop /> 
+      </div>
       : <RegionNavbarMobile /> }
       { map }
       { width < 768 ? <VendorSelectorMobile /> : null }

@@ -1,11 +1,11 @@
 // DEPENDENCIES
 import React, { FC } from 'react';
 import { useDispatch  } from 'react-redux';
-import { FaChevronUp, FaTimes } from 'react-icons/fa';
 import { useCallbackRef } from 'use-callback-ref';
 
 // COMPONENTS
 import VendorSelectorLinks from './vendor-selector-links';
+import { FaChevronUp, FaTimes } from 'react-icons/fa';
 
 // ACTIONS
 import { toggleMobileMenu } from '../../redux/actions/ui-actions';

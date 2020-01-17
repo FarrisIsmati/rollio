@@ -1,46 +1,55 @@
 // DEPENDENCIES
-import React from 'react';
+import React, { useState } from 'react';
 
 // COMPONENTS
 import CommentSection from '../comments/comment-section';
 import VendorData from './vendor-data';
+import { FaTimes } from 'react-icons/fa';
 
 // HOOKS
 import useGetVendorData from './hooks/use-get-vendor-data';
 import useGetAppState from '../common/hooks/use-get-app-state';
 
 const VendorProfile = (props:any) => {
-  // const state = useGetAppState();
+  const state = useGetAppState();
 
-  // useGetVendorData({ 
-  //   regionId: state.data.regionId,
-  //   vendorId: props.vendorId,
-  //   history: props.history
-  // })
+  const [vendorProfileClassName, setVendorProfileClassName] = useState('vendorprofile__wrapper')
 
-  // const vendorData = useGetAppState().data.selectedVendor
-  // const comments = useGetAppState().data.selectedVendor.comments
+  const isVendorSelected = state.data.selectedVendor.id !== '';
 
-  // // Render Content
-  // const content = useGetAppState().loadState.isVendorLoaded ?
-  //   <React.Fragment>
-  //     {/* <div className='vendorprofile__twitterwidget_wrapper'>
-  //       tst
-  //     </div> */}
-  //     <div className='vendorprofile__top_wrapper'>
-  //       <VendorData vendorData={vendorData} />
-  //     </div>
-  //     <div className='vendorprofile__bottom_wrapper'>
-  //       <CommentSection comments={comments} />
-  //     </div>
-  //   </React.Fragment>
-  // : <p>loading</p>
+  const vendor = state.data.selectedVendor;
 
-  console.log(props)
+  const hideProfile = () => {
+    setVendorProfileClassName('vendorprofile__wrapper_hidden');
+  }
+
   return (
-    <div className='vendorprofile__wrapper'>
-      {/* { content } */}
-      <p>lol fuck man</p>
+    <div className={vendorProfileClassName}>
+      <div className='font__vendor_profile_header vendorprofile__topbar_wrapper'>
+        { isVendorSelected ? 
+          <h2>{vendor.name}</h2>:
+          <h2>Food Truck</h2>
+        }
+        <div className='vendorprofile__x_wrapper'>
+          <FaTimes onClick={hideProfile}/>
+        </div>
+      </div>
+
+      { isVendorSelected ? 
+        <div className='vendorprofile__image_wrapper'>
+          <div className='vendorprofile__image'>
+            <img alt={`${vendor.name} logo`} src={vendor.profileImageLink} />
+          </div>
+        </div> :
+        <p>loading</p>
+      }
+
+      <div className='vendorprofile__categories_wrapper'>
+        categories
+      </div>
+      <div className='vendorprofile__content_wrapper'>
+
+      </div>
     </div>
   );
 }
