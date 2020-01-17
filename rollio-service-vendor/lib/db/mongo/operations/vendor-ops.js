@@ -32,6 +32,13 @@ module.exports = {
         return err;
       });
   },
+  createVendor(vendorData, regionID, user) {
+    if (user.type === 'vendor') {
+      vendorData.twitterID = user.twitterProvider.id;
+    }
+    // theoretically, the client expects that we populate tweetHistory, locationHistory, and userLocationHistory, but those all should be blank
+    return Vendor.create({ dailyActive: false, consecutiveDaysInactive: 0, ...vendorData, regionID });
+  },
   // Gets a single vendor given a regionID and vendorID
   getVendor(regionID, vendorID) {
     if (arguments.length !== 2) {

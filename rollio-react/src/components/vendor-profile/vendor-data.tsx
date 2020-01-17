@@ -5,7 +5,7 @@ const VendorData = (props:any) => {
     const vendor = props.vendorData
 
     const Categories = vendor.categories.map((category:string) => {
-        return (            
+        return (
             <div className='info__category_wrapper' key={category}>
                 {category}
             </div>
@@ -22,7 +22,7 @@ const VendorData = (props:any) => {
             {Categories}
         </div>
         <div className='col3'>
-            <p className="font__vendordata_description">{vendor.description}</p> 
+            <p className="font__vendordata_description">{vendor.description}</p>
         </div>
         <div className='col4'>
             <p className="font__vendordata_description">{vendor.creditCard === 'y' ? 'Credit Cards Accepted' : 'Credit Card NOT Accepted'}</p>
@@ -32,8 +32,8 @@ const VendorData = (props:any) => {
                 <p className="font__vendordata_description">No website</p>
             }
             {
-                vendor.phonenumber ?
-                <p><a className="font__vendordata_link" href={`tel:${vendor.phonenumber}`} target="_blank" rel="noopener noreferrer">{vendor.phonenumber}</a></p>  :
+                vendor.phoneNumber ?
+                <p><a className="font__vendordata_link" href={`tel:${vendor.phoneNumber}`} target="_blank" rel="noopener noreferrer">{vendor.phoneNumber}</a></p>  :
                 <p className="font__vendordata_description">No phone number</p>
             }
         </div>

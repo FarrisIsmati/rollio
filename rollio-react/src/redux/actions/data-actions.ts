@@ -60,7 +60,7 @@ export function recieveVendorData(vendor:any) {
         id: vendor._id,
         location,
         name: vendor.name,
-        phonenumber: vendor.phonenumber,
+        phoneNumber: vendor.phoneNumber,
         profileImageLink: vendor.profileImageLink,
         price: vendor.price,
         rating: vendor.rating,

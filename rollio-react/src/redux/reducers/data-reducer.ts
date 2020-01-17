@@ -30,7 +30,7 @@ const defaultState:DataDefaultState = {
         description: '',
         email: '',
         website: '',
-        phonenumber: null,
+        phoneNumber: null,
         profileImageLink: '',
         categories: [],
         price: '',

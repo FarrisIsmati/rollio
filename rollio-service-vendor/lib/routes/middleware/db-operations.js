@@ -10,6 +10,7 @@ const { client: redisClient } = require('../../redis/index');
 // OPERATIONS
 const { getAllRegions, getRegion, getRegionByName } = require('../../db/mongo/operations/region-ops');
 const {
+  createVendor,
   getVendors,
   getVendor,
   getVendorsByQuery,
@@ -142,6 +143,20 @@ const vendorRouteOpsUtil = {
 };
 
 const vendorRouteOps = {
+  createVendor: async (req, res) => {
+    if (['admin', 'vendor'].includes(req.user.type)) {
+      createVendor(req.body, req.params.regionID, req.user)
+          .then(vendor => {
+            return res.status(200).json({vendor});
+          })
+          .catch(err => {
+            console.error(err);
+            res.status(500).send(err);
+          });
+    } else {
+      return res.status(403).send('You must be an admin or vendor user to create a new vendor');
+    }
+  },
   getVendors: async (req, res) => {
     const hasQS = Object.keys(req.query).length > 0;
 
@@ -279,6 +294,19 @@ const vendorRouteOps = {
 };
 
 const userRouteOps = {
+  passUserToNext: async (req, res, next) => {
+    findUserById(req.user.id, true).then((user) => {
+      if (user) {
+        req.user = user;
+        next();
+      } else {
+        res.send(401, 'User Not Authenticated');
+      }
+    }).catch((err) => {
+      console.error(err);
+      res.send(401, 'User Not Authenticated');
+    });
+  },
   getUser: async (req, res) => {
     findUserById(req.user.id).then((user) => {
       if (user) {

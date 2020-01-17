@@ -3,8 +3,8 @@ const User = mongoose.model('User');
 const Vendor = mongoose.model('Vendor');
 
 module.exports = {
-    async findUserById(userId) {
-        return User.findById(userId);
+    async findUserById(userId, includeTwitterProvider = false) {
+        return includeTwitterProvider ? User.findById(userId).select('+twitterProvider') : User.findById(userId);
     },
     async patchUser(_id, data) {
         let unsetUpdate = {};

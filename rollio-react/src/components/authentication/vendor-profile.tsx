@@ -6,7 +6,6 @@ import {useDispatch} from "react-redux";
 import {recieveVendorData, fetchVendorDataAsync} from "../../redux/actions/data-actions";
 import axios, {AxiosResponse} from "axios";
 import {VENDOR_API} from "../../config";
-import { omit } from 'lodash';
 
 const UserProfile = (props:any) => {
     const dispatch = useDispatch();
@@ -17,8 +16,21 @@ const UserProfile = (props:any) => {
     const [localVendor, setLocalVendor] = useState<any>(selectedVendor);
     const { vendorId = '', regionId } = props.match.params;
 
-    const updateLocalVendor = (key:string, value:string) => {
-        setLocalVendor({...localVendor, [key]: value});
+    const updateLocalVendor = (key:string, value:string, isArray:boolean = false) => {
+        let updatedValue;
+        if (isArray) {
+            const currentValue = localVendor[key];
+            const currentIdx = currentValue.indexOf(value);
+            if (currentIdx > -1) {
+                currentValue.splice(currentIdx,1);
+                updatedValue = currentValue;
+            } else {
+                updatedValue = currentValue.concat(value);
+            }
+        } else {
+            updatedValue = value;
+        }
+        setLocalVendor({...localVendor, [key]: updatedValue });
     };
 
     const reRouteCb = () => {
@@ -33,7 +45,7 @@ const UserProfile = (props:any) => {
         } else if (vendorId && vendorId !== selectedVendor.id) {
             fetchVendorDataAsync({ regionId, vendorId, cb: reRouteCb });
         } else {
-            setLocalVendor(selectedVendor);
+            setLocalVendor({...selectedVendor, type: 'mobileTruck', phoneNumber: ''});
             setLoading(false);
         }
     }, [user, selectedVendor, vendorId]);
@@ -42,19 +54,29 @@ const UserProfile = (props:any) => {
     const allCategories = ['Mexican', 'Italian'];
     const creditCardOptions = [{text: 'Yes', value: 'y'}, {text: 'No', value: 'n'}, {text: 'Unsure', value: 'u'}];
     const requiredFields = ['name', 'type', 'description', 'creditCard'];
-    const disabled = requiredFields.every(key => localVendor[key]);
+    const disabled = !requiredFields.every(key => localVendor[key]);
+
+    const getDataForSending = (vendorData:any) => {
+        return Object.keys(vendorData).reduce((acc:any, key:string) => {
+            const value = vendorData[key];
+            // exclude certain keys, as well as anything that was left blank
+            if (!['id', 'hasAllRequiredFields', 'vendorID', 'twitterId', 'location'].includes(key) && value) {
+                acc[key] = value;
+            }
+            return acc;
+        }, {});
+    };
 
     const handleSubmit = () => {
         setLoading(true);
         axios({
             method: "POST",
-            data: omit(localVendor, ['id', 'hasAllRequiredFields', 'vendorID']),
-            // TODO: build out this route
-            url: `${VENDOR_API}/api/auth/users`,
+            data: getDataForSending(localVendor),
+            url: `${VENDOR_API}/vendor/${regionId}/new`,
             headers: {'Authorization': "Bearer " + localStorage.token}
         })
             .then((res: AxiosResponse<any>) => {
-                const vendorID = res.data.vendor;
+                const vendorID = res.data.vendor._id;
                 recieveVendorData(res.data.vendor);
                 if (type === 'vendor') {
                     receiveUser({ ...user, vendorID });
@@ -118,7 +140,7 @@ const UserProfile = (props:any) => {
                 <label>
                     Phone Number:
                     <input
-                        type='text'
+                        type='number'
                         onChange={e=>{updateLocalVendor('phoneNumber', e.target.value)}}
                         value={localVendor.phoneNumber}
                     />
@@ -133,9 +155,9 @@ const UserProfile = (props:any) => {
                 </label>
                 <label>
                     Pick your Categories:
-                    <select value={localVendor.categories} multiple={true} onChange={e=>{updateLocalVendor('categories', e.target.value)}}>
+                    <select value={localVendor.categories} multiple={true} onChange={e=>{updateLocalVendor('categories', e.target.value, true)}}>
                         { allCategories.map((category:string) => {
-                            return <option key={category} value={category}>{category}</option>
+                            return <option key={category} value={category} selected={localVendor.categories.includes[category]}>{category}</option>
                         })}
                     </select>
                 </label>
