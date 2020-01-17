@@ -16,6 +16,7 @@ const {
   getVendorsByQuery,
   updateLocationAccuracy,
   updateVendorPushPosition,
+  updateVendorSet,
 } = require('../../db/mongo/operations/vendor-ops');
 
 const {
@@ -52,9 +53,7 @@ const checkCache = async (req, res, payload) => {
 
 const regionRouteOps = {
   async getAllRegions(req, res) {
-    getAllRegions().then(regions => {
-      return res.status(200).json({regions});
-    })
+    getAllRegions().then(regions => res.status(200).json({ regions }));
   },
   async getRegionId(req, res) {
     const getRegionIdOp = async (req, res, cb = null) => getRegion(req.params.id)
@@ -143,19 +142,37 @@ const vendorRouteOpsUtil = {
 };
 
 const vendorRouteOps = {
-  createVendor: async (req, res) => {
-    if (['admin', 'vendor'].includes(req.user.type)) {
-      createVendor(req.body, req.params.regionID, req.user)
-          .then(vendor => {
-            return res.status(200).json({vendor});
-          })
-          .catch(err => {
-            console.error(err);
-            res.status(500).send(err);
-          });
-    } else {
-      return res.status(403).send('You must be an admin or vendor user to create a new vendor');
+  updateVendor: async (req, res) => {
+    const { type, twitterProvider = {} } = req.user;
+    const isAdmin = type === 'admin';
+    const isVendor = type === 'vendor';
+    const { regionID, vendorID } = req.params;
+    if (isAdmin || (isVendor && twitterProvider.id === req.vendor.twitterID)) {
+      const { field, data } = req.body;
+      return updateVendorSet({
+        regionID, vendorID, field, data,
+      })
+        .then(vendor => res.status(200).json({ vendor }))
+        .catch((err) => {
+          console.error(err);
+          res.status(500).send(err);
+        });
     }
+    return res.status(403).send("You must be an admin or the vendor's owner user to update the vendor");
+  },
+  createVendor: async (req, res) => {
+    const { type } = req.user;
+    const isAdmin = type === 'admin';
+    const isVendor = type === 'vendor';
+    if (isAdmin || isVendor) {
+      return createVendor(req.body, req.params.regionID, req.user)
+        .then(vendor => res.status(200).json({ vendor }))
+        .catch((err) => {
+          console.error(err);
+          res.status(500).send(err);
+        });
+    }
+    return res.status(403).send('You must be an admin or vendor user to create a new vendor');
   },
   getVendors: async (req, res) => {
     const hasQS = Object.keys(req.query).length > 0;
@@ -307,6 +324,17 @@ const userRouteOps = {
       res.send(401, 'User Not Authenticated');
     });
   },
+  passVendorToNext: async (req, res, next) => {
+    const { vendorID, regionID } = req.params;
+    const vendor = vendorID && regionID ? await getVendor(regionID, vendorID).catch((err) => {
+      console.error(err);
+      res.send(500, 'error looking up vendor');
+    }) : null;
+    if (vendor) {
+      req.vendor = vendor;
+    }
+    next();
+  },
   getUser: async (req, res) => {
     findUserById(req.user.id).then((user) => {
       if (user) {
@@ -330,7 +358,7 @@ const userRouteOps = {
       console.error(err);
       res.send(401, 'User Not Authenticated');
     });
-  }
+  },
 };
 
 const tweetRouteOps = {

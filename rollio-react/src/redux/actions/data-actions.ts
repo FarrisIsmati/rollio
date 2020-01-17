@@ -52,20 +52,20 @@ export function recieveVendorData(vendor:any) {
     }
     // LOCATION HISTORY ONLY IF IT'S LOCATION IS TODAY CREATE THAT CHECK
     const profile = {
-        categories: vendor.categories,
-        comments: vendor.comments,
+        categories: vendor.categories || [],
+        comments: vendor.comments || [],
         creditCard: vendor.creditCard,
         description: vendor.description,
-        email: vendor.email,
+        email: vendor.email || '',
         id: vendor._id,
         location,
         name: vendor.name,
-        phoneNumber: vendor.phoneNumber,
-        profileImageLink: vendor.profileImageLink,
-        price: vendor.price,
+        phoneNumber: vendor.phoneNumber || '',
+        profileImageLink: vendor.profileImageLink || '',
+        price: vendor.price || '',
         rating: vendor.rating,
         twitterID: vendor.twitterID,
-        website: vendor.website,
+        website: vendor.website || '',
         isActive: vendor.dailyActive,
         lastUpdated: vendor.updateDate,
     }
@@ -107,7 +107,7 @@ export function fetchVendorDataAsync(payload:VendorDataAsyncPayload) {
                 dispatch(fetchVendorDataSuccess());
             })
             .catch((err:any) => {
-                console.error(err)
+                console.error(err);
                 cb()
             })
     }

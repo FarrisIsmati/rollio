@@ -17,9 +17,9 @@ router.get('/:regionID/:vendorID', vendorRouteOps.getVendorById);
 router.put('/:regionID/:vendorID/locationaccuracy', routeLimitVendor, vendorRouteOps.putRegionIdVendorIdLocationTypeLocationIDAccuracy);
 // Update push a comment to a Vendor
 router.put('/:regionID/:vendorID/comments', vendorRouteOps.putRegionIdVendorIdComments);
-router.post('/:regionID/new', expressJwt({ secret: JWT_SECRET }), userRouteOps.passUserToNext, vendorRouteOps.createVendor);
+router.put('/:regionID/:vendorID/update', expressJwt({ secret: JWT_SECRET }), userRouteOps.passUserToNext, userRouteOps.passVendorToNext, vendorRouteOps.updateVendor);
 
-// TODO: add a route to create a vendor (only vendors or possibly admins can use it ?)
-// TODO: add a route to update a vendor (only a user with that vendorID can hit it)
+// POST
+router.post('/:regionID/new', expressJwt({ secret: JWT_SECRET }), userRouteOps.passUserToNext, vendorRouteOps.createVendor);
 
 module.exports = router;

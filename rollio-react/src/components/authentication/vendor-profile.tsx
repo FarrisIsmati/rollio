@@ -43,36 +43,52 @@ const UserProfile = (props:any) => {
         } else if (!isAuthenticated) {
             props.history.push('/login')
         } else if (vendorId && vendorId !== selectedVendor.id) {
-            fetchVendorDataAsync({ regionId, vendorId, cb: reRouteCb });
+            dispatch(fetchVendorDataAsync({ regionId, vendorId, cb: reRouteCb }));
         } else {
-            setLocalVendor({...selectedVendor, type: 'mobileTruck', phoneNumber: ''});
+            setLocalVendor({...selectedVendor, phoneNumber: ''});
             setLoading(false);
         }
     }, [user, selectedVendor, vendorId]);
 
+
+    const dataForCreatingVendor = Object.keys(localVendor).reduce((acc:any, key:string) => {
+        const value = localVendor[key];
+        // exclude certain keys, as well as anything that was left blank
+        if (!['id', 'hasAllRequiredFields', 'vendorID', 'twitterId', 'location'].includes(key) && value) {
+            acc[key] = value;
+        }
+        return acc;
+    }, {});
+
+    const dataForUpdatingVendor = Object.keys(localVendor).reduce((acc:any, key:string) => {
+        const newValue = localVendor[key];
+        const originalValue = selectedVendor[key];
+        // exclude certain keys, as well as anything that hasn't changed
+        if (!['id', 'hasAllRequiredFields', 'vendorID', 'twitterId', 'location'].includes(key) && newValue !== originalValue) {
+            acc.field.push(key);
+            acc.data.push(newValue);
+        }
+        return acc;
+    }, {field: [], data: []});
+
+
     // TODO: fill in many more; or perhaps we want users to just be able to enter and autocomplete?
     const allCategories = ['Mexican', 'Italian'];
     const creditCardOptions = [{text: 'Yes', value: 'y'}, {text: 'No', value: 'n'}, {text: 'Unsure', value: 'u'}];
+
     const requiredFields = ['name', 'type', 'description', 'creditCard'];
-    const disabled = !requiredFields.every(key => localVendor[key]);
-
-    const getDataForSending = (vendorData:any) => {
-        return Object.keys(vendorData).reduce((acc:any, key:string) => {
-            const value = vendorData[key];
-            // exclude certain keys, as well as anything that was left blank
-            if (!['id', 'hasAllRequiredFields', 'vendorID', 'twitterId', 'location'].includes(key) && value) {
-                acc[key] = value;
-            }
-            return acc;
-        }, {});
-    };
-
+    const isANewVendor = !vendorId;
+    const vendorDataHasBeenUpdated = dataForUpdatingVendor.field.length;
+    const submitButtonEnabled = requiredFields.every(key => localVendor[key]) && (isANewVendor || vendorDataHasBeenUpdated);
+    console.log('dataForUpdatingVendor', dataForUpdatingVendor);
     const handleSubmit = () => {
         setLoading(true);
+        const axiosInfo = isANewVendor ?
+            { method: "POST", data: dataForCreatingVendor, url: `${VENDOR_API}/vendor/${regionId}/new` } :
+            { method: "PUT", data: dataForUpdatingVendor, url: `${VENDOR_API}/vendor/${regionId}/${vendorId}/update` };
+        // @ts-ignore
         axios({
-            method: "POST",
-            data: getDataForSending(localVendor),
-            url: `${VENDOR_API}/vendor/${regionId}/new`,
+            ...axiosInfo,
             headers: {'Authorization': "Bearer " + localStorage.token}
         })
             .then((res: AxiosResponse<any>) => {
@@ -107,8 +123,8 @@ const UserProfile = (props:any) => {
                 </label>
                 <label>
                     Type:
-                    <select value={localVendor.type} onChange={e=>{updateLocalVendor('categories', e.target.value)}}>
-                        { ['mobileTruck', 'fixedTruck', 'cart', 'airstream'].map((type:string) => {
+                    <select value={localVendor.type} onChange={e=>{updateLocalVendor('type', e.target.value)}}>
+                        { ['mobileTruck', 'fixedTruck', 'cart', 'airstream', ''].map((type:string) => {
                             return <option key={type} value={type}>{type}</option>
                         })}
                     </select>
@@ -140,7 +156,7 @@ const UserProfile = (props:any) => {
                 <label>
                     Phone Number:
                     <input
-                        type='number'
+                        type='text'
                         onChange={e=>{updateLocalVendor('phoneNumber', e.target.value)}}
                         value={localVendor.phoneNumber}
                     />
@@ -170,7 +186,7 @@ const UserProfile = (props:any) => {
                         })}
                     </select>
                 </label>
-                <input disabled={disabled} type="submit" value="Submit" />
+                <input disabled={!submitButtonEnabled} type="submit" value="Submit" />
             </form>
         )
     } else {
