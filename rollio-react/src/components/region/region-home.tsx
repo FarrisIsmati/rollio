@@ -38,7 +38,9 @@ const RegionHome = (props:any) => {
   return (
     <div className={ width > 768 ? 'region__wrapper' : 'region_mobile__wrapper' }>
       { /* Mobile Responsiveness */ }
-      { width > 768 ? <VendorSelectorDesktop /> : <RegionNavbarMobile /> }
+      { width > 768 ? 
+        <VendorSelectorDesktop /> 
+      : <RegionNavbarMobile /> }
       { map }
       { width < 768 ? <VendorSelectorMobile /> : null }
     </div>

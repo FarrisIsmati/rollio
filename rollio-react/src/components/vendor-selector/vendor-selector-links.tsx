@@ -11,7 +11,7 @@ const VendorSelectorLinks = React.forwardRef((props:any, ref)=> {
   const { vendorSelectorLinksHeight } = props;
   
   const height = useGetLinksHeight(ref, vendorSelectorLinksHeight);
-
+  console.log(height)
   return (
     // Mobile resize this flex centers
     <div className="menu_links__wrapper" style={{height}}> 
