@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 // DEPENDENCIES
+const faker = require('faker');
 const chai = require('chai');
 const chaid = require('chaid');
 const { sortBy } = require('lodash');
@@ -14,12 +15,14 @@ const { expect } = chai;
 const vendorOps = require('../../lib/db/mongo/operations/vendor-ops');
 const regionOps = require('../../lib/db/mongo/operations/region-ops');
 const tweetOps = require('../../lib/db/mongo/operations/tweet-ops');
+const userOps = require('../../lib/db/mongo/operations/user-ops');
 
 // SCHEMAS
 const Vendor = mongoose.model('Vendor');
 const Region = mongoose.model('Region');
 const Location = mongoose.model('Location');
 const Tweet = mongoose.model('Tweet');
+const User = mongoose.model('User');
 
 // SEED
 const seed = require('../../lib/db/mongo/seeds/dev-seed');
@@ -341,15 +344,182 @@ describe('DB Operations', () => {
     });
   });
 
+  describe('User DB Operations', () => {
+    describe('Get User Operations', () => {
+      let allUsers; let customer;
+
+      before((done) => {
+        seed.runSeed().then(async () => {
+          allUsers = await User.find().select('+twitterProvider');
+          customer = allUsers.find(user => user.type === 'customer');
+          done();
+        });
+      });
+
+      it('expect findUserById to return the user without twitterProvider, if includeTwitterProvider is false', (done) => {
+        const customerWithoutTwitterProvider = { ...customer.toJSON(), twitterProvider: undefined };
+        userOps.findUserById(customer._id)
+          .then((res) => {
+            expect(JSON.stringify(res)).to.be.equal(JSON.stringify(customerWithoutTwitterProvider));
+            expect(res.twitterProvider).to.be.undefined;
+            done();
+          })
+          .catch(err => console.error(err));
+      });
+
+      it('expect findUserById to return the user with twitterProvider, if includeTwitterProvider is true', (done) => {
+        userOps.findUserById(customer._id, true)
+          .then((res) => {
+            expect(JSON.stringify(res)).to.be.equal(JSON.stringify(customer));
+            expect(JSON.stringify(res.twitterProvider)).to.be.equal(JSON.stringify(customer.twitterProvider));
+            done();
+          })
+          .catch(err => console.error(err));
+      });
+    });
+    describe('Update User Operations', () => {
+      const token = '123456789';
+      const tokenSecret = '123456789876543';
+      const id = faker.random.word();
+      const username = 'user name !!';
+      const displayName = 'display name';
+      const emails = [{ value: 'fake@fake.com' }];
+      const profile = {
+        id, username, displayName, emails,
+      };
+      let allUsers; let customer; let randomVendor; let
+        vendorWithAVendor;
+
+      beforeEach((done) => {
+        seed.runSeed().then(async () => {
+          allUsers = await User.find().select('+twitterProvider');
+          customer = allUsers.find(user => user.type === 'customer');
+          vendorWithAVendor = allUsers.find(user => user.type === 'vendor' && user.vendorID);
+          randomVendor = await Vendor.findOne();
+          done();
+        });
+      });
+
+      afterEach((done) => {
+        seed.emptyUsers()
+          .then(() => seed.seedUsers())
+          .then(() => done());
+      });
+
+      it('expect patchUser to update every key except the twitterProvider', (done) => {
+        const email = 'blah@blah.com';
+        const regionID = ObjectId();
+        const twitterProvider = { blah: 'blah' };
+        userOps.patchUser(customer._id, { email, regionID, twitterProvider })
+          .then(async (res) => {
+            expect(res.email).to.be.equal(email);
+            expect(res.regionID.toString()).to.be.equal(regionID.toString());
+            expect(res.twitterProvider).to.be.undefined;
+            const updatedUser = await User.findById(customer._id).select('+twitterProvider');
+            expect(JSON.stringify(updatedUser.twitterProvider)).to.be.equal(JSON.stringify(customer.twitterProvider));
+            done();
+          })
+          .catch(err => console.error(err));
+      });
+
+      it('expect patchUser update the user and does not remove the vendorID if user was a vendor but type not updated', (done) => {
+        const email = 'blah@blah.com';
+        const regionID = ObjectId();
+        userOps.patchUser(vendorWithAVendor._id, { email, regionID })
+          .then((res) => {
+            expect(res.email).to.be.equal(email);
+            expect(res.regionID.toString()).to.be.equal(regionID.toString());
+            expect(res.vendorID.toString()).to.be.equal(vendorWithAVendor.vendorID.toString());
+            expect(res.twitterProvider).to.be.undefined;
+            done();
+          })
+          .catch(err => console.error(err));
+      });
+
+      it('expect patchUser update the user and remove the vendorID if data.type && data.type !== vendor', (done) => {
+        const email = 'blah@blah.com';
+        const regionID = ObjectId();
+        const type = 'customer';
+        userOps.patchUser(vendorWithAVendor._id, { email, regionID, type })
+          .then((res) => {
+            expect(res.email).to.be.equal(email);
+            expect(res.type).to.be.equal(type);
+            expect(res.regionID.toString()).to.be.equal(regionID.toString());
+            expect(res.vendorID).to.be.undefined;
+            expect(res.twitterProvider).to.be.undefined;
+            done();
+          })
+          .catch(err => console.error(err));
+      });
+
+      it('expect upsertTwitterUser creates user does not already exist', (done) => {
+        const type = 'customer';
+        userOps.upsertTwitterUser(token, tokenSecret, profile, type)
+          .then(async (res) => {
+            expect(res.user.twitterProvider).to.be.undefined;
+            const newUser = await User.findById(res.user._id).select('+twitterProvider');
+            expect(newUser.type).to.be.equal(type);
+            expect(newUser.email).to.be.equal(profile.emails[0].value);
+            expect(JSON.stringify(newUser.twitterProvider)).to.be.equal(JSON.stringify({
+              id,
+              token,
+              tokenSecret,
+              username,
+              displayName,
+            }));
+            done();
+          })
+          .catch(err => console.error(err));
+      });
+
+      it('expect upsertTwitterUser creates user does not already exist and adds vendorID if there is a match', (done) => {
+        const type = 'customer';
+        const vendorProfile = { ...profile, id: randomVendor.twitterID };
+        userOps.upsertTwitterUser(token, tokenSecret, vendorProfile, type)
+          .then(async (res) => {
+            expect(res.user.twitterProvider).to.be.undefined;
+            const newUser = await User.findById(res.user._id).select('+twitterProvider');
+            expect(newUser.type).to.be.equal(type);
+            expect(newUser.email).to.be.equal(profile.emails[0].value);
+            expect(newUser.vendorID.toString()).to.be.equal(randomVendor._id.toString());
+            expect(JSON.stringify(newUser.twitterProvider)).to.be.equal(JSON.stringify({
+              id: randomVendor.twitterID,
+              token,
+              tokenSecret,
+              username,
+              displayName,
+            }));
+            done();
+          })
+          .catch(err => console.error(err));
+      });
+
+      it('expect upsertTwitterUser finds a user if it already exists', (done) => {
+        const type = 'customer';
+        const customerWithoutTwitterProvider = { ...customer.toJSON(), twitterProvider: undefined };
+        const vendorProfile = { ...profile, id: customer.twitterProvider.id };
+        userOps.upsertTwitterUser(token, tokenSecret, vendorProfile, type)
+          .then(async (res) => {
+            expect(res.user.twitterProvider).to.be.undefined;
+            expect(JSON.stringify(res.user)).to.be.equal(JSON.stringify(customerWithoutTwitterProvider));
+            done();
+          })
+          .catch(err => console.error(err));
+      });
+    });
+  });
+
   // REGION DB OPERATIONS
   describe('Region DB Operations', () => {
     // GET REGION DB OPERATIONS
     describe('Get Region Operations', () => {
-      let regionID;
+      let regionID; let
+        allRegions;
 
       before((done) => {
         seed.runSeed().then(async () => {
           regionID = await Region.findOne().then(region => region._id);
+          allRegions = await Region.find({});
           done();
         });
       });
@@ -367,6 +537,15 @@ describe('DB Operations', () => {
         regionOps.getRegionByName('WASHINGTONDC')
           .then((res) => {
             expect(res.name).to.be.equal('WASHINGTONDC');
+            done();
+          })
+          .catch(err => console.error(err));
+      });
+
+      it('expect getAllRegions to return all Regions', (done) => {
+        regionOps.getAllRegions()
+          .then((res) => {
+            expect(JSON.stringify(res)).to.be.equal(JSON.stringify(allRegions));
             done();
           })
           .catch(err => console.error(err));
@@ -449,7 +628,7 @@ describe('DB Operations', () => {
         vendor = await Vendor.findOne({ regionID: await regionID });
         allTweets = await Tweet.find().sort([['date', 1]]);
         allVendors = await Vendor.find();
-        tweetID = vendor.tweetHistory[0];
+        [tweetID] = vendor.tweetHistory;
         tweet = await Tweet.findById(tweetID).populate('location').populate('vendorID');
         // note: locationId should be equal to vendor.locationHistory[0]
         locationID = tweet.location._id;

@@ -1,5 +1,5 @@
 const mongoose = require('../mongoose/index');
-
+const { omit } = require('lodash');
 const User = mongoose.model('User');
 const Vendor = mongoose.model('Vendor');
 
@@ -14,7 +14,7 @@ module.exports = {
       // eslint-disable-next-line no-param-reassign
       delete data.vendorID;
     }
-    return User.findOneAndUpdate({ _id }, { $set: data, ...unsetUpdate }, { new: true });
+    return User.findOneAndUpdate({ _id }, { $set: omit(data, ['twitterProvider']), ...unsetUpdate }, { new: true });
   },
   async upsertTwitterUser(token, tokenSecret, profile, type) {
     const {

@@ -35,7 +35,11 @@ const vendor6Id = ObjectId();
 const vendor7Id = ObjectId();
 const vendor8Id = ObjectId();
 const region1Id = ObjectId();
-
+const customerId = ObjectId();
+const adminId = ObjectId();
+const vendorWithoutAVendorId = ObjectId();
+const vendorWithAVendorId = ObjectId();
+const getTwitterId = () => faker.random.number({ min: 100000000, max: 999999999 });
 
 module.exports = {
   vendors: [
@@ -63,7 +67,7 @@ module.exports = {
       dailyActive: false,
       consecutiveDaysInactive: 4,
       categories: ['Luxury', 'Caviar', 'Lobster', 'Michelan Star'],
-      approved: true
+      approved: true,
     },
     {
       _id: vendor2Id,
@@ -86,7 +90,7 @@ module.exports = {
       dailyActive: true,
       consecutiveDaysInactive: 4,
       categories: ['Balkan', 'Mediterranean', 'Hearty', 'Meat'],
-      approved: true
+      approved: true,
     },
     {
       _id: vendor3Id,
@@ -109,7 +113,7 @@ module.exports = {
       dailyActive: true,
       consecutiveDaysInactive: 4,
       categories: ['Cheese', 'Comfort', 'Hearty', 'Bread'],
-      approved: true
+      approved: true,
     },
     {
       _id: vendor4Id,
@@ -133,7 +137,7 @@ module.exports = {
       dailyActive: true,
       consecutiveDaysInactive: -1,
       categories: ['Fast Food', 'American', 'Comfort Food', 'Meat', 'Chicken'],
-      approved: true
+      approved: true,
     },
     {
       _id: vendor5Id,
@@ -157,7 +161,7 @@ module.exports = {
       dailyActive: true,
       consecutiveDaysInactive: -1,
       categories: ['Hawaiian', 'Poke', 'Casual', 'Seafood'],
-      approved: true
+      approved: true,
     },
     {
       _id: vendor6Id,
@@ -181,7 +185,7 @@ module.exports = {
       dailyActive: true,
       consecutiveDaysInactive: -1,
       categories: ['South American', 'Venezuelan', 'Arepa', 'Comfort Food', 'Street Food'],
-      approved: true
+      approved: true,
     },
     {
       _id: vendor7Id,
@@ -205,7 +209,7 @@ module.exports = {
       dailyActive: true,
       consecutiveDaysInactive: -1,
       categories: ['American', 'Donuts', 'Fried Chicken', 'Comfort Food', 'Street Food'],
-      approved: true
+      approved: true,
     },
     {
       _id: vendor8Id,
@@ -229,7 +233,7 @@ module.exports = {
       dailyActive: true,
       consecutiveDaysInactive: -1,
       categories: ['Italian', 'Fried Chicken', 'Pasta', 'Meat'],
-      approved: true
+      approved: true,
     },
     {
       regionID: region1Id,
@@ -254,7 +258,7 @@ module.exports = {
       dailyActive: false,
       consecutiveDaysInactive: 0,
       categories: ['Luxury', 'Caviar', 'Lobster', 'Michelan Star'],
-      approved: true
+      approved: true,
     },
     {
       regionID: region1Id,
@@ -277,7 +281,7 @@ module.exports = {
       dailyActive: false,
       consecutiveDaysInactive: -1,
       categories: ['Barbeque', 'American', 'Comfort Food', 'Meat'],
-      approved: true
+      approved: true,
     },
     {
       regionID: region1Id,
@@ -300,8 +304,8 @@ module.exports = {
       dailyActive: false,
       consecutiveDaysInactive: -1,
       categories: ['Fast Food', 'American', 'Comfort Food', 'Soul Food'],
-      approved: true
-    }
+      approved: true,
+    },
   ],
   regions: [
     {
@@ -381,7 +385,7 @@ module.exports = {
       text: 'Capital One Arena today',
       location: location9Id,
       usedForLocation: false,
-    }
+    },
   ],
   locations: [
     {
@@ -415,7 +419,7 @@ module.exports = {
       neighborhood: 'Penn Quarter',
       matchMethod: 'Tweet location',
       coordinates: [38.897182, -77.022013],
-      tweetID: tweet2IdString
+      tweetID: tweet2IdString,
     },
     {
       _id: location4Id,
@@ -477,7 +481,62 @@ module.exports = {
       city: 'dc',
       neighborhood: 'chinatown',
       coordinates: [38.898482, -77.021965],
-      tweetID: tweet8IdString
+      tweetID: tweet8IdString,
+    },
+  ],
+  users: [
+    {
+      _id: customerId,
+      type: 'customer',
+      email: 'customer@aol.com',
+      twitterProvider: {
+        id: getTwitterId(),
+        token: faker.random.word(),
+        tokenSecret: faker.random.word(),
+        username: faker.random.word(),
+        displayName: faker.random.words(2)
+      },
+      regionID: region1Id,
+    },
+    {
+      _id: adminId,
+      type: 'admin',
+      email: 'admin@aol.com',
+      twitterProvider: {
+        id: getTwitterId(),
+        token: faker.random.word(),
+        tokenSecret: faker.random.word(),
+        username: faker.random.word(),
+        displayName: faker.random.words(2)
+      },
+      regionID: region1Id,
+    },
+    {
+      _id: vendorWithAVendorId,
+      type: 'vendor',
+      email: 'vendorWithAVendorId@aol.com',
+      twitterProvider: {
+        id: getTwitterId(),
+        token: faker.random.word(),
+        tokenSecret: faker.random.word(),
+        username: faker.random.word(),
+        displayName: faker.random.words(2)
+      },
+      regionID: region1Id,
+      vendorID: vendor1Id
+    },
+    {
+      _id: vendorWithoutAVendorId,
+      type: 'vendor',
+      email: 'vendorWithoutAVendorId@aol.com',
+      twitterProvider: {
+        id: getTwitterId(),
+        token: faker.random.word(),
+        tokenSecret: faker.random.word(),
+        username: faker.random.word(),
+        displayName: faker.random.words(2)
+      },
+      regionID: region1Id,
     }
-  ]
+  ],
 };

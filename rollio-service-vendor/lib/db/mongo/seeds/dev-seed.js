@@ -14,24 +14,38 @@ const User = mongoose.model('User');
 
 
 // DATA
-const vendorsData = require('../data/dev').vendors;
-const regionsData = require('../data/dev').regions;
-const tweetData = require('../data/dev').tweets;
-const locationData = require('../data/dev').locations;
+const {
+  vendors: vendorsData,
+  regions: regionsData,
+  tweets: tweetData,
+  locations: locationData,
+  users: usersData,
+} = require('../data/dev');
+
 
 // const yelpAPIKey = config.YELP_API_KEY;
 // const yelpClient = yelp.client(yelpAPIKey);
 
 const seedObj = {
+  seedUsers() {
+    return User.insertMany(usersData)
+      .then(() => {
+        if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') { console.log(`Seeded users in User collection in ${config.NODE_ENV} enviroment`); }
+      })
+      .catch((err) => {
+        logger.error(err);
+        throw err;
+      });
+  },
   emptyUsers() {
     return User.deleteMany({})
-        .then(() => {
-          if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') { console.log(`Emptied User collection in ${config.NODE_ENV} enviroment`); }
-        })
-        .catch((err) => {
-          logger.error(err);
-          throw err;
-        });
+      .then(() => {
+        if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') { console.log(`Emptied User collection in ${config.NODE_ENV} enviroment`); }
+      })
+      .catch((err) => {
+        logger.error(err);
+        throw err;
+      });
   },
   emptyRegions() {
     return Region.deleteMany({})
@@ -157,23 +171,23 @@ const seedObj = {
       .then(() => this.seedVendors('WASHINGTONDC'))
       .then(() => this.seedTweets())
       .then(() => this.seedLocations())
-      .catch(err => {
+      .then(() => this.seedUsers())
+      .catch((err) => {
         console.log(`error seeding DB: ${err}`);
         throw err;
       });
-
   },
   emptySeed() {
     return this.emptyRegions()
-        .then(() => this.emptyVendors())
-        .then(() => this.emptyTweets())
-        .then(() => this.emptyLocations())
-        .then(() => this.emptyUsers())
-        .catch(err => {
-          console.log(`error emptying DB: ${err}`);
-          throw err;
-        });
-    }
+      .then(() => this.emptyVendors())
+      .then(() => this.emptyTweets())
+      .then(() => this.emptyLocations())
+      .then(() => this.emptyUsers())
+      .catch((err) => {
+        console.log(`error emptying DB: ${err}`);
+        throw err;
+      });
+  },
 };
 
 // seedObj.runSeed();
