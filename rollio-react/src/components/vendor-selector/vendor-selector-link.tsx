@@ -10,12 +10,14 @@ import useGetAppState from '../common/hooks/use-get-app-state';
 
 // ACTIONS
 import { fetchVendorDataAsync } from '../../redux/actions/data-actions';
+import { setIsVendorSelected } from '../../redux/actions/ui-actions';
 
 const selectVendorProfile = (dispatch:any, regionID:string, vendorID:string) => {
   dispatch(fetchVendorDataAsync({ 
     regionId: regionID,
     vendorId: vendorID,
-    cb: () => console.error('Invalid ID')
+    cb: () => console.error('Invalid ID'),
+    cbSuccess: () => dispatch(setIsVendorSelected(true)),
   }))
 }
 

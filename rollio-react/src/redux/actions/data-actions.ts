@@ -260,7 +260,7 @@ function fetchVendorDataStart() {
 }
 
 export function fetchVendorDataAsync(payload:VendorDataAsyncPayload) {
-    const { regionId, vendorId, cb } = payload;
+    const { regionId, vendorId, cb, cbSuccess } = payload;
 
     return (dispatch:any) => {
         dispatch(fetchVendorDataStart())
@@ -268,10 +268,14 @@ export function fetchVendorDataAsync(payload:VendorDataAsyncPayload) {
             .then((res: AxiosResponse<any>) => {
                 dispatch(recieveVendorData(res.data));
                 dispatch(fetchVendorDataSuccess());
+                // Any function you want to run after successful get of all data
+                if (cbSuccess) {
+                    cbSuccess();
+                }
             })
             .catch((err:any) => {
                 console.error(err)
-                cb()
+                cb();
             })
     }
 }

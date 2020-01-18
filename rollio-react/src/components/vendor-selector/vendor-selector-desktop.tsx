@@ -1,5 +1,5 @@
 // DEPENDENCIES
-import React, {FC} from 'react';
+import React from 'react';
 import { useCallbackRef } from 'use-callback-ref';
 
 // COMPONENTS
@@ -9,7 +9,7 @@ import VendorProfile from '../vendor-profile/vendor-profile'
 // HOOKS
 import windowSizeEffects from '../common/hooks/use-window-size';
 
-const VendorSelectorDesktop:FC = () => {
+const VendorSelectorDesktop = (props:any) => {
   // Create ref to figure out set size of the menu to allow scrolling
   // Set size of menu will be screen height - (div above menu links)
   // Callback ref runs after component is mounted

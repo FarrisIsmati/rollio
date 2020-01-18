@@ -1,5 +1,5 @@
 // DEPENDENCIES
-import React, { useEffect } from 'react';
+import React from 'react';
 
 // COMPONENTS
 import Map from '../map/map';
@@ -35,14 +35,14 @@ const RegionHome = (props:any) => {
   // Render Content
   // Map gets fed data as props instead of reading from redux store so there can be multiple maps rendered at once
   const map = isRegionLoaded && areVendorsLoaded ? <Map mapType='region' mapData={ state.regionMap }/> : <p>loading</p>
-  
+
   return (
     <div className={ width > 768 ? 'region__wrapper' : 'region_mobile__wrapper' }>
       { /* Mobile Responsiveness */ }
       { width > 768 ? 
       <div className='region__vendor_menu_wrapper'>
         <VendorProfile />
-        <VendorSelectorDesktop /> 
+        <VendorSelectorDesktop/> 
       </div>
       : <RegionNavbarMobile /> }
       { map }
