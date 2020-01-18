@@ -11,6 +11,7 @@ module.exports = {
     let unsetUpdate = {};
     if (data.type !== 'vendor') {
       unsetUpdate = { $unset: { vendorID: 1 } };
+      // eslint-disable-next-line no-param-reassign
       delete data.vendorID;
     }
     return User.findOneAndUpdate({ _id }, { $set: data, ...unsetUpdate }, { new: true });

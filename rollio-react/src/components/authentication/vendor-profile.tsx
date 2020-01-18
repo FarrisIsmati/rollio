@@ -50,21 +50,25 @@ const UserProfile = (props:any) => {
         }
     }, [user, selectedVendor, vendorId]);
 
+    // fields to not include when sending to the backend
+    const fieldsToExclude = ['id', 'hasAllRequiredFields', 'vendorID', 'twitterId', 'location'];
 
+    // takes the form data and clears out the empty fields before sending to the backend for Vendor creation
     const dataForCreatingVendor = Object.keys(localVendor).reduce((acc:any, key:string) => {
         const value = localVendor[key];
         // exclude certain keys, as well as anything that was left blank
-        if (!['id', 'hasAllRequiredFields', 'vendorID', 'twitterId', 'location'].includes(key) && value) {
+        if (!fieldsToExclude.includes(key) && value) {
             acc[key] = value;
         }
         return acc;
     }, {});
 
+    // takes the form data and finds which fields were updated before sending to the backend for Vendor creation
     const dataForUpdatingVendor = Object.keys(localVendor).reduce((acc:any, key:string) => {
         const newValue = localVendor[key];
         const originalValue = selectedVendor[key];
         // exclude certain keys, as well as anything that hasn't changed
-        if (!['id', 'hasAllRequiredFields', 'vendorID', 'twitterId', 'location'].includes(key) && newValue !== originalValue) {
+        if (!fieldsToExclude.includes(key) && newValue !== originalValue) {
             acc.field.push(key);
             acc.data.push(newValue);
         }
@@ -76,11 +80,13 @@ const UserProfile = (props:any) => {
     const allCategories = ['Mexican', 'Italian'];
     const creditCardOptions = [{text: 'Yes', value: 'y'}, {text: 'No', value: 'n'}, {text: 'Unsure', value: 'u'}];
 
+    // do not enable 'submit' unless all the required fields are filled in, and if the vendor already exists, info has been updated
     const requiredFields = ['name', 'type', 'description', 'creditCard'];
     const isANewVendor = !vendorId;
     const vendorDataHasBeenUpdated = dataForUpdatingVendor.field.length;
     const submitButtonEnabled = requiredFields.every(key => localVendor[key]) && (isANewVendor || vendorDataHasBeenUpdated);
-    console.log('dataForUpdatingVendor', dataForUpdatingVendor);
+
+
     const handleSubmit = () => {
         setLoading(true);
         const axiosInfo = isANewVendor ?

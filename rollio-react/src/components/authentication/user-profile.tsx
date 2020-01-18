@@ -10,7 +10,6 @@ import { omit } from 'lodash';
 
 
 const UserProfile = (props:any) => {
-
     const dispatch = useDispatch();
     const { user, data, loadState } = useGetAppState();
     const { areRegionsLoaded } = loadState;
@@ -25,6 +24,7 @@ const UserProfile = (props:any) => {
         setLocalUser({...localUser, [key]: value});
     };
 
+    // disable the submit button unless all the required fields have been filled in
     const requiredForEverybody = ['email', 'type'];
     const requiredForCustomersOnly = ['regionID'];
     const requiredForVendorsOnly: never[] = [];
@@ -60,7 +60,7 @@ const UserProfile = (props:any) => {
         } else if (type === 'vendor' && vendorID) {
             props.history.push(`/region/${regionID}/vendor/${vendorID}`);
         } else if (type === 'vendor') {
-            props.history.push(`/profile/${regionID}/vendor`);
+            props.history.push(`/profile/region/${regionID}/vendor`);
         }
     };
 

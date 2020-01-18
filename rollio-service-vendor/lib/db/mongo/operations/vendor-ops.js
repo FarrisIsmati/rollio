@@ -34,12 +34,20 @@ module.exports = {
       });
   },
   async createVendor(vendorData, regionID, user) {
-    if (user.type === 'vendor') {
-      // eslint-disable-next-line no-param-reassign
+    const { type: userType, _id: userID } = user;
+    const userIsAVendor = userType === 'vendor';
+    const userIsAnAdmin = userType === 'admin';
+    /* eslint-disable no-param-reassign */
+    if (userIsAVendor) {
       vendorData.twitterID = user.twitterProvider.id;
+      vendorData.approved = false;
+    } else if (userIsAnAdmin) {
+      vendorData.approved = true;
     }
+    /* eslint-disable no-param-reassign */
+
     // theoretically, the client expects that we populate tweetHistory,
-    // locationHistory, and userLocationHistory, but those all should be blank
+    // locationHistory, and userLocationHistory, but those all should be blank, so no need
     const newVendor = await Vendor.create({
       dailyActive: false, consecutiveDaysInactive: 0, ...vendorData, regionID,
     }).then(async (res) => {
@@ -51,7 +59,10 @@ module.exports = {
         logger.error(errMsg);
         return err;
       });
-    await User.findOneAndUpdate({ _id: user._id }, { vendorID: newVendor._id });
+    // if the user is a vendor, update the user's vendorID to match the newVendor._id
+    if (userIsAVendor) {
+      await User.findOneAndUpdate({ _id: userID }, { vendorID: newVendor._id });
+    }
     return newVendor;
   },
   // Gets a single vendor given a regionID and vendorID

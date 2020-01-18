@@ -58,9 +58,11 @@ const Login = (props:any) => {
         } else if (type === 'admin') {
             props.history.push('/tweets');
         } else if (type === 'vendor' && vendorID) {
+            // user is a vendor and the vendor is already created
             props.history.push(`/region/${regionID}/vendor/${vendorID}`);
         } else if (type === 'vendor') {
-            props.history.push(`/profile/${regionID}/vendor`);
+            // user is a vendor, but they haven't created the Vendor record, yet
+            props.history.push(`/profile/region/${regionID}/vendor`);
         }
     };
 
