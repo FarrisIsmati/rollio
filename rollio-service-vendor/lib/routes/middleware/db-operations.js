@@ -332,8 +332,10 @@ const userRouteOps = {
     }) : null;
     if (vendor) {
       req.vendor = vendor;
+      next();
+    } else {
+      res.send(404, 'Vendor not found');
     }
-    next();
   },
   getUser: async (req, res) => {
     findUserById(req.user.id).then((user) => {

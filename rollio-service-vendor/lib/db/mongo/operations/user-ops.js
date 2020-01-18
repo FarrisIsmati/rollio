@@ -9,7 +9,7 @@ module.exports = {
   },
   async patchUser(_id, data) {
     let unsetUpdate = {};
-    if (data.type !== 'vendor') {
+    if (data.type && data.type !== 'vendor') {
       unsetUpdate = { $unset: { vendorID: 1 } };
       // eslint-disable-next-line no-param-reassign
       delete data.vendorID;
