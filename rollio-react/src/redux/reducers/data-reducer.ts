@@ -50,6 +50,7 @@ const defaultState:DataDefaultState = {
         },
         isActive: false,
         lastUpdated: null,
+        approved: false
     },
 }
 

@@ -46,6 +46,7 @@ export interface VendorFull {
     location: Location[] | Location | null,
     isActive: boolean,
     lastUpdated: Date | null,
+    approved: boolean
 }
 
 export interface Region {
