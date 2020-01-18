@@ -68,7 +68,8 @@ export function recieveVendorData(vendor:any) {
         website: vendor.website || '',
         isActive: vendor.dailyActive,
         lastUpdated: vendor.updateDate,
-    }
+        type: vendor.type || ''
+    };
 
     return {
         type: RECIEVE_VENDOR_DATA,
