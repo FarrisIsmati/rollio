@@ -5,8 +5,8 @@ const chaid = require('chaid');
 const { sortBy } = require('lodash');
 const dateTime = require('chai-datetime');
 const assertArrays = require('chai-arrays');
-const mongoose = require('../../lib/db/mongo/mongoose/index');
 const { ObjectId } = require('mongoose').Types;
+const mongoose = require('../../lib/db/mongo/mongoose/index');
 
 const { expect } = chai;
 
