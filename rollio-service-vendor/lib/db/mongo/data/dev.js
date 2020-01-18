@@ -36,6 +36,7 @@ const vendor7Id = ObjectId();
 const vendor8Id = ObjectId();
 const region1Id = ObjectId();
 const customerId = ObjectId();
+const customerWithoutARegionId = ObjectId();
 const adminId = ObjectId();
 const vendorWithoutAVendorId = ObjectId();
 const vendorWithAVendorId = ObjectId();
@@ -497,6 +498,18 @@ module.exports = {
         displayName: faker.random.words(2)
       },
       regionID: region1Id,
+    },
+    {
+      _id: customerWithoutARegionId,
+      type: 'customer',
+      email: 'customerWithoutARegion@aol.com',
+      twitterProvider: {
+        id: getTwitterId(),
+        token: faker.random.word(),
+        tokenSecret: faker.random.word(),
+        username: faker.random.word(),
+        displayName: faker.random.words(2)
+      }
     },
     {
       _id: adminId,

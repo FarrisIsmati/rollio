@@ -346,14 +346,33 @@ describe('DB Operations', () => {
 
   describe('User DB Operations', () => {
     describe('Get User Operations', () => {
-      let allUsers; let customer;
+      let allUsers; let customer; let customerWithoutARegionId;
 
       before((done) => {
         seed.runSeed().then(async () => {
           allUsers = await User.find().select('+twitterProvider');
-          customer = allUsers.find(user => user.type === 'customer');
+          customer = allUsers.find(user => user.type === 'customer' && user.regionID);
+          customerWithoutARegionId = allUsers.find(user => user.type === 'customer' && !user.regionID);
           done();
         });
+      });
+
+      it('expect hasAllRequiredFields to be false if a regionID is missing', (done) => {
+        userOps.findUserById(customerWithoutARegionId._id)
+          .then((res) => {
+            expect(res.hasAllRequiredFields).to.be.false;
+            done();
+          })
+          .catch(err => console.error(err));
+      });
+
+      it('expect hasAllRequiredFields to be true if all fields filled in', (done) => {
+        userOps.findUserById(customer._id)
+          .then((res) => {
+            expect(res.hasAllRequiredFields).to.be.true;
+            done();
+          })
+          .catch(err => console.error(err));
       });
 
       it('expect findUserById to return the user without twitterProvider, if includeTwitterProvider is false', (done) => {
