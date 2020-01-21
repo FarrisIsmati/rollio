@@ -8,6 +8,7 @@ const logger = require('../../../log/index')('mongo/operations/vendor-ops');
 const Vendor = mongoose.model('Vendor');
 const Tweet = mongoose.model('Tweet');
 const Location = mongoose.model('Location');
+const User = mongoose.model('User');
 
 module.exports = {
   async createLocation(locationData) {
@@ -32,6 +33,38 @@ module.exports = {
         return err;
       });
   },
+  async createVendor(vendorData, regionID, user) {
+    const { type: userType, _id: userID } = user;
+    const userIsAVendor = userType === 'vendor';
+    const userIsAnAdmin = userType === 'admin';
+    /* eslint-disable no-param-reassign */
+    if (userIsAVendor) {
+      vendorData.twitterID = user.twitterProvider.id;
+      vendorData.approved = false;
+    } else if (userIsAnAdmin) {
+      vendorData.approved = true;
+    }
+    /* eslint-disable no-param-reassign */
+
+    // theoretically, the client expects that we populate tweetHistory,
+    // locationHistory, and userLocationHistory, but those all should be blank, so no need
+    const newVendor = await Vendor.create({
+      dailyActive: false, consecutiveDaysInactive: 0, ...vendorData, regionID,
+    }).then(async (res) => {
+      await redisClient.hdelAsync('vendor', `q::method::GET::path::/${regionID}/${res._id}`);
+      return res;
+    })
+      .catch((err) => {
+        const errMsg = new Error(err);
+        logger.error(errMsg);
+        return err;
+      });
+    // if the user is a vendor, update the user's vendorID to match the newVendor._id
+    if (userIsAVendor) {
+      await User.findOneAndUpdate({ _id: userID }, { vendorID: newVendor._id });
+    }
+    return newVendor;
+  },
   // Gets a single vendor given a regionID and vendorID
   getVendor(regionID, vendorID) {
     if (arguments.length !== 2) {
@@ -39,18 +72,20 @@ module.exports = {
       logger.error(err);
       return err;
     }
-
     return Vendor.findOne({
       regionID,
       _id: vendorID,
     }).populate('tweetHistory')
       .populate('locationHistory')
       .populate('userLocationHistory')
+      .then((res) => {
+        return res;
+      })
       .catch((err) => {
         const errMsg = new Error(err);
         logger.error(errMsg);
         return err;
-    });
+      });
   },
   // Gets a single vendor given a regionID and vendor twitterID
   getVendorByTwitterID(regionID, twitterID) {
@@ -70,7 +105,7 @@ module.exports = {
         const errMsg = new Error(err);
         logger.error(errMsg);
         return err;
-    });
+      });
   },
   // Gets all vendors given a set of Queries
   getVendorsByQuery(params) {
@@ -90,7 +125,7 @@ module.exports = {
         const errMsg = new Error(err);
         logger.error(errMsg);
         return err;
-    });
+      });
   },
   // Sets data to a field given a regionID, vendorID, field, and data
   updateVendorSet(params) {
@@ -111,12 +146,12 @@ module.exports = {
         obj[field[i]] = data[i];
       }
     }
-    return Vendor.update({
+    return Vendor.findOneAndUpdate({
       regionID,
       _id: vendorID,
     }, {
       $set: obj,
-    })
+    }, { new: true }).populate('tweetHistory').populate('locationHistory').populate('userLocationHistory')
       .then(async (res) => {
         await redisClient.hdelAsync('vendor', `q::method::GET::path::/${regionID}/${vendorID}`);
         return res;
@@ -139,9 +174,9 @@ module.exports = {
     }
     let payload = originalPayload;
     if (['tweetHistory', 'userLocationHistory'].includes(field)) {
-        const createPayload = { ...originalPayload, vendorID };
-        const newDocument = field === 'tweetHistory' ? await Tweet.create(createPayload) : await Location.create(createPayload);
-        payload = newDocument._id;
+      const createPayload = { ...originalPayload, vendorID };
+      const newDocument = field === 'tweetHistory' ? await Tweet.create(createPayload) : await Location.create(createPayload);
+      payload = newDocument._id;
     }
     return Vendor.update({
       regionID,

@@ -10,8 +10,11 @@ const defaultState:UserDefaultState = {
     isAuthenticated: false,
     id: '',
     email: '',
-    isAdmin: false
-}
+    type: '',
+    vendorID: '',
+    regionID: '',
+    hasAllRequiredFields: false
+};
 
 export function userReducer(state = defaultState, action: any) {
     switch (action.type) {
@@ -19,10 +22,14 @@ export function userReducer(state = defaultState, action: any) {
             return Object.assign({}, state, {
                 isAuthenticated: true,
                 id: action.payload._id,
-                email: action.payload.email
-            })
+                email: action.payload.email,
+                type: action.payload.type,
+                vendorID: action.payload.vendorID || '',
+                regionID: action.payload.regionID || 'WASHINGTONDC',
+                hasAllRequiredFields: !!action.payload.hasAllRequiredFields
+            });
         case LOG_OUT:
-            return Object.assign({}, state, defaultState)
+            return Object.assign({}, state, defaultState);
         default:
             return state
     }

@@ -4,6 +4,7 @@ import {
     FETCH_VENDOR_DATA_SUCCESS,
     FETCH_ALL_VENDORS_SUCCESS,
     CLEAR_SELECTED_VENDOR,
+    FETCH_ALL_REGIONS_SUCCESS,
     SET_MAP_PIN_LOAD_STATE,
     FETCH_USER_SUCCESS,
     FETCH_USER,
@@ -18,6 +19,7 @@ const defaultState: LoadStateDefaultState = {
     isVendorLoaded: false,
     areVendorsLoaded: false,
     areMapPinsLoaded: false,
+    areRegionsLoaded: false,
     isUserLoaded: false
 }
 
@@ -42,6 +44,11 @@ export function loadStateReducer(state = defaultState, action: any) {
         return {
             ...state,
             isVendorLoaded: false
+        }
+    case FETCH_ALL_REGIONS_SUCCESS:
+        return {
+            ...state,
+            ...action.payload
         }
     case SET_MAP_PIN_LOAD_STATE:
         return {

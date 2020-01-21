@@ -140,7 +140,7 @@ const TweetTable = (props:any) => {
     useEffect(() => {
         if (vendorsLoaded) {
             fetchTweets();
-        }else if (user.isAuthenticated) {
+        } else if (user.isAuthenticated) {
             fetchVendors();
         } else if(localStorage.token && localStorage.token.length) {
             dispatch(fetchUserAsync(fetchVendors));

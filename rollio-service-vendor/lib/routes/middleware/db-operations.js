@@ -8,17 +8,20 @@ const qs = new MongoQS(); // MongoQS takes req.query and converts it into MongoQ
 const { client: redisClient } = require('../../redis/index');
 
 // OPERATIONS
-const { getRegion, getRegionByName } = require('../../db/mongo/operations/region-ops');
+const { getAllRegions, getRegion, getRegionByName } = require('../../db/mongo/operations/region-ops');
 const {
+  createVendor,
   getVendors,
   getVendor,
   getVendorsByQuery,
   updateLocationAccuracy,
   updateVendorPushPosition,
+  updateVendorSet,
 } = require('../../db/mongo/operations/vendor-ops');
 
 const {
   findUserById,
+  patchUser
 } = require('../../db/mongo/operations/user-ops');
 
 const {
@@ -49,6 +52,9 @@ const checkCache = async (req, res, payload) => {
 };
 
 const regionRouteOps = {
+  async getAllRegions(req, res) {
+    getAllRegions().then(regions => res.status(200).json({ regions }));
+  },
   async getRegionId(req, res) {
     const getRegionIdOp = async (req, res, cb = null) => getRegion(req.params.id)
       .then(async (regions) => {
@@ -136,6 +142,38 @@ const vendorRouteOpsUtil = {
 };
 
 const vendorRouteOps = {
+  updateVendor: async (req, res) => {
+    const { type, twitterProvider = {} } = req.user;
+    const isAdmin = type === 'admin';
+    const isVendor = type === 'vendor';
+    const { regionID, vendorID } = req.params;
+    if (isAdmin || (isVendor && twitterProvider.id === req.vendor.twitterID)) {
+      const { field, data } = req.body;
+      return updateVendorSet({
+        regionID, vendorID, field, data,
+      })
+        .then(vendor => res.status(200).json({ vendor }))
+        .catch((err) => {
+          console.error(err);
+          res.status(500).send(err);
+        });
+    }
+    return res.status(403).send("You must be an admin or the vendor's owner user to update the vendor");
+  },
+  createVendor: async (req, res) => {
+    const { type } = req.user;
+    const isAdmin = type === 'admin';
+    const isVendor = type === 'vendor';
+    if (isAdmin || isVendor) {
+      return createVendor(req.body, req.params.regionID, req.user)
+        .then(vendor => res.status(200).json({ vendor }))
+        .catch((err) => {
+          console.error(err);
+          res.status(500).send(err);
+        });
+    }
+    return res.status(403).send('You must be an admin or vendor user to create a new vendor');
+  },
   getVendors: async (req, res) => {
     const hasQS = Object.keys(req.query).length > 0;
 
@@ -273,8 +311,46 @@ const vendorRouteOps = {
 };
 
 const userRouteOps = {
+  passUserToNext: async (req, res, next) => {
+    findUserById(req.user.id, true).then((user) => {
+      if (user) {
+        req.user = user;
+        next();
+      } else {
+        res.send(401, 'User Not Authenticated');
+      }
+    }).catch((err) => {
+      console.error(err);
+      res.send(401, 'User Not Authenticated');
+    });
+  },
+  passVendorToNext: async (req, res, next) => {
+    const { vendorID, regionID } = req.params;
+    const vendor = vendorID && regionID ? await getVendor(regionID, vendorID).catch((err) => {
+      console.error(err);
+      res.send(500, 'error looking up vendor');
+    }) : null;
+    if (vendor) {
+      req.vendor = vendor;
+      next();
+    } else {
+      res.send(404, 'Vendor not found');
+    }
+  },
   getUser: async (req, res) => {
     findUserById(req.user.id).then((user) => {
+      if (user) {
+        res.json({ user });
+      } else {
+        res.send(401, 'User Not Authenticated');
+      }
+    }).catch((err) => {
+      console.error(err);
+      res.send(401, 'User Not Authenticated');
+    });
+  },
+  updateUser: async (req, res) => {
+    patchUser(req.user.id, req.body).then((user) => {
       if (user) {
         res.json({ user });
       } else {

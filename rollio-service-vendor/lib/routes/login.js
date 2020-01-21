@@ -7,7 +7,13 @@ const passport = require('../util/passport');
 const { userRouteOps } = require('./middleware/db-operations');
 
 router.post('/auth/twitter/reverse', requestTwitterToken);
-router.post('/auth/twitter', getTwitterUser, passport.authenticate('twitter-token', {session: false}), setRequestAuth, generateToken, sendToken);
+router.post('/auth/twitter/:type', getTwitterUser,
+    function (req, res, next) {
+        passport.authenticate('twitter-token', { session: false, state: req.params.type  })(req, res, next)
+    },
+    setRequestAuth, generateToken, sendToken);
 router.get('/auth/users', expressJwt({ secret: JWT_SECRET }), userRouteOps.getUser);
+router.post('/auth/users', expressJwt({ secret: JWT_SECRET }), userRouteOps.updateUser);
+
 
 module.exports = router;

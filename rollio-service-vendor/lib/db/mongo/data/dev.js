@@ -34,12 +34,19 @@ const vendor5Id = ObjectId();
 const vendor6Id = ObjectId();
 const vendor7Id = ObjectId();
 const vendor8Id = ObjectId();
-
+const region1Id = ObjectId();
+const customerId = ObjectId();
+const customerWithoutARegionId = ObjectId();
+const adminId = ObjectId();
+const vendorWithoutAVendorId = ObjectId();
+const vendorWithAVendorId = ObjectId();
+const getTwitterId = () => faker.random.number({ min: 100000000, max: 999999999 });
 
 module.exports = {
   vendors: [
     {
       _id: vendor1Id,
+      regionID: region1Id,
       name: 'DC Foodtruck 1',
       type: 'mobileTruck',
       description: 'A truck for testing',
@@ -61,9 +68,11 @@ module.exports = {
       dailyActive: false,
       consecutiveDaysInactive: 4,
       categories: ['Luxury', 'Caviar', 'Lobster', 'Michelan Star'],
+      approved: true,
     },
     {
       _id: vendor2Id,
+      regionID: region1Id,
       name: 'Balkanik Taste',
       type: 'mobileTruck',
       description: 'Balkanik Taste is a family owned and operated business. We are 100% dedicated to our customers, giving them the best services in the Metro Washington area.',
@@ -82,9 +91,11 @@ module.exports = {
       dailyActive: true,
       consecutiveDaysInactive: 4,
       categories: ['Balkan', 'Mediterranean', 'Hearty', 'Meat'],
+      approved: true,
     },
     {
       _id: vendor3Id,
+      regionID: region1Id,
       name: 'The Big Cheese',
       type: 'mobileTruck',
       description: 'Purveyors of fine grilled cheeses since 2010',
@@ -103,9 +114,11 @@ module.exports = {
       dailyActive: true,
       consecutiveDaysInactive: 4,
       categories: ['Cheese', 'Comfort', 'Hearty', 'Bread'],
+      approved: true,
     },
     {
       _id: vendor4Id,
+      regionID: region1Id,
       name: 'Chick-fil-A Mobile',
       type: 'mobileTruck',
       description: 'The #1 quick service food truck in the DMV!!',
@@ -125,9 +138,11 @@ module.exports = {
       dailyActive: true,
       consecutiveDaysInactive: -1,
       categories: ['Fast Food', 'American', 'Comfort Food', 'Meat', 'Chicken'],
+      approved: true,
     },
     {
       _id: vendor5Id,
+      regionID: region1Id,
       name: 'Abunai',
       type: 'mobileTruck',
       description: 'Modern Hawaiian cuisine in D.C. Catering, pop-ups, food truck, and UberEATS!',
@@ -147,9 +162,11 @@ module.exports = {
       dailyActive: true,
       consecutiveDaysInactive: -1,
       categories: ['Hawaiian', 'Poke', 'Casual', 'Seafood'],
+      approved: true,
     },
     {
       _id: vendor6Id,
+      regionID: region1Id,
       name: 'Arepa Crew',
       type: 'mobileTruck',
       description: 'A taste of Venezuela for the Washington Metropolitan area!',
@@ -169,9 +186,11 @@ module.exports = {
       dailyActive: true,
       consecutiveDaysInactive: -1,
       categories: ['South American', 'Venezuelan', 'Arepa', 'Comfort Food', 'Street Food'],
+      approved: true,
     },
     {
       _id: vendor7Id,
+      regionID: region1Id,
       name: 'Astro Donuts',
       type: 'mobileTruck',
       description: "Fried chicken and doughnuts in the nation's capital, Falls Church, VA and a pretty awesome food truck on a corner near you. NOW OPEN in Los Angeles!",
@@ -191,9 +210,11 @@ module.exports = {
       dailyActive: true,
       consecutiveDaysInactive: -1,
       categories: ['American', 'Donuts', 'Fried Chicken', 'Comfort Food', 'Street Food'],
+      approved: true,
     },
     {
       _id: vendor8Id,
+      regionID: region1Id,
       name: 'Ball or Nothing',
       type: 'mobileTruck',
       description: 'Balls on Wheels hitting a spot near you. We have something for everyone. If everyone likes balls.',
@@ -213,8 +234,10 @@ module.exports = {
       dailyActive: true,
       consecutiveDaysInactive: -1,
       categories: ['Italian', 'Fried Chicken', 'Pasta', 'Meat'],
+      approved: true,
     },
     {
+      regionID: region1Id,
       name: 'DC Foodtruck 2',
       type: 'mobileTruck',
       description: 'A truck for testing again',
@@ -236,8 +259,10 @@ module.exports = {
       dailyActive: false,
       consecutiveDaysInactive: 0,
       categories: ['Luxury', 'Caviar', 'Lobster', 'Michelan Star'],
+      approved: true,
     },
     {
+      regionID: region1Id,
       name: 'BBQ Bus',
       type: 'mobileTruck',
       description: 'Catch us curbside, order delivery or visit us at new Smokehouse, our job is same: Fill you up on eats you love surrounded by ones you care for most.',
@@ -257,8 +282,10 @@ module.exports = {
       dailyActive: false,
       consecutiveDaysInactive: -1,
       categories: ['Barbeque', 'American', 'Comfort Food', 'Meat'],
+      approved: true,
     },
     {
+      regionID: region1Id,
       name: 'Capital Chicken & Waffles',
       type: 'mobileTruck',
       description: "The DC area's first & only chicken & waffles food truck! Stay tuned for updates, locations, coupons & much, much more. We are open every day: 8am to 10pm.",
@@ -278,10 +305,12 @@ module.exports = {
       dailyActive: false,
       consecutiveDaysInactive: -1,
       categories: ['Fast Food', 'American', 'Comfort Food', 'Soul Food'],
-    }
+      approved: true,
+    },
   ],
   regions: [
     {
+      _id: region1Id,
       name: 'WASHINGTONDC',
       coordinates: {
         locationDate: new Date('2018-04-12T12:10:00Z'),
@@ -357,7 +386,7 @@ module.exports = {
       text: 'Capital One Arena today',
       location: location9Id,
       usedForLocation: false,
-    }
+    },
   ],
   locations: [
     {
@@ -391,7 +420,7 @@ module.exports = {
       neighborhood: 'Penn Quarter',
       matchMethod: 'Tweet location',
       coordinates: [38.897182, -77.022013],
-      tweetID: tweet2IdString
+      tweetID: tweet2IdString,
     },
     {
       _id: location4Id,
@@ -453,7 +482,74 @@ module.exports = {
       city: 'dc',
       neighborhood: 'chinatown',
       coordinates: [38.898482, -77.021965],
-      tweetID: tweet8IdString
+      tweetID: tweet8IdString,
+    },
+  ],
+  users: [
+    {
+      _id: customerId,
+      type: 'customer',
+      email: 'customer@aol.com',
+      twitterProvider: {
+        id: getTwitterId(),
+        token: faker.random.word(),
+        tokenSecret: faker.random.word(),
+        username: faker.random.word(),
+        displayName: faker.random.words(2)
+      },
+      regionID: region1Id,
+    },
+    {
+      _id: customerWithoutARegionId,
+      type: 'customer',
+      email: 'customerWithoutARegion@aol.com',
+      twitterProvider: {
+        id: getTwitterId(),
+        token: faker.random.word(),
+        tokenSecret: faker.random.word(),
+        username: faker.random.word(),
+        displayName: faker.random.words(2)
+      }
+    },
+    {
+      _id: adminId,
+      type: 'admin',
+      email: 'admin@aol.com',
+      twitterProvider: {
+        id: getTwitterId(),
+        token: faker.random.word(),
+        tokenSecret: faker.random.word(),
+        username: faker.random.word(),
+        displayName: faker.random.words(2)
+      },
+      regionID: region1Id,
+    },
+    {
+      _id: vendorWithAVendorId,
+      type: 'vendor',
+      email: 'vendorWithAVendorId@aol.com',
+      twitterProvider: {
+        id: getTwitterId(),
+        token: faker.random.word(),
+        tokenSecret: faker.random.word(),
+        username: faker.random.word(),
+        displayName: faker.random.words(2)
+      },
+      regionID: region1Id,
+      vendorID: vendor1Id
+    },
+    {
+      _id: vendorWithoutAVendorId,
+      type: 'vendor',
+      email: 'vendorWithoutAVendorId@aol.com',
+      twitterProvider: {
+        id: getTwitterId(),
+        token: faker.random.word(),
+        tokenSecret: faker.random.word(),
+        username: faker.random.word(),
+        displayName: faker.random.words(2)
+      },
+      regionID: region1Id,
     }
-  ]
+  ],
 };

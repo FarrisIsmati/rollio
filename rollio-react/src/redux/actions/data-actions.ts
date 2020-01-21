@@ -20,6 +20,10 @@ import {
     RECIEVE_ALL_VENDORS,
 
     CLEAR_SELECTED_VENDOR,
+    
+    FETCH_ALL_REGIONS,
+    FETCH_ALL_REGIONS_SUCCESS,
+    RECEIVE_ALL_REGIONS,
 
     UPDATE_VENDOR,
 
@@ -35,6 +39,92 @@ import {
     UpdateVendorPayload,
     UpdateDailyActiveVendorsPayload
 } from './interfaces';
+
+// -------
+// VENDOR PROFILE
+// -------
+
+// Gets the detailed set of vendor profile data
+export function recieveVendorData(vendor:any) {
+    let location = null;
+    console.log(vendor)
+    // If the vendor is active set its location
+    if (vendor.dailyActive) {
+        location = vendor.locationHistory[vendor.locationHistory.length - 1];
+    }
+
+    const profile = {
+        categories: vendor.categories,
+        comments: vendor.comments,
+        creditCard: vendor.creditCard,
+        description: vendor.description,
+        email: vendor.email,
+        id: vendor._id,
+        location,
+        name: vendor.name,
+        phonenumber: vendor.phonenumber,
+        profileImageLink: vendor.profileImageLink,
+        price: vendor.price,
+        rating: vendor.rating,
+        twitterID: vendor.twitterID,
+        website: vendor.website,
+        isActive: vendor.dailyActive,
+        lastUpdated: vendor.updateDate,
+    }
+
+    return {
+        type: RECIEVE_VENDOR_DATA,
+        payload: {
+            ...profile
+        }
+    }
+}
+
+function fetchVendorDataSuccess() {
+    return {
+        type: FETCH_VENDOR_DATA_SUCCESS,
+        payload: {
+            isVendorLoaded: true
+        }
+    }
+}
+
+function fetchVendorDataStart() {
+    return {
+        type: FETCH_VENDOR_DATA,
+        payload: {
+            isVendorLoaded: false
+        }
+    }
+}
+
+export function fetchVendorDataAsync(payload:VendorDataAsyncPayload) {
+    const { regionId, vendorId, cb, cbSuccess } = payload;
+
+    return (dispatch:any) => {
+        dispatch(fetchVendorDataStart())
+        axios.get(`${VENDOR_API}/vendor/${regionId}/${vendorId}`)
+            .then((res: AxiosResponse<any>) => {
+                console.log(res)
+                dispatch(recieveVendorData(res.data));
+                dispatch(fetchVendorDataSuccess());
+                // Any function you want to run after successful get of all data
+                if (cbSuccess) {
+                    cbSuccess();
+                }
+            })
+            .catch((err:any) => {
+                console.error(err)
+                cb();
+            })
+    }
+}
+
+export function clearSelectedVendor() {
+    return {
+        type: CLEAR_SELECTED_VENDOR
+    }
+}
 
 // --------
 // COMMENTS
@@ -200,88 +290,50 @@ export function updateDailyActiveVendors(payload: UpdateDailyActiveVendorsPayloa
     }
 }
 
+// -----------
+// REGIONS DATA
+// -----------
 
-// -------
-// VENDOR PROFILE
-// -------
-
-// Gets the detailed set of vendor profile data
-export function recieveVendorData(vendor:any) {
-    let location = null;
-
-    // If the vendor is active set its location
-    if (vendor.dailyActive) {
-        location = vendor.locationHistory[vendor.locationHistory.length - 1];
-    }
-
-    const profile = {
-        categories: vendor.categories,
-        comments: vendor.comments,
-        creditCard: vendor.creditCard,
-        description: vendor.description,
-        email: vendor.email,
-        id: vendor._id,
-        location,
-        name: vendor.name,
-        phonenumber: vendor.phonenumber,
-        profileImageLink: vendor.profileImageLink,
-        price: vendor.price,
-        rating: vendor.rating,
-        twitterID: vendor.twitterID,
-        website: vendor.website,
-        isActive: vendor.dailyActive,
-        lastUpdated: vendor.updateDate,
-    }
-
+export function receiveAllRegions(regions:any) {
     return {
-        type: RECIEVE_VENDOR_DATA,
+        type: RECEIVE_ALL_REGIONS,
+        payload: [
+            ...regions
+        ]
+    }
+}
+
+
+function fetchAllRegionsSuccess() {
+    return {
+        type: FETCH_ALL_REGIONS_SUCCESS,
         payload: {
-            ...profile
+            areRegionsLoaded: true
         }
     }
 }
 
-function fetchVendorDataSuccess() {
+function fetchAllRegionsStart() {
     return {
-        type: FETCH_VENDOR_DATA_SUCCESS,
+        type: FETCH_ALL_REGIONS,
         payload: {
-            isVendorLoaded: true
+            areRegionsLoaded: false
         }
     }
 }
 
-function fetchVendorDataStart() {
-    return {
-        type: FETCH_VENDOR_DATA,
-        payload: {
-            isVendorLoaded: false
-        }
-    }
-}
-
-export function fetchVendorDataAsync(payload:VendorDataAsyncPayload) {
-    const { regionId, vendorId, cb, cbSuccess } = payload;
-
+// Get all regions
+export function fetchAllRegionsAsync() {
     return (dispatch:any) => {
-        dispatch(fetchVendorDataStart())
-        axios.get(`${VENDOR_API}/vendor/${regionId}/${vendorId}`)
+        // Set regions load status to false when fetching all regions
+        dispatch(fetchAllRegionsStart());
+        axios.get(`${VENDOR_API}/region/all`)
             .then((res: AxiosResponse<any>) => {
-                dispatch(recieveVendorData(res.data));
-                dispatch(fetchVendorDataSuccess());
-                // Any function you want to run after successful get of all data
-                if (cbSuccess) {
-                    cbSuccess();
-                }
+                dispatch(receiveAllRegions(res.data.regions));
+                dispatch(fetchAllRegionsSuccess());
             })
-            .catch((err:any) => {
+            .catch((err:AxiosError) => {
                 console.error(err)
-                cb();
             })
-    }
-}
-
-export function clearSelectedVendor() {
-    return {
-        type: CLEAR_SELECTED_VENDOR
     }
 }
