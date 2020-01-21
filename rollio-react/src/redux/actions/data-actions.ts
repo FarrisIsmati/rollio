@@ -19,6 +19,10 @@ import {
     FETCH_ALL_VENDORS_SUCCESS,
     RECIEVE_ALL_VENDORS,
 
+    FETCH_ALL_REGIONS,
+    FETCH_ALL_REGIONS_SUCCESS,
+    RECEIVE_ALL_REGIONS,
+
     UPDATE_VENDOR,
 
     UPDATE_DAILY_ACTIVE_VENDORS,
@@ -41,30 +45,31 @@ import {
 // Gets the detailed set of vendor profile data
 export function recieveVendorData(vendor:any) {
     let location = null;
-    
+
     // If the most recently updated of the vendor location history is today
     if (vendor.locationHistory.length && moment(Date.now()).isSame(vendor.locationHistory[vendor.locationHistory.length - 1].locationDate, 'day')) {
         location = vendor.locationHistory[vendor.locationHistory.length - 1];
     }
     // LOCATION HISTORY ONLY IF IT'S LOCATION IS TODAY CREATE THAT CHECK
     const profile = {
-        categories: vendor.categories,
-        comments: vendor.comments,
+        categories: vendor.categories || [],
+        comments: vendor.comments || [],
         creditCard: vendor.creditCard,
         description: vendor.description,
-        email: vendor.email,
+        email: vendor.email || '',
         id: vendor._id,
         location,
         name: vendor.name,
-        phonenumber: vendor.phonenumber,
-        profileImageLink: vendor.profileImageLink,
-        price: vendor.price,
+        phoneNumber: vendor.phoneNumber || '',
+        profileImageLink: vendor.profileImageLink || '',
+        price: vendor.price || '',
         rating: vendor.rating,
         twitterID: vendor.twitterID,
-        website: vendor.website,
+        website: vendor.website || '',
         isActive: vendor.dailyActive,
         lastUpdated: vendor.updateDate,
-    }
+        type: vendor.type || ''
+    };
 
     return {
         type: RECIEVE_VENDOR_DATA,
@@ -96,14 +101,14 @@ export function fetchVendorDataAsync(payload:VendorDataAsyncPayload) {
     const { regionId, vendorId, cb } = payload;
 
     return (dispatch:any) => {
-        dispatch(fetchVendorDataStart())
+        dispatch(fetchVendorDataStart());
         axios.get(`${VENDOR_API}/vendor/${regionId}/${vendorId}`)
             .then((res: AxiosResponse<any>) => {
                 dispatch(recieveVendorData(res.data));
                 dispatch(fetchVendorDataSuccess());
             })
             .catch((err:any) => {
-                console.error(err)
+                console.error(err);
                 cb()
             })
     }
@@ -270,5 +275,53 @@ export function updateDailyActiveVendors(payload: UpdateDailyActiveVendorsPayloa
     return {
         type: UPDATE_DAILY_ACTIVE_VENDORS,
         payload
+    }
+}
+
+// -----------
+// REGIONS DATA
+// -----------
+
+export function receiveAllRegions(regions:any) {
+    return {
+        type: RECEIVE_ALL_REGIONS,
+        payload: [
+            ...regions
+        ]
+    }
+}
+
+
+function fetchAllRegionsSuccess() {
+    return {
+        type: FETCH_ALL_REGIONS_SUCCESS,
+        payload: {
+            areRegionsLoaded: true
+        }
+    }
+}
+
+function fetchAllRegionsStart() {
+    return {
+        type: FETCH_ALL_REGIONS,
+        payload: {
+            areRegionsLoaded: false
+        }
+    }
+}
+
+// Get all regions
+export function fetchAllRegionsAsync() {
+    return (dispatch:any) => {
+        // Set regions load status to false when fetching all regions
+        dispatch(fetchAllRegionsStart());
+        axios.get(`${VENDOR_API}/region/all`)
+            .then((res: AxiosResponse<any>) => {
+                dispatch(receiveAllRegions(res.data.regions));
+                dispatch(fetchAllRegionsSuccess());
+            })
+            .catch((err:AxiosError) => {
+                console.error(err)
+            })
     }
 }

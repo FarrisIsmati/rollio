@@ -30,21 +30,28 @@ export interface Location {
 // Full set of vendor data
 export interface VendorFull {
     id: string,
+    type: string,
     name: string,
     description: string,
     email: string,
     website: string,
-    phonenumber: number | null,
+    phoneNumber: string | null,
     profileImageLink: string | null,
     categories: string[],
     price: string,
     rating: number | null,
     twitterID: string,
     comments: Comment[],
-    creditCard: boolean | null,
+    creditCard: string | null,
     location: Location[] | Location | null,
     isActive: boolean,
     lastUpdated: Date | null,
+    approved: boolean
+}
+
+export interface Region {
+    id: string,
+    name: string
 }
 
 export interface Comment {
@@ -79,6 +86,7 @@ export interface DataDefaultState {
     regionCoordinates: Coordinates,
     regionTimezone: string,
     vendorsAll: { [key: string]: VendorCard },
+    regionsAll: Region[],
     selectedVendor: VendorFull,
 }
 
@@ -86,7 +94,10 @@ export interface UserDefaultState {
     isAuthenticated: boolean,
     id: string,
     email: string,
-    isAdmin: boolean,
+    type: string,
+    vendorID: string,
+    regionID: string,
+    hasAllRequiredFields: boolean
 }
 
 export interface MapDefaultState {
@@ -100,6 +111,7 @@ export interface LoadStateDefaultState {
     isRegionLoaded: boolean,
     isVendorLoaded: boolean,
     areVendorsLoaded: boolean,
+    areRegionsLoaded: boolean,
     areMapPinsLoaded: boolean,
     isUserLoaded: boolean
 }

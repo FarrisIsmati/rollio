@@ -54,7 +54,7 @@ export function fetchUserAsync(cb?:any) {
             headers: {'Authorization': "Bearer " + localStorage.token}
         })
             .then((response: AxiosResponse<any>) => {
-                    dispatch(receiveUser(response.data.user))
+                    dispatch(receiveUser(response.data.user));
                     dispatch(fetchUserSuccess());
                     if (cb) {
                         cb();

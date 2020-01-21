@@ -1,0 +1,55 @@
+.twitter_login {
+    &__margin_20_20 {
+        margin: 20% 20%;
+    }
+
+    &__flex_grid {
+        display: flex;
+        justify-content: space-between;
+    }
+    &__col {
+        width: 45%;
+        border: solid 1px black;
+        padding: 10px 10px;
+        margin: 10px 10px;
+    }
+
+    @media (max-width: 400px) {
+        &__flex_grid {
+            display: block;
+        }
+
+        &__col {
+            width: 100%;
+            margin: 0 0 10px 0;
+        }
+    }
+
+    &__button_wrapper {
+        margin: 10% auto;
+        max-width: 250px;
+        text-align: center;
+        padding: 10px 10px;
+    }
+
+    &__login_button {
+        background-color: #1DA0F2;
+        color: white;
+        font-weight: bold;
+        padding: 5px 5px;
+    }
+
+    &__login_content {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    &__sign_up_link {
+        color: $color-font-link;
+    }
+
+    &__pointer:hover {
+        cursor: pointer;
+    }
+}

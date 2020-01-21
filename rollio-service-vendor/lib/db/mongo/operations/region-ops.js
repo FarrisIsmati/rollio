@@ -8,6 +8,9 @@ const logger = require('../../../log/index')('mongo/operations/region-ops');
 const Region = mongoose.model('Region');
 
 module.exports = {
+  getAllRegions() {
+    return Region.find({});
+  },
   getRegion(regionID) {
     if (!regionID) {
       const err = new Error('Must include a regionID argument');

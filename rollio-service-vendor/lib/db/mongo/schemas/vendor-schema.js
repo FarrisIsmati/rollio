@@ -101,6 +101,7 @@ const VendorSchema = new mongoose.Schema({
   regionID: { type: mongoose.Schema.Types.ObjectId, required: true },
   date: { type: Date, default: Date.now },
   updateDate: { type: Date, default: Date.now },
+  approved: { type: Boolean, default: false }
 });
 
 

@@ -1,9 +1,10 @@
 // DEPENDENCIES
 const router = require('express').Router();
 // MIDDLEWARE
-const { vendorRouteOps } = require('./middleware/db-operations');
+const { vendorRouteOps, userRouteOps } = require('./middleware/db-operations');
 const { routeLimitVendor } = require('./middleware/rate-limit');
-
+const { JWT_SECRET } = require('../../config');
+const expressJwt = require('express-jwt');
 // GET
 // All vendors or all vendors by query string
 router.get('/:regionID', vendorRouteOps.getVendors);
@@ -16,5 +17,9 @@ router.get('/:regionID/:vendorID', vendorRouteOps.getVendorById);
 router.put('/:regionID/:vendorID/locationaccuracy', routeLimitVendor, vendorRouteOps.putRegionIdVendorIdLocationTypeLocationIDAccuracy);
 // Update push a comment to a Vendor
 router.put('/:regionID/:vendorID/comments', vendorRouteOps.putRegionIdVendorIdComments);
+router.put('/:regionID/:vendorID/update', expressJwt({ secret: JWT_SECRET }), userRouteOps.passUserToNext, userRouteOps.passVendorToNext, vendorRouteOps.updateVendor);
+
+// POST
+router.post('/:regionID/new', expressJwt({ secret: JWT_SECRET }), userRouteOps.passUserToNext, vendorRouteOps.createVendor);
 
 module.exports = router;
