@@ -1,11 +1,13 @@
 import useGetAppState from "../common/hooks/use-get-app-state";
 import React, {useEffect, useState} from "react";
 import { withRouter } from 'react-router';
-import {fetchUserAsync, receiveUser} from "../../redux/actions/user-actions";
+import {receiveUser} from "../../redux/actions/user-actions";
 import {useDispatch} from "react-redux";
 import {recieveVendorData, fetchVendorDataAsync} from "../../redux/actions/data-actions";
 import axios, {AxiosResponse} from "axios";
 import {VENDOR_API} from "../../config";
+import useGetRegions from './hooks/use-get-regions';
+import useAuthentication from "../common/hooks/use-authentication";
 
 const UserProfile = (props:any) => {
     const dispatch = useDispatch();
@@ -37,18 +39,16 @@ const UserProfile = (props:any) => {
         props.history.replace('/invalid');
     };
 
+    useAuthentication(props, true);
+    useGetRegions();
     useEffect(() => {
-        if (!isAuthenticated && localStorage.token && localStorage.token.length) {
-            dispatch(fetchUserAsync(() => setLoading(false)));
-        } else if (!isAuthenticated) {
-            props.history.push('/login')
-        } else if (vendorId && vendorId !== selectedVendor.id) {
+        if (user.isAuthenticated && vendorId && vendorId !== selectedVendor.id) {
             dispatch(fetchVendorDataAsync({ regionId, vendorId, cb: reRouteCb }));
         } else {
             setLocalVendor({...selectedVendor, phoneNumber: ''});
             setLoading(false);
         }
-    }, [user, selectedVendor, vendorId]);
+    }, [user, selectedVendor, vendorId, regionId]);
 
     // fields to not include when sending to the backend
     const fieldsToExclude = ['id', 'hasAllRequiredFields', 'vendorID', 'twitterId', 'location'];

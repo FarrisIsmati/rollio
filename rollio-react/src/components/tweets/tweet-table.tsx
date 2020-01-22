@@ -2,8 +2,6 @@ import useGetAppState from "../common/hooks/use-get-app-state";
 import React, {useEffect, useState} from "react";
 import { withRouter } from 'react-router';
 import {VENDOR_API} from "../../config";
-import {fetchUserAsync} from "../../redux/actions/user-actions";
-import {useDispatch} from "react-redux";
 import ReactTable from 'react-table';
 import 'react-table/react-table.css'
 import axios, {AxiosResponse} from "axios";
@@ -11,10 +9,9 @@ import moment from 'moment';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import queryString from 'query-string';
+import useAuthentication from "../common/hooks/use-authentication";
 
-const TweetTable = (props:any) => {
-    // TODO: move much of the logic into a /hooks folder
-    const dispatch = useDispatch();
+const getTweetTableDates = () => {
     // the dates below are just used for the date filtering functionality, where we only display tweets during a certain time period
     const now = moment(new Date());
     const remainder = 30 - (now.minute() % 30);
@@ -24,15 +21,21 @@ const TweetTable = (props:any) => {
     const initialStartDate = moment(initialEndDate).subtract(1, 'days').toDate();
     // minDate is as far back in the calendar as a user can go when filtering dates.  It's arbitrary
     const minDate = moment(initialEndDate).subtract(1000000, 'days').toDate();
+    return { minDate, initialStartDate, initialEndDate };
+};
 
+const TweetTable = (props:any) => {
+    const { minDate, initialStartDate, initialEndDate } = getTweetTableDates();
+
+    // initial state
     const [loading, setLoading] = useState<boolean>(true);
-    const [rowsLoaded, setRowsLoaded] = useState<boolean>(false);
+    const [tweetsLoaded, setTweetsLoaded] = useState<boolean>(false);
     const [vendorsLoaded, setVendorsLoaded] = useState<boolean>(false);
     const [vendorID, setVendorID] = useState<string>('all');
     const [vendorNameLookup, setVendorNameLookup] = useState<any>({});
     const [startDate, setStartDate] = useState<Date>(initialStartDate);
     const [endDate, setEndDate] = useState<Date>(initialEndDate);
-    const [rows, setRows] = useState([]);
+    const [tweets, setTweets] = useState([]);
 
     const {user} = useGetAppState();
     const tweetUrl = `${VENDOR_API}/tweets`;
@@ -86,8 +89,8 @@ const TweetTable = (props:any) => {
 
     const mapVendorsOntoTweets = async (tweets:any) => {
         const tweetsWithVendorsMapped = tweets.map((tweet:any) => ({...tweet, vendorName: vendorNameLookup[tweet.vendorID] || 'Unknown Vendor' }));
-        setRows(tweetsWithVendorsMapped);
-        setRowsLoaded(true);
+        setTweets(tweetsWithVendorsMapped);
+        setTweetsLoaded(true);
     };
 
     const goToTweetPage = (tweetID:string) => {
@@ -137,20 +140,22 @@ const TweetTable = (props:any) => {
         }
     ];
 
+    useAuthentication(props, true);
     useEffect(() => {
-        if (vendorsLoaded) {
-            fetchTweets();
-        } else if (user.isAuthenticated) {
+        // first, get vendors if they haven't been loaded, yet
+        if (user.isAuthenticated && !vendorsLoaded) {
             fetchVendors();
-        } else if(localStorage.token && localStorage.token.length) {
-            dispatch(fetchUserAsync(fetchVendors));
-        } else {
-            setLoading(false);
+            // then get the tweets, if they haven't been loaded yet or if startDate, endDate, or vendorID changes
+        } else if (user.isAuthenticated) {
+            fetchTweets();
         }
-    }, [vendorID, startDate, endDate, vendorsLoaded]);
+    }, [user, vendorsLoaded, tweetsLoaded, startDate, endDate, vendorID]);
 
-    const contentText = !(loading || rowsLoaded) && !user.isAuthenticated ? 'You must be logged in' : 'Loading...';
-    const content = rowsLoaded ?
+
+
+
+    const contentText = !(loading || tweetsLoaded) && !user.isAuthenticated ? 'You must be logged in' : 'Loading...';
+    const content = tweetsLoaded ?
         (
             <div className="table_wrapper">
                 <select value={vendorID} onChange={e=>setVendorID(e.target.value)}>
@@ -178,7 +183,7 @@ const TweetTable = (props:any) => {
                 />
                 <div className="table_spacing">
                     <ReactTable
-                        data={rows}
+                        data={tweets}
                         columns={columns}
                         defaultPageSize={10}
                     />
