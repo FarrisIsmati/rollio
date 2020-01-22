@@ -1,11 +1,11 @@
 // COLORS
 $white: #fff;
 $rollioWhite: #fafafa;
-$rollioBlue: #0046c6;
-$rollioBlack: #212121;
-$rollioMedGrey: #4d4d4d;
-$rollioLightGrey: #757575;
 $rollioLighterGrey: #eeeeee;
+$rollioLightGrey: #757575;
+$rollioMedGrey: #4d4d4d;
+$rollioBlack: #212121;
+$rollioBlue: #0046c6;
 $rollioMagenta: #f74774;
 $rollioRed: #f54336;
 
@@ -36,5 +36,12 @@ $color-map-marker-primary-main: $rollioBlue;
 $color-map-marker-primary-second: $white;
 // Images
 $color-blank-image: $rollioLighterGrey;
+// Other
+$color-chip-background: $rollioWhite;
 // Vendor Profile
+$color-vendor-profile-background: $white;
 $color-vendor-profile-topbar: $rollioMagenta;
+$color-vendor-profile-info-icon: $rollioMagenta;
+$color-vendor-profile-info-icon-alt: $rollioBlack;
+$color-vendor-info-main: $rollioMagenta;
+$color-vendor-info-alt: $rollioBlack;

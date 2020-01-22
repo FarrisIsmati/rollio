@@ -1,0 +1,18 @@
+.chip {
+    &__wrapper {
+        display: inline-flex;
+        border: 0px solid;
+        border-radius: 12px;
+        padding: 4px 12px;
+        background-color: $color-chip-background;
+        margin-right: 8px;
+        margin-bottom: 8px;
+    }
+}
+
+// APPLIED FONTS
+
+.font__chip {
+    @include font-light;
+    color: $color-font-main-light2;
+}
