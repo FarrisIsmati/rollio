@@ -15,25 +15,12 @@ import {
   setIsVendorSelected 
 } from '../../redux/actions/ui-actions';
 
+// Returns an array of categories
+const setCategoriesComponent = (args:any) => {
+  const {isLoaded, vendor} = args;
 
-const VendorProfile = (props:any) => {
-  const dispatch = useDispatch();
-
-  const state = useGetAppState();
-
-  const isMobile = windowSizeEffects.useIsMobile();
-
-  const isVendorSelected = state.ui.isVendorSelected;
-  const isLoaded = state.loadState.isVendorLoaded;
-  const vendor = state.data.selectedVendor;
-
-  const hideProfile = () => {
-    dispatch(setIsVendorSelected(false));
-  }
-
-  // Render Categories
   let Categories:ReactComponentElement<any>[] = [];
-  
+
   if (isLoaded) {
     Categories = vendor.categories.map((category:string) => {
       return <Chip key={category} text={category} />
@@ -42,14 +29,30 @@ const VendorProfile = (props:any) => {
       Categories.unshift(<Chip key={vendor.price} text={vendor.price}/>)
     }
   }
+
+  return Categories;
+}
+
+const VendorProfile = (props:any) => {
+  // Effects
+  const dispatch = useDispatch();
+  const state = useGetAppState();
+
+  // Quick variable references
+  const isMobile = windowSizeEffects.useIsMobile();
+  const isVendorSelected = state.ui.isVendorSelected;
+  const isLoaded = state.loadState.isVendorLoaded;
+  const vendor = state.data.selectedVendor;
+
+  // Custom Vendor Profile Components
+  const Categories:ReactComponentElement<any>[] = setCategoriesComponent({isLoaded, vendor});
   
-  // States if the main wrapper class is mobile or not
+  // Variant Styles
   const vendorProfileClassType = isMobile ? 'vendorprofile_mobile' : 'vendorprofile'
 
-  
-  const scrollio = () => {
-    console.log('scrull')
-  }
+  // UI Effects
+  // Scrolling ~WIP~
+  //https://dev.to/n8tb1t/tracking-scroll-position-with-react-hooks-3bbj
 
   return (
     <div className={isVendorSelected ? `${vendorProfileClassType}__wrapper` : `${vendorProfileClassType}__wrapper_hidden`}>
@@ -58,7 +61,7 @@ const VendorProfile = (props:any) => {
         <div className='font__vendor_profile_header vendorprofile__topbar_wrapper'>
           <h2>{vendor.name}</h2>
           <div className='vendorprofile__x_wrapper'>
-            <FaTimes onClick={hideProfile}/> 
+            <FaTimes onClick={()=>{dispatch(setIsVendorSelected(false))}}/> 
           </div>
         </div>
 
