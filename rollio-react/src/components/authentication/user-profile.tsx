@@ -1,18 +1,19 @@
 import useGetAppState from "../common/hooks/use-get-app-state";
 import React, {useEffect, useState} from "react";
 import { withRouter } from 'react-router';
-import {receiveUser} from "../../redux/actions/user-actions";
+import { receiveUser } from "../../redux/actions/user-actions";
 import useGetRegions from './hooks/use-get-regions';
 import useAuthentication from "../common/hooks/use-authentication";
 import redirectToNewPage from "./utils/redirect-to-new-page";
 import axios, {AxiosResponse} from "axios";
-import {VENDOR_API} from "../../config";
+import { VENDOR_API } from "../../config";
 import { omit } from 'lodash';
 
 
 const UserProfile = (props:any) => {
-    const { user, data } = useGetAppState();
+    const { user, data, loadState } = useGetAppState();
     const { regionsAll } = data;
+    const { areRegionsLoaded } = loadState;
     const [loading, setLoading] = useState<boolean>(true);
     const [localUser, setLocalUser] = useState<any>(user);
 
@@ -21,20 +22,19 @@ const UserProfile = (props:any) => {
     };
 
     // disable the submit button unless all the required fields have been filled in
-    const requiredForEverybody = ['email', 'type'];
-    const requiredForCustomersOnly = ['regionID'];
-    const requiredForVendorsOnly: never[] = [];
-    const requiredFields = [...requiredForEverybody, ...(localUser.type === 'vendor' ? requiredForVendorsOnly : requiredForCustomersOnly)];
+    const requiredFields = ['email', 'type', 'regionID'];
     const disabled = !requiredFields.every(field => localUser[field]);
 
     useAuthentication(props, true);
     useGetRegions();
     useEffect(() => {
-        if (user.isAuthenticated){
-            setLocalUser(user);
+        if (user.isAuthenticated && areRegionsLoaded){
+            // set a default regionID if there isn't any
+            const regionID = user.regionID || regionsAll[0].id;
+            setLocalUser({ ...user, regionID });
             setLoading(false);
         }
-    }, [user]);
+    }, [user, areRegionsLoaded]);
 
     const handleSubmit = () => {
         setLoading(true);

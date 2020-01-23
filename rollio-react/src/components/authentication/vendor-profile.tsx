@@ -8,15 +8,18 @@ import axios, {AxiosResponse} from "axios";
 import {VENDOR_API} from "../../config";
 import useGetRegions from './hooks/use-get-regions';
 import useAuthentication from "../common/hooks/use-authentication";
+import {getRegion} from "./utils/get-region";
 
 const UserProfile = (props:any) => {
     const dispatch = useDispatch();
-    const { user, data } = useGetAppState();
-    const { selectedVendor } = data;
-    const { isAuthenticated, type } = user;
+    const { user, data, loadState } = useGetAppState();
+    const { selectedVendor, regionsAll } = data;
+    const { areRegionsLoaded } = loadState;
+    const { type } = user;
     const [loading, setLoading] = useState<boolean>(true);
     const [localVendor, setLocalVendor] = useState<any>(selectedVendor);
-    const { vendorId = '', regionId } = props.match.params;
+    const [regionId, setRegionId] = useState<string>('');
+    const { vendorId = '', regionName } = props.match.params;
 
     const updateLocalVendor = (key:string, value:string, isArray:boolean = false) => {
         let updatedValue;
@@ -41,10 +44,22 @@ const UserProfile = (props:any) => {
 
     useAuthentication(props, true);
     useGetRegions();
+
+    // get the regionId from the regionName in the route
     useEffect(() => {
-        if (user.isAuthenticated && vendorId && vendorId !== selectedVendor.id) {
+        if (!regionId && areRegionsLoaded) {
+            const region = getRegion(regionsAll, 'name', regionName);
+            setRegionId(region.id)
+        }
+    }, [regionId, areRegionsLoaded, regionName]);
+
+    // get and set the vendor
+    useEffect(() => {
+        const needToLoadExistingVendor = vendorId && vendorId !== selectedVendor.id;
+        const userAndRegionLoaded = user.isAuthenticated && regionId;
+        if (userAndRegionLoaded && needToLoadExistingVendor) {
             dispatch(fetchVendorDataAsync({ regionId, vendorId, cb: reRouteCb }));
-        } else {
+        } else if (user.isAuthenticated) {
             setLocalVendor({...selectedVendor, phoneNumber: ''});
             setLoading(false);
         }
@@ -103,7 +118,7 @@ const UserProfile = (props:any) => {
                 if (type === 'vendor') {
                     receiveUser({ ...user, vendorID });
                 }
-                props.history.push(`/region/${regionId}/vendor/${vendorID}`);
+                props.history.push(`/region/${regionName}/vendor/${vendorID}`);
             })
             .catch((err:any) => {
                 setLoading(false);

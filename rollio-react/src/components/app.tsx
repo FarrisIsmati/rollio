@@ -47,7 +47,7 @@ const App:FC = () => {
             <Route exact path="/login" component={ () => <LoginOut isLogin={true}/> } />
             <Route exact path="/signup" component={ () => <LoginOut isLogin={false}/> } />
             <Route exact path="/profile/user" component={ UserProfileForm } />
-            <Route exact path="/profile/region/:regionId/vendor/:vendorId?" component={ VendorProfileForm } />
+            <Route exact path="/profile/region/:regionName/vendor/:vendorId?" component={ VendorProfileForm } />
             <Route exact path="/tweets" component={ TweetTable } />
             <Route exact path="/tweets/:tweetId" component={ UpdateLocation } />
             <Route exact path="/invalid" component={ PageInvalid } />
