@@ -14,7 +14,7 @@ const UpdateLocation = (props:any) => {
     const [tweet, setTweet] = useState<any>(null);
     const [searchedLocation, setSearchedLocation] = useState<any>(null);
     const { user } = useGetAppState();
-    const { isAuthenticated } = user;
+    const { isAuthenticated, type } = user;
     const tweetUrl = `${VENDOR_API}/tweets`;
 
     const fetchTweet = () => {
@@ -87,12 +87,12 @@ const UpdateLocation = (props:any) => {
         })
     };
 
-    useAuthentication(props, true);
+    useAuthentication(props, true, true);
     useEffect(() => {
-        if (isAuthenticated) {
+        if (isAuthenticated && type === 'admin') {
             fetchTweet();
         }
-    }, [isAuthenticated]);
+    }, [isAuthenticated, type]);
 
     const contentText = !(loading || tweet) && !isAuthenticated ? 'You must be logged in' : 'Loading...';
     const usedForLocation = tweet && tweet.usedForLocation;

@@ -37,7 +37,8 @@ const TweetTable = (props:any) => {
     const [endDate, setEndDate] = useState<Date>(initialEndDate);
     const [tweets, setTweets] = useState([]);
 
-    const {user} = useGetAppState();
+    const { user } = useGetAppState();
+    const { isAuthenticated } = user;
     const tweetUrl = `${VENDOR_API}/tweets`;
 
     const fetchTweets = () => {
@@ -140,16 +141,16 @@ const TweetTable = (props:any) => {
         }
     ];
 
-    useAuthentication(props, true);
+    useAuthentication(props, true, true);
     useEffect(() => {
         // first, get vendors if they haven't been loaded, yet
-        if (user.isAuthenticated && !vendorsLoaded) {
+        if (isAuthenticated && !vendorsLoaded) {
             fetchVendors();
             // then get the tweets, if they haven't been loaded yet or if startDate, endDate, or vendorID changes
-        } else if (user.isAuthenticated) {
+        } else if (isAuthenticated) {
             fetchTweets();
         }
-    }, [user, vendorsLoaded, tweetsLoaded, startDate, endDate, vendorID]);
+    }, [isAuthenticated, vendorsLoaded, tweetsLoaded, startDate, endDate, vendorID]);
 
 
 

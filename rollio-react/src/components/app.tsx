@@ -20,13 +20,14 @@ import rootReducer from '../redux/reducers/root-reducer';
 import VendorProfile from './vendor-profile/vendor-profile';
 import RegionHome from './region/region-home';
 import PageInvalid from './error/page-invalid';
+import PermissionDenied from './error/permission-denied';
 import LoginOut from './authentication/login-out';
 import UserProfileForm from './authentication/user-profile';
 import VendorProfileForm from './authentication/vendor-profile';
 import TweetTable from './tweets/tweet-table';
 import UpdateLocation from './tweets/update-location'
 
-const loggerMiddleware = createLogger()
+const loggerMiddleware = createLogger();
 
 export const store = createStore(
   rootReducer,
@@ -34,7 +35,7 @@ export const store = createStore(
     thunkMiddleware,
     loggerMiddleware
   )
-)
+);
 
 const App:FC = () => {
   return (
@@ -51,6 +52,7 @@ const App:FC = () => {
             <Route exact path="/tweets" component={ TweetTable } />
             <Route exact path="/tweets/:tweetId" component={ UpdateLocation } />
             <Route exact path="/invalid" component={ PageInvalid } />
+            <Route exact path="/permission-denied" component={ PermissionDenied } />
             <Route path="/*" component={ PageInvalid } />
           </Switch>
         </div>
