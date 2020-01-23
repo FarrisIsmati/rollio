@@ -1,10 +1,11 @@
 // DEPENDENCIES
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useDispatch  } from 'react-redux';
 import { useCallbackRef } from 'use-callback-ref';
 
 // COMPONENTS
 import VendorSelectorLinks from './vendor-selector-links';
+import VendorProfile from '../vendor-profile/vendor-profile'
 import { FaChevronUp, FaTimes } from 'react-icons/fa';
 
 // ACTIONS
@@ -23,16 +24,21 @@ const VendorSelectorMobile:FC = () => {
         dispatch(toggleMobileMenu())
     }
 
-    const ref = useCallbackRef(null, () => {});
+    const componentRef = useCallbackRef(null, () => {});
+    const topbarRef = useCallbackRef(null, () => {});
 
     const { isMenuExpanded, expandedMenuStyle, contractedMenuStyle} = useSetMobileMenuStyle();
     const vendorSelectorLinksHeight = windowSizeEffects.useWindowHeight() - windowSizeEffects.useWindowHeight() * .19;
 
+    // USE THIS TO CHANGE HEIGHT OF THIS DIV (useCase dynamic scrolling on mobile)
+    const [scrollHeight, setScrollHeight] = useState(parseInt(expandedMenuStyle.height.substring(0, expandedMenuStyle.height.length - 2)));
+    
     return (
         // Mobile resize this flex centers
-        <div className="menu_mobile__wrapper" style={isMenuExpanded ? expandedMenuStyle : contractedMenuStyle}> 
+        <div ref={componentRef} className="menu_mobile__wrapper" style={isMenuExpanded ? {...expandedMenuStyle, height: scrollHeight.toString() + 'px'} : contractedMenuStyle} >
+            <VendorProfile />
             <div className="menu_mobile__content_wrapper">
-                <div ref={ref} className="menu_mobile__topbar_wrapper">
+                <div ref={topbarRef} className="menu_mobile__topbar_wrapper">
                     <div className="menu_mobile__topbar">
                         <div className="menu_mobile__topbar_text">
                             <h2 className="font__menu_topbar">All Food Trucks</h2>
@@ -40,7 +46,7 @@ const VendorSelectorMobile:FC = () => {
                         </div>
                     </div>
                 </div>
-                <VendorSelectorLinks ref={ref} {...{vendorSelectorLinksHeight}} />
+                <VendorSelectorLinks ref={topbarRef} {...{vendorSelectorLinksHeight}} />
             </div>
         </div>
     );

@@ -22,15 +22,6 @@
         }
     }
 
-    &__twitterwidget_wrapper {
-        position: absolute;
-        z-index: 99;
-        height: 710px;
-        width: 360px;
-        right: 0%;
-        background-color: chocolate;
-    }
-
     &__topbar_wrapper {
         display: flex;
         justify-content: space-between;
@@ -42,6 +33,10 @@
         display: flex;
         justify-content: center;
         align-items: center;
+    }
+
+    &__content_wrapper {
+        overflow-y: auto;
     }
 
     &__image {
@@ -110,6 +105,18 @@
 
     }
 
+    // MOBILE
+    &_mobile__wrapper {
+        @extend .vendorprofile__wrapper;
+        width: 100%;
+        position: absolute;
+
+        &_hidden {
+            @extend .vendorprofile__wrapper_hidden;
+            width: 100%;
+            position: absolute;
+        }
+    }
 }
 
 // APPLIED FONTS

@@ -3,7 +3,6 @@ import React from 'react';
 
 // COMPONENTS
 import Map from '../map/map';
-import VendorProfile from '../vendor-profile/vendor-profile';
 import VendorSelectorDesktop from '../vendor-selector/vendor-selector-desktop';
 import VendorSelectorMobile from '../vendor-selector/vendor-selector-mobile';
 import RegionNavbarMobile from './region-navbar-mobile'
@@ -17,7 +16,7 @@ import windowSizeEffects from '../common/hooks/use-window-size';
 
 const RegionHome = (props:any) => {
   // Gets width to render desktop or tablet/mobile version of region menu
-  const width = windowSizeEffects.useWindowWidth();
+  const isMobile = windowSizeEffects.useIsMobile();
 
   // Load the region
   useLoadRegion(props);
@@ -37,16 +36,17 @@ const RegionHome = (props:any) => {
   const map = isRegionLoaded && areVendorsLoaded ? <Map mapType='region' mapData={ state.regionMap }/> : <p>loading</p>
 
   return (
-    <div className={ width > 768 ? 'region__wrapper' : 'region_mobile__wrapper' }>
+    <div className={ isMobile ? 'region_mobile__wrapper' : 'region__wrapper' }>
       { /* Mobile Responsiveness */ }
-      { width > 768 ? 
-      <div className='region__vendor_menu_wrapper'>
-        <VendorProfile />
+      { isMobile ? 
+        <RegionNavbarMobile /> :
         <VendorSelectorDesktop/> 
-      </div>
-      : <RegionNavbarMobile /> }
+      }
       { map }
-      { width < 768 ? <VendorSelectorMobile /> : null }
+      { isMobile ?
+        <VendorSelectorMobile /> :
+        null 
+      }
     </div>
   );
 }
