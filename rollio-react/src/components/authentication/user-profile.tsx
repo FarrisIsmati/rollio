@@ -29,7 +29,7 @@ const UserProfile = (props:any) => {
     useGetRegions();
     useEffect(() => {
         if (user.isAuthenticated && areRegionsLoaded){
-            // set a default regionID if there isn't any
+            // set a default regionID for the dropdown selector if there isn't any
             const regionID = user.regionID || regionsAll[0].id;
             setLocalUser({ ...user, regionID });
             setLoading(false);
