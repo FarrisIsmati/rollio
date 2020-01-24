@@ -10,6 +10,7 @@ import useGetRegions from './hooks/use-get-regions';
 import useAuthentication from "../common/hooks/use-authentication";
 import {getRegion} from "./utils/get-region";
 
+// TODO: add validations on email, phone number, etc. inputs
 const UserProfile = (props:any) => {
     const dispatch = useDispatch();
     const { user, data, loadState } = useGetAppState();
