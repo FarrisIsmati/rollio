@@ -27,13 +27,27 @@ const LocationSchema = new mongoose.Schema({
   // possibly replace this with a reference to the tweet in the Tweet collection
   // possibly make required if matchMethod is Tweet Location or Manual from Tweet
   tweetID: { type: String, required: false },
-  matchMethod: { type: String, enum: ['Tweet location', 'User Input', 'Manual from Tweet'], default: 'Tweet location', required: false },
+  matchMethod: {
+    type: String, enum: ['Tweet location', 'User Input', 'Manual from Tweet'], default: 'Tweet location', required: false,
+  },
   overriden: { type: Boolean, default: false },
   coordinates: {
     type: [{ type: Number, required: true }],
-    validate: [val => val.length <= 2, '{PATH} exceeds the limit of 2'],
+    validate: [
+      { validator: val => val.length === 2, msg: 'There should be exactly two coordinates (lat and long)' },
+      {
+        validator: (val) => {
+          const lat = val[0];
+          const long = val[1];
+          const latInCorrectRange = lat >= -90 && lat <= 90;
+          const longInCorrectRange = long >= -180 && long <= 180;
+          return latInCorrectRange && longInCorrectRange;
+        },
+        msg: 'Latitude and longitude are not in the correct ranges',
+      },
+    ],
     required: false,
-  }
+  },
 });
 
 // TWEET SCHEMA
@@ -43,7 +57,7 @@ const TweetSchema = new mongoose.Schema({
   text: { type: String, required: true },
   location: { type: mongoose.Schema.Types.ObjectId, ref: 'Location', required: false },
   vendorID: { type: mongoose.Schema.Types.ObjectId, ref: 'Vendor', required: true },
-  usedForLocation: { type: Boolean, default: false }
+  usedForLocation: { type: Boolean, default: false },
 });
 
 const CommentSchema = new mongoose.Schema({
@@ -101,7 +115,7 @@ const VendorSchema = new mongoose.Schema({
   regionID: { type: mongoose.Schema.Types.ObjectId, required: true },
   date: { type: Date, default: Date.now },
   updateDate: { type: Date, default: Date.now },
-  approved: { type: Boolean, default: false }
+  approved: { type: Boolean, default: false },
 });
 
 
