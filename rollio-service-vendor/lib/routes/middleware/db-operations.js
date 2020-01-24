@@ -311,6 +311,16 @@ const vendorRouteOps = {
 };
 
 const userRouteOps = {
+  send403IfNoToken: (err, req, res, next) => {
+    if (err) {
+      if (err.name === 'UnauthorizedError') {
+        res.send(403, 'User must be logged in');
+      } else {
+        res.send(500, 'Something went wrong');
+      }
+    }
+    next();
+  },
   passUserToNext: async (req, res, next) => {
     findUserById(req.user.id, true).then((user) => {
       if (user) {

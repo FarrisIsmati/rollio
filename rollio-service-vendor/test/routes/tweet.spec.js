@@ -43,7 +43,7 @@ describe('Tweet Routes', () => {
         chai.request(server)
           .get('/tweets/filter')
           .end((err, res) => {
-            expect(res).to.have.status(401);
+            expect(res).to.have.status(403);
             done();
           });
       });
@@ -119,7 +119,7 @@ describe('Tweet Routes', () => {
         chai.request(server)
           .get('/tweets/vendors')
           .end((err, res) => {
-            expect(res).to.have.status(401);
+            expect(res).to.have.status(403);
             done();
           });
       });
