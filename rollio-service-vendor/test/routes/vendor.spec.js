@@ -6,6 +6,7 @@ const { ObjectId } = require('mongoose').Types;
 const mongoose = require('../../lib/db/mongo/mongoose/index');
 const { app } = require('../../index');
 const { JWT_SECRET } = require('../../config');
+
 const { expect } = chai;
 
 // OPERATIONS
@@ -403,18 +404,18 @@ describe('Vendor Routes', () => {
           });
       });
 
-      // TODO: get this working...don't know why it is not working
-      // it('expect 400 if required fields are missing', (done) => {
-      //   const data = { twitterID: 'blah' };
-      //   chai.request(app)
-      //       .post(`/vendor/${regionID}/new`)
-      //       .set('Authorization', `Bearer ${vendorToken}`)
-      //       .send(data)
-      //       .then((res) => {
-      //         expect(res).to.have.status(400);
-      //         done();
-      //       });
-      // });
+      it('expect 500 if required fields are missing', (done) => {
+        const data = { twitterID: 'blah' };
+        chai.request(app)
+          .post(`/vendor/${regionID}/new`)
+          .set('Authorization', `Bearer ${vendorToken}`)
+          .send(data)
+          .then((res) => {
+            expect(res).to.have.status(500);
+            expect(res.body.message.includes('Vendor validation')).to.be.true;
+            done();
+          })
+      });
 
       it('expect vendor to be created with twitterID matching the vendor twitter id, if user is a vendor', (done) => {
         const data = { ...baseData, twitterID: 'overridden' };
