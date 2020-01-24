@@ -2,10 +2,10 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const jwt = require('jsonwebtoken');
+const { ObjectId } = require('mongoose').Types;
 const mongoose = require('../../lib/db/mongo/mongoose/index');
 const { app } = require('../../index');
 const { JWT_SECRET } = require('../../config');
-
 const { expect } = chai;
 
 // OPERATIONS
@@ -217,6 +217,118 @@ describe('Vendor Routes', () => {
         expect(updatedComments[0].name).to.be.equal('Some Dude');
         expect(res).to.have.status(200);
         done();
+      });
+    });
+
+    describe('/vendor/:regionID/:vendorID/update', () => {
+      let allUsers;
+      let customer;
+      let selectedVendorUser;
+      let secondVendorUser;
+      let admin;
+      let customerToken;
+      let selectedVendorUserToken;
+      let secondVendorToken;
+      let regionId;
+      let adminToken;
+      let selectedVendor;
+      const data = { field: ['dailyActive', 'type'], data: [true, 'airstream'] };
+
+      beforeEach((done) => {
+        seed.runSeed().then(async () => {
+          allUsers = await User.find().select('+twitterProvider');
+          regionId = await Region.findOne().then(region => region._id);
+          customer = allUsers.find(user => user.type === 'customer');
+          customerToken = jwt.sign({
+            id: customer._id,
+          }, JWT_SECRET, { expiresIn: 60 * 60 });
+          admin = allUsers.find(user => user.type === 'admin');
+          adminToken = jwt.sign({
+            id: admin._id,
+          }, JWT_SECRET, { expiresIn: 60 * 60 });
+          const vendors = allUsers.filter(user => user.type === 'vendor' && user.vendorID);
+          [selectedVendorUser] = vendors;
+          selectedVendorUserToken = jwt.sign({
+            id: selectedVendorUser._id,
+          }, JWT_SECRET, { expiresIn: 60 * 60 });
+          secondVendorUser = vendors[1];
+          secondVendorToken = jwt.sign({
+            id: secondVendorUser._id,
+          }, JWT_SECRET, { expiresIn: 60 * 60 });
+          selectedVendor = await Vendor.findOne({ _id: selectedVendorUser.vendorID });
+          done();
+        });
+      });
+
+      it('expect 403 error if no auth token passed', (done) => {
+        chai.request(app)
+          .put(`/vendor/${regionId}/${selectedVendor._id}/update`)
+          .send(data)
+          .end((err, res) => {
+            expect(res).to.have.status(403);
+            done();
+          });
+      });
+
+      it('expect 403, if user is just a customer', (done) => {
+        chai.request(app)
+          .put(`/vendor/${regionID}/${selectedVendor._id}/update`)
+          .set('Authorization', `Bearer ${customerToken}`)
+          .send(data)
+          .end((err, res) => {
+            expect(res).to.have.status(403);
+            done();
+          });
+      });
+
+      it('expect 403, if user is just a vendor, but trying to update a different vendor', (done) => {
+        chai.request(app)
+          .put(`/vendor/${regionID}/${selectedVendor._id}/update`)
+          .set('Authorization', `Bearer ${secondVendorToken}`)
+          .send(data)
+          .end((err, res) => {
+            expect(res).to.have.status(403);
+            done();
+          });
+      });
+
+      it('expect 404, if vendorID does not match any vendors in the system', (done) => {
+        chai.request(app)
+          .put(`/vendor/${regionID}/${ObjectId()}/update`)
+          .set('Authorization', `Bearer ${adminToken}`)
+          .send(data)
+          .end((err, res) => {
+            expect(res).to.have.status(404);
+            done();
+          });
+      });
+
+      it('expect 200 and successful update if vendor updates a vendor they own', (done) => {
+        chai.request(app)
+          .put(`/vendor/${regionID}/${selectedVendor._id}/update`)
+          .set('Authorization', `Bearer ${selectedVendorUserToken}`)
+          .send(data)
+          .end((err, res) => {
+            expect(res).to.have.status(200);
+            data.field.forEach((field, index) => {
+              expect(res.body.vendor[field]).to.be.equal(data.data[index]);
+            });
+            done();
+          });
+      });
+
+      it('expect 200 and successful update if an admin updates a vendor', (done) => {
+        chai.request(app)
+          .put(`/vendor/${regionID}/${selectedVendor._id}/update`)
+          .set('Authorization', `Bearer ${adminToken}`)
+          .send(data)
+          .end((err, res) => {
+            expect(res).to.have.status(200);
+            data.field.forEach((field, index) => {
+              expect(res.body.vendor[field]).to.be.equal(data.data[index]);
+            });
+            done();
+          });
       });
     });
   });

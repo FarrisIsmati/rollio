@@ -40,7 +40,10 @@ const customerWithoutARegionId = ObjectId();
 const adminId = ObjectId();
 const vendorWithoutAVendorId = ObjectId();
 const vendorWithAVendorId = ObjectId();
+const secondVendorWithAVendorId = ObjectId();
 const getTwitterId = () => faker.random.number({ min: 100000000, max: 999999999 });
+const vendor1TwitterID = getTwitterId();
+const vendor2TwitterID = '2185580414';
 
 module.exports = {
   vendors: [
@@ -60,7 +63,7 @@ module.exports = {
       yelpId: '',
       price: '$$$$$',
       rating: 5,
-      twitterID: '1053649707493404678',
+      twitterID: vendor1TwitterID,
       tweetHistory: [tweet1Id],
       locationHistory: [location1Id],
       userLocationHistory: [location2Id],
@@ -84,7 +87,7 @@ module.exports = {
       menu: [],
       profileImageLink: 'https://pbs.twimg.com/profile_images/974624453593362432/5fabVcBz_400x400.jpg',
       yelpId: 'balkanik-taste-food-truck-and-catering-rockville-3',
-      twitterID: '2185580414',
+      twitterID: vendor2TwitterID,
       tweetHistory: [tweet2Id],
       locationHistory: [location3Id],
       comments: [],
@@ -529,7 +532,7 @@ module.exports = {
       type: 'vendor',
       email: 'vendorWithAVendorId@aol.com',
       twitterProvider: {
-        id: getTwitterId(),
+        id: vendor1TwitterID,
         token: faker.random.word(),
         tokenSecret: faker.random.word(),
         username: faker.random.word(),
@@ -537,6 +540,20 @@ module.exports = {
       },
       regionID: region1Id,
       vendorID: vendor1Id
+    },
+    {
+      _id: secondVendorWithAVendorId,
+      type: 'vendor',
+      email: 'vendor2WithAVendorId@aol.com',
+      twitterProvider: {
+        id: vendor2TwitterID,
+        token: faker.random.word(),
+        tokenSecret: faker.random.word(),
+        username: faker.random.word(),
+        displayName: faker.random.words(2)
+      },
+      regionID: region1Id,
+      vendorID: vendor2Id
     },
     {
       _id: vendorWithoutAVendorId,

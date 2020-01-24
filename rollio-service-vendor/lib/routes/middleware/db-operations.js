@@ -147,7 +147,7 @@ const vendorRouteOps = {
     const isAdmin = type === 'admin';
     const isVendor = type === 'vendor';
     const { regionID, vendorID } = req.params;
-    if (isAdmin || (isVendor && twitterProvider.id === req.vendor.twitterID)) {
+    if (isAdmin || (isVendor && String(twitterProvider.id) === String(req.vendor.twitterID))) {
       const { field, data } = req.body;
       return updateVendorSet({
         regionID, vendorID, field, data,
