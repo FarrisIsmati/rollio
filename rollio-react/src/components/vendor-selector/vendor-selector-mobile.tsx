@@ -12,7 +12,6 @@ import { FaChevronUp, FaTimes } from 'react-icons/fa';
 import { toggleMobileMenu } from '../../redux/actions/ui-actions';
 
 // HOOKS
-import useScrollPosition from './hooks/use-scroll-position';
 import useGetAppState from '../common/hooks/use-get-app-state';
 import useSetMobileMenuStyle from './hooks/use-set-mobile-menu-style';
 import windowSizeEffects from '../common/hooks/use-window-size';
@@ -40,29 +39,25 @@ const VendorSelectorMobile:FC = () => {
     const componentRef:any = useRef();
     const topbarRef = useCallbackRef(null, () => {});
 
-
-
-
-
-
-
-
-
     // UI Effects
-    // Scrolling ~WIP~ https://codesandbox.io/s/use-scroll-position-8nfin?fontsize=14 <- Understand how this works
-    // USE THIS TO CHANGE HEIGHT OF THIS DIV (useCase dynamic scrolling on mobile)
     const [scrollHeight, setScrollHeight] = useState(parseInt(expandedMenuStyle.height.substring(0, expandedMenuStyle.height.length - 2)));
-    
 
+    const scrollPositionCb = (params:{scrollDir:string, distanceToTop:number, distanceToBottom:number, scrollTimeStampDelta:number}) => {
+        const { scrollDir, distanceToTop, distanceToBottom, scrollTimeStampDelta } = params;
+        console.log(scrollTimeStampDelta);
+        // Scroll Top Closer to 0 closer to reset
+        // Scroll Dir Direction
+  
+        // On scroll down immediatley start changing height of div
+        // On scroll up change height of div pending how close it is to top
+        
+    }
 
-
-
-    
     return (
         // Mobile resize this flex centers
         // height: scrollHeight.toString() + 'px' ...expandedMenuStyle
         <div ref={componentRef} className="menu_mobile__wrapper" style={isMenuExpanded ? {...expandedMenuStyle} : contractedMenuStyle} >
-            <VendorProfile />
+            <VendorProfile scrollPositionCb={scrollPositionCb} />
             <div className="menu_mobile__content_wrapper">
                 <div ref={topbarRef} className="menu_mobile__topbar_wrapper">
                     <div className="menu_mobile__topbar">

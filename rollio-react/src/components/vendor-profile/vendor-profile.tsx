@@ -9,6 +9,7 @@ import Chip from '../common/other/chip';
 // HOOKS
 import useGetAppState from '../common/hooks/use-get-app-state';
 import windowSizeEffects from '../common/hooks/use-window-size';
+import useScrollPosition from '../common/hooks/use-scroll-position';
 
 // ACTIONS
 import { 
@@ -34,9 +35,16 @@ const setCategoriesComponent = (args:any) => {
 }
 
 const VendorProfile = (props:any) => {
-  // Effects
+  // Refs
+  const scrollRef:any = useRef();
+  const scrollDir:any = useRef('');
+
+
+  
+  // Hooks
   const dispatch = useDispatch();
   const state = useGetAppState();
+  useScrollPosition(scrollRef, state.loadState.isVendorLoaded, props.scrollPositionCb)
 
   // Quick variable references
   const isMobile = windowSizeEffects.useIsMobile();
@@ -50,55 +58,7 @@ const VendorProfile = (props:any) => {
   // Variant Styles
   const vendorProfileClassType = isMobile ? 'vendorprofile_mobile' : 'vendorprofile'
 
-  // Refs
-  const scrollRef:any = useRef();
-  const prevScrollHeight:any = useRef(0);
-  const prevScrollDir:any = useRef('');
-
-
-
-
-
-
-  // UI Effects
-  // Scrolling ~WIP~
-  //https://dev.to/n8tb1t/tracking-scroll-position-with-react-hooks-3bbj
-          
-  useLayoutEffect(() => {
-    if (isLoaded) {
-      let scrollDir:null|string = null;
-
-      scrollRef.current.addEventListener('scroll', (e:any) => {
-        const window = e.target;
-        const scrollHeight = window.scrollHeight;
-        const scrollTop = window.scrollTop;
-        const scrollPos = scrollHeight - scrollTop
-        
-        if (!prevScrollHeight.current || scrollPos < prevScrollHeight.current) {
-          scrollDir = 'down'
-          prevScrollDir.current = scrollDir
-        } else if (scrollPos > prevScrollHeight.current) {
-          scrollDir = 'up'
-          prevScrollDir.current = scrollDir
-        } else if (scrollPos === prevScrollHeight.current) {
-          scrollDir = prevScrollDir.current;
-        }
-
-        prevScrollHeight.current = scrollPos;
-
-        console.log(scrollDir)
-      });
-
-
-    }
-  })
-
-
-
-
-
-
-
+  console.log(scrollDir.current);
 
   return (
     <div className={isVendorSelected ? `${vendorProfileClassType}__wrapper` : `${vendorProfileClassType}__wrapper_hidden`}>

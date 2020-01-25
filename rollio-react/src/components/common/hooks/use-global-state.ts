@@ -12,7 +12,7 @@ const setState:any = (newState:any) => {
   });
 };
 
-const useCustom = () => {
+const useGlobalState = () => {
   const newListener = useState()[1];
   useEffect(() => {
     listeners.push(newListener);
@@ -24,4 +24,4 @@ const useCustom = () => {
   return [state, setState];
 };
 
-export default useCustom;
+export default useGlobalState;
