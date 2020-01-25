@@ -5,17 +5,18 @@ import { receiveUser } from "../../redux/actions/user-actions";
 import useGetRegions from './hooks/use-get-regions';
 import useAuthentication from "../common/hooks/use-authentication";
 import redirectToNewPage from "./utils/redirect-to-new-page";
+import { UserDefaultState } from "../../redux/reducers/interfaces";
 import axios, {AxiosResponse} from "axios";
 import { VENDOR_API } from "../../config";
 import { omit } from 'lodash';
-
+import { RegionNameOnly } from "./interfaces";
 
 const UserProfile = (props:any) => {
     const { user, data, loadState } = useGetAppState();
     const { regionsAll } = data;
     const { areRegionsLoaded } = loadState;
     const [loading, setLoading] = useState<boolean>(true);
-    const [localUser, setLocalUser] = useState<any>(user);
+    const [localUser, setLocalUser] = useState<UserDefaultState>(user);
 
     const updateLocalUser = (key:string, value:string) => {
         setLocalUser({...localUser, [key]: value});
@@ -23,6 +24,7 @@ const UserProfile = (props:any) => {
 
     // disable the submit button unless all the required fields have been filled in
     const requiredFields = ['email', 'type', 'regionID'];
+    // @ts-ignore
     const disabled = !requiredFields.every(field => localUser[field]);
 
     useAuthentication(props, true);
@@ -80,7 +82,7 @@ const UserProfile = (props:any) => {
                 <label>
                     Pick your region:
                     <select value={localUser.regionID} onChange={e=>updateLocalUser('regionID', e.target.value)}>
-                        { regionsAll.map((region:any) => {
+                        { regionsAll.map((region:RegionNameOnly) => {
                             const {id, name} = region;
                             return <option key={id} value={id}>{name}</option>
                         })}

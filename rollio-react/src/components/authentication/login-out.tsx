@@ -4,6 +4,7 @@ import TwitterLogin from 'react-twitter-auth';
 import { withRouter } from 'react-router';
 import { VENDOR_API } from "../../config";
 import { receiveUser, logOut, fetchUserSuccess } from "../../redux/actions/user-actions";
+import { UserDefaultState } from "../../redux/reducers/interfaces";
 import { useDispatch } from "react-redux";
 import { IconContext } from 'react-icons';
 import { IoLogoTwitter } from 'react-icons/io';
@@ -12,7 +13,6 @@ import useAuthentication from "../common/hooks/use-authentication";
 import redirectToNewPage from "./utils/redirect-to-new-page";
 const SIGN_IN = 'Sign In';
 const SIGN_UP = 'Sign Up';
-
 
 const Login = (props:any) => {
     const isLogin = !!props.isLogin;
@@ -33,7 +33,7 @@ const Login = (props:any) => {
 
     const twitterResponse = (response:any) => {
         const token = response.headers.get('x-auth-token');
-        response.json().then((user:any) => {
+        response.json().then((user:UserDefaultState) => {
             if (token) {
                 localStorage.token = token;
                 dispatch(receiveUser(user));

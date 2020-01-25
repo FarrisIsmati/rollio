@@ -9,6 +9,7 @@ import {VENDOR_API} from "../../config";
 import useGetRegions from './hooks/use-get-regions';
 import useAuthentication from "../common/hooks/use-authentication";
 import {getRegion} from "./utils/get-region";
+import { VendorFull } from "../../redux/reducers/interfaces";
 
 // TODO: add validations on email, phone number, etc. inputs
 const UserProfile = (props:any) => {
@@ -18,13 +19,14 @@ const UserProfile = (props:any) => {
     const { areRegionsLoaded } = loadState;
     const { type } = user;
     const [loading, setLoading] = useState<boolean>(true);
-    const [localVendor, setLocalVendor] = useState<any>(selectedVendor);
+    const [localVendor, setLocalVendor] = useState<VendorFull>(selectedVendor);
     const [regionId, setRegionId] = useState<string>('');
     const { vendorId = '', regionName } = props.match.params;
 
     const updateLocalVendor = (key:string, value:string, isArray:boolean = false) => {
         let updatedValue;
         if (isArray) {
+            // @ts-ignore
             const currentValue = localVendor[key];
             const currentIdx = currentValue.indexOf(value);
             if (currentIdx > -1) {
@@ -71,6 +73,7 @@ const UserProfile = (props:any) => {
 
     // takes the form data and clears out the empty fields before sending to the backend for Vendor creation
     const dataForCreatingVendor = Object.keys(localVendor).reduce((acc:any, key:string) => {
+        // @ts-ignore
         const value = localVendor[key];
         // exclude certain keys, as well as anything that was left blank
         if (!fieldsToExclude.includes(key) && value) {
@@ -81,6 +84,7 @@ const UserProfile = (props:any) => {
 
     // takes the form data and finds which fields were updated before sending to the backend for Vendor creation
     const dataForUpdatingVendor = Object.keys(localVendor).reduce((acc:any, key:string) => {
+        // @ts-ignore
         const newValue = localVendor[key];
         const originalValue = selectedVendor[key];
         // exclude certain keys, as well as anything that hasn't changed
@@ -100,6 +104,7 @@ const UserProfile = (props:any) => {
     const requiredFields = ['name', 'type', 'description', 'creditCard'];
     const isANewVendor = !vendorId;
     const vendorDataHasBeenUpdated = dataForUpdatingVendor.field.length;
+    // @ts-ignore
     const submitButtonEnabled = requiredFields.every(key => localVendor[key]) && (isANewVendor || vendorDataHasBeenUpdated);
 
 
@@ -191,11 +196,12 @@ const UserProfile = (props:any) => {
                         value={localVendor.profileImageLink}
                     />
                 </label>
+                {/* TODO: this selector is wonky - need to fix it*/}
                 <label>
                     Pick your Categories:
                     <select value={localVendor.categories} multiple={true} onChange={e=>{updateLocalVendor('categories', e.target.value, true)}}>
                         { allCategories.map((category:string) => {
-                            return <option key={category} value={category} selected={localVendor.categories.includes[category]}>{category}</option>
+                            return <option key={category} value={category}>{category}</option>
                         })}
                     </select>
                 </label>

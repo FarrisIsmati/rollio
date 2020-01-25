@@ -8,10 +8,11 @@ import axios, {AxiosResponse} from "axios";
 import moment from 'moment';
 import Autocomplete from 'react-google-autocomplete';
 import useAuthentication from "../common/hooks/use-authentication";
+import {Tweet, TweetDefaultState } from "./interfaces";
 
 const UpdateLocation = (props:any) => {
     const [loading, setLoading] = useState<boolean>(true);
-    const [tweet, setTweet] = useState<any>(null);
+    const [tweet, setTweet] = useState<Tweet>(TweetDefaultState);
     const [searchedLocation, setSearchedLocation] = useState<any>(null);
     const { user } = useGetAppState();
     const { isAuthenticated, type } = user;
@@ -62,9 +63,9 @@ const UpdateLocation = (props:any) => {
 
     const saveSearchedLocation = () => {
         setLoading(true);
-        const { locationDate, tweetID } = tweet;
+        const { date, tweetID } = tweet;
         const data = {
-            locationDate,
+            locationDate: date,
             tweetID,
             address: searchedLocation.formatted_address,
             city: searchedLocation.address_components.find((component:any) => component.types.includes('locality')).long_name,

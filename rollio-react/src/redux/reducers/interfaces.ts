@@ -27,7 +27,7 @@ export interface Location {
     id: string,
 }
 
-// Full set of vendor data
+// Full set of vendor data; also used in vendor-profile.tsx
 export interface VendorFull {
     id: string,
     type: string,
@@ -35,14 +35,14 @@ export interface VendorFull {
     description: string,
     email: string,
     website: string,
-    phoneNumber: string | null,
-    profileImageLink: string | null,
+    phoneNumber: string,
+    profileImageLink: string,
     categories: string[],
     price: string,
     rating: number | null,
     twitterID: string,
     comments: Comment[],
-    creditCard: string | null,
+    creditCard: string,
     location: Location[] | Location | null,
     isActive: boolean,
     lastUpdated: Date | null,
@@ -90,6 +90,7 @@ export interface DataDefaultState {
     selectedVendor: VendorFull,
 }
 
+// NOTE: this interface is also used in login-out.tsx and user-profile.tsx
 export interface UserDefaultState {
     isAuthenticated: boolean,
     id: string,
