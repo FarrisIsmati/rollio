@@ -1,5 +1,5 @@
 // DEPENDENCIES
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState, useRef } from 'react';
 import { useDispatch  } from 'react-redux';
 import { useCallbackRef } from 'use-callback-ref';
 
@@ -12,6 +12,7 @@ import { FaChevronUp, FaTimes } from 'react-icons/fa';
 import { toggleMobileMenu } from '../../redux/actions/ui-actions';
 
 // HOOKS
+import useScrollPosition from './hooks/use-scroll-position';
 import useGetAppState from '../common/hooks/use-get-app-state';
 import useSetMobileMenuStyle from './hooks/use-set-mobile-menu-style';
 import windowSizeEffects from '../common/hooks/use-window-size';
@@ -36,17 +37,31 @@ const VendorSelectorMobile:FC = () => {
     const vendorSelectorLinksHeight = windowSizeEffects.useWindowHeight() - windowSizeEffects.useWindowHeight() * .19;
 
     // Refs
-    const componentRef = useCallbackRef(null, () => {});
+    const componentRef:any = useRef();
     const topbarRef = useCallbackRef(null, () => {});
 
+
+
+
+
+
+
+
+
     // UI Effects
-    // Scrolling ~WIP~
+    // Scrolling ~WIP~ https://codesandbox.io/s/use-scroll-position-8nfin?fontsize=14 <- Understand how this works
     // USE THIS TO CHANGE HEIGHT OF THIS DIV (useCase dynamic scrolling on mobile)
     const [scrollHeight, setScrollHeight] = useState(parseInt(expandedMenuStyle.height.substring(0, expandedMenuStyle.height.length - 2)));
+    
 
+
+
+
+    
     return (
         // Mobile resize this flex centers
-        <div ref={componentRef} className="menu_mobile__wrapper" style={isMenuExpanded ? {...expandedMenuStyle, height: scrollHeight.toString() + 'px'} : contractedMenuStyle} >
+        // height: scrollHeight.toString() + 'px' ...expandedMenuStyle
+        <div ref={componentRef} className="menu_mobile__wrapper" style={isMenuExpanded ? {...expandedMenuStyle} : contractedMenuStyle} >
             <VendorProfile />
             <div className="menu_mobile__content_wrapper">
                 <div ref={topbarRef} className="menu_mobile__topbar_wrapper">

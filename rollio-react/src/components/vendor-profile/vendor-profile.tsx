@@ -1,5 +1,5 @@
 // DEPENDENCIES
-import React, { ReactComponentElement, useEffect } from 'react';
+import React, { ReactComponentElement, useEffect, useRef, useLayoutEffect } from 'react';
 import { useDispatch  } from 'react-redux';
 
 // COMPONENTS
@@ -50,9 +50,55 @@ const VendorProfile = (props:any) => {
   // Variant Styles
   const vendorProfileClassType = isMobile ? 'vendorprofile_mobile' : 'vendorprofile'
 
+  // Refs
+  const scrollRef:any = useRef();
+  const prevScrollHeight:any = useRef(0);
+  const prevScrollDir:any = useRef('');
+
+
+
+
+
+
   // UI Effects
   // Scrolling ~WIP~
   //https://dev.to/n8tb1t/tracking-scroll-position-with-react-hooks-3bbj
+          
+  useLayoutEffect(() => {
+    if (isLoaded) {
+      let scrollDir:null|string = null;
+
+      scrollRef.current.addEventListener('scroll', (e:any) => {
+        const window = e.target;
+        const scrollHeight = window.scrollHeight;
+        const scrollTop = window.scrollTop;
+        const scrollPos = scrollHeight - scrollTop
+        
+        if (!prevScrollHeight.current || scrollPos < prevScrollHeight.current) {
+          scrollDir = 'down'
+          prevScrollDir.current = scrollDir
+        } else if (scrollPos > prevScrollHeight.current) {
+          scrollDir = 'up'
+          prevScrollDir.current = scrollDir
+        } else if (scrollPos === prevScrollHeight.current) {
+          scrollDir = prevScrollDir.current;
+        }
+
+        prevScrollHeight.current = scrollPos;
+
+        console.log(scrollDir)
+      });
+
+
+    }
+  })
+
+
+
+
+
+
+
 
   return (
     <div className={isVendorSelected ? `${vendorProfileClassType}__wrapper` : `${vendorProfileClassType}__wrapper_hidden`}>
@@ -65,7 +111,7 @@ const VendorProfile = (props:any) => {
           </div>
         </div>
 
-        <div className='vendorprofile__content_wrapper'>
+        <div ref={scrollRef} className='vendorprofile__content_wrapper'>
           <div className='vendorprofile__image_wrapper'>
             <div className='vendorprofile__image'>
               <img alt={`${vendor.name} logo`} src={vendor.profileImageLink} /> 
