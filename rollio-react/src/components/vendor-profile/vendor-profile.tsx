@@ -42,7 +42,7 @@ const VendorProfile = (props:any) => {
   // Hooks
   const dispatch = useDispatch();
   const state = useGetAppState();
-  useScrollPosition(scrollRef, state.loadState.isVendorLoaded, props.scrollPositionCb)
+  useScrollPosition(scrollRef, state.loadState.isVendorLoaded, windowSizeEffects.useIsMobile() ? props.scrollPositionCb : ()=>{});
 
   // Quick variable references
   const isMobile = windowSizeEffects.useIsMobile();

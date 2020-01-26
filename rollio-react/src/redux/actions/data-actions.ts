@@ -47,7 +47,6 @@ import {
 // Gets the detailed set of vendor profile data
 export function recieveVendorData(vendor:any) {
     let location = null;
-    console.log(vendor)
     // If the vendor is active set its location
     if (vendor.dailyActive) {
         location = vendor.locationHistory[vendor.locationHistory.length - 1];
@@ -105,7 +104,6 @@ export function fetchVendorDataAsync(payload:VendorDataAsyncPayload) {
         dispatch(fetchVendorDataStart())
         axios.get(`${VENDOR_API}/vendor/${regionId}/${vendorId}`)
             .then((res: AxiosResponse<any>) => {
-                console.log(res)
                 dispatch(recieveVendorData(res.data));
                 dispatch(fetchVendorDataSuccess());
                 // Any function you want to run after successful get of all data
