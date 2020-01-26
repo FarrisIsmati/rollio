@@ -12,9 +12,11 @@ import {
   Switch,
   BrowserRouter
 } from 'react-router-dom';
+import {useEffect} from "react";
 
 //REDUX
 import rootReducer from '../redux/reducers/root-reducer';
+import {fetchUserAsync} from "../redux/actions/user-actions";
 
 // COMPONENTS
 import VendorProfile from './vendor-profile/vendor-profile';
@@ -29,15 +31,23 @@ import UpdateLocation from './tweets/update-location'
 
 const loggerMiddleware = createLogger();
 
-export const store = createStore(
-  rootReducer,
-  applyMiddleware(
-    thunkMiddleware,
-    loggerMiddleware
-  )
-);
-
 const App:FC = () => {
+  const store = createStore(
+      rootReducer,
+      applyMiddleware(
+          thunkMiddleware,
+          loggerMiddleware
+      )
+  );
+  const { dispatch } = store;
+  const { user } = store.getState();
+
+  useEffect(() => {
+    if (localStorage.token && !user.isAuthenticated) {
+      fetchUserAsync()(dispatch);
+    }
+  }, [user]);
+
   return (
     <Provider store={store}>
       <BrowserRouter>
@@ -59,6 +69,6 @@ const App:FC = () => {
       </BrowserRouter>
     </Provider>
   );
-}
+};
 
 export default App;
