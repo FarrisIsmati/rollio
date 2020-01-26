@@ -2,7 +2,7 @@
 import React from 'react';
 
 // COMPONENTS
-import ButtonDefault from '../common/buttons/button-default';
+import ButtonBare from '../common/buttons/button-bare';
 
 // HOOKS
 import useRenderPosts from './hooks/use-render-posts';
@@ -13,13 +13,15 @@ const CommentPosts = (props: any) => {
     return (
       <div className='commentposts__wrapper'>
         { shownComments }
-        <ButtonDefault 
-          id={'commentShowMoreButton'} 
-          text={'Show More'} 
-          className={'button__default_wide font__button_comment_showmore'}
-          isLocked={() => shownComments.length === props.comments.length}
-          handleClick={ShowMoreComments}
-        />
+        <div className='commentposts__button_wrapper'>
+          <ButtonBare 
+            id={'commentShowMoreButton'} 
+            text={'READ MORE'} 
+            className={'font__button_comment_showmore'}
+            isLocked={() => shownComments.length === props.comments.length}
+            handleClick={ShowMoreComments}
+          />
+        </div>
       </div>
     )
   }

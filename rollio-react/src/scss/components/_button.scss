@@ -26,6 +26,45 @@
             }
         }
     }
+
+    &__bare {
+        background-color: rgba(0,0,0,0);
+        color: $color-button-bare-font;
+        border: none;
+        outline: none;
+        transition:color .1s ease-in;
+
+        &:hover {
+            cursor: pointer;
+        }
+
+        &_locked {
+            color: $color-button-default-background-locked;
+            transition:color .1s ease-in;
+
+            &:hover {
+                cursor: default;
+            }
+        }
+    }
+
+    &__bare_alt {
+        @extend .button__bare;
+        color: $color-button-bare-alt-font;
+
+        &:hover {
+            cursor: pointer;
+        }
+
+        &_locked {
+            color: $color-button-default-background-locked;
+            transition:color .1s ease-in;
+
+            &:hover {
+                cursor: default;
+            }
+        }
+    }
 }
 
 // APPLIED FONTS

@@ -13,6 +13,7 @@ $rollioRed: #f54336;
 $color-font-main: $rollioBlack;
 $color-font-main-light: $rollioMedGrey;
 $color-font-main-light2: $rollioLightGrey;
+$color-font-main-light3: $rollioLighterGrey;
 $color-font-alt: $rollioMagenta;
 $color-font-error: $rollioRed;
 $color-font-link: $rollioBlue;
@@ -24,13 +25,15 @@ $color-font-map-marker: $white;
 $color-background-nav: $white;
 $color-background-main: $rollioWhite;
 // Comments
-$color-comment-icon-text: $rollioBlue;
+$color-comment-icon-text: $rollioMagenta;
 $color-comment-background: $white;
 $color-comment-name-border: $rollioLighterGrey;
 // Buttons
 $color-button-default-font: $white;
 $color-button-default-background: $rollioBlue;
 $color-button-default-background-locked: $rollioLighterGrey;
+$color-button-bare-font: $rollioBlue;
+$color-button-bare-alt-font: $rollioMagenta;
 // Map
 $color-map-marker-primary-main: $rollioBlue;
 $color-map-marker-primary-second: $white;
@@ -38,6 +41,7 @@ $color-map-marker-primary-second: $white;
 $color-blank-image: $rollioLighterGrey;
 // Other
 $color-chip-background: $rollioWhite;
+$color-linebreak: $rollioLighterGrey;
 // Vendor Profile
 $color-vendor-profile-background: $white;
 $color-vendor-profile-topbar: $rollioMagenta;
