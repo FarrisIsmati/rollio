@@ -38,8 +38,6 @@ const VendorProfile = (props:any) => {
   // Refs
   const scrollRef:any = useRef();
   const scrollDir:any = useRef('');
-
-
   
   // Hooks
   const dispatch = useDispatch();
@@ -57,8 +55,6 @@ const VendorProfile = (props:any) => {
   
   // Variant Styles
   const vendorProfileClassType = isMobile ? 'vendorprofile_mobile' : 'vendorprofile'
-
-  console.log(scrollDir.current);
 
   return (
     <div className={isVendorSelected ? `${vendorProfileClassType}__wrapper` : `${vendorProfileClassType}__wrapper_hidden`}>

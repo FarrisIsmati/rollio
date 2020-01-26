@@ -1,5 +1,5 @@
 // DEPENDENCIES
-import React, { FC, useEffect, useState, useRef } from 'react';
+import React, { FC, useEffect, useState, useRef, useLayoutEffect } from 'react';
 import { useDispatch  } from 'react-redux';
 import { useCallbackRef } from 'use-callback-ref';
 
@@ -19,6 +19,10 @@ import windowSizeEffects from '../common/hooks/use-window-size';
 // TO DO: ONCE NAVBAR IS SET PERMANATLEY THEN SET HEIGHT TO A PERCENTAGE OF WIDNOWHEIGHT - NAVBAR HEIGHT
 
 const VendorSelectorMobile:FC = () => {
+    // Refs
+    const componentRef:any = useRef();
+    const topbarRef = useCallbackRef(null, () => {});
+    
     // Effects
     const dispatch = useDispatch();
     const state = useGetAppState();
@@ -26,37 +30,55 @@ const VendorSelectorMobile:FC = () => {
     useEffect(() => {
         // Expands or contracts menu pending desktop/mobile state when window changes from desktop/mobile
         if (state.ui.isVendorSelected && !state.ui.isMobileMenuExpanded) {
-            console.log('vendor is selected')
             dispatch(toggleMobileMenu())
         }
     }, [state.ui.isVendorSelected]);
 
     // Quick variable references
     const { isMenuExpanded, expandedMenuStyle, contractedMenuStyle} = useSetMobileMenuStyle();
-    const vendorSelectorLinksHeight = windowSizeEffects.useWindowHeight() - windowSizeEffects.useWindowHeight() * .19;
-
-    // Refs
-    const componentRef:any = useRef();
-    const topbarRef = useCallbackRef(null, () => {});
+    const isVendorSelected = state.ui.isVendorSelected;
+    const windowHeight = windowSizeEffects.useWindowHeight();
+    const vendorSelectorLinksHeight = windowHeight - windowHeight * .19;
+    const defaultScrollHeight = parseInt(expandedMenuStyle.height.substring(0, expandedMenuStyle.height.length - 2))
 
     // UI Effects
-    const [scrollHeight, setScrollHeight] = useState(parseInt(expandedMenuStyle.height.substring(0, expandedMenuStyle.height.length - 2)));
+    const [isScrollDivExpanded, setIsScrollDivExpanded] = useState(false);
+    const [scrollHeight, setScrollHeight] = useState(defaultScrollHeight);
 
+    // Callback function sets the height of the scroll div pending scroll up or down
     const scrollPositionCb = (params:{scrollDir:string, distanceToTop:number, distanceToBottom:number, scrollTimeStampDelta:number}) => {
         const { scrollDir, distanceToTop, distanceToBottom, scrollTimeStampDelta } = params;
-        console.log(scrollTimeStampDelta);
-        // Scroll Top Closer to 0 closer to reset
-        // Scroll Dir Direction
-  
-        // On scroll down immediatley start changing height of div
-        // On scroll up change height of div pending how close it is to top
-        
+
+        if (scrollDir === 'up') {
+            // If both are 0 then the height has no overflow
+            if (distanceToTop === 0 && distanceToBottom > 0) {
+                setScrollHeight(defaultScrollHeight);
+                setIsScrollDivExpanded(false);
+            }
+        } else if (scrollDir === 'down') {
+            setIsScrollDivExpanded(true);
+
+            if (topbarRef.current !== null) {
+                //@ts-ignore
+                const maxScrollHeight = windowHeight - topbarRef.current.offsetHeight;
+                setScrollHeight(maxScrollHeight);
+            }
+        }
     }
+
+    // Unclick selected vendor, if scroll div takes max height reset it  to default height
+    if (!isVendorSelected && scrollHeight !== defaultScrollHeight) {
+        setScrollHeight(defaultScrollHeight);
+        setIsScrollDivExpanded(false);
+    }
+    
+    // Change scroll height to on window change size or scroll change size
+    const properHeight = isScrollDivExpanded ? `${scrollHeight}px` : expandedMenuStyle.height;
 
     return (
         // Mobile resize this flex centers
         // height: scrollHeight.toString() + 'px' ...expandedMenuStyle
-        <div ref={componentRef} className="menu_mobile__wrapper" style={isMenuExpanded ? {...expandedMenuStyle} : contractedMenuStyle} >
+        <div ref={componentRef} className="menu_mobile__wrapper" style={isMenuExpanded ? {...expandedMenuStyle, height: properHeight} : contractedMenuStyle} >
             <VendorProfile scrollPositionCb={scrollPositionCb} />
             <div className="menu_mobile__content_wrapper">
                 <div ref={topbarRef} className="menu_mobile__topbar_wrapper">
