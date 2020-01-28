@@ -25,7 +25,7 @@ export function userReducer(state = defaultState, action: any) {
                 email: action.payload.email,
                 type: action.payload.type,
                 vendorID: action.payload.vendorID || '',
-                regionID: action.payload.regionID || 'WASHINGTONDC',
+                regionID: action.payload.regionID || '',
                 hasAllRequiredFields: !!action.payload.hasAllRequiredFields
             });
         case LOG_OUT:

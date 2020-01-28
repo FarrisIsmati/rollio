@@ -2,22 +2,22 @@ import useGetAppState from "../common/hooks/use-get-app-state";
 import React, { useEffect, useState } from "react";
 import { withRouter } from 'react-router';
 import { VENDOR_API } from "../../config";
-import { useDispatch } from "react-redux";
 import 'react-table/react-table.css'
 import "react-datepicker/dist/react-datepicker.css";
 import axios, {AxiosResponse} from "axios";
-import {fetchUserAsync} from "../../redux/actions/user-actions";
 import moment from 'moment';
 import Autocomplete from 'react-google-autocomplete';
+import useAuthentication from "../common/hooks/use-authentication";
+import {Tweet, TweetDefaultState } from "./interfaces";
 
 const UpdateLocation = (props:any) => {
-    // TODO: move much of the logic into a /hooks folder
-    const dispatch = useDispatch();
     const [loading, setLoading] = useState<boolean>(true);
-    const [tweet, setTweet] = useState<any>(null);
+    const [tweet, setTweet] = useState<Tweet>(TweetDefaultState);
     const [searchedLocation, setSearchedLocation] = useState<any>(null);
-    const {user} = useGetAppState();
+    const { user } = useGetAppState();
+    const { isAuthenticated, type } = user;
     const tweetUrl = `${VENDOR_API}/tweets`;
+
     const fetchTweet = () => {
         setLoading(true);
         axios({
@@ -63,9 +63,9 @@ const UpdateLocation = (props:any) => {
 
     const saveSearchedLocation = () => {
         setLoading(true);
-        const { locationDate, tweetID } = tweet;
+        const { date, tweetID } = tweet;
         const data = {
-            locationDate,
+            locationDate: date,
             tweetID,
             address: searchedLocation.formatted_address,
             city: searchedLocation.address_components.find((component:any) => component.types.includes('locality')).long_name,
@@ -88,17 +88,14 @@ const UpdateLocation = (props:any) => {
         })
     };
 
+    useAuthentication(props, true, true);
     useEffect(() => {
-        if (user.isAuthenticated) {
+        if (isAuthenticated && type === 'admin') {
             fetchTweet();
-        } else if(localStorage.token && localStorage.token.length) {
-            dispatch(fetchUserAsync(fetchTweet));
-        } else {
-            setLoading(false);
         }
-    }, []);
+    }, [isAuthenticated, type]);
 
-    const contentText = !(loading || tweet) && !user.isAuthenticated ? 'You must be logged in' : 'Loading...';
+    const contentText = !(loading || tweet) && !isAuthenticated ? 'You must be logged in' : 'Loading...';
     const usedForLocation = tweet && tweet.usedForLocation;
     const content = tweet ?
         (
@@ -168,7 +165,7 @@ const UpdateLocation = (props:any) => {
         (
             <div>
                 <p>{contentText}</p>
-                { !user.isAuthenticated &&
+                { !isAuthenticated &&
                     <button
                         onClick={() => goToLoginPage()}
                     >

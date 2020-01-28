@@ -2,18 +2,18 @@ import useGetAppState from "../common/hooks/use-get-app-state";
 import React, {useEffect, useState} from "react";
 import TwitterLogin from 'react-twitter-auth';
 import { withRouter } from 'react-router';
-import {VENDOR_API} from "../../config";
-import {receiveUser, logOut, fetchUserAsync, fetchUserSuccess} from "../../redux/actions/user-actions";
-import {fetchAllRegionsAsync} from "../../redux/actions/data-actions";
-import {useDispatch} from "react-redux";
+import { VENDOR_API } from "../../config";
+import { receiveUser, logOut, fetchUserSuccess } from "../../redux/actions/user-actions";
+import { UserDefaultState } from "../../redux/reducers/interfaces";
+import { useDispatch } from "react-redux";
 import { IconContext } from 'react-icons';
 import { IoLogoTwitter } from 'react-icons/io';
+import useGetRegions from './hooks/use-get-regions';
+import useAuthentication from "../common/hooks/use-authentication";
+import redirectToNewPage from "./utils/redirect-to-new-page";
 const SIGN_IN = 'Sign In';
 const SIGN_UP = 'Sign Up';
 
-
-// TODO: add back a logout route!
-// TODO: abstract out the re-route logic, which is shared
 const Login = (props:any) => {
     const isLogin = !!props.isLogin;
     const dispatch = useDispatch();
@@ -33,7 +33,7 @@ const Login = (props:any) => {
 
     const twitterResponse = (response:any) => {
         const token = response.headers.get('x-auth-token');
-        response.json().then((user:any) => {
+        response.json().then((user:UserDefaultState) => {
             if (token) {
                 localStorage.token = token;
                 dispatch(receiveUser(user));
@@ -46,38 +46,15 @@ const Login = (props:any) => {
         props.history.push(isLogin ? '/signup' : '/login');
     };
 
-    const getRegionInfo = (regionID:string) => regionsAll.find((region:any) => region.id.toString() === regionID) || { name: 'WASHINGTONDC' };
-
-    const redirectToNewPage = () => {
-        const { type = 'customer', regionID = '', vendorID = '', hasAllRequiredFields = false } = user || {};
-        if (!hasAllRequiredFields) {
-            props.history.push('/profile/user');
-        } else if (type === 'customer') {
-            const { name } = getRegionInfo(regionID);
-            props.history.push(`/region/${name}`);
-        } else if (type === 'admin') {
-            props.history.push('/tweets');
-        } else if (type === 'vendor' && vendorID) {
-            // user is a vendor and the vendor is already created
-            props.history.push(`/region/${regionID}/vendor/${vendorID}`);
-        } else if (type === 'vendor') {
-            // user is a vendor, but they haven't created the Vendor record, yet
-            props.history.push(`/profile/region/${regionID}/vendor`);
-        }
-    };
-
     const loginOrSetUp = isLogin ? SIGN_IN : SIGN_UP;
 
     useEffect(() => {
-        if(localStorage.token && localStorage.token.length && !user.isAuthenticated) {
-            dispatch(fetchUserAsync());
-        } else if (user.isAuthenticated && areRegionsLoaded) {
-            redirectToNewPage();
+        if (user.isAuthenticated && areRegionsLoaded) {
+            redirectToNewPage(props, user, regionsAll);
         }
-        if (!areRegionsLoaded) {
-            dispatch(fetchAllRegionsAsync());
-        }
-    }, [user, areRegionsLoaded]);
+    }, [user, regionsAll, areRegionsLoaded]);
+    useAuthentication(props, false);
+    useGetRegions();
 
     const typeDescription = {
         [SIGN_IN]: {

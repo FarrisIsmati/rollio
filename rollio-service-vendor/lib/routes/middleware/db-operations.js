@@ -147,7 +147,7 @@ const vendorRouteOps = {
     const isAdmin = type === 'admin';
     const isVendor = type === 'vendor';
     const { regionID, vendorID } = req.params;
-    if (isAdmin || (isVendor && twitterProvider.id === req.vendor.twitterID)) {
+    if (isAdmin || (isVendor && String(twitterProvider.id) === String(req.vendor.twitterID))) {
       const { field, data } = req.body;
       return updateVendorSet({
         regionID, vendorID, field, data,
@@ -311,6 +311,22 @@ const vendorRouteOps = {
 };
 
 const userRouteOps = {
+  restrictToAdmins: async (req, res, next) => {
+    if (req.user.type !== 'admin') {
+      res.send(403, 'You must be an admin');
+    }
+    next();
+  },
+  send403IfNoToken: (err, req, res, next) => {
+    if (err) {
+      if (err.name === 'UnauthorizedError') {
+        res.send(403, 'User must be logged in');
+      } else {
+        res.send(500, 'Something went wrong');
+      }
+    }
+    next();
+  },
   passUserToNext: async (req, res, next) => {
     findUserById(req.user.id, true).then((user) => {
       if (user) {
@@ -365,10 +381,6 @@ const userRouteOps = {
 
 const tweetRouteOps = {
   tweetSearch: async (req, res) => {
-    // TODO: limit to not just any user, but only an admin
-    if (!req.user) {
-      res.send(401, 'User Not Authenticated');
-    }
     getAllTweets(req.query).then((tweets) => {
       res.json({ tweets });
     }).catch((err) => {
@@ -377,10 +389,6 @@ const tweetRouteOps = {
     });
   },
   vendorsForFiltering: async (req, res) => {
-    // TODO: limit to not just any user, but only an admin
-    if (!req.user) {
-      res.send(401, 'User Not Authenticated');
-    }
     getVendorsForFiltering(req.query).then((vendors) => {
       res.json({ vendors });
     }).catch((err) => {
@@ -389,10 +397,6 @@ const tweetRouteOps = {
     });
   },
   getTweetWithPopulatedVendorAndLocation: async (req, res) => {
-    // TODO: limit to not just any user, but only an admin
-    if (!req.user) {
-      res.send(401, 'User Not Authenticated');
-    }
     getTweetWithPopulatedVendorAndLocation(req.params.tweetId).then((tweet) => {
       res.json({ tweet });
     }).catch((err) => {
@@ -401,10 +405,6 @@ const tweetRouteOps = {
     });
   },
   deleteLocation: async (req, res) => {
-    // TODO: limit to not just any user, but only an admin
-    if (!req.user) {
-      res.send(401, 'User Not Authenticated');
-    }
     deleteTweetLocation(req.params.tweetId).then((tweet) => {
       res.json({ tweet });
     }).catch((err) => {
@@ -413,10 +413,6 @@ const tweetRouteOps = {
     });
   },
   createNewLocation: async (req, res) => {
-    // TODO: limit to not just any user, but only an admin
-    if (!req.user) {
-      res.send(401, 'User Not Authenticated');
-    }
     createTweetLocation(req.params.tweetId, req.body).then((tweet) => {
       res.json({ tweet });
     }).catch((err) => {

@@ -1,68 +1,42 @@
 import useGetAppState from "../common/hooks/use-get-app-state";
 import React, {useEffect, useState} from "react";
 import { withRouter } from 'react-router';
-import {fetchUserAsync, receiveUser} from "../../redux/actions/user-actions";
-import {useDispatch} from "react-redux";
-import {fetchAllRegionsAsync} from "../../redux/actions/data-actions";
+import { receiveUser } from "../../redux/actions/user-actions";
+import useGetRegions from './hooks/use-get-regions';
+import useAuthentication from "../common/hooks/use-authentication";
+import redirectToNewPage from "./utils/redirect-to-new-page";
+import { UserDefaultState } from "../../redux/reducers/interfaces";
 import axios, {AxiosResponse} from "axios";
-import {VENDOR_API} from "../../config";
+import { VENDOR_API } from "../../config";
 import { omit } from 'lodash';
-
+import { RegionNameOnly } from "./interfaces";
 
 const UserProfile = (props:any) => {
-    const dispatch = useDispatch();
     const { user, data, loadState } = useGetAppState();
-    const { areRegionsLoaded } = loadState;
     const { regionsAll } = data;
-    const {
-        isAuthenticated
-    } = user;
+    const { areRegionsLoaded } = loadState;
     const [loading, setLoading] = useState<boolean>(true);
-    const [localUser, setLocalUser] = useState<any>(user);
+    const [localUser, setLocalUser] = useState<UserDefaultState>(user);
 
     const updateLocalUser = (key:string, value:string) => {
         setLocalUser({...localUser, [key]: value});
     };
 
     // disable the submit button unless all the required fields have been filled in
-    const requiredForEverybody = ['email', 'type'];
-    const requiredForCustomersOnly = ['regionID'];
-    const requiredForVendorsOnly: never[] = [];
-    const requiredFields = [...requiredForEverybody, ...(localUser.type === 'vendor' ? requiredForVendorsOnly : requiredForCustomersOnly)];
+    const requiredFields = ['email', 'type', 'regionID'];
+    // @ts-ignore
     const disabled = !requiredFields.every(field => localUser[field]);
 
-
+    useAuthentication(props, true);
+    useGetRegions();
     useEffect(() => {
-        if (!isAuthenticated && localStorage.token && localStorage.token.length) {
-            dispatch(fetchUserAsync(() => setLoading(false)));
-        } else if (!isAuthenticated) {
-            props.history.push('/login')
-        } else {
-            setLocalUser(user);
+        if (user.isAuthenticated && areRegionsLoaded){
+            // set a default regionID for the dropdown selector if there isn't any
+            const regionID = user.regionID || regionsAll[0].id;
+            setLocalUser({ ...user, regionID });
             setLoading(false);
         }
-        if (!areRegionsLoaded) {
-            dispatch(fetchAllRegionsAsync());
-        }
     }, [user, areRegionsLoaded]);
-
-    const getRegionInfo = (regionID:string) => regionsAll.find((region:any) => region.id.toString() === regionID) || { name: 'WASHINGTONDC' };
-
-    const redirectToNewPage = (updatedUser:any) => {
-        const { type = 'customer', regionID = '', vendorID = '', hasAllRequiredFields = false } = updatedUser || {};
-        if (!hasAllRequiredFields) {
-            props.history.push('/profile/user');
-        } else if (type === 'customer') {
-            const { name } = getRegionInfo(regionID);
-            props.history.push(`/region/${name}`);
-        } else if (type === 'admin') {
-            props.history.push('/tweets');
-        } else if (type === 'vendor' && vendorID) {
-            props.history.push(`/region/${regionID}/vendor/${vendorID}`);
-        } else if (type === 'vendor') {
-            props.history.push(`/profile/region/${regionID}/vendor`);
-        }
-    };
 
     const handleSubmit = () => {
         setLoading(true);
@@ -74,7 +48,7 @@ const UserProfile = (props:any) => {
         })
             .then((res: AxiosResponse<any>) => {
                 receiveUser(res.data.user);
-                redirectToNewPage(res.data.user);
+                redirectToNewPage(props, res.data.user, regionsAll);
                 setLoading(false);
             })
             .catch((err:any) => {
@@ -108,7 +82,7 @@ const UserProfile = (props:any) => {
                 <label>
                     Pick your region:
                     <select value={localUser.regionID} onChange={e=>updateLocalUser('regionID', e.target.value)}>
-                        { regionsAll.map((region:any) => {
+                        { regionsAll.map((region:RegionNameOnly) => {
                             const {id, name} = region;
                             return <option key={id} value={id}>{name}</option>
                         })}

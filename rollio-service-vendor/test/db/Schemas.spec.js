@@ -1,5 +1,6 @@
 // DEPENDENCIES
 const chai = require('chai');
+const { ObjectId } = require('mongoose').Types;
 const mongoose = require('../../lib/db/mongo/mongoose/index');
 
 const { expect } = chai;
@@ -9,6 +10,7 @@ const Comment = mongoose.model('Comment');
 const Region = mongoose.model('Region');
 const Location = mongoose.model('Location');
 const Vendor = mongoose.model('Vendor');
+const User = mongoose.model('User');
 
 // TESTS
 describe('Schemas', () => {
@@ -31,7 +33,18 @@ describe('Schemas', () => {
       });
       coordinates.validate((err) => {
         expect(err.errors.coordinates).to.exist;
-        expect(err.errors.coordinates.message).to.equal('coordinates exceeds the limit of 2');
+        expect(err.errors.coordinates.message).to.equal('There should be exactly two coordinates (lat and long)');
+        done();
+      });
+    });
+
+    it('expect to be invalid if the coordinates are out of the lat long ranges', (done) => {
+      const coordinates = new Location({
+        coordinates: [5000, 5000],
+      });
+      coordinates.validate((err) => {
+        expect(err.errors.coordinates).to.exist;
+        expect(err.errors.coordinates.message).to.equal('Latitude and longitude are not in the correct ranges');
         done();
       });
     });
@@ -77,6 +90,26 @@ describe('Schemas', () => {
       vendor.validate((err) => {
         expect(err.errors.creditCard).to.exist;
         expect(err.errors.creditCard.properties.message).to.equal(`\`${creditCard}\` is not a valid enum value for path \`creditCard\`.`);
+        done();
+      });
+    });
+  });
+
+  describe('User Schema', () => {
+    it('expect hasAllRequiredFields to be true if type, email, and regionID included', (done) => {
+      const newUser = new User({ type: 'admin', email: 'fake@fake.com', regionID: ObjectId() });
+
+      newUser.save((err, user) => {
+        expect(user.hasAllRequiredFields).to.be.true;
+        done();
+      });
+    });
+
+    it('expect hasAllRequiredFields to be false if regionID is not included', (done) => {
+      const newUser = new User({ type: 'admin', email: 'fake@fake.com' });
+
+      newUser.save((err, user) => {
+        expect(user.hasAllRequiredFields).to.be.false;
         done();
       });
     });

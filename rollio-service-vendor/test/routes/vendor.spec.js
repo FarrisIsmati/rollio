@@ -1,8 +1,11 @@
 // DEPENDENCIES
 const chai = require('chai');
 const chaiHttp = require('chai-http');
+const jwt = require('jsonwebtoken');
+const { ObjectId } = require('mongoose').Types;
 const mongoose = require('../../lib/db/mongo/mongoose/index');
 const { app } = require('../../index');
+const { JWT_SECRET } = require('../../config');
 
 const { expect } = chai;
 
@@ -16,6 +19,7 @@ const seedData = require('../../lib/db/mongo/data/dev');
 // SCHEMAS
 const Region = mongoose.model('Region');
 const Vendor = mongoose.model('Vendor');
+const User = mongoose.model('User');
 
 chai.use(chaiHttp);
 
@@ -29,7 +33,7 @@ describe('Vendor Routes', () => {
     seed.runSeed().then(async () => {
       regionID = await Region.findOne().then(region => region._id);
       vendor = await Vendor.findOne({
-        regionID: await regionID, 'locationHistory.0': { '$exists': true }, 'userLocationHistory.0': { '$exists': true }
+        regionID: await regionID, 'locationHistory.0': { $exists: true }, 'userLocationHistory.0': { $exists: true },
       });
       locationID = vendor.locationHistory[0]._id;
       userLocationID = vendor.userLocationHistory[0]._id;
@@ -214,6 +218,260 @@ describe('Vendor Routes', () => {
         expect(updatedComments[0].name).to.be.equal('Some Dude');
         expect(res).to.have.status(200);
         done();
+      });
+    });
+
+    describe('/vendor/:regionID/:vendorID/update', () => {
+      let allUsers;
+      let customer;
+      let selectedVendorUser;
+      let secondVendorUser;
+      let admin;
+      let customerToken;
+      let selectedVendorUserToken;
+      let secondVendorToken;
+      let regionId;
+      let adminToken;
+      let selectedVendor;
+      const data = { field: ['dailyActive', 'type'], data: [true, 'airstream'] };
+
+      beforeEach((done) => {
+        seed.runSeed().then(async () => {
+          allUsers = await User.find().select('+twitterProvider');
+          regionId = await Region.findOne().then(region => region._id);
+          customer = allUsers.find(user => user.type === 'customer');
+          customerToken = jwt.sign({
+            id: customer._id,
+          }, JWT_SECRET, { expiresIn: 60 * 60 });
+          admin = allUsers.find(user => user.type === 'admin');
+          adminToken = jwt.sign({
+            id: admin._id,
+          }, JWT_SECRET, { expiresIn: 60 * 60 });
+          const vendors = allUsers.filter(user => user.type === 'vendor' && user.vendorID);
+          [selectedVendorUser] = vendors;
+          selectedVendorUserToken = jwt.sign({
+            id: selectedVendorUser._id,
+          }, JWT_SECRET, { expiresIn: 60 * 60 });
+          secondVendorUser = vendors[1];
+          secondVendorToken = jwt.sign({
+            id: secondVendorUser._id,
+          }, JWT_SECRET, { expiresIn: 60 * 60 });
+          selectedVendor = await Vendor.findOne({ _id: selectedVendorUser.vendorID });
+          done();
+        });
+      });
+
+      it('expect 403 error if no auth token passed', (done) => {
+        chai.request(app)
+          .put(`/vendor/${regionId}/${selectedVendor._id}/update`)
+          .send(data)
+          .end((err, res) => {
+            expect(res).to.have.status(403);
+            done();
+          });
+      });
+
+      it('expect 403, if user is just a customer', (done) => {
+        chai.request(app)
+          .put(`/vendor/${regionID}/${selectedVendor._id}/update`)
+          .set('Authorization', `Bearer ${customerToken}`)
+          .send(data)
+          .end((err, res) => {
+            expect(res).to.have.status(403);
+            done();
+          });
+      });
+
+      it('expect 403, if user is just a vendor, but trying to update a different vendor', (done) => {
+        chai.request(app)
+          .put(`/vendor/${regionID}/${selectedVendor._id}/update`)
+          .set('Authorization', `Bearer ${secondVendorToken}`)
+          .send(data)
+          .end((err, res) => {
+            expect(res).to.have.status(403);
+            done();
+          });
+      });
+
+      it('expect 404, if vendorID does not match any vendors in the system', (done) => {
+        chai.request(app)
+          .put(`/vendor/${regionID}/${ObjectId()}/update`)
+          .set('Authorization', `Bearer ${adminToken}`)
+          .send(data)
+          .end((err, res) => {
+            expect(res).to.have.status(404);
+            done();
+          });
+      });
+
+      // it('expect 200 and successful update if vendor updates a vendor they own', (done) => {
+      //   chai.request(app)
+      //     .put(`/vendor/${regionID}/${selectedVendor._id}/update`)
+      //     .set('Authorization', `Bearer ${selectedVendorUserToken}`)
+      //     .send(data)
+      //     .end((err, res) => {
+      //       expect(res).to.have.status(200);
+      //       data.field.forEach((field, index) => {
+      //         expect(res.body.vendor[field]).to.be.equal(data.data[index]);
+      //       });
+      //       done();
+      //     });
+      // });
+
+      it('expect 200 and successful update if an admin updates a vendor', (done) => {
+        chai.request(app)
+          .put(`/vendor/${regionID}/${selectedVendor._id}/update`)
+          .set('Authorization', `Bearer ${adminToken}`)
+          .send(data)
+          .end((err, res) => {
+            expect(res).to.have.status(200);
+            data.field.forEach((field, index) => {
+              expect(res.body.vendor[field]).to.be.equal(data.data[index]);
+            });
+            done();
+          });
+      });
+    });
+  });
+
+  describe('POST', () => {
+    let allUsers;
+    let customer;
+    let vendorUser;
+    let admin;
+    let customerToken;
+    let vendorToken;
+    let regionId;
+    let adminToken;
+    const baseData = {
+      name: 'fake truck', type: 'mobileTruck', description: 'blah blah', creditCard: 'y',
+    };
+    const defaultData = {
+      approved: false,
+      dailyActive: false,
+      consecutiveDaysInactive: 0,
+      __v: 0,
+      categories: [],
+      comments: [],
+      locationHistory: [],
+      menu: [],
+      tweetHistory: [],
+      userLocationHistory: [],
+    };
+
+    beforeEach((done) => {
+      seed.runSeed().then(async () => {
+        allUsers = await User.find().select('+twitterProvider');
+        regionId = await Region.findOne().then(region => region._id);
+        customer = allUsers.find(user => user.type === 'customer');
+        customerToken = jwt.sign({
+          id: customer._id,
+        }, JWT_SECRET, { expiresIn: 60 * 60 });
+        admin = allUsers.find(user => user.type === 'admin');
+        adminToken = jwt.sign({
+          id: admin._id,
+        }, JWT_SECRET, { expiresIn: 60 * 60 });
+        vendorUser = allUsers.find(user => user.type === 'vendor' && !user.vendorID);
+        vendorToken = jwt.sign({
+          id: vendorUser._id,
+        }, JWT_SECRET, { expiresIn: 60 * 60 });
+        done();
+      });
+    });
+
+
+    describe('/vendor/:regionID/new', () => {
+      it('expect 403 error if no auth token passed', (done) => {
+        const data = { ...baseData, twitterID: 'test' };
+        chai.request(app)
+          .post(`/vendor/${regionId}/new`)
+          .send(data)
+          .end((err, res) => {
+            expect(res).to.have.status(403);
+            done();
+          });
+      });
+
+      it('expect 403, if user is just a customer', (done) => {
+        const data = { ...baseData, twitterID: 'notOverridden' };
+        chai.request(app)
+          .post(`/vendor/${regionID}/new`)
+          .set('Authorization', `Bearer ${customerToken}`)
+          .send(data)
+          .end((err, res) => {
+            expect(res).to.have.status(403);
+            done();
+          });
+      });
+
+      it('expect 500 if required fields are missing', (done) => {
+        const data = { twitterID: 'blah' };
+        chai.request(app)
+          .post(`/vendor/${regionID}/new`)
+          .set('Authorization', `Bearer ${vendorToken}`)
+          .send(data)
+          .then((res) => {
+            expect(res).to.have.status(500);
+            expect(res.body.message.includes('Vendor validation')).to.be.true;
+            done();
+          })
+      });
+
+      it('expect vendor to be created with twitterID matching the vendor twitter id, if user is a vendor', (done) => {
+        const data = { ...baseData, twitterID: 'overridden' };
+        chai.request(app)
+          .post(`/vendor/${regionId}/new`)
+          .set('Authorization', `Bearer ${vendorToken}`)
+          .send(data)
+          .then((res) => {
+            expect(res).to.have.status(200);
+            expect(res.body).to.be.deep.equal({
+              vendor: {
+                ...data,
+                ...defaultData,
+                twitterID: String(vendorUser.twitterProvider.id),
+                regionID: regionId.toString(),
+                creditCard: 'y',
+                description: 'blah blah',
+                _id: res.body.vendor._id,
+                updateDate: res.body.vendor.updateDate,
+                date: res.body.vendor.date,
+              },
+            });
+            return res.body.vendor;
+          })
+        // should also update the user's vendorID field with the newly created vendor's id
+          .then(newVendor => User.findOne({ _id: vendorUser._id, vendorID: newVendor._id }))
+          .then((updatedVendor) => {
+            expect(!!updatedVendor).to.be.true;
+            done();
+          });
+      });
+
+      it('expect vendor to be created , if user is an admin', (done) => {
+        const data = { ...baseData, twitterID: 'notOverridden' };
+        chai.request(app)
+          .post(`/vendor/${regionID}/new`)
+          .set('Authorization', `Bearer ${adminToken}`)
+          .send(data)
+          .end((err, res) => {
+            expect(res).to.have.status(200);
+            expect(res.body).to.be.deep.equal({
+              vendor: {
+                ...data,
+                ...defaultData,
+                approved: true,
+                twitterID: data.twitterID,
+                regionID: regionId.toString(),
+                creditCard: 'y',
+                description: 'blah blah',
+                _id: res.body.vendor._id,
+                updateDate: res.body.vendor.updateDate,
+                date: res.body.vendor.date,
+              },
+            });
+            done();
+          });
       });
     });
   });
