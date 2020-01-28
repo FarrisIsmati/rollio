@@ -38,7 +38,6 @@ const setCategoriesComponent = (args:any) => {
 const VendorProfile = (props:any) => {
   // Refs
   const scrollRef:any = useRef();
-  const scrollDir:any = useRef('');
   
   // Hooks
   const dispatch = useDispatch();

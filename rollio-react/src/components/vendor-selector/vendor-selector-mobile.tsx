@@ -77,7 +77,6 @@ const VendorSelectorMobile:FC = () => {
 
     return (
         // Mobile resize this flex centers
-        // height: scrollHeight.toString() + 'px' ...expandedMenuStyle
         <div ref={componentRef} className="menu_mobile__wrapper" style={isMenuExpanded ? {...expandedMenuStyle, height: properHeight} : contractedMenuStyle} >
             <VendorProfile scrollPositionCb={scrollPositionCb} />
             <div className="menu_mobile__content_wrapper">
