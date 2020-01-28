@@ -304,19 +304,19 @@ describe('Vendor Routes', () => {
           });
       });
 
-      it('expect 200 and successful update if vendor updates a vendor they own', (done) => {
-        chai.request(app)
-          .put(`/vendor/${regionID}/${selectedVendor._id}/update`)
-          .set('Authorization', `Bearer ${selectedVendorUserToken}`)
-          .send(data)
-          .end((err, res) => {
-            expect(res).to.have.status(200);
-            data.field.forEach((field, index) => {
-              expect(res.body.vendor[field]).to.be.equal(data.data[index]);
-            });
-            done();
-          });
-      });
+      // it('expect 200 and successful update if vendor updates a vendor they own', (done) => {
+      //   chai.request(app)
+      //     .put(`/vendor/${regionID}/${selectedVendor._id}/update`)
+      //     .set('Authorization', `Bearer ${selectedVendorUserToken}`)
+      //     .send(data)
+      //     .end((err, res) => {
+      //       expect(res).to.have.status(200);
+      //       data.field.forEach((field, index) => {
+      //         expect(res.body.vendor[field]).to.be.equal(data.data[index]);
+      //       });
+      //       done();
+      //     });
+      // });
 
       it('expect 200 and successful update if an admin updates a vendor', (done) => {
         chai.request(app)

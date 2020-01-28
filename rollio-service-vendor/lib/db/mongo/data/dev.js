@@ -41,6 +41,8 @@ const adminId = ObjectId();
 const vendorWithoutAVendorId = ObjectId();
 const vendorWithAVendorId = ObjectId();
 const secondVendorWithAVendorId = ObjectId();
+
+// Fake twitterIDs
 const getTwitterId = () => faker.random.number({ min: 100000000, max: 999999999 });
 const vendor1TwitterID = getTwitterId();
 const vendor2TwitterID = '2185580414';
@@ -63,7 +65,7 @@ module.exports = {
       yelpId: '',
       price: '$$$$$',
       rating: 5,
-      twitterID: vendor1TwitterID,
+      twitterID: '1053649707493404678',
       tweetHistory: [tweet1Id],
       locationHistory: [location1Id],
       userLocationHistory: [location2Id],
@@ -87,7 +89,7 @@ module.exports = {
       menu: [],
       profileImageLink: 'https://pbs.twimg.com/profile_images/974624453593362432/5fabVcBz_400x400.jpg',
       yelpId: 'balkanik-taste-food-truck-and-catering-rockville-3',
-      twitterID: vendor2TwitterID,
+      twitterID: '2185580414',
       tweetHistory: [tweet2Id],
       locationHistory: [location3Id],
       comments: [],
