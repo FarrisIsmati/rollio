@@ -19,9 +19,9 @@ router.get('/:regionID/:vendorID', vendorRouteOps.getVendorById);
 router.put('/:regionID/:vendorID/locationaccuracy', routeLimitVendor, vendorRouteOps.putRegionIdVendorIdLocationTypeLocationIDAccuracy);
 // Update push a comment to a Vendor
 router.put('/:regionID/:vendorID/comments', vendorRouteOps.putRegionIdVendorIdComments);
-router.put('/:regionID/:vendorID/update', expressJwt({ secret: JWT_SECRET }), userRouteOps.passUserToNext, userRouteOps.passVendorToNext, vendorRouteOps.updateVendor);
+router.put('/:regionID/:vendorID/update', expressJwt({ secret: JWT_SECRET }), userRouteOps.send403IfNoToken, userRouteOps.passUserToNext, userRouteOps.passVendorToNext, vendorRouteOps.updateVendor);
 
 // POST
-router.post('/:regionID/new', expressJwt({ secret: JWT_SECRET }), userRouteOps.passUserToNext, vendorRouteOps.createVendor);
+router.post('/:regionID/new', expressJwt({ secret: JWT_SECRET }), userRouteOps.send403IfNoToken, userRouteOps.passUserToNext, vendorRouteOps.createVendor);
 
 module.exports = router;

@@ -1,13 +1,18 @@
 const router = require('express').Router();
-const { JWT_SECRET } = require('../../config');
 const expressJwt = require('express-jwt');
-const { tweetRouteOps } = require('./middleware/db-operations');
+const { JWT_SECRET } = require('../../config');
+const { tweetRouteOps, userRouteOps } = require('./middleware/db-operations');
 
-router.get('/filter', expressJwt({ secret: JWT_SECRET }), tweetRouteOps.tweetSearch);
-router.get('/usetweet/:tweetId', expressJwt({ secret: JWT_SECRET }), tweetRouteOps.getTweetWithPopulatedVendorAndLocation);
-router.patch('/deletelocation/:tweetId', expressJwt({ secret: JWT_SECRET }), tweetRouteOps.deleteLocation);
-router.post('/createnewlocation/:tweetId', expressJwt({ secret: JWT_SECRET }), tweetRouteOps.createNewLocation);
-router.get('/vendors', expressJwt({ secret: JWT_SECRET }), tweetRouteOps.vendorsForFiltering);
+// GET
+router.get('/filter', expressJwt({ secret: JWT_SECRET }), userRouteOps.send403IfNoToken, userRouteOps.passUserToNext, userRouteOps.restrictToAdmins, tweetRouteOps.tweetSearch);
+router.get('/usetweet/:tweetId', expressJwt({ secret: JWT_SECRET }), userRouteOps.send403IfNoToken, userRouteOps.passUserToNext, userRouteOps.restrictToAdmins, tweetRouteOps.getTweetWithPopulatedVendorAndLocation);
+router.get('/vendors', expressJwt({ secret: JWT_SECRET }), userRouteOps.send403IfNoToken, userRouteOps.passUserToNext, userRouteOps.restrictToAdmins, tweetRouteOps.vendorsForFiltering);
+
+// PATCH
+router.patch('/deletelocation/:tweetId', expressJwt({ secret: JWT_SECRET }), userRouteOps.send403IfNoToken, userRouteOps.passUserToNext, userRouteOps.restrictToAdmins, tweetRouteOps.deleteLocation);
+
+// POST
+router.post('/createnewlocation/:tweetId', expressJwt({ secret: JWT_SECRET }), userRouteOps.send403IfNoToken, userRouteOps.passUserToNext, userRouteOps.restrictToAdmins, tweetRouteOps.createNewLocation);
 
 
 module.exports = router;

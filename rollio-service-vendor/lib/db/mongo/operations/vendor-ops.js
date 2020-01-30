@@ -57,10 +57,10 @@ module.exports = {
       .catch((err) => {
         const errMsg = new Error(err);
         logger.error(errMsg);
-        return err;
+        throw err;
       });
     // if the user is a vendor, update the user's vendorID to match the newVendor._id
-    if (userIsAVendor) {
+    if (userIsAVendor && newVendor) {
       await User.findOneAndUpdate({ _id: userID }, { vendorID: newVendor._id });
     }
     return newVendor;

@@ -40,7 +40,12 @@ const customerWithoutARegionId = ObjectId();
 const adminId = ObjectId();
 const vendorWithoutAVendorId = ObjectId();
 const vendorWithAVendorId = ObjectId();
+const secondVendorWithAVendorId = ObjectId();
+
+// Fake twitterIDs
 const getTwitterId = () => faker.random.number({ min: 100000000, max: 999999999 });
+const vendor1TwitterID = getTwitterId();
+const vendor2TwitterID = '2185580414';
 
 module.exports = {
   vendors: [
@@ -329,7 +334,7 @@ module.exports = {
       date: new Date('2016-05-18T16:00:00Z'),
       text: 'We are at Farragut Square',
       location: location1Id,
-      usedForLocation: false,
+      usedForLocation: true,
     }, {
       _id: tweet2Id,
       vendorID: vendor2Id,
@@ -345,7 +350,7 @@ module.exports = {
       date: new Date('2016-05-18T16:00:00Z'),
       text: 'We are in China Town',
       location: location4Id,
-      usedForLocation: false,
+      usedForLocation: true,
     }, {
       _id: tweet4Id,
       vendorID: vendor4Id,
@@ -353,7 +358,7 @@ module.exports = {
       date: new Date('2016-05-18T16:00:00Z'),
       text: 'We are in Noma',
       location: location5Id,
-      usedForLocation: false,
+      usedForLocation: true,
     }, {
       _id: tweet5Id,
       vendorID: vendor5Id,
@@ -361,7 +366,7 @@ module.exports = {
       date: new Date('2018-04-12T12:10:00Z'),
       text: 'Farragut Wow Yes',
       location: location6Id,
-      usedForLocation: false,
+      usedForLocation: true,
     }, {
       _id: tweet6Id,
       vendorID: vendor6Id,
@@ -369,7 +374,7 @@ module.exports = {
       date: new Date('2018-04-12T12:10:00Z'),
       text: 'Farragut Yes',
       location: location7Id,
-      usedForLocation: false,
+      usedForLocation: true,
     }, {
       _id: tweet7Id,
       vendorID: vendor7Id,
@@ -377,7 +382,7 @@ module.exports = {
       date: new Date('2018-04-12T12:10:00Z'),
       text: 'Capital One Arena today',
       location: location8Id,
-      usedForLocation: false,
+      usedForLocation: true,
     }, {
       _id: tweet8Id,
       vendorID: vendor8Id,
@@ -385,7 +390,7 @@ module.exports = {
       date: new Date('2018-04-12T12:10:00Z'),
       text: 'Capital One Arena today',
       location: location9Id,
-      usedForLocation: false,
+      usedForLocation: true,
     },
   ],
   locations: [
@@ -529,7 +534,7 @@ module.exports = {
       type: 'vendor',
       email: 'vendorWithAVendorId@aol.com',
       twitterProvider: {
-        id: getTwitterId(),
+        id: vendor1TwitterID,
         token: faker.random.word(),
         tokenSecret: faker.random.word(),
         username: faker.random.word(),
@@ -537,6 +542,20 @@ module.exports = {
       },
       regionID: region1Id,
       vendorID: vendor1Id
+    },
+    {
+      _id: secondVendorWithAVendorId,
+      type: 'vendor',
+      email: 'vendor2WithAVendorId@aol.com',
+      twitterProvider: {
+        id: vendor2TwitterID,
+        token: faker.random.word(),
+        tokenSecret: faker.random.word(),
+        username: faker.random.word(),
+        displayName: faker.random.words(2)
+      },
+      regionID: region1Id,
+      vendorID: vendor2Id
     },
     {
       _id: vendorWithoutAVendorId,

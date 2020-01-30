@@ -23,7 +23,7 @@ chai.use(sinonChai);
 
 describe('Cache Middleware', () => {
   const regionName = 'WASHINGTONDC';
-  const twitterId = '1053649707493404678';
+  const twitterId = '1053649707493404678'; // DCFOODTRUCKS1 ID
   let regionId;
   let vendorId;
 

@@ -1,24 +1,32 @@
 import useGetAppState from "../common/hooks/use-get-app-state";
 import React, {useEffect, useState} from "react";
 import { withRouter } from 'react-router';
-import {fetchUserAsync, receiveUser} from "../../redux/actions/user-actions";
+import {receiveUser} from "../../redux/actions/user-actions";
 import {useDispatch} from "react-redux";
 import {recieveVendorData, fetchVendorDataAsync} from "../../redux/actions/data-actions";
 import axios, {AxiosResponse} from "axios";
 import {VENDOR_API} from "../../config";
+import useGetRegions from './hooks/use-get-regions';
+import useAuthentication from "../common/hooks/use-authentication";
+import {getRegion} from "./utils/get-region";
+import { VendorFull } from "../../redux/reducers/interfaces";
 
+// TODO: add validations on email, phone number, etc. inputs
 const UserProfile = (props:any) => {
     const dispatch = useDispatch();
-    const { user, data } = useGetAppState();
-    const { selectedVendor } = data;
-    const { isAuthenticated, type } = user;
+    const { user, data, loadState } = useGetAppState();
+    const { selectedVendor, regionsAll } = data;
+    const { areRegionsLoaded } = loadState;
+    const { type } = user;
     const [loading, setLoading] = useState<boolean>(true);
-    const [localVendor, setLocalVendor] = useState<any>(selectedVendor);
-    const { vendorId = '', regionId } = props.match.params;
+    const [localVendor, setLocalVendor] = useState<VendorFull>(selectedVendor);
+    const [regionId, setRegionId] = useState<string>('');
+    const { vendorId = '', regionName } = props.match.params;
 
     const updateLocalVendor = (key:string, value:string, isArray:boolean = false) => {
         let updatedValue;
         if (isArray) {
+            // @ts-ignore
             const currentValue = localVendor[key];
             const currentIdx = currentValue.indexOf(value);
             if (currentIdx > -1) {
@@ -37,24 +45,35 @@ const UserProfile = (props:any) => {
         props.history.replace('/invalid');
     };
 
+    useAuthentication(props, true);
+    useGetRegions();
+
+    // get the regionId from the regionName in the route
     useEffect(() => {
-        if (!isAuthenticated && localStorage.token && localStorage.token.length) {
-            dispatch(fetchUserAsync(() => setLoading(false)));
-        } else if (!isAuthenticated) {
-            props.history.push('/login')
-        } else if (vendorId && vendorId !== selectedVendor.id) {
+        if (!regionId && areRegionsLoaded) {
+            const region = getRegion(regionsAll, 'name', regionName);
+            setRegionId(region.id)
+        }
+    }, [regionId, areRegionsLoaded, regionName]);
+
+    // get and set the vendor
+    useEffect(() => {
+        const needToLoadExistingVendor = vendorId && vendorId !== selectedVendor.id;
+        const userAndRegionLoaded = user.isAuthenticated && regionId;
+        if (userAndRegionLoaded && needToLoadExistingVendor) {
             dispatch(fetchVendorDataAsync({ regionId, vendorId, cb: reRouteCb }));
-        } else {
+        } else if (user.isAuthenticated) {
             setLocalVendor({...selectedVendor, phoneNumber: ''});
             setLoading(false);
         }
-    }, [user, selectedVendor, vendorId]);
+    }, [user, selectedVendor, vendorId, regionId]);
 
     // fields to not include when sending to the backend
     const fieldsToExclude = ['id', 'hasAllRequiredFields', 'vendorID', 'twitterId', 'location'];
 
     // takes the form data and clears out the empty fields before sending to the backend for Vendor creation
     const dataForCreatingVendor = Object.keys(localVendor).reduce((acc:any, key:string) => {
+        // @ts-ignore
         const value = localVendor[key];
         // exclude certain keys, as well as anything that was left blank
         if (!fieldsToExclude.includes(key) && value) {
@@ -65,6 +84,7 @@ const UserProfile = (props:any) => {
 
     // takes the form data and finds which fields were updated before sending to the backend for Vendor creation
     const dataForUpdatingVendor = Object.keys(localVendor).reduce((acc:any, key:string) => {
+        // @ts-ignore
         const newValue = localVendor[key];
         const originalValue = selectedVendor[key];
         // exclude certain keys, as well as anything that hasn't changed
@@ -84,6 +104,7 @@ const UserProfile = (props:any) => {
     const requiredFields = ['name', 'type', 'description', 'creditCard'];
     const isANewVendor = !vendorId;
     const vendorDataHasBeenUpdated = dataForUpdatingVendor.field.length;
+    // @ts-ignore
     const submitButtonEnabled = requiredFields.every(key => localVendor[key]) && (isANewVendor || vendorDataHasBeenUpdated);
 
 
@@ -103,7 +124,7 @@ const UserProfile = (props:any) => {
                 if (type === 'vendor') {
                     receiveUser({ ...user, vendorID });
                 }
-                props.history.push(`/region/${regionId}/vendor/${vendorID}`);
+                props.history.push(`/region/${regionName}/vendor/${vendorID}`);
             })
             .catch((err:any) => {
                 setLoading(false);
@@ -175,11 +196,12 @@ const UserProfile = (props:any) => {
                         value={localVendor.profileImageLink}
                     />
                 </label>
+                {/* TODO: this selector is wonky - need to fix it*/}
                 <label>
                     Pick your Categories:
                     <select value={localVendor.categories} multiple={true} onChange={e=>{updateLocalVendor('categories', e.target.value, true)}}>
                         { allCategories.map((category:string) => {
-                            return <option key={category} value={category} selected={localVendor.categories.includes[category]}>{category}</option>
+                            return <option key={category} value={category}>{category}</option>
                         })}
                     </select>
                 </label>

@@ -104,6 +104,7 @@ export function fetchVendorDataAsync(payload:VendorDataAsyncPayload) {
         dispatch(fetchVendorDataStart())
         axios.get(`${VENDOR_API}/vendor/${regionId}/${vendorId}`)
             .then((res: AxiosResponse<any>) => {
+                console.log(res)
                 dispatch(recieveVendorData(res.data));
                 dispatch(fetchVendorDataSuccess());
                 // Any function you want to run after successful get of all data
@@ -327,8 +328,13 @@ export function fetchAllRegionsAsync() {
         dispatch(fetchAllRegionsStart());
         axios.get(`${VENDOR_API}/region/all`)
             .then((res: AxiosResponse<any>) => {
-                dispatch(receiveAllRegions(res.data.regions));
-                dispatch(fetchAllRegionsSuccess());
+                if (!res.data) {
+                    // If issue persists add more robust error handling
+                    console.error(res);
+                } else {
+                    dispatch(receiveAllRegions(res.data.regions));
+                    dispatch(fetchAllRegionsSuccess());
+                }
             })
             .catch((err:AxiosError) => {
                 console.error(err)
