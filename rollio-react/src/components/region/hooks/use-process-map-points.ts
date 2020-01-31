@@ -46,10 +46,10 @@ const useProcessMapPoints = (props:any) => {
                     const coordString: string = stringifyCoordinates(vendor.location.coordinates);
                     // Add value to sortedLocations
                     if (sortedLocations[coordString]) {
-                        sortedLocations[coordString].push({ vendorId: vendor.id, selected: false });
+                        sortedLocations[coordString].push({ vendorId: vendor.id, selected: false, isPopupActive: false });
                     } else {
                         sortedLocations[coordString] = [];
-                        sortedLocations[coordString].push({ vendorId: vendor.id, selected: false });
+                        sortedLocations[coordString].push({ vendorId: vendor.id, selected: false, isPopupActive: false });
                     }
                 }
             });
@@ -57,15 +57,15 @@ const useProcessMapPoints = (props:any) => {
             const singlePins:  { [key: string]: Pin } = {};
             const groupPins: { [key: string]: GroupPin } = {};
 
-            Object.values(sortedLocations).forEach( (vendor: any) => {
-                if (vendor.length > 1) {
+            Object.values(sortedLocations).forEach( (location: any) => {
+                if (location.length > 1) {
                     // add to group map pin to obj
                     // uuid as the id for the react list key
-                    groupPins[uuid()] = vendor;
+                    groupPins[uuid()] = { selected: false, isPopupActive: false, vendors: location };
                 } else {
                     // add to single map pin to obj
                     // for single pins its the first element
-                    singlePins[vendor[0].vendorId] = vendor[0];
+                    singlePins[location[0].vendorId] = location[0];
                 }
             })
 

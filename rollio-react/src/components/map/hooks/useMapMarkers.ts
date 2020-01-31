@@ -91,11 +91,11 @@ const useMapMarkers = (props: any) => {
                 // Add grouped pin vendors to map
                 for (let i = 0; i < groupVendorKeys.length; i += 1) {
                     const key = groupVendorKeys[i];
-                    const vendors = groupVendors[key];
+                    const vendorsGroup = groupVendors[key];
                     // Since all vendors in a grouped pin location currently have the same exact coords (not a area/radius thing) 
                     // Take the first vendors coords and use that to make a marker
-                    const firstVendor = vendorsData[vendors[0].vendorId]
-                    const marker = addGroupedVendorsToMap({vendors, firstVendor, map});
+                    const firstVendor = vendorsData[vendorsGroup.vendors[0].vendorId]
+                    const marker = addGroupedVendorsToMap({vendors: vendorsGroup.vendors, firstVendor, map});
                     groupVendorMarkersTemp = { ...groupVendorMarkersTemp, [key]: marker }
                 }
                 setGroupVendorMarkers(groupVendorMarkersTemp)
