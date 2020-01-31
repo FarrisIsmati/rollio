@@ -6,6 +6,7 @@ import {
     CLEAR_SELECTED_VENDOR,
     RECEIVE_ALL_REGIONS,
     MODIFY_VENDORS_ALL,
+    SET_PREVIOUSLY_SELECTED_VENDOR,
     POST_VENDOR_COMMENT,
     UPDATE_VENDOR,
     UPDATE_DAILY_ACTIVE_VENDORS
@@ -54,6 +55,9 @@ const defaultState:DataDefaultState = {
         lastUpdated: null,
         approved: false
     },
+    previouslySelectedVendor: {
+        id: ''
+    },
     error: {
         code: '',
         message: ''
@@ -92,9 +96,13 @@ export function dataReducer(state = defaultState, action: any) {
         if (!state.vendorsAll[action.payload.id]) {
             return {
                 ...state,
-
+                error: {
+                    code: 'VENDOR_ID_INVALID',
+                    message: 'Could not find the vendor id'
+                }
             }
         }
+
         return {
             ...state,
             vendorsAll: {
@@ -103,6 +111,14 @@ export function dataReducer(state = defaultState, action: any) {
                     ...state.vendorsAll[action.payload.id],
                     ...action.payload
                 }
+            }
+        }
+    case SET_PREVIOUSLY_SELECTED_VENDOR: 
+        return {
+            ...state,
+            previouslySelectedVendor: {
+                ...state.previouslySelectedVendor,
+                id: action.payload.id
             }
         }
     case UPDATE_VENDOR:

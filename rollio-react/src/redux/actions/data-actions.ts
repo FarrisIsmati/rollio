@@ -27,6 +27,8 @@ import {
 
     MODIFY_VENDORS_ALL,
 
+    SET_PREVIOUSLY_SELECTED_VENDOR,
+
     UPDATE_VENDOR,
 
     UPDATE_DAILY_ACTIVE_VENDORS,
@@ -44,7 +46,8 @@ import {
     UpdateVendorPayload,
     UpdateDailyActiveVendorsPayload,
     SelectVendorAsyncPayload,
-    ModfiyVendorsAllPayload
+    ModfiyVendorsAllPayload,
+    SetPreviouslySelectedVendorPayload
 } from './interfaces';
 
 // -------
@@ -132,6 +135,13 @@ export function clearSelectedVendor() {
     }
 }
 
+export function setPrevouslySelectedVendor(payload:SetPreviouslySelectedVendorPayload) {
+    return {
+        type: SET_PREVIOUSLY_SELECTED_VENDOR,
+        payload
+    }
+}
+
 export function modfiyVendorsAll(payload:ModfiyVendorsAllPayload) {
     return {
         type: MODIFY_VENDORS_ALL,
@@ -140,15 +150,23 @@ export function modfiyVendorsAll(payload:ModfiyVendorsAllPayload) {
 }
 
 export function selectVendorAsync(payload:SelectVendorAsyncPayload) {
-    return (dispatch:any) => {
+    return (dispatch:any, getState:any) => {
         // Get Vendor Data
         dispatch(fetchVendorDataAsync({
             ...payload,
             cbSuccess: () => {
+                const previousState = getState();
+                const previousStateSelectedVendorID = previousState.data.previouslySelectedVendor.id;
+
                 dispatch(setIsVendorSelected(true));
                 // Set current vendor to active
-                dispatch(modfiyVendorsAll({id: payload.vendorId, selected: true}))
+                dispatch(modfiyVendorsAll({id: payload.vendorId, selected: true}));
                 // If previous vendor set to inactive
+                if (previousStateSelectedVendorID) {
+                    dispatch(modfiyVendorsAll({id: previousStateSelectedVendorID, selected: false}));
+                }
+                // Set currently selected vendor to previously selected vendor
+                dispatch(setPrevouslySelectedVendor({id: payload.vendorId}))
             }
         }))
     }

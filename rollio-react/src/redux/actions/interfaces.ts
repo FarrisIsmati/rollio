@@ -67,3 +67,7 @@ export interface ModfiyVendorsAllPayload {
   isActive?: boolean,
   lastUpdated?: Date | null,
 }
+
+export interface SetPreviouslySelectedVendorPayload {
+  id: string
+}
