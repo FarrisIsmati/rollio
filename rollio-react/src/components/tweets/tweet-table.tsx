@@ -39,9 +39,10 @@ const TweetTable = (props:any) => {
     const [tweets, setTweets] = useState<Tweet[]>([]);
 
     const { user } = useGetAppState();
+    console.log(user);
     const { isAuthenticated } = user;
     const tweetUrl = `${VENDOR_API}/tweets`;
-
+    
     const fetchTweets = () => {
         setLoading(true);
         const query = { startDate, endDate, vendorID: vendorID === 'all' ? null : vendorID };

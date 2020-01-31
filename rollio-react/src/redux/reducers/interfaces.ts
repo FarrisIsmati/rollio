@@ -88,6 +88,10 @@ export interface DataDefaultState {
     vendorsAll: { [key: string]: VendorCard },
     regionsAll: Region[],
     selectedVendor: VendorFull,
+    error: {
+        code: string,
+        message: string
+    }
 }
 
 // NOTE: this interface is also used in login-out.tsx and user-profile.tsx

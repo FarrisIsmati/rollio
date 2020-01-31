@@ -115,5 +115,4 @@ const useMapMarkers = (props: any) => {
     })
 }
 
-
 export default useMapMarkers;

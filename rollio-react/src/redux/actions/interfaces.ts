@@ -2,6 +2,8 @@
 import { 
   Pin,
   GroupPin,
+  Comment,
+  Location
 } from '../reducers/interfaces'
 
 export interface VendorDataAsyncPayload {
@@ -9,6 +11,12 @@ export interface VendorDataAsyncPayload {
   vendorId: string,
   cb: () => void,
   cbSuccess?: () => void
+}
+
+export interface SelectVendorAsyncPayload {
+  regionId: string,
+  vendorId: string,
+  cb: () => void
 }
 
 export type RegionDataAsyncPayload = {
@@ -45,4 +53,17 @@ export interface PinPayload {
 
 export interface MapPinsLoadStatePayload {
   areMapPinsLoaded: boolean
+}
+
+export interface ModfiyVendorsAllPayload {
+  id: string,
+  name?: string,
+  categories?: string[],
+  consecutiveDaysInactive?: number,
+  profileImageLink?: string,
+  description?: string,
+  location?: Location[] | Location | null,
+  selected?: boolean,
+  isActive?: boolean,
+  lastUpdated?: Date | null,
 }

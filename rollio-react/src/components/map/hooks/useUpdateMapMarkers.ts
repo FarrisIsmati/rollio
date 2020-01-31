@@ -42,6 +42,10 @@ const useUpdateMapMarkers = (props: any) => {
             const currentVendorData = state.data.vendorsAll[currentVendorID]
             const currentVendorCoords = currentVendorData.location.coordinates;
 
+            console.log('---------')
+            console.log(currentVendorData)
+            console.log('---------')
+
             // --------------------------------------------
             // CASE 1: If current vendor is a single vendor
             // --------------------------------------------

@@ -25,6 +25,8 @@ import {
     FETCH_ALL_REGIONS_SUCCESS,
     RECEIVE_ALL_REGIONS,
 
+    MODIFY_VENDORS_ALL,
+
     UPDATE_VENDOR,
 
     UPDATE_DAILY_ACTIVE_VENDORS,
@@ -32,12 +34,17 @@ import {
     POST_VENDOR_COMMENT,
 } from '../constants/constants'
 
+// ACTIONS
+import { setIsVendorSelected } from './ui-actions';
+
 // INTERFACES
 import {
     VendorDataAsyncPayload,
     RegionDataAsyncPayload,
     UpdateVendorPayload,
-    UpdateDailyActiveVendorsPayload
+    UpdateDailyActiveVendorsPayload,
+    SelectVendorAsyncPayload,
+    ModfiyVendorsAllPayload
 } from './interfaces';
 
 // -------
@@ -122,6 +129,28 @@ export function fetchVendorDataAsync(payload:VendorDataAsyncPayload) {
 export function clearSelectedVendor() {
     return {
         type: CLEAR_SELECTED_VENDOR
+    }
+}
+
+export function modfiyVendorsAll(payload:ModfiyVendorsAllPayload) {
+    return {
+        type: MODIFY_VENDORS_ALL,
+        payload
+    }
+}
+
+export function selectVendorAsync(payload:SelectVendorAsyncPayload) {
+    return (dispatch:any) => {
+        // Get Vendor Data
+        dispatch(fetchVendorDataAsync({
+            ...payload,
+            cbSuccess: () => {
+                dispatch(setIsVendorSelected(true));
+                // Set current vendor to active
+                dispatch(modfiyVendorsAll({id: payload.vendorId, selected: true}))
+                // If previous vendor set to inactive
+            }
+        }))
     }
 }
 
