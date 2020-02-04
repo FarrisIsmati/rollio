@@ -3,13 +3,17 @@ import {
     SET_MAP_PINS,
     SET_MAP_PIN_LOAD_STATE,
     SET_VENDORS_DISPLAYED_SINGLE,
-    SET_VENDORS_DISPLAYED_GROUP
+    SET_VENDORS_DISPLAYED_GROUP,
+    SET_REGION_MAP_VENDOR,
+    SET_PREVIOUSLY_SELECTED_REGION_MAP
 } from '../constants/constants'
 
 // INTERFACES
 import {
     PinPayload,
-    MapPinsLoadStatePayload
+    MapPinsLoadStatePayload,
+    SetRegionMapVendorPayload,
+    SetPreviouslySelectedRegionMapPayload
 } from './interfaces';
 
 // -------
@@ -50,5 +54,19 @@ export function setVendorsDisplayedGroup(payload: any) {
         payload: {
             vendorsDisplayedGroup: payload.vendorsDisplayedGroup
         }
+    }
+}
+
+export function setRegionMapVendor(payload: SetRegionMapVendorPayload) {
+    return {
+        type: SET_REGION_MAP_VENDOR,
+        payload
+    }
+}
+
+export function setPreviouslySelectedRegionMap(payload: SetPreviouslySelectedRegionMapPayload) {
+    return {
+        type: SET_PREVIOUSLY_SELECTED_REGION_MAP,
+        payload
     }
 }

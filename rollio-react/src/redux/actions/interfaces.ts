@@ -55,7 +55,7 @@ export interface MapPinsLoadStatePayload {
   areMapPinsLoaded: boolean
 }
 
-export interface ModfiyVendorsAllPayload {
+export interface SetVendorsAllPayload {
   id: string,
   name?: string,
   categories?: string[],
@@ -70,4 +70,18 @@ export interface ModfiyVendorsAllPayload {
 
 export interface SetPreviouslySelectedVendorPayload {
   id: string
+}
+
+export interface SetRegionMapVendorPayload {
+  id: string,
+  isSingle: boolean
+  data: {
+    selected?: boolean,
+    isPopupActive?: boolean
+  }
+}
+
+export interface SetPreviouslySelectedRegionMapPayload {
+  id: string,
+  isSingle?: boolean
 }

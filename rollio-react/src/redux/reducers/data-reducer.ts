@@ -5,7 +5,7 @@ import {
     RECIEVE_ALL_VENDORS,
     CLEAR_SELECTED_VENDOR,
     RECEIVE_ALL_REGIONS,
-    MODIFY_VENDORS_ALL,
+    SET_VENDORS_ALL,
     SET_PREVIOUSLY_SELECTED_VENDOR,
     POST_VENDOR_COMMENT,
     UPDATE_VENDOR,
@@ -55,7 +55,7 @@ const defaultState:DataDefaultState = {
         lastUpdated: null,
         approved: false
     },
-    previouslySelectedVendor: {
+    previouslySelected: {
         id: ''
     },
     error: {
@@ -91,7 +91,7 @@ export function dataReducer(state = defaultState, action: any) {
             ...state,
             regionsAll: [ ...action.payload.map((region:any) => ({id: region._id, name: region.name})) ]
         }
-    case MODIFY_VENDORS_ALL:
+    case SET_VENDORS_ALL:
         // If the vendor doesn't exist
         if (!state.vendorsAll[action.payload.id]) {
             return {
@@ -116,8 +116,8 @@ export function dataReducer(state = defaultState, action: any) {
     case SET_PREVIOUSLY_SELECTED_VENDOR: 
         return {
             ...state,
-            previouslySelectedVendor: {
-                ...state.previouslySelectedVendor,
+            previouslySelected: {
+                ...state.previouslySelected,
                 id: action.payload.id
             }
         }

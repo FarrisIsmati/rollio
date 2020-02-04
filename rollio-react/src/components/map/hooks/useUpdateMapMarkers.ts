@@ -5,7 +5,6 @@ import uuid from 'uuid/v1';
 import { useSelector  } from 'react-redux';
 
 // HOOKS
-import useGetAppState from '../../common/hooks/use-get-app-state';
 import useGlobalState from '../../common/hooks/use-global-state';
 
 // ACTIONS
@@ -21,7 +20,6 @@ const useUpdateMapMarkers = (props: any) => {
     // Way to get data from tweet stream without storing it in Redux
     const [globalState] = useGlobalState();
     const dispatch = useDispatch();
-    // const state = useGetAppState();
     const state = useSelector((state:any) => state);
     const currentVendorID = globalState.vendorID;
 

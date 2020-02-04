@@ -94,7 +94,7 @@ export interface DataDefaultState {
         code: string,
         message: string
     },
-    previouslySelectedVendor: {
+    previouslySelected: {
         id: string
     }
 }
@@ -113,7 +113,11 @@ export interface UserDefaultState {
 export interface MapDefaultState {
     vendorsDisplayedSingle: { [key: string]: Pin },
     vendorsDisplayedGroup: { [key: string]: GroupPin },
-    activeFilters: Filter[]
+    activeFilters: Filter[],
+    previouslySelected: {
+        id: string,
+        isSingle: boolean|null
+    }
 }
 
 // Async

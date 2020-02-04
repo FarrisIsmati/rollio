@@ -25,7 +25,7 @@ import {
     FETCH_ALL_REGIONS_SUCCESS,
     RECEIVE_ALL_REGIONS,
 
-    MODIFY_VENDORS_ALL,
+    SET_VENDORS_ALL,
 
     SET_PREVIOUSLY_SELECTED_VENDOR,
 
@@ -38,6 +38,7 @@ import {
 
 // ACTIONS
 import { setIsVendorSelected } from './ui-actions';
+import { setRegionMapVendor, setPreviouslySelectedRegionMap } from './map-actions';
 
 // INTERFACES
 import {
@@ -46,7 +47,7 @@ import {
     UpdateVendorPayload,
     UpdateDailyActiveVendorsPayload,
     SelectVendorAsyncPayload,
-    ModfiyVendorsAllPayload,
+    SetVendorsAllPayload,
     SetPreviouslySelectedVendorPayload
 } from './interfaces';
 
@@ -142,13 +143,16 @@ export function setPrevouslySelectedVendor(payload:SetPreviouslySelectedVendorPa
     }
 }
 
-export function modfiyVendorsAll(payload:ModfiyVendorsAllPayload) {
+export function setVendorsAll(payload:SetVendorsAllPayload) {
     return {
-        type: MODIFY_VENDORS_ALL,
+        type: SET_VENDORS_ALL,
         payload
     }
 }
 
+// Performs all stateful actions needed when you select a vendor
+// Selects and deselects selected state accordingly
+// Currently only supports selecting one vendor at a time
 export function selectVendorAsync(payload:SelectVendorAsyncPayload) {
     return (dispatch:any, getState:any) => {
         // Get Vendor Data
@@ -156,17 +160,55 @@ export function selectVendorAsync(payload:SelectVendorAsyncPayload) {
             ...payload,
             cbSuccess: () => {
                 const previousState = getState();
-                const previousStateSelectedVendorID = previousState.data.previouslySelectedVendor.id;
+                const previousStateSelectedVendorID = previousState.data.previouslySelected.id;
+                const previousStateRegionMapID = previousState.regionMap.previouslySelected.id;
+                const previousStateRegionMapIsSingle = previousState.regionMap.previouslySelected.isSingle;
+                const previousStateRegionmap = previousState.regionMap;
 
                 dispatch(setIsVendorSelected(true));
+
                 // Set current vendor to active
-                dispatch(modfiyVendorsAll({id: payload.vendorId, selected: true}));
+                dispatch(setVendorsAll({id: payload.vendorId, selected: true}));
+
                 // If previous vendor set to inactive
                 if (previousStateSelectedVendorID) {
-                    dispatch(modfiyVendorsAll({id: previousStateSelectedVendorID, selected: false}));
+                    dispatch(setVendorsAll({id: previousStateSelectedVendorID, selected: false}));
                 }
+                
                 // Set currently selected vendor to previously selected vendor
-                dispatch(setPrevouslySelectedVendor({id: payload.vendorId}))
+                dispatch(setPrevouslySelectedVendor({id: payload.vendorId}));
+
+                // Set vendor in region map to active
+                let regionMapId:string = payload.vendorId;
+                let isSingle:boolean = true;
+                if (!previousStateRegionmap.vendorsDisplayedSingle[payload.vendorId]) {
+                    const vendorsDisplayedGroup = previousStateRegionmap.vendorsDisplayedGroup;
+                    let groupId:string = '';
+                    // Label the loop to break out of the nested loop instead of writing a function for the loop
+                    vendorsDisplayedGroupLoop:
+                    for (const id in vendorsDisplayedGroup) {
+                        const group = vendorsDisplayedGroup[id].vendors;
+                        for (const i in group) {
+                            const vendor = group[i]
+                            if (vendor.vendorId === payload.vendorId) {
+                                groupId = id;
+                                isSingle = false;
+                                break vendorsDisplayedGroupLoop;
+                            }
+                        }
+                    }
+                    regionMapId = groupId;
+                }
+                console.log(regionMapId)
+                dispatch(setRegionMapVendor({id: regionMapId, isSingle, data: { selected: true }}));
+
+                // If previous region map id set to inactive
+                if (previousStateRegionMapID) {
+                    dispatch(setRegionMapVendor({id: previousStateRegionMapID, isSingle: previousStateRegionMapIsSingle, data: { selected: false }}));
+                }
+
+                // Set currently selected region map id to previously selected region map id
+                dispatch(setPreviouslySelectedRegionMap({id: regionMapId, isSingle}));
             }
         }))
     }
