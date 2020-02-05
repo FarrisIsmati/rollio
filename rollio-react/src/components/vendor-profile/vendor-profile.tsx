@@ -14,8 +14,8 @@ import useScrollPosition from '../common/hooks/use-scroll-position';
 
 // ACTIONS
 import { 
-  setIsVendorSelected 
-} from '../../redux/actions/ui-actions';
+  deSelectVendor 
+} from '../../redux/actions/data-actions';
 
 // Returns an array of categories
 const setCategoriesComponent = (args:any) => {
@@ -63,7 +63,7 @@ const VendorProfile = (props:any) => {
         <div className='font__vendor_profile_header vendorprofile__topbar_wrapper'>
           <h2>{vendor.name}</h2>
           <div className='vendorprofile__x_wrapper'>
-            <FaTimes onClick={()=>{dispatch(setIsVendorSelected(false))}}/> 
+            <FaTimes onClick={()=>{dispatch(deSelectVendor())}}/> 
           </div>
         </div>
 

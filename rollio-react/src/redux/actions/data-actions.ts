@@ -66,23 +66,36 @@ export function recieveVendorData(vendor:any) {
         location = vendor.locationHistory[vendor.locationHistory.length - 1];
     }
 
+    // If an empty object is passed as an arg then reset all data
     const profile = {
-        categories: vendor.categories,
-        comments: vendor.comments,
-        creditCard: vendor.creditCard,
-        description: vendor.description,
-        email: vendor.email,
-        id: vendor._id,
-        location,
-        name: vendor.name,
-        phonenumber: vendor.phonenumber,
-        profileImageLink: vendor.profileImageLink,
-        price: vendor.price,
-        rating: vendor.rating,
-        twitterID: vendor.twitterID,
-        website: vendor.website,
-        isActive: vendor.dailyActive,
-        lastUpdated: vendor.updateDate,
+        categories: vendor.categories ? vendor.categories : '',
+        comments: vendor.comments ? vendor.comments : [],
+        creditCard: vendor.creditCard ? vendor.creditCard : '',
+        description: vendor.description ? vendor.description : '',
+        email: vendor.email ? vendor.email : '',
+        id: vendor._id ? vendor._id : '',
+        location: vendor.dailyActive ? location : {
+            id: "",
+            coordinates: {
+                lat: null,
+                long: null
+            },
+            address: "",
+            neighborhood: "",
+            municipality: "",
+            matchMethod: "",
+            tweetID: null,
+            accuracy: 0
+        },
+        name: vendor.name ?  vendor.name : '',
+        phoneNumber: vendor.phonenumber ? vendor.phonenumber : '',
+        profileImageLink: vendor.profileImageLink ? vendor.profileImageLink : '',
+        price: vendor.price ? vendor.price : '',
+        rating: vendor.rating ? vendor.rating : '',
+        twitterID: vendor.twitterID ? vendor.twitterID : '',
+        website: vendor.website ? vendor.website : '',
+        isActive: vendor.dailyActive ? vendor.dailyActive : false,
+        lastUpdated: vendor.updateDate ? vendor.updateDate : null
     }
 
     return {
@@ -240,33 +253,29 @@ export function selectVendorAsync(payload:SelectVendorAsyncPayload) {
     }
 }
 
+// Sets all selected vendor states to deselected, resets selectedVender object to original states
 // Doesn't need a payload thanks to previouslySelected Vendor state being stored
-export function deselectVendor() {
+export function deSelectVendor() {
     return (dispatch:any, getState:any) => {
         const previousState = getState();
         const previousStateSelectedVendorID = previousState.data.previouslySelected.id;
         const previousStateRegionMapID = previousState.regionMap.previouslySelected.id;
-        const previousStateRegionMapIsSingle = previousState.regionMap.previouslySelected.isSingle;
         const previousStateRegionMap = previousState.regionMap;
+
+        dispatch(setIsVendorSelected(false));
 
         if (previousStateRegionMapID) {
             const { isSingle, regionMapID } = getRegionMapVendorData({
                 previousStateRegionMap, 
                 vendorID: previousStateSelectedVendorID, 
                 regionMapID: previousStateRegionMapID
-            })
+            });
 
             // If previous vendor set to inactive in data.vendorsAll
             dispatch(setVendorsAll({id: previousStateSelectedVendorID, selected: false}));
 
             // Set the new region map vendor/group status to selected
-            dispatch(setRegionMapVendor({id: regionMapID, isSingle, data: { selected: true }}));
-
-            // Set currently selected region map id to previously selected region map id
-            dispatch(setPreviouslySelectedRegionMap({id: regionMapID, isSingle}));
-
-            // Set previous region map vendor to unselected
-            dispatch(setRegionMapVendor({id: previousStateRegionMapID, isSingle: previousStateRegionMapIsSingle, data: { selected: false }}));
+            dispatch(setRegionMapVendor({id: regionMapID, isSingle, data: { selected: false }}));
         }
     }
 }
