@@ -199,19 +199,30 @@ export function selectVendorAsync(payload:SelectVendorAsyncPayload) {
                     }
                     regionMapId = groupId;
                 }
-                console.log(regionMapId)
-                dispatch(setRegionMapVendor({id: regionMapId, isSingle, data: { selected: true }}));
 
-                // If previous region map id set to inactive
-                if (previousStateRegionMapID) {
-                    dispatch(setRegionMapVendor({id: previousStateRegionMapID, isSingle: previousStateRegionMapIsSingle, data: { selected: false }}));
+                // Case when newly selected vendor is in the same group as the previous vendor that was selected
+                // Then there's no need to update selected status for group again
+                if (previousStateRegionMapID !== regionMapId) {
+                    // Set the new region map vendor/group status to selected
+                    dispatch(setRegionMapVendor({id: regionMapId, isSingle, data: { selected: true }}));
+
+                    // Set currently selected region map id to previously selected region map id
+                    dispatch(setPreviouslySelectedRegionMap({id: regionMapId, isSingle}));
                 }
 
-                // Set currently selected region map id to previously selected region map id
-                dispatch(setPreviouslySelectedRegionMap({id: regionMapId, isSingle}));
+                // If there is a previousStateRegionMapID and the same case as above
+                if (previousStateRegionMapID && previousStateRegionMapID !== regionMapId) {
+                    // Set previous region map vendor to unselected
+                    dispatch(setRegionMapVendor({id: previousStateRegionMapID, isSingle: previousStateRegionMapIsSingle, data: { selected: false }}));
+                }
             }
         }))
     }
+}
+
+// Doesn't need a payload thanks to previouslySelected Vendor state being stored
+export function deselectVendor() {
+
 }
 
 // --------
