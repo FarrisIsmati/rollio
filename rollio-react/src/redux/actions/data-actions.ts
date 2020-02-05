@@ -50,6 +50,9 @@ import {
     SetVendorsAllPayload,
     SetPreviouslySelectedVendorPayload
 } from './interfaces';
+import {
+    MapDefaultState
+} from '../reducers/interfaces'
 
 // -------
 // VENDOR PROFILE
@@ -150,6 +153,37 @@ export function setVendorsAll(payload:SetVendorsAllPayload) {
     }
 }
 
+// Will get the ID/isSingle status of the vendor or ID of the group depending on whether the vendor was in a group or not
+const getRegionMapVendorData = (args: {previousStateRegionMap:MapDefaultState , vendorID:string, regionMapID:string, regionMapIDInit?:string}) => {
+    const { previousStateRegionMap, vendorID, regionMapID, regionMapIDInit } = args;
+    // Set vendor in region map to active
+    let regionMapIDRes:string = regionMapIDInit ? regionMapIDInit : '';
+    let isSingle:boolean = true;
+    if (!previousStateRegionMap.vendorsDisplayedSingle[regionMapID]) {
+        const vendorsDisplayedGroup = previousStateRegionMap.vendorsDisplayedGroup;
+        let groupId:string = '';
+        // Label the loop to break out of the nested loop instead of writing a function for the loop
+        vendorsDisplayedGroupLoop:
+        for (const id in vendorsDisplayedGroup) {
+            const group = vendorsDisplayedGroup[id].vendors;
+            for (const i in group) {
+                const vendor = group[i]
+                if (vendor.vendorId === vendorID) {
+                    groupId = id;
+                    isSingle = false;
+                    break vendorsDisplayedGroupLoop;
+                }
+            }
+        }
+        regionMapIDRes = groupId;
+    }
+
+    return {
+        regionMapID : regionMapIDRes,
+        isSingle
+    };
+}
+
 // Performs all stateful actions needed when you select a vendor
 // Selects and deselects selected state accordingly
 // Currently only supports selecting one vendor at a time
@@ -163,7 +197,7 @@ export function selectVendorAsync(payload:SelectVendorAsyncPayload) {
                 const previousStateSelectedVendorID = previousState.data.previouslySelected.id;
                 const previousStateRegionMapID = previousState.regionMap.previouslySelected.id;
                 const previousStateRegionMapIsSingle = previousState.regionMap.previouslySelected.isSingle;
-                const previousStateRegionmap = previousState.regionMap;
+                const previousStateRegionMap = previousState.regionMap;
 
                 dispatch(setIsVendorSelected(true));
 
@@ -171,47 +205,33 @@ export function selectVendorAsync(payload:SelectVendorAsyncPayload) {
                 dispatch(setVendorsAll({id: payload.vendorId, selected: true}));
 
                 // If previous vendor set to inactive
-                if (previousStateSelectedVendorID) {
+                if (previousStateSelectedVendorID && previousStateSelectedVendorID !== payload.vendorId) {
                     dispatch(setVendorsAll({id: previousStateSelectedVendorID, selected: false}));
                 }
                 
                 // Set currently selected vendor to previously selected vendor
                 dispatch(setPrevouslySelectedVendor({id: payload.vendorId}));
 
-                // Set vendor in region map to active
-                let regionMapId:string = payload.vendorId;
-                let isSingle:boolean = true;
-                if (!previousStateRegionmap.vendorsDisplayedSingle[payload.vendorId]) {
-                    const vendorsDisplayedGroup = previousStateRegionmap.vendorsDisplayedGroup;
-                    let groupId:string = '';
-                    // Label the loop to break out of the nested loop instead of writing a function for the loop
-                    vendorsDisplayedGroupLoop:
-                    for (const id in vendorsDisplayedGroup) {
-                        const group = vendorsDisplayedGroup[id].vendors;
-                        for (const i in group) {
-                            const vendor = group[i]
-                            if (vendor.vendorId === payload.vendorId) {
-                                groupId = id;
-                                isSingle = false;
-                                break vendorsDisplayedGroupLoop;
-                            }
-                        }
-                    }
-                    regionMapId = groupId;
-                }
+                // Get regionVendorMap data whether it's in a group or not and the ID of the vendor or the group
+                const { isSingle, regionMapID } = getRegionMapVendorData({
+                    previousStateRegionMap, 
+                    vendorID: payload.vendorId, 
+                    regionMapID: payload.vendorId,
+                    regionMapIDInit: payload.vendorId
+                })
 
                 // Case when newly selected vendor is in the same group as the previous vendor that was selected
                 // Then there's no need to update selected status for group again
-                if (previousStateRegionMapID !== regionMapId) {
+                if (previousStateRegionMapID !== regionMapID) {
                     // Set the new region map vendor/group status to selected
-                    dispatch(setRegionMapVendor({id: regionMapId, isSingle, data: { selected: true }}));
+                    dispatch(setRegionMapVendor({id: regionMapID, isSingle, data: { selected: true }}));
 
                     // Set currently selected region map id to previously selected region map id
-                    dispatch(setPreviouslySelectedRegionMap({id: regionMapId, isSingle}));
+                    dispatch(setPreviouslySelectedRegionMap({id: regionMapID, isSingle}));
                 }
 
                 // If there is a previousStateRegionMapID and the same case as above
-                if (previousStateRegionMapID && previousStateRegionMapID !== regionMapId) {
+                if (previousStateRegionMapID && previousStateRegionMapID !== regionMapID) {
                     // Set previous region map vendor to unselected
                     dispatch(setRegionMapVendor({id: previousStateRegionMapID, isSingle: previousStateRegionMapIsSingle, data: { selected: false }}));
                 }
@@ -222,7 +242,33 @@ export function selectVendorAsync(payload:SelectVendorAsyncPayload) {
 
 // Doesn't need a payload thanks to previouslySelected Vendor state being stored
 export function deselectVendor() {
+    return (dispatch:any, getState:any) => {
+        const previousState = getState();
+        const previousStateSelectedVendorID = previousState.data.previouslySelected.id;
+        const previousStateRegionMapID = previousState.regionMap.previouslySelected.id;
+        const previousStateRegionMapIsSingle = previousState.regionMap.previouslySelected.isSingle;
+        const previousStateRegionMap = previousState.regionMap;
 
+        if (previousStateRegionMapID) {
+            const { isSingle, regionMapID } = getRegionMapVendorData({
+                previousStateRegionMap, 
+                vendorID: previousStateSelectedVendorID, 
+                regionMapID: previousStateRegionMapID
+            })
+
+            // If previous vendor set to inactive in data.vendorsAll
+            dispatch(setVendorsAll({id: previousStateSelectedVendorID, selected: false}));
+
+            // Set the new region map vendor/group status to selected
+            dispatch(setRegionMapVendor({id: regionMapID, isSingle, data: { selected: true }}));
+
+            // Set currently selected region map id to previously selected region map id
+            dispatch(setPreviouslySelectedRegionMap({id: regionMapID, isSingle}));
+
+            // Set previous region map vendor to unselected
+            dispatch(setRegionMapVendor({id: previousStateRegionMapID, isSingle: previousStateRegionMapIsSingle, data: { selected: false }}));
+        }
+    }
 }
 
 // --------
