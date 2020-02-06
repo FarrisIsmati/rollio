@@ -16,7 +16,7 @@ import {
 // INTERFACES
 import { MarkerComparisonObject } from './interfaces';
 
-const useUpdateMapMarkers = (props: any) => {
+const useUpdateMapMarkersState = (props: any) => {
     // Way to get data from tweet stream without storing it in Redux
     const [globalState] = useGlobalState();
     const dispatch = useDispatch();
@@ -547,4 +547,4 @@ const useEffectMarkerComparisonObject = (fn:any, deps:MarkerComparisonObject) =>
     });
 }
 
-export default useUpdateMapMarkers;
+export default useUpdateMapMarkersState;

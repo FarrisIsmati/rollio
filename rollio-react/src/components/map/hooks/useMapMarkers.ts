@@ -4,12 +4,19 @@ import mapboxgl from 'mapbox-gl';
 
 // HOOKS
 import useGetAppState from '../../common/hooks/use-get-app-state';
-import useUpdateMapMarkers from './useUpdateMapMarkers';
+import useUpdateMapMarkersState from './useUpdateMapMarkersState';
 
 // Create Marker Style
-const createMapMarker = (numberOfGroupedVendors: boolean | number = false) => {
+const createMapMarker = (props: { numberOfGroupedVendors?: boolean | number, selected: boolean }) => {
+    const { numberOfGroupedVendors, selected } = props;
+
     const mapMarkerEl = document.createElement('div');
-    mapMarkerEl.className = 'map__marker_primary font__map_marker_font';
+    
+    if (!selected) {
+        mapMarkerEl.className = 'map__marker_default font__map_marker_font';
+    } else {
+        mapMarkerEl.className = 'map__marker_selected font__map_marker_font';
+    }
 
     if (numberOfGroupedVendors) {
         const textnode = document.createTextNode(numberOfGroupedVendors.toString()); 
@@ -20,14 +27,15 @@ const createMapMarker = (numberOfGroupedVendors: boolean | number = false) => {
 }
 
 // Adds a single pin marker to map
-const addSingleVendorToMap = (vendor:any, map:any) => {
+const addSingleVendorToMap = (props: { vendor:any, map:any, selected: boolean }) => {
+    const { vendor, map, selected } = props;
     // Current vendor location data
     const vendorLocation = vendor.location
     // Current vendor [lng,lat]
     const coordinates:[number, number] = [vendorLocation.coordinates.long, vendorLocation.coordinates.lat]
 
     // // Add marker to map
-    const marker = new mapboxgl.Marker(createMapMarker())
+    const marker = new mapboxgl.Marker(createMapMarker({selected}))
         .setLngLat(coordinates)
         .addTo(map)
     
@@ -35,14 +43,14 @@ const addSingleVendorToMap = (vendor:any, map:any) => {
 }
 
 // Adds a grouped pin marker to map
-const addGroupedVendorsToMap = ({vendors, firstVendor, map}: any) => {  
+const addGroupedVendorsToMap = (props: { vendors:any, map:any, selected: boolean, firstVendor: any }) => {  
+    const {vendors, firstVendor, map, selected} = props;
     // First chosen vendor location data
     const firstVendorLocation = firstVendor.location
     // First vendor [lng,lat]
     const coordinates:[number, number] = [firstVendorLocation.coordinates.long, firstVendorLocation.coordinates.lat]
-
     // Add marker to map
-    const marker = new mapboxgl.Marker(createMapMarker(vendors.length))
+    const marker = new mapboxgl.Marker(createMapMarker({ numberOfGroupedVendors: vendors.length, selected }))
         .setLngLat(coordinates)
         .addTo(map)
 
@@ -82,7 +90,7 @@ const useMapMarkers = (props: any) => {
                 // Add single vendors to map
                 for (let i = 0; i < singleVendorsKeys.length; i += 1) {
                     const key = singleVendorsKeys[i]
-                    const marker = addSingleVendorToMap(vendorsData[key], map);
+                    const marker = addSingleVendorToMap({ vendor: vendorsData[key], map, selected: vendorsData[key].selected });
                     singleVendorMarkersTemp = { ...singleVendorMarkersTemp, [key]: marker }
                 }
                 setSingleVendorMarkers(singleVendorMarkersTemp)
@@ -95,7 +103,7 @@ const useMapMarkers = (props: any) => {
                     // Since all vendors in a grouped pin location currently have the same exact coords (not a area/radius thing) 
                     // Take the first vendors coords and use that to make a marker
                     const firstVendor = vendorsData[vendorsGroup.vendors[0].vendorId]
-                    const marker = addGroupedVendorsToMap({vendors: vendorsGroup.vendors, firstVendor, map});
+                    const marker = addGroupedVendorsToMap({vendors: vendorsGroup.vendors, firstVendor, map, selected: vendorsGroup.selected });
                     groupVendorMarkersTemp = { ...groupVendorMarkersTemp, [key]: marker }
                 }
                 setGroupVendorMarkers(groupVendorMarkersTemp)
@@ -104,7 +112,7 @@ const useMapMarkers = (props: any) => {
     }, [map])
 
     // Sets map markers in real time
-    useUpdateMapMarkers({
+    useUpdateMapMarkersState({
         map,
         singleVendorMarkers, 
         setSingleVendorMarkers,

@@ -35,8 +35,9 @@ $color-button-default-background-locked: $rollioLighterGrey;
 $color-button-bare-font: $rollioBlue;
 $color-button-bare-alt-font: $rollioMagenta;
 // Map
-$color-map-marker-primary-main: $rollioBlue;
-$color-map-marker-primary-second: $white;
+$color-map-marker-default-main: $rollioBlue;
+$color-map-marker-selected-main: $rollioMagenta;
+$color-map-marker-default-second: $white;
 // Images
 $color-blank-image: $rollioLighterGrey;
 // Other

@@ -168,9 +168,9 @@ export function setVendorsAll(payload:SetVendorsAllPayload) {
 
 // Will get the ID/isSingle status of the vendor or ID of the group depending on whether the vendor was in a group or not
 const getRegionMapVendorData = (args: {previousStateRegionMap:MapDefaultState , vendorID:string, regionMapID:string, regionMapIDInit?:string}) => {
-    const { previousStateRegionMap, vendorID, regionMapID, regionMapIDInit } = args;
+    const { previousStateRegionMap, vendorID, regionMapID } = args;
     // Set vendor in region map to active
-    let regionMapIDRes:string = regionMapIDInit ? regionMapIDInit : '';
+    let regionMapIDRes:string = regionMapID;
     let isSingle:boolean = true;
     if (!previousStateRegionMap.vendorsDisplayedSingle[regionMapID]) {
         const vendorsDisplayedGroup = previousStateRegionMap.vendorsDisplayedGroup;
@@ -229,8 +229,7 @@ export function selectVendorAsync(payload:SelectVendorAsyncPayload) {
                 const { isSingle, regionMapID } = getRegionMapVendorData({
                     previousStateRegionMap, 
                     vendorID: payload.vendorId, 
-                    regionMapID: payload.vendorId,
-                    regionMapIDInit: payload.vendorId
+                    regionMapID: payload.vendorId
                 })
 
                 // Case when newly selected vendor is in the same group as the previous vendor that was selected
