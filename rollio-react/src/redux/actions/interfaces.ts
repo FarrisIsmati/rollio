@@ -83,5 +83,10 @@ export interface SetRegionMapVendorPayload {
 
 export interface SetPreviouslySelectedRegionMapPayload {
   id: string,
-  isSingle?: boolean
+  isSingle?: boolean | null
+}
+
+export interface SetCurrentlySelectedRegionMapPayload {
+  id: string,
+  isSingle?: boolean | null
 }

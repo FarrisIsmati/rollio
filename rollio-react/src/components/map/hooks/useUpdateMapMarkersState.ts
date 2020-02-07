@@ -25,12 +25,12 @@ const useUpdateMapMarkersState = (props: any) => {
 
     const {
         map,
+        addSingleVendorToMap,
+        addGroupedVendorsToMap,
         singleVendorMarkers, 
         setSingleVendorMarkers,
-        addSingleVendorToMap,
         groupVendorMarkers, 
         setGroupVendorMarkers,
-        addGroupedVendorsToMap,
     } = props;
 
     // Custom use effect which will only run the update marker coordinates code if it's necessary

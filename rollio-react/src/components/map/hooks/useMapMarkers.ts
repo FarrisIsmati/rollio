@@ -5,6 +5,7 @@ import mapboxgl from 'mapbox-gl';
 // HOOKS
 import useGetAppState from '../../common/hooks/use-get-app-state';
 import useUpdateMapMarkersState from './useUpdateMapMarkersState';
+import useUpdateMapMarkersStyle from './useUpdateMapMarkersStyle';
 
 // Create Marker Style
 const createMapMarker = (props: { numberOfGroupedVendors?: boolean | number, selected: boolean }) => {
@@ -120,6 +121,16 @@ const useMapMarkers = (props: any) => {
         groupVendorMarkers, 
         setGroupVendorMarkers,
         addGroupedVendorsToMap,
+    });
+
+    // Update map markers style
+    useUpdateMapMarkersStyle({
+        singleVendorMarkers, 
+        setSingleVendorMarkers,
+        addSingleVendorToMap, 
+        groupVendorMarkers, 
+        setGroupVendorMarkers,
+        addGroupedVendorsToMap
     })
 }
 

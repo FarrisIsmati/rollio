@@ -117,6 +117,10 @@ export interface MapDefaultState {
     previouslySelected: {
         id: string,
         isSingle: boolean|null
+    },
+    currentlySelected: {
+        id: string,
+        isSingle: boolean|null
     }
 }
 

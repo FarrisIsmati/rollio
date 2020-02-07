@@ -16,10 +16,12 @@
             justify-content: center;
             align-items: center;
             color: $color-font-map-marker;
+            z-index: 1;
         }
         &_selected {
             @extend .map__marker_default;
             background-color: $color-map-marker-selected-main;
+            z-index: 2;
         }
     }
 }
