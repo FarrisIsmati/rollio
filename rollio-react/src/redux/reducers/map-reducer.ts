@@ -59,13 +59,24 @@ export function mapReducer(state = defaultState, action: any) {
         }
       }
     } else {
+      const group = { ...state.vendorsDisplayedGroup[action.payload.id] }
+
+      // Set sepcific vendor in group to selected
+      if (action.payload.data.selected) {
+        const vendorIndex = state.vendorsDisplayedGroup[action.payload.id].vendors.findIndex((vendor) => vendor.vendorId === action.payload.vendorID);
+        group.vendors[vendorIndex].selected = true;
+        // Set all vendors in group to not 
+      } else if (!action.payload.data.selected) {
+        group.vendors = group.vendors.map((vendor) => { return {...vendor, selected: false} })
+      }
+
       payload = {
         ...state,
         vendorsDisplayedGroup: {
           ...state.vendorsDisplayedGroup,
           [action.payload.id]: {
-            ...state.vendorsDisplayedGroup[action.payload.id],
-            ...action.payload.data
+            ...group,
+            ...action.payload.data,
           }
         }
       } 

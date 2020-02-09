@@ -74,6 +74,7 @@ export interface SetPreviouslySelectedVendorPayload {
 
 export interface SetRegionMapVendorPayload {
   id: string,
+  vendorID: string,
   isSingle: boolean
   data: {
     selected?: boolean

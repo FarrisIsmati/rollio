@@ -9,8 +9,8 @@ import useGlobalState from '../../common/hooks/use-global-state';
 
 // ACTIONS
 import { 
-    setVendorsDisplayedSingle, 
-    setVendorsDisplayedGroup 
+    setVendorsDisplayedSingle,
+    setVendorsDisplayedGroup
 } from '../../../redux/actions/map-actions';
 
 // INTERFACES
@@ -93,7 +93,7 @@ const useUpdateMapMarkersState = (props: any) => {
                         }
                         const payloadGroup = { vendorsDisplayedGroup: updatedVendorsDisplayedGroup }
                         dispatch(setVendorsDisplayedGroup(payloadGroup))
-                        
+
                         return
                     } else if (key === currentVendorID && iteratedVendorMarkerCoords.lng === currentVendorCoords.long && iteratedVendorMarkerCoords.lat === currentVendorCoords.lat) {
                         // Do nothing because it's the same location the vendor is already in
@@ -354,11 +354,12 @@ const useUpdateMapMarkersState = (props: any) => {
                     }
                 }
 
-                // If new coordinates is going to a completely new coordinate
+                // If new coordinates are going to a completely new coordinate
                 if (oldGroupExist) {
                     // 1. Remove current vendor from current vendorsDisplayedGroup Redux
                     // @ts-ignore
                     const oldVendorsDisplayedGroup = updatedVendorsDisplayedGroup[groupID]
+                    oldVendorsDisplayedGroup.selected = false;
                     oldVendorsDisplayedGroup.vendors.splice(index,1)
 
                     // @ts-ignore
@@ -377,7 +378,7 @@ const useUpdateMapMarkersState = (props: any) => {
                 dispatch(setVendorsDisplayedSingle(payload))
 
                 // 4. Create new single vendor marker
-                const marker = addSingleVendorToMap(state.data.vendorsAll[currentVendorID], map)
+                const marker = addSingleVendorToMap({ vendor: state.data.vendorsAll[currentVendorID], map, selected: currentDisplayedVendorData.selected })
 
                 // 5. Add new single vendor marker to singleVendorMarkers
                 updatedSingleVendorMarkers = { ...updatedSingleVendorMarkers, [currentVendorID]: marker }
@@ -393,6 +394,10 @@ const useUpdateMapMarkersState = (props: any) => {
                     vendorId: currentVendorID,
                     selected: false
                 }
+
+                // Find selected state if current vendor has data loaded & UI state says selected state panel is open 
+                const isSelected = state.data.selectedVendor.id === currentVendorID && state.ui.isVendorSelected;
+
                 // If new coordinates are the same as another single vendor's coordinates
                 for (const key in singleVendorMarkers) {
                     const iteratedVendorData = state.data.vendorsAll[key]
@@ -425,7 +430,9 @@ const useUpdateMapMarkersState = (props: any) => {
                         // 6. Add both vendors to vendorsDisplayedGroup Redux
                         let selectedState = false;
 
-                        if (currentDisplayedVendorData.selected || iteratedVendorMarker.selected) {
+                        // Since there's no previous selected state for a brand new vendor
+                        // We need to check 
+                        if (isSelected || iteratedVendorMarker.selected) {
                             selectedState = true
                         }
 
@@ -456,7 +463,7 @@ const useUpdateMapMarkersState = (props: any) => {
 
                         let selectedState = false;
 
-                        if (currentDisplayedVendorData.selected || iteratedDisplayedVendorsData.selected) {
+                        if (isSelected || iteratedDisplayedVendorsData.selected) {
                             selectedState = true
                         }
 
@@ -480,7 +487,7 @@ const useUpdateMapMarkersState = (props: any) => {
                 dispatch(setVendorsDisplayedSingle(payload))
 
                 // 4. Create new single vendor marker
-                const marker = addSingleVendorToMap(state.data.vendorsAll[currentVendorID], map)
+                const marker = addSingleVendorToMap({ vendor: state.data.vendorsAll[currentVendorID], map, selected: isSelected })
 
                 // 5. Add new single vendor marker to singleVendorMarkers
                 const updatedSingleVendorMarkers = { ...singleVendorMarkers, [currentVendorID]: marker }

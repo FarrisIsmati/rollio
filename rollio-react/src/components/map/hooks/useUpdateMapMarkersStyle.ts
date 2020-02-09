@@ -8,12 +8,8 @@ import useGetAppState from '../../common/hooks/use-get-app-state';
 // 
 const useUpdateMapMarkersStyle = (props: any) => {
     const {         
-        singleVendorMarkers, 
-        setSingleVendorMarkers,
-        addSingleVendorToMap, 
-        groupVendorMarkers, 
-        setGroupVendorMarkers,
-        addGroupedVendorsToMap 
+        singleVendorMarkers,
+        groupVendorMarkers
     } = props;
     const state = useGetAppState();
 

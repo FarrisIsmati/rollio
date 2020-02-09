@@ -46,7 +46,7 @@ const useSetMobileMenuHeightOnScroll = (props:UseToggleVendorMenuOnScreenSwitchP
         }
     }
 
-    // Unclick selected vendor, if scroll div takes max height reset it  to default height
+    // Unclick selected vendor, if scroll div takes max height reset it to default height
     if (!isVendorSelected && scrollHeight !== defaultScrollHeight) {
         setScrollHeight(defaultScrollHeight);
         setIsScrollDivExpanded(false);

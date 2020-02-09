@@ -63,7 +63,7 @@ const VendorProfile = (props:any) => {
         <div className='font__vendor_profile_header vendorprofile__topbar_wrapper'>
           <h2>{vendor.name}</h2>
           <div className='vendorprofile__x_wrapper'>
-            <FaTimes onClick={()=>{dispatch(deSelectVendor())}}/> 
+            <FaTimes onClick={()=>{dispatch(deSelectVendor(vendor.id))}}/> 
           </div>
         </div>
 

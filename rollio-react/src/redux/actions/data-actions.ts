@@ -131,7 +131,6 @@ export function fetchVendorDataAsync(payload:VendorDataAsyncPayload) {
         dispatch(fetchVendorDataStart())
         axios.get(`${VENDOR_API}/vendor/${regionId}/${vendorId}`)
             .then((res: AxiosResponse<any>) => {
-                console.log(res)
                 dispatch(recieveVendorData(res.data));
                 dispatch(fetchVendorDataSuccess());
                 // Any function you want to run after successful get of all data
@@ -167,13 +166,13 @@ export function setVendorsAll(payload:SetVendorsAllPayload) {
 }
 
 // Will get the ID/isSingle status of the vendor or ID of the group depending on whether the vendor was in a group or not
-const getRegionMapVendorData = (args: {previousStateRegionMap:MapDefaultState , vendorID:string, regionMapID:string, regionMapIDInit?:string}) => {
-    const { previousStateRegionMap, vendorID, regionMapID } = args;
+const getRegionMapVendorData = (args: {stateRegionMap:MapDefaultState , vendorID:string, regionMapID:string, regionMapIDInit?:string}) => {
+    const { stateRegionMap, vendorID, regionMapID } = args;
     // Set vendor in region map to active
     let regionMapIDRes:string = regionMapID;
     let isSingle:boolean = true;
-    if (!previousStateRegionMap.vendorsDisplayedSingle[regionMapID]) {
-        const vendorsDisplayedGroup = previousStateRegionMap.vendorsDisplayedGroup;
+    if (!stateRegionMap.vendorsDisplayedSingle[regionMapID]) {
+        const vendorsDisplayedGroup = stateRegionMap.vendorsDisplayedGroup;
         let groupId:string = '';
         // Label the loop to break out of the nested loop instead of writing a function for the loop
         vendorsDisplayedGroupLoop:
@@ -206,55 +205,51 @@ export function selectVendorAsync(payload:SelectVendorAsyncPayload) {
         dispatch(fetchVendorDataAsync({
             ...payload,
             cbSuccess: () => {
-                const previousState = getState();
-                const previousStateSelectedVendorID = previousState.data.previouslySelected.id;
+                const state = getState();
+
+                // TO BE REMOVED!!!!!!!!!!!!!!!
+                const stateSelectedVendorID = state.data.previouslySelected.id;
                 
-                const previousStateRegionMap = previousState.regionMap;
+                const stateRegionMap = state.regionMap;
 
-                const previousStateRegionMapPreviousID = previousState.regionMap.previouslySelected.id;
-                const previousStateRegionMapPreviousIsSingle = previousState.regionMap.previouslySelected.isSingle;
+                const stateRegionMapPreviouslySelectedID = state.regionMap.previouslySelected.id;
+                const stateRegionMapPreviouslySelectedIsSingle = state.regionMap.previouslySelected.isSingle;
 
-                const previousStateRegionMapCurrentID = previousState.regionMap.currentlySelected.id;
-                const previousStateRegionMapCurrentIsSingle = previousState.regionMap.currentlySelected.isSingle;
+                const stateRegionMapCurrentID = state.regionMap.currentlySelected.id;
 
                 dispatch(setIsVendorSelected(true));
 
                 // Set current vendor to active
                 dispatch(setVendorsAll({id: payload.vendorId, selected: true}));
-
+                
+                // TO BE REMOVED!!!!!!!!!!!!!!
                 // If previous vendor set to inactive
-                if (previousStateSelectedVendorID && previousStateSelectedVendorID !== payload.vendorId) {
-                    dispatch(setVendorsAll({id: previousStateSelectedVendorID, selected: false}));
+                if (stateSelectedVendorID && stateSelectedVendorID !== payload.vendorId) {
+                    dispatch(setVendorsAll({id: stateSelectedVendorID, selected: false}));
                 }
                 
+                // TO BE REMOVED!!!!!!!!!!!!!!!!!!
                 // Set currently selected vendor to previously selected vendor
-                dispatch(setPrevouslySelectedVendor({id: payload.vendorId}));
+                    dispatch(setPrevouslySelectedVendor({id: payload.vendorId}));
 
                 // Get regionVendorMap data whether it's in a group or not and the ID of the vendor or the group
                 const { isSingle, regionMapID } = getRegionMapVendorData({
-                    previousStateRegionMap, 
+                    stateRegionMap, 
                     vendorID: payload.vendorId, 
                     regionMapID: payload.vendorId
                 })
 
-                if (previousStateRegionMapCurrentID !== regionMapID) {
+                if (stateRegionMapCurrentID !== regionMapID) {
                     dispatch(setCurrentlySelectedRegionMap({ id: regionMapID, isSingle }));
                 }
 
-                // Case when newly selected vendor is in the same group as the previous vendor that was selected
-                // Then there's no need to update selected status for group again
-                if (previousStateRegionMapPreviousID !== regionMapID) {
-                    // Set the new region map vendor/group status to selected
-                    dispatch(setRegionMapVendor({id: regionMapID, isSingle, data: { selected: true }}));
+                // Set the new region map vendor/group status to selected
+                dispatch(setRegionMapVendor({id: regionMapID, vendorID: payload.vendorId, isSingle, data: { selected: true }}));
 
-                    // Set currently selected region map id to previously selected region map id
-                    dispatch(setPreviouslySelectedRegionMap({id: regionMapID, isSingle}));
-                }
-
-                // If there is a previousStateRegionMapID and the same case as above
-                if (previousStateRegionMapPreviousID && previousStateRegionMapPreviousID !== regionMapID) {
+                // If there is a stateRegionMapID and the same case as above
+                if (stateRegionMapPreviouslySelectedID && stateRegionMapPreviouslySelectedID !== regionMapID) {
                     // Set previous region map vendor to unselected
-                    dispatch(setRegionMapVendor({id: previousStateRegionMapPreviousID, isSingle: previousStateRegionMapPreviousIsSingle, data: { selected: false }}));
+                    dispatch(setRegionMapVendor({id: stateRegionMapPreviouslySelectedID, vendorID: payload.vendorId, isSingle: stateRegionMapPreviouslySelectedIsSingle, data: { selected: false }}));
                 }
             }
         }))
@@ -263,27 +258,35 @@ export function selectVendorAsync(payload:SelectVendorAsyncPayload) {
 
 // Sets all selected vendor states to deselected, resets selectedVender object to original states
 // Doesn't need a payload thanks to previouslySelected Vendor state being stored
-export function deSelectVendor() {
+export function deSelectVendor(vendorID:string) {
     return (dispatch:any, getState:any) => {
-        const previousState = getState();
-        const previousStateSelectedVendorID = previousState.data.previouslySelected.id;
-        const previousStateRegionMapID = previousState.regionMap.previouslySelected.id;
-        const previousStateRegionMap = previousState.regionMap;
+        const state = getState();
 
+        // TO BE REMOVED!!!!!!!!!!!
+        const stateSelectedVendorID = state.data.previouslySelected.id;
+
+        const stateRegionMapCurrentlySelectedID = state.regionMap.currentlySelected.id;
+        const stateRegionMap = state.regionMap;
+
+        // TO BE REMOVED!!!!!!!!!!!!
         dispatch(setIsVendorSelected(false));
 
-        if (previousStateRegionMapID) {
+        if (stateRegionMapCurrentlySelectedID) {
             const { isSingle, regionMapID } = getRegionMapVendorData({
-                previousStateRegionMap, 
-                vendorID: previousStateSelectedVendorID, 
-                regionMapID: previousStateRegionMapID
+                stateRegionMap, 
+                vendorID: stateSelectedVendorID, 
+                regionMapID: stateRegionMapCurrentlySelectedID
             });
 
+            // TO BE REMOVED!!!!!!!!!!!!!
             // If previous vendor set to inactive in data.vendorsAll
-            dispatch(setVendorsAll({id: previousStateSelectedVendorID, selected: false}));
+            dispatch(setVendorsAll({id: stateSelectedVendorID, selected: false}));
 
             // Set the new region map vendor/group status to selected
-            dispatch(setRegionMapVendor({id: regionMapID, isSingle, data: { selected: false }}));   
+            dispatch(setRegionMapVendor({id: regionMapID, vendorID, isSingle, data: { selected: false }}));
+            
+            // Set previously selected vendor
+            dispatch(setPreviouslySelectedRegionMap({ id: stateRegionMapCurrentlySelectedID, isSingle }));
 
             // Remove the currently selected vendor
             dispatch(setCurrentlySelectedRegionMap({ id: '', isSingle: null }));
