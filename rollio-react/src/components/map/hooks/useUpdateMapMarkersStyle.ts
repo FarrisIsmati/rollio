@@ -19,10 +19,10 @@ const useUpdateMapMarkersStyle = (props: any) => {
     useEffect(() => {
         // Removes selected class of a previously selected vendor if there's no currently selected ID
         if (previouslySelected.isSingle !== null) {
-            if (previouslySelected.isSingle && singleVendorMarkers && singleVendorMarkers[previouslySelected.id] && !currentlySelected.id) {
+            if (previouslySelected.isSingle && singleVendorMarkers && singleVendorMarkers[previouslySelected.id] && previouslySelected.is !== currentlySelected.id) {
                 singleVendorMarkers[previouslySelected.id]._element.classList.remove('map__marker_selected');
                 singleVendorMarkers[previouslySelected.id]._element.classList.add('map__marker_default');
-            } else if (!previouslySelected.isSingle && groupVendorMarkers && groupVendorMarkers[previouslySelected.id] && !currentlySelected.id) {
+            } else if (!previouslySelected.isSingle && groupVendorMarkers && groupVendorMarkers[previouslySelected.id] && previouslySelected.is !== currentlySelected.id) {
                 groupVendorMarkers[previouslySelected.id]._element.classList.remove('map__marker_selected');
                 groupVendorMarkers[previouslySelected.id]._element.classList.add('map__marker_default');
             }
