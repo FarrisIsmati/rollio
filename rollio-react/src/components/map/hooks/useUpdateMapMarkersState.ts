@@ -93,7 +93,7 @@ const useUpdateMapMarkersState = (props: any) => {
                         }
                         const payloadGroup = { vendorsDisplayedGroup: updatedVendorsDisplayedGroup }
                         dispatch(setVendorsDisplayedGroup(payloadGroup))
-
+                        
                         return
                     } else if (key === currentVendorID && iteratedVendorMarkerCoords.lng === currentVendorCoords.long && iteratedVendorMarkerCoords.lat === currentVendorCoords.lat) {
                         // Do nothing because it's the same location the vendor is already in
@@ -266,7 +266,10 @@ const useUpdateMapMarkersState = (props: any) => {
                         // 4. Remove current vendor from current vendorsDisplayedGroup Redux 
                         if (oldGroupExist) {
                             // @ts-ignore
-                            const oldVendorsDisplayedGroup = updatedVendorsDisplayedGroup[groupID]
+                            const oldVendorsDisplayedGroup =  { ...updatedVendorsDisplayedGroup[groupID] };
+                            if (currentDisplayedVendorData.selected) {
+                                oldVendorsDisplayedGroup.selected = false;
+                            }
                             oldVendorsDisplayedGroup.vendors.splice(index,1)
 
                             // @ts-ignore: Just setting up the object, the redux update happens in step 7
@@ -314,7 +317,10 @@ const useUpdateMapMarkersState = (props: any) => {
                         // 1. Remove current vendor from current vendorsDisplayedGroup Redux
                         if (oldGroupExist) {
                             // @ts-ignore
-                            const oldVendorsDisplayedGroup = updatedVendorsDisplayedGroup[groupID]
+                            const oldVendorsDisplayedGroup =  { ...updatedVendorsDisplayedGroup[groupID] };
+                            if (currentDisplayedVendorData.selected) {
+                                oldVendorsDisplayedGroup.selected = false;
+                            }
                             oldVendorsDisplayedGroup.vendors.splice(index,1)
 
                             // @ts-ignore: Just setting up the object, the redux update happens in step 2
@@ -322,9 +328,11 @@ const useUpdateMapMarkersState = (props: any) => {
                         }
 
                         // 2. Add current vendor to new group in Redux
+                        const iteratedDisplayedVendorData =  { ...updatedVendorsDisplayedGroup[key] }
+
                         let selectedState = false;
 
-                        if (currentDisplayedVendorData.selected || iteratedVendorMarker.selected) {
+                        if (currentDisplayedVendorData.selected || iteratedDisplayedVendorData.selected) {
                             selectedState = true
                         }
 
@@ -359,7 +367,9 @@ const useUpdateMapMarkersState = (props: any) => {
                     // 1. Remove current vendor from current vendorsDisplayedGroup Redux
                     // @ts-ignore
                     const oldVendorsDisplayedGroup = updatedVendorsDisplayedGroup[groupID]
-                    oldVendorsDisplayedGroup.selected = false;
+                    if (currentDisplayedVendorData.selected) {
+                        oldVendorsDisplayedGroup.selected = false;
+                    }
                     oldVendorsDisplayedGroup.vendors.splice(index,1)
 
                     // @ts-ignore

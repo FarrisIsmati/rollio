@@ -73,7 +73,7 @@ const useMapMarkers = (props: any) => {
     const [groupVendorMarkers, setGroupVendorMarkers] = useState<any>(null);
 
     // General variables
-    const vendorsData = state.data.vendorsAll 
+    const vendorsData = state.data.vendorsAll
 
     // Initilization of all markers
     useEffect(() => {
