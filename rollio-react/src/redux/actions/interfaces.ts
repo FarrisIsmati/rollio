@@ -76,8 +76,7 @@ export interface SetRegionMapVendorPayload {
   id: string,
   isSingle: boolean
   data: {
-    selected?: boolean,
-    isPopupActive?: boolean
+    selected?: boolean
   }
 }
 

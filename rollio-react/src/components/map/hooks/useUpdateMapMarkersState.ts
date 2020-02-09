@@ -81,17 +81,14 @@ const useUpdateMapMarkersState = (props: any) => {
 
                         // 6. Add both vendors to vendorsDisplayedGroup Redux
                         let selectedState = false;
-                        let isPopupActiveState = false;
 
                         if (currentDisplayedVendorData.selected || iteratedDisplayedVendorData.selected) {
                             selectedState = true
-                        } else if (currentDisplayedVendorData.isPopupActive || iteratedDisplayedVendorData.isPopupActive) {
-                            isPopupActiveState = true;
                         }
 
                         const updatedVendorsDisplayedGroup = { ...state.regionMap.vendorsDisplayedGroup,
                             [newMarkerID]: { 
-                                selected: selectedState, isPopupActive: isPopupActiveState, vendors: [currentDisplayedVendorData, iteratedDisplayedVendorData] 
+                                selected: selectedState, vendors: [currentDisplayedVendorData, iteratedDisplayedVendorData] 
                             } 
                         }
                         const payloadGroup = { vendorsDisplayedGroup: updatedVendorsDisplayedGroup }
@@ -133,18 +130,15 @@ const useUpdateMapMarkersState = (props: any) => {
 
                         // 5. Add vendor to vendorsDisplayedGroup Redux
                         let selectedState = false;
-                        let isPopupActiveState = false;
 
                         if (currentDisplayedVendorData.selected || iteratedDisplayedVendorsData.selected) {
                             selectedState = true
-                        } else if (currentDisplayedVendorData.isPopupActive || iteratedDisplayedVendorsData.isPopupActive) {
-                            isPopupActiveState = true;
                         }
 
                         const updatedVendorsDisplayedGroup = { 
                             ...state.regionMap.vendorsDisplayedGroup, 
                             [key]: {
-                                selected: selectedState, isPopupActive: isPopupActiveState, vendors: [currentDisplayedVendorData, ...iteratedDisplayedVendorsData.vendors]
+                                selected: selectedState, vendors: [currentDisplayedVendorData, ...iteratedDisplayedVendorsData.vendors]
                             }
                         }
                         const payloadGroup = { vendorsDisplayedGroup: updatedVendorsDisplayedGroup }
@@ -294,18 +288,15 @@ const useUpdateMapMarkersState = (props: any) => {
 
                         // 9. Add both vendors to vendorsDisplayedGroup Redux
                         let selectedState = false;
-                        let isPopupActiveState = false;
 
                         if (currentDisplayedVendorData.selected || iteratedDisplayedVendorData.selected) {
                             selectedState = true
-                        } else if (currentDisplayedVendorData.isPopupActive || iteratedDisplayedVendorData.isPopupActive) {
-                            isPopupActiveState = true;
                         }
                         
                         updatedVendorsDisplayedGroup = {
                             ...updatedVendorsDisplayedGroup, 
                             [newMarkerID]: {
-                                selected: selectedState, isPopupActive: isPopupActiveState, vendors: [currentDisplayedVendorData, iteratedDisplayedVendorData] 
+                                selected: selectedState, vendors: [currentDisplayedVendorData, iteratedDisplayedVendorData] 
                             }
                         }
                         const payloadGroupNew = { vendorsDisplayedGroup: updatedVendorsDisplayedGroup }
@@ -332,18 +323,15 @@ const useUpdateMapMarkersState = (props: any) => {
 
                         // 2. Add current vendor to new group in Redux
                         let selectedState = false;
-                        let isPopupActiveState = false;
 
                         if (currentDisplayedVendorData.selected || iteratedVendorMarker.selected) {
                             selectedState = true
-                        } else if (currentDisplayedVendorData.isPopupActive || iteratedVendorMarker.isPopupActive) {
-                            isPopupActiveState = true;
                         }
 
                         updatedVendorsDisplayedGroup = {
                             ...updatedVendorsDisplayedGroup,
                             [key]: {
-                                selected: selectedState, isPopupActive: isPopupActiveState, vendors: [...updatedVendorsDisplayedGroup[key].vendors, currentDisplayedVendorData]
+                                selected: selectedState, vendors: [...updatedVendorsDisplayedGroup[key].vendors, currentDisplayedVendorData]
                             }
                         }
                         const payloadGroup = { vendorsDisplayedGroup: updatedVendorsDisplayedGroup }
@@ -436,18 +424,15 @@ const useUpdateMapMarkersState = (props: any) => {
 
                         // 6. Add both vendors to vendorsDisplayedGroup Redux
                         let selectedState = false;
-                        let isPopupActiveState = false;
 
                         if (currentDisplayedVendorData.selected || iteratedVendorMarker.selected) {
                             selectedState = true
-                        } else if (iteratedVendorMarker.isPopupActive) {
-                            isPopupActiveState = true;
                         }
 
                         const updatedVendorsDisplayedGroup = { 
                             ...state.regionMap.vendorsDisplayedGroup, 
                             [newMarkerID]: {
-                                selected: selectedState, isPopupActive: isPopupActiveState, vendors: [currentDisplayedVendorData, iteratedDisplayedVendorData] 
+                                selected: selectedState, vendors: [currentDisplayedVendorData, iteratedDisplayedVendorData] 
                             }
                         }
                         const payloadGroup = { vendorsDisplayedGroup: updatedVendorsDisplayedGroup }
@@ -470,19 +455,15 @@ const useUpdateMapMarkersState = (props: any) => {
                         const iteratedDisplayedVendorsData =  { ...state.regionMap.vendorsDisplayedGroup[key] }
 
                         let selectedState = false;
-                        let isPopupActiveState = false;
 
                         if (currentDisplayedVendorData.selected || iteratedDisplayedVendorsData.selected) {
                             selectedState = true
-                        } else if (iteratedDisplayedVendorsData.isPopupActive) {
-                            isPopupActiveState = true;
                         }
-
 
                         const updatedVendorsDisplayedGroup = { 
                             ...state.regionMap.vendorsDisplayedGroup, 
                             [key]: {
-                                selected: selectedState, isPopupActive: isPopupActiveState, vendors: [currentDisplayedVendorData, ...iteratedDisplayedVendorsData.vendors] 
+                                selected: selectedState, vendors: [currentDisplayedVendorData, ...iteratedDisplayedVendorsData.vendors] 
                             }
                         }
                         const payloadGroup = { vendorsDisplayedGroup: updatedVendorsDisplayedGroup }

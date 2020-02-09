@@ -63,15 +63,13 @@ export interface Comment {
 // Pin on map
 export interface Pin {
     vendorId: string,
-    selected: boolean,
-    isPopupActive: boolean,
+    selected: boolean
 }
 
 // Pin with multiple vendors
 export interface GroupPin {
     vendors: any[], // All the vendorsAll[] indecies to quickly look up the data
-    selected: boolean,
-    isPopupActive: boolean,
+    selected: boolean
 }
 
 // Filters for map
