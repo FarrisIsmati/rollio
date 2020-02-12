@@ -46,6 +46,75 @@ const useUpdateMapMarkersState = (props: any) => {
             dispatch(setCurrentlySelectedRegionMap({ id: curID, isSingle: curIsSingle }))
         }
     }
+    // --------------------------------------------
+    // HELPER FUNCTIONS: Common steps found across all cases
+    // --------------------------------------------
+
+    // Remove markers from map
+    const removeMarkersFromMap = (markers:any[]) => {
+        markers.forEach((marker) => {
+            marker.remove();
+        })
+    }
+    // Remove from local state
+    const removeMarkersFromLocalMapMarkerState = (localMapMarkerState:any, vendorIDs:any[]) => {
+        const updatedLocalMapMarkerState = { ...localMapMarkerState }
+        vendorIDs.forEach((id) => {
+            delete updatedLocalMapMarkerState[id];
+        });
+        setSingleVendorMarkers(updatedLocalMapMarkerState)
+        return updatedLocalMapMarkerState
+    }
+    // Remove from Redux
+    const removeVendorsFromReduxRegionMapState = (arg:{reduxRegionMapState:any, isSingle:boolean, removeBoth: boolean, currentVendorID:string, iteratedVendorID:string}) => {
+        const { reduxRegionMapState, isSingle, removeBoth, currentVendorID, iteratedVendorID } = arg;
+        const updatedReduxRegionMapState = { ...reduxRegionMapState };
+        const currentDisplayedVendorData = { ...updatedReduxRegionMapState[currentVendorID]};
+        const iteratedDisplayedVendorData = { ...updatedReduxRegionMapState[iteratedVendorID]};
+
+        if (removeBoth) {
+            delete updatedReduxRegionMapState[currentVendorID];
+            delete updatedReduxRegionMapState[iteratedVendorID];
+        } else {
+            delete updatedReduxRegionMapState[currentVendorID];
+        }
+
+
+        if (isSingle) {
+            const payload = { vendorsDisplayedSingle: updatedReduxRegionMapState }
+            dispatch(setVendorsDisplayedSingle(payload))
+        } else {
+            const payload = { vendorsDisplayedGroup: updatedReduxRegionMapState }
+            dispatch(setVendorsDisplayedGroup(payload))
+        }
+        return { updatedReduxRegionMapState, currentDisplayedVendorData, iteratedDisplayedVendorData };
+    }
+    // Add to map
+    // Add to local state
+    // Add to Redux
+    const addVendorsToReduxRegionMapState = (arg:{reduxRegionMapState:any, isSingle:boolean, newMarkerID:string, currentDisplayedVendorData:any, iteratedDisplayedVendorData:any}) => {
+        const { reduxRegionMapState, isSingle, newMarkerID, currentDisplayedVendorData, iteratedDisplayedVendorData } = arg;
+
+        let selectedState = false;
+
+        if (currentDisplayedVendorData.selected || iteratedDisplayedVendorData.selected) {
+            selectedState = true
+        }
+
+        if (isSingle) {
+            // nuthin
+        } else {
+            const updatedVendorsDisplayedGroup = { ...reduxRegionMapState,
+                [newMarkerID]: { 
+                    selected: selectedState, vendors: [currentDisplayedVendorData, iteratedDisplayedVendorData] 
+                } 
+            }
+            const payloadGroup = { vendorsDisplayedGroup: updatedVendorsDisplayedGroup }
+            dispatch(setVendorsDisplayedGroup(payloadGroup))
+        }
+
+        return { selectedState }
+    }
 
     // --------------------------------------------
     // CASE 1: If current vendor is a single vendor
@@ -58,47 +127,37 @@ const useUpdateMapMarkersState = (props: any) => {
             const iteratedVendorMarkerCoords = iteratedVendorMarker.getLngLat();
             if (key !== currentVendorID && iteratedVendorMarkerCoords.lng === currentVendorCoords.long && iteratedVendorMarkerCoords.lat === currentVendorCoords.lat) {
                 // 1. Remove both single vendor markers from map
-                iteratedVendorMarker.remove()
-                singleVendorMarkers[currentVendorID].remove()
+                removeMarkersFromMap([iteratedVendorMarker, singleVendorMarkers[currentVendorID]]);
 
                 // 2. Remove both single vendors from singleVendorMarkers state
-                const updatedSingleVendorMarkers = { ...singleVendorMarkers }
-                delete updatedSingleVendorMarkers[key]
-                delete updatedSingleVendorMarkers[currentVendorID]
-                setSingleVendorMarkers(updatedSingleVendorMarkers)
+                removeMarkersFromLocalMapMarkerState(singleVendorMarkers, [key, currentVendorID]);
                 
                 // 3. Remove both single vendors from vendorsDisplayedSingle Redux
                 // Getting a copy of the redux data before it's removed to use later for the new group
-                const updatedVendorsDisplayedSingle = { ...state.regionMap.vendorsDisplayedSingle }
-                const currentDisplayedVendorData = { ...updatedVendorsDisplayedSingle[currentVendorID] }
-                const iteratedDisplayedVendorData =  { ...updatedVendorsDisplayedSingle[key] }
-                delete updatedVendorsDisplayedSingle[key]
-                delete updatedVendorsDisplayedSingle[currentVendorID]
-                const payload = { vendorsDisplayedSingle: updatedVendorsDisplayedSingle }
-                dispatch(setVendorsDisplayedSingle(payload))
-                
+                const { currentDisplayedVendorData, iteratedDisplayedVendorData } = removeVendorsFromReduxRegionMapState({
+                    reduxRegionMapState: state.regionMap.vendorsDisplayedSingle, 
+                    isSingle: true,
+                    removeBoth: true,
+                    currentVendorID, 
+                    iteratedVendorID: key
+                });
+
                 // 4. Add grouped vendor marker to map
                 const newMarker = addGroupedVendorsToMap({vendors:[currentVendorData, iteratedVendorData], firstVendor: currentVendorData, map});
 
                 // 5. Add grouped vendors to groupVendorMarkers state
-                const newMarkerID = uuid()
+                const newMarkerID = uuid();
                 setGroupVendorMarkers({ ...groupVendorMarkers, [newMarkerID]: newMarker })
 
                 // 6. Add both vendors to vendorsDisplayedGroup Redux
-                let selectedState = false;
+                const { selectedState } = addVendorsToReduxRegionMapState({
+                    isSingle: false,
+                    newMarkerID,
+                    currentDisplayedVendorData, 
+                    iteratedDisplayedVendorData, 
+                    reduxRegionMapState: {...state.regionMap.vendorsDisplayedGroup}
+                });
 
-                if (currentDisplayedVendorData.selected || iteratedDisplayedVendorData.selected) {
-                    selectedState = true
-                }
-
-                const updatedVendorsDisplayedGroup = { ...state.regionMap.vendorsDisplayedGroup,
-                    [newMarkerID]: { 
-                        selected: selectedState, vendors: [currentDisplayedVendorData, iteratedDisplayedVendorData] 
-                    } 
-                }
-                const payloadGroup = { vendorsDisplayedGroup: updatedVendorsDisplayedGroup }
-                dispatch(setVendorsDisplayedGroup(payloadGroup))
-                
                 // 7. Set new selected state
                 setRegionMapSelectedState({ state, selectedState, curID: newMarkerID, curIsSingle: false, setPrevious: true });
 
@@ -115,17 +174,28 @@ const useUpdateMapMarkersState = (props: any) => {
             const iteratedVendorMarkerCoords = iteratedVendorMarker.getLngLat();
             if (iteratedVendorMarkerCoords.lng === currentVendorCoords.long && iteratedVendorMarkerCoords.lat === currentVendorCoords.lat) {
                 // 1. Remove single vendor marker from map
-                singleVendorMarkers[currentVendorID].remove()
+                removeMarkersFromMap([singleVendorMarkers[currentVendorID]]);
 
                 // 2. Remove single vendor from singleVendorMarkers state
-                const updatedSingleVendorMarkers = { ...singleVendorMarkers }
-                delete updatedSingleVendorMarkers[currentVendorID]
-                setSingleVendorMarkers(updatedSingleVendorMarkers)
-                
+                removeMarkersFromLocalMapMarkerState(singleVendorMarkers, [currentVendorID]);
+
                 // 3. Remove single vendor from vendorsDisplayedSingle Redux
                 // Getting a copy of the redux data before it's removed to use later for the new group
+
+                // REWORK THIS PART
+                // DOESN"T WORK BECAUSE iteratedDisplayedVendorData can have it's own source of data rather than just 1
+                // Also fix removeBoth property to something better
+                
+                // const { currentDisplayedVendorData, iteratedDisplayedVendorData } = removeVendorsFromReduxRegionMapState({
+                //     reduxRegionMapState: state.regionMap.vendorsDisplayedSingle,
+                //     isSingle: true,
+                //     removeBoth: false,
+                //     currentVendorID, 
+                //     iteratedVendorID: key
+                // });
+
                 const currentDisplayedVendorData = { ...state.regionMap.vendorsDisplayedSingle[currentVendorID] }
-                const iteratedDisplayedVendorsData =  { ...state.regionMap.vendorsDisplayedGroup[key] }
+                const iteratedDisplayedVendorData =  { ...state.regionMap.vendorsDisplayedGroup[key] }
 
                 const updatedVendorsDisplayedSingle = { ...state.regionMap.vendorsDisplayedSingle }
                 delete updatedVendorsDisplayedSingle[currentVendorID]
@@ -139,14 +209,14 @@ const useUpdateMapMarkersState = (props: any) => {
                 // 5. Add vendor to vendorsDisplayedGroup Redux
                 let selectedState = false;
 
-                if (currentDisplayedVendorData.selected || iteratedDisplayedVendorsData.selected) {
+                if (currentDisplayedVendorData.selected || iteratedDisplayedVendorData.selected) {
                     selectedState = true
                 }
 
                 const updatedVendorsDisplayedGroup = { 
                     ...state.regionMap.vendorsDisplayedGroup, 
                     [key]: {
-                        selected: selectedState, vendors: [currentDisplayedVendorData, ...iteratedDisplayedVendorsData.vendors]
+                        selected: selectedState, vendors: [currentDisplayedVendorData, ...iteratedDisplayedVendorData.vendors]
                     }
                 }
                 const payloadGroup = { vendorsDisplayedGroup: updatedVendorsDisplayedGroup }
