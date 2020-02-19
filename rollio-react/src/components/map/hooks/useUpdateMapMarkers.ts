@@ -6,7 +6,7 @@ import { useSelector  } from 'react-redux';
 
 // HOOKS
 import useGetAppState from '../../common/hooks/use-get-app-state';
-import useCustom from '../../region/hooks/use-current-update-vendor-id-state'
+import useGlobalState from '../../common/hooks/use-global-state';
 
 // ACTIONS
 import { 
@@ -19,7 +19,7 @@ import { MarkerComparisonObject } from './interfaces';
 
 const useUpdateMapMarkers = (props: any) => {
     // Way to get data from tweet stream without storing it in Redux
-    const [globalState] = useCustom();
+    const [globalState] = useGlobalState();
     const dispatch = useDispatch();
     // const state = useGetAppState();
     const state = useSelector((state:any) => state);

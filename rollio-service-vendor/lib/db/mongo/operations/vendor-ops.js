@@ -72,13 +72,15 @@ module.exports = {
       logger.error(err);
       return err;
     }
-
     return Vendor.findOne({
       regionID,
       _id: vendorID,
     }).populate('tweetHistory')
       .populate('locationHistory')
       .populate('userLocationHistory')
+      .then((res) => {
+        return res;
+      })
       .catch((err) => {
         const errMsg = new Error(err);
         logger.error(errMsg);

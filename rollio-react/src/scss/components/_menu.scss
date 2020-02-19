@@ -29,7 +29,7 @@
             &_wrapper {
                 min-width: 56px;
                 min-height: 56px;
-                background-color: $color-vendor-selector-blank-image;
+                background-color: $color-blank-image;
             }
 
             img {
@@ -48,16 +48,16 @@
     &_mobile {
         &__wrapper {
             height: 56px;
-            // padding: 16px;
             width: 100%;
             background-color: white;
-            position: absolute;
+            position: fixed;
             z-index: 2;
             bottom: 0;
         }
 
         &__content_wrapper {
             display: flex;
+            flex-direction: column;
             margin:0 16px;
             height: 100%;
         }
@@ -66,6 +66,12 @@
             width: 100%;
             display: flex;
             align-self: center;
+
+            &_wrapper {
+                display: flex;
+                min-height: 56px;
+                width: 100%;
+            }
 
             &_text {
                 display: flex;

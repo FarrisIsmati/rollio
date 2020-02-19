@@ -10,7 +10,7 @@ import {
 } from '../../../redux/actions/data-actions';
 
 // HOOKS
-import useCustom from './use-current-update-vendor-id-state';
+import useGlobalState from '../../common/hooks/use-global-state';
 
 // CONFIG
 import { VENDOR_API } from '../../../config';
@@ -22,7 +22,7 @@ const useUpdateRegionVendorData = () => {
     const dispatch = useDispatch();
 
     // find a way to pass updated vendor id down to the map hook
-    const [globalState, setGlobalState] = useCustom();
+    const [globalState, setGlobalState] = useGlobalState();
 
     useEffect(() => {      
       socket.on('TWITTER_DATA', (data: any) => {

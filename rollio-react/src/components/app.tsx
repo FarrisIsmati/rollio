@@ -19,7 +19,6 @@ import rootReducer from '../redux/reducers/root-reducer';
 import {fetchUserAsync} from "../redux/actions/user-actions";
 
 // COMPONENTS
-import VendorProfile from './vendor-profile/vendor-profile';
 import RegionHome from './region/region-home';
 import PageInvalid from './error/page-invalid';
 import PermissionDenied from './error/permission-denied';

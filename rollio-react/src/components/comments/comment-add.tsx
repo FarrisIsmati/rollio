@@ -4,14 +4,14 @@ import { withRouter } from "react-router";
 
 // COMPONENTS
 import TextAreaGrow from '../common/text/textarea-grow';
-import ButtonDefault from '../common/buttons/button-default';
+import ButtonBare from '../common/buttons/button-bare';
 
 // HOOKS
 import useCommentAdd from './hooks/use-comment-add';
 
 // ICONS
 import { IconContext } from 'react-icons';
-import { IoMdText } from 'react-icons/io';
+import { MdInsertComment } from 'react-icons/md';
 
 const CommentAdd:FC = (props) => {
     const { 
@@ -32,8 +32,8 @@ const CommentAdd:FC = (props) => {
         <div className='commentadd__wrapper'>
             <div className='commentadd__tophalf'>
                 <IconContext.Provider value={{ size: '32', className: 'commentadd__icon_type_text' }}>
-                    <div>
-                        <IoMdText/>
+                    <div className='commentadd__icon_wrapper'>
+                        <MdInsertComment/>
                     </div>
                 </IconContext.Provider>
                 {/* Optional Add name but place holder and class changes on click */}
@@ -62,10 +62,11 @@ const CommentAdd:FC = (props) => {
                     placeholder={'Share thoughts...'} 
                     className={'textarea__grow font__textarea_grow font__comment_add_content'}/>
                 <div className='commentadd__button_holder'>
-                    <ButtonDefault 
+                    <ButtonBare
                         id={'commentAddButton'} 
-                        text={'Share'} 
+                        text={'SHARE'} 
                         className={'button__comment_add font__button_comment_add'} 
+                        overrideClassName={'button__bare_alt'}
                         isLocked={getIsLocked}
                         handleClick={dispatchRequestPostVendorComment}
                     />

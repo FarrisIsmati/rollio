@@ -7,7 +7,8 @@ import {
 export interface VendorDataAsyncPayload {
   regionId: string,
   vendorId: string,
-  cb: () => void
+  cb: () => void,
+  cbSuccess?: () => void
 }
 
 export type RegionDataAsyncPayload = {

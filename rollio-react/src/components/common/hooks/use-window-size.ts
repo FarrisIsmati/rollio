@@ -27,6 +27,23 @@ const effects = {
         });
 
         return height;
+    },
+    useIsMobile() {
+        const [width, setWidth] = useState(window.innerWidth);
+
+        useEffect(() => {
+            const handleResize = () => setWidth(window.innerWidth);
+            window.addEventListener('resize', handleResize);
+            return () => {
+                window.removeEventListener('resize', handleResize);
+            };
+        });
+
+        if (width < 768) {
+            return true;
+        }
+
+        return false;
     }
 }
 export default effects;

@@ -77,7 +77,7 @@ const useCommentAdd = (props:any) => {
         }
 
         const regionId = state.data.regionId;
-        const vendorId = getRouteIds(props).vendorId;
+        const vendorId = state.data.selectedVendor.id;
 
         try {
             const dispatchRes:any = await dispatch( requestPostVendorComment({ regionId, vendorId, name: commentName, text: commentBody }) )
