@@ -91,9 +91,6 @@ export interface DataDefaultState {
     error: {
         code: string,
         message: string
-    },
-    previouslySelected: {
-        id: string
     }
 }
 

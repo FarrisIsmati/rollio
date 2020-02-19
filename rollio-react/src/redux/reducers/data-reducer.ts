@@ -6,7 +6,6 @@ import {
     CLEAR_SELECTED_VENDOR,
     RECEIVE_ALL_REGIONS,
     SET_VENDORS_ALL,
-    SET_PREVIOUSLY_SELECTED_VENDOR,
     POST_VENDOR_COMMENT,
     UPDATE_VENDOR,
     UPDATE_DAILY_ACTIVE_VENDORS
@@ -54,9 +53,6 @@ const defaultState:DataDefaultState = {
         isActive: false,
         lastUpdated: null,
         approved: false
-    },
-    previouslySelected: {
-        id: ''
     },
     error: {
         code: '',
@@ -113,14 +109,14 @@ export function dataReducer(state = defaultState, action: any) {
                 }
             }
         }
-    case SET_PREVIOUSLY_SELECTED_VENDOR: 
-        return {
-            ...state,
-            previouslySelected: {
-                ...state.previouslySelected,
-                id: action.payload.id
-            }
-        }
+    // case SET_PREVIOUSLY_SELECTED_VENDOR: 
+    //     return {
+    //         ...state,
+    //         previouslySelected: {
+    //             ...state.previouslySelected,
+    //             id: action.payload.id
+    //         }
+    //     }
     case UPDATE_VENDOR:
         const vendorsAll = { ...state.vendorsAll }
 

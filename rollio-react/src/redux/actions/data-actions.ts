@@ -27,8 +27,6 @@ import {
 
     SET_VENDORS_ALL,
 
-    SET_PREVIOUSLY_SELECTED_VENDOR,
-
     UPDATE_VENDOR,
 
     UPDATE_DAILY_ACTIVE_VENDORS,
@@ -148,13 +146,6 @@ export function fetchVendorDataAsync(payload:VendorDataAsyncPayload) {
 export function clearSelectedVendor() {
     return {
         type: CLEAR_SELECTED_VENDOR
-    }
-}
-
-export function setPrevouslySelectedVendor(payload:SetPreviouslySelectedVendorPayload) {
-    return {
-        type: SET_PREVIOUSLY_SELECTED_VENDOR,
-        payload
     }
 }
 
