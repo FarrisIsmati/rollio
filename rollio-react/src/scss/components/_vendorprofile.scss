@@ -5,7 +5,7 @@
         height: 100%;
         background-color: $color-vendor-profile-background;
         position: fixed;
-        width: 432px;
+        width: $vendor-menu-width;
         transform: translateX(0%);
         transition: transform .3s ease-in;
 
@@ -33,6 +33,14 @@
         display: flex;
         justify-content: center;
         align-items: center;
+
+        i {
+            color: $color-vendor-profile-header-icon;
+        }
+
+        &:hover {
+            cursor: pointer;
+        }
     }
 
     &__content_wrapper {
@@ -83,18 +91,16 @@
             display: flex;
             align-items: center;
 
-            svg {
-                stroke: $color-vendor-profile-info-icon;
-                fill: $color-vendor-profile-info-icon;
+            i {
+                color: $color-vendor-profile-info-icon;
             }
         }
 
         &_icon_wrapper_alt {
             @extend .vendorprofile__info_icon_wrapper;
              
-            svg {
-                stroke: $color-vendor-profile-info-icon-alt;
-                fill: $color-vendor-profile-info-icon-alt;
+            i {
+                color: $color-vendor-profile-info-icon-alt;
             }
         }
 

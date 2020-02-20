@@ -4,7 +4,6 @@ import { useDispatch  } from 'react-redux';
 
 // COMPONENTS
 import Comments from '../comments/comment-section';
-import { FaTimes, FaMapMarkerAlt, FaLink, FaPhone, FaTruck, FaCreditCard } from 'react-icons/fa';
 import Chip from '../common/other/chip';
 
 // HOOKS
@@ -63,7 +62,7 @@ const VendorProfile = (props:any) => {
         <div className='font__vendor_profile_header vendorprofile__topbar_wrapper'>
           <h2>{vendor.name}</h2>
           <div className='vendorprofile__x_wrapper'>
-            <FaTimes onClick={()=>{dispatch(deSelectVendor(vendor.id))}}/> 
+            <i className="material-icons-outlined" onClick={()=>{dispatch(deSelectVendor(vendor.id))}}>close</i>
           </div>
         </div>
 
@@ -81,7 +80,7 @@ const VendorProfile = (props:any) => {
           <div className='vendorprofile__info_wrapper'>
             <div className='vendorprofile__info_row'>
               <div className='vendorprofile__info_icon_wrapper'>
-                <FaMapMarkerAlt /> 
+                <i className="material-icons-outlined">room</i> 
               </div>
               <div className='vendorprofile__info_text_wrapper font__vendor_profile_info'>
                 <h2>FIND ON MAP</h2>
@@ -90,7 +89,7 @@ const VendorProfile = (props:any) => {
 
             <div className='vendorprofile__info_row'>
               <div className='vendorprofile__info_icon_wrapper'>
-                <FaLink /> 
+                <i className="material-icons-outlined">web</i> 
               </div>
               <div className='vendorprofile__info_text_wrapper font__vendor_profile_info'>
                 { vendor.website ? <h2><a target='_blank' href={vendor.website}>WEBSITE</a></h2> : <h2>WEBSITE UNAVAILABLE</h2> }
@@ -99,7 +98,7 @@ const VendorProfile = (props:any) => {
 
             <div className='vendorprofile__info_row'>
               <div className='vendorprofile__info_icon_wrapper'>
-                <FaPhone /> 
+                <i className="material-icons-outlined">local_phone</i> 
               </div>
               <div className='vendorprofile__info_text_wrapper font__vendor_profile_info'>
                 { vendor.phoneNumber ? <h2><a href={`tel:${vendor.phoneNumber}`}>{vendor.phoneNumber}</a></h2> : <h2>PHONE UNAVAILABLE</h2> }
@@ -109,7 +108,7 @@ const VendorProfile = (props:any) => {
             
             <div className='vendorprofile__info_row'>
               <div className='vendorprofile__info_icon_wrapper'>
-                <FaTruck /> 
+                <i className="material-icons-outlined">local_shipping</i> 
               </div>
               <div className='vendorprofile__info_text_wrapper font__vendor_profile_info'>
                 <h2>ABOUT</h2>
@@ -118,7 +117,7 @@ const VendorProfile = (props:any) => {
 
             <div className='vendorprofile__info_row'>
               <div className='vendorprofile__info_icon_wrapper_alt'>
-                <FaCreditCard /> 
+                <i className="material-icons-outlined">credit_card</i> 
               </div>
               <div className='vendorprofile__info_text_wrapper font__vendor_profile_info_alt'>
                 { vendor.creditCard === 'y' ? <h2>Accepts Credit Cards</h2> : <h2>Doesn't Accept Credit Card</h2>}

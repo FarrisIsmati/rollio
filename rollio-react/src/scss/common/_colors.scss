@@ -23,8 +23,9 @@ $color-font-map-marker: $white;
 // COMPONENTS
 // Main
 $color-background-nav: $white;
-$color-background-main: $rollioWhite;
+$color-background-main: $white;
 // Comments
+$color-comment-icon: $rollioMagenta;
 $color-comment-icon-text: $rollioMagenta;
 $color-comment-background: $white;
 $color-comment-name-border: $rollioLighterGrey;
@@ -43,9 +44,13 @@ $color-blank-image: $rollioLighterGrey;
 // Other
 $color-chip-background: $rollioWhite;
 $color-linebreak: $rollioLighterGrey;
+// Vendor Menu
+$color-vendor-menu-link-background: $white;
+$color-vendor-menu-link-background-hover: $rollioLighterGrey;
 // Vendor Profile
 $color-vendor-profile-background: $white;
 $color-vendor-profile-topbar: $rollioMagenta;
+$color-vendor-profile-header-icon: $white;
 $color-vendor-profile-info-icon: $rollioMagenta;
 $color-vendor-profile-info-icon-alt: $rollioBlack;
 $color-vendor-info-main: $rollioMagenta;

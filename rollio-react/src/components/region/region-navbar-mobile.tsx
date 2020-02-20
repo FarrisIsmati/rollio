@@ -1,6 +1,5 @@
 // DEPENDENCIES
 import React, { FC } from 'react';
-import { FaBars } from 'react-icons/fa';
 
 const RegionNavbarMobile:FC = () => {
   return (
@@ -12,7 +11,7 @@ const RegionNavbarMobile:FC = () => {
           </div>
 
           <div className="navbar__links_wrapper_mobile">
-            <FaBars />
+            <i className="material-icons-outlined">menu</i>
           </div>
         </div>
     </div>

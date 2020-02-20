@@ -21,7 +21,7 @@ const VendorSelectorDesktop = () => {
     <div className='region__vendor_menu_wrapper'>
       <VendorProfile />
       <div className="menu__wrapper">
-          <div ref={ref}>
+          <div className="menu__title_wrapper" ref={ref}>
             <h1 className="font__navbar">ROLLIO</h1>
             <div className="menu__type">
               <h2 className="font__menu_link">Food Trucks</h2>

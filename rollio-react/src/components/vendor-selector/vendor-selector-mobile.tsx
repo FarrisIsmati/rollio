@@ -39,7 +39,7 @@ const VendorSelectorMobile:FC = () => {
                     <div className="menu_mobile__topbar">
                         <div className="menu_mobile__topbar_text">
                             <h2 className="font__menu_topbar">All Food Trucks</h2>
-                            { isMenuExpanded ?  <FaTimes onClick={()=>{dispatch(toggleMobileMenu())}} /> : <FaChevronUp onClick={()=>{dispatch(toggleMobileMenu())}} /> }
+                            { isMenuExpanded ?  <i className="material-icons-outlined" onClick={()=>{dispatch(toggleMobileMenu())}}>close</i> : <i className="material-icons-outlined" onClick={()=>{dispatch(toggleMobileMenu())}}>keyboard_arrow_up</i> }
                         </div>
                     </div>
                 </div>

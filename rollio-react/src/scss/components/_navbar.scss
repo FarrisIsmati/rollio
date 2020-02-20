@@ -14,10 +14,6 @@
         margin: 0 16px;
     }
 
-    &__logo_wrapper {
-
-    }
-
     &__links_wrapper {
         display: flex;
         align-self: flex-end;
@@ -27,11 +23,12 @@
         }
 
         &_mobile {
+            display: flex;
+            justify-content: center;
             align-self: center;
 
-            svg {
-                fill: $color-font-alt;
-                height: 2em;
+            i {
+                color: $color-font-alt;
             }
         }
     }

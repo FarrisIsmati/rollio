@@ -1,7 +1,11 @@
 .menu {
     &__wrapper {
-        margin: 16px 16px 0px 16px;
-        width: 400px;
+        margin-top: 16px;
+        width: $vendor-menu-width;
+    }
+
+    &__title_wrapper {
+        margin: 0 16px;
     }
 
     // Collection of links
@@ -15,10 +19,16 @@
         &__wrapper {
             display: flex;
             align-items: center;
-            margin-bottom: 16px;
-    
+            padding: 8px 16px;
+            background-color: $color-vendor-menu-link-background;
+
             h2 {
                 margin-left: 16px;
+            }
+
+            &:hover {
+                background-color: $color-vendor-menu-link-background-hover;
+                cursor: pointer;
             }
         }
 
@@ -58,7 +68,6 @@
         &__content_wrapper {
             display: flex;
             flex-direction: column;
-            margin:0 16px;
             height: 100%;
         }
 
@@ -66,6 +75,7 @@
             width: 100%;
             display: flex;
             align-self: center;
+            margin: 0 16px;
 
             &_wrapper {
                 display: flex;
