@@ -7,7 +7,8 @@
         position: fixed;
         width: $vendor-menu-width;
         transform: translateX(0%);
-        transition: transform .3s ease-in;
+        transition: transform .4s;
+        transition-timing-function: cubic-bezier(.7,1.1,.67,.97);
 
         &_hidden {
             display: flex;

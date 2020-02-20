@@ -13,8 +13,8 @@ const useSetMobileMenuStyle = () => {
     const expandedMenuStyle = {
         // .81 golden ratio number
         height: `${windowHeight * .81}px`,
-        transition: 'height .25s',
-        transitionTimingFunction: 'ease-in'
+        transition: 'height .35s',
+        transitionTimingFunction: 'cubic-bezier(.7,1.1,.67,.97)'
     }
 
     const contractedMenuStyle = {
