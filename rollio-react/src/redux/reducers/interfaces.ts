@@ -37,6 +37,7 @@ export interface VendorFull {
     website: string,
     phoneNumber: string,
     profileImageLink: string,
+    bannerImageLink: string,
     categories: string[],
     price: string,
     rating: number | null,

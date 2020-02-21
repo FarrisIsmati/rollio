@@ -34,6 +34,7 @@ const defaultState:DataDefaultState = {
         website: '',
         phoneNumber: '',
         profileImageLink: '',
+        bannerImageLink: '',
         categories: [],
         price: '',
         rating: null,

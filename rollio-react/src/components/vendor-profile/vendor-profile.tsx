@@ -69,7 +69,7 @@ const VendorProfile = (props:any) => {
         <div ref={scrollRef} className='vendorprofile__content_wrapper'>
           <div className='vendorprofile__image_wrapper'>
             <div className='vendorprofile__image'>
-              <img alt={`${vendor.name} logo`} src={vendor.profileImageLink} /> 
+              <img alt={`${vendor.name} logo`} src={vendor.bannerImageLink} /> 
             </div>
           </div>
 

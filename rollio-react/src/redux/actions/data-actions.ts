@@ -45,8 +45,7 @@ import {
     UpdateVendorPayload,
     UpdateDailyActiveVendorsPayload,
     SelectVendorAsyncPayload,
-    SetVendorsAllPayload,
-    SetPreviouslySelectedVendorPayload
+    SetVendorsAllPayload
 } from './interfaces';
 import {
     MapDefaultState
@@ -88,6 +87,7 @@ export function recieveVendorData(vendor:any) {
         name: vendor.name ?  vendor.name : '',
         phoneNumber: vendor.phonenumber ? vendor.phonenumber : '',
         profileImageLink: vendor.profileImageLink ? vendor.profileImageLink : '',
+        bannerImageLink: vendor.bannerImageLink ? vendor.bannerImageLink : '',
         price: vendor.price ? vendor.price : '',
         rating: vendor.rating ? vendor.rating : '',
         twitterID: vendor.twitterID ? vendor.twitterID : '',
