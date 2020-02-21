@@ -6,7 +6,6 @@ import { useCallbackRef } from 'use-callback-ref';
 // COMPONENTS
 import VendorSelectorLinks from './vendor-selector-links';
 import VendorProfile from '../vendor-profile/vendor-profile'
-import { FaChevronUp, FaTimes } from 'react-icons/fa';
 
 // ACTIONS
 import { toggleMobileMenu } from '../../redux/actions/ui-actions';

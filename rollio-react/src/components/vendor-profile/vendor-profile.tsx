@@ -38,14 +38,12 @@ const setCategoriesComponent = (args:any) => {
 
 const VendorProfile = (props:any) => {
   // Refs
-  const scrollRef:any = useRef();
   const profileTopBarRef:any = useRef();
 
   // Hooks
   const dispatch = useDispatch();
   const state = useGetAppState();
   const vendorProfileHeight = useGetVendorProfileContentHeight(profileTopBarRef) + 'px';
-  // useScrollPosition(scrollRef, state.loadState.isVendorLoaded, windowSizeEffects.useIsMobile() ? props.scrollPositionCb : ()=>{});
   const handleScroll = useScrollPosition({
     isLoaded: state.loadState.isVendorLoaded, 
     cb: windowSizeEffects.useIsMobile() ? props.scrollPositionCb : ()=>{}
@@ -74,7 +72,6 @@ const VendorProfile = (props:any) => {
           </div>
         </div>
 
-        {/* <div ref={scrollRef} className={isMobile ? 'vendorprofile__content_wrapper' : 'vendorprofile__content_wrapper scrollbar__main'}> */}
         <Scrollbars 
           style={{ width: isMobile ? '100%': '432px', height: vendorProfileHeight }} 
           onScroll={handleScroll}
@@ -148,7 +145,6 @@ const VendorProfile = (props:any) => {
             </div>
           </div>
         </Scrollbars> 
-        {/* </div> */}
       </React.Fragment> : <p>loading...</p>}
     </div>
   );

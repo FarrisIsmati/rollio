@@ -19,11 +19,6 @@ const useGetVendorProfileContentHeight = (ref:any) => {
             }
         }
     });
-    
-    console.log(height.current)
-    console.log(windowHeight)
-    if (ref.current)
-        console.log(ref.current.offsetHeight)
 
     return height.current;
 }
