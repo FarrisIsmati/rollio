@@ -1,6 +1,7 @@
 // DEPENDENCIES
-import React, { ReactComponentElement, useEffect, useRef, useLayoutEffect } from 'react';
+import React, { ReactComponentElement, useRef } from 'react';
 import { useDispatch  } from 'react-redux';
+import { Scrollbars } from 'react-custom-scrollbars';
 
 // COMPONENTS
 import Comments from '../comments/comment-section';
@@ -10,6 +11,7 @@ import Chip from '../common/other/chip';
 import useGetAppState from '../common/hooks/use-get-app-state';
 import windowSizeEffects from '../common/hooks/use-window-size';
 import useScrollPosition from '../common/hooks/use-scroll-position';
+import useGetVendorProfileContentHeight from './hooks/use-get-vendor-profile-content-height';
 
 // ACTIONS
 import { 
@@ -37,11 +39,17 @@ const setCategoriesComponent = (args:any) => {
 const VendorProfile = (props:any) => {
   // Refs
   const scrollRef:any = useRef();
-  
+  const profileTopBarRef:any = useRef();
+
   // Hooks
   const dispatch = useDispatch();
   const state = useGetAppState();
-  useScrollPosition(scrollRef, state.loadState.isVendorLoaded, windowSizeEffects.useIsMobile() ? props.scrollPositionCb : ()=>{});
+  const vendorProfileHeight = useGetVendorProfileContentHeight(profileTopBarRef) + 'px';
+  // useScrollPosition(scrollRef, state.loadState.isVendorLoaded, windowSizeEffects.useIsMobile() ? props.scrollPositionCb : ()=>{});
+  const handleScroll = useScrollPosition({
+    isLoaded: state.loadState.isVendorLoaded, 
+    cb: windowSizeEffects.useIsMobile() ? props.scrollPositionCb : ()=>{}
+  });
 
   // Quick variable references
   const isMobile = windowSizeEffects.useIsMobile();
@@ -59,20 +67,22 @@ const VendorProfile = (props:any) => {
     <div className={isVendorSelected ? `${vendorProfileClassType}__wrapper` : `${vendorProfileClassType}__wrapper_hidden`}>
       { isLoaded ? 
       <React.Fragment>
-        <div className='font__vendor_profile_header vendorprofile__topbar_wrapper'>
+        <div ref={profileTopBarRef} className='font__vendor_profile_header vendorprofile__topbar_wrapper'>
           <h2>{vendor.name}</h2>
           <div className='vendorprofile__x_wrapper'>
             <i className="material-icons-outlined" onClick={()=>{dispatch(deSelectVendor(vendor.id))}}>close</i>
           </div>
         </div>
 
-      {/* 
-        Need to recreate useScrollPosition if using custom Scrollbars
-        import { Scrollbars } from 'react-custom-scrollbars';
-        <Scrollbars style={{ width: '432px', height: ?? }}></Scrollbars> 
-      */}
-
-        <div ref={scrollRef} className={isMobile ? 'vendorprofile__content_wrapper' : 'vendorprofile__content_wrapper scrollbar__main'}>
+        {/* <div ref={scrollRef} className={isMobile ? 'vendorprofile__content_wrapper' : 'vendorprofile__content_wrapper scrollbar__main'}> */}
+        <Scrollbars 
+          style={{ width: isMobile ? '100%': '432px', height: vendorProfileHeight }} 
+          onScroll={handleScroll}
+          // Hide scrollbar when vendor profile is being animated closed
+          renderThumbVertical={            
+            ({ style }:any) => <div style={{ ...style, borderRadius: 'inherit', backgroundColor: isVendorSelected ? 'rgba(0, 0, 0, 0.2)' : 'transparent' }} /> 
+          }
+        >
           <div className='vendorprofile__image_wrapper'>
             <div className='vendorprofile__image'>
               <img alt={`${vendor.name} logo`} src={vendor.bannerImageLink} /> 
@@ -137,7 +147,8 @@ const VendorProfile = (props:any) => {
               <Comments comments={state.data.selectedVendor.comments}/>
             </div>
           </div>
-        </div>
+        </Scrollbars> 
+        {/* </div> */}
       </React.Fragment> : <p>loading...</p>}
     </div>
   );

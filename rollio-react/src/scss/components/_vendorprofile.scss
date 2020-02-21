@@ -9,6 +9,7 @@
         transform: translateX(0%);
         transition: transform .4s;
         transition-timing-function: cubic-bezier(.7,1.1,.67,.97);
+        z-index: 2;
 
         &_hidden {
             display: flex;
@@ -127,6 +128,7 @@
         @extend .vendorprofile__wrapper;
         width: 100%;
         position: absolute;
+        z-index: 2;
 
         &_hidden {
             @extend .vendorprofile__wrapper_hidden;
