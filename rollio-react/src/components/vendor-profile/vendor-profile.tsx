@@ -66,7 +66,13 @@ const VendorProfile = (props:any) => {
           </div>
         </div>
 
-        <div ref={scrollRef} className='vendorprofile__content_wrapper'>
+      {/* 
+        Need to recreate useScrollPosition if using custom Scrollbars
+        import { Scrollbars } from 'react-custom-scrollbars';
+        <Scrollbars style={{ width: '432px', height: ?? }}></Scrollbars> 
+      */}
+
+        <div ref={scrollRef} className={isMobile ? 'vendorprofile__content_wrapper' : 'vendorprofile__content_wrapper scrollbar__main'}>
           <div className='vendorprofile__image_wrapper'>
             <div className='vendorprofile__image'>
               <img alt={`${vendor.name} logo`} src={vendor.bannerImageLink} /> 
