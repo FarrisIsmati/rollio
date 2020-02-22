@@ -3,9 +3,9 @@ import React, { ReactComponentElement } from 'react';
 
 // COMPONENTS
 import Map from '../map/map';
-import VendorSelectorDesktop from '../vendor-selector/vendor-selector-desktop';
-import VendorSelectorMobile from '../vendor-selector/vendor-selector-mobile';
-import RegionNavbarMobile from './region-navbar-mobile'
+import VendorSelectorDesktop from '../vendor-selector/menu-desktop';
+import VendorSelectorMobile from '../vendor-selector/menu-mobile';
+import RegionNavbar from '../navbar/region-navbar'
 
 // HOOKS
 import useLoadRegion from './hooks/use-load-region';
@@ -44,7 +44,7 @@ const RegionHome = (props:any) => {
     <div className={ isMobile ? 'region_mobile__wrapper' : 'region__wrapper' }>
       { /* Mobile Responsiveness */ }
       { isMobile ? 
-        <RegionNavbarMobile /> :
+        <RegionNavbar /> :
         <VendorSelectorDesktop/> 
       }
       { Map }

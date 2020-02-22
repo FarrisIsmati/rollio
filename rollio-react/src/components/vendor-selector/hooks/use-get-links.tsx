@@ -2,7 +2,7 @@
 import React from 'react';
 
 // COMPONENTS
-import VendorSelectorLink from '../vendor-selector-link';
+import VendorSelectorLink from '../vendor-link';
 
 // HOOKS
 import useGetAppState from '../../common/hooks/use-get-app-state';

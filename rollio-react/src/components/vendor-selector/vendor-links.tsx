@@ -4,17 +4,17 @@ import { Scrollbars } from 'react-custom-scrollbars';
 
 // HOOKS
 import useGetLinksHeight from './hooks/use-get-links-height';
-import useGetVendorSelectorLinks from './hooks/use-get-links';
+import useGetVendorLinks from './hooks/use-get-links';
 import useGetAppState from '../common/hooks/use-get-app-state';
 
-const VendorSelectorLinks = React.forwardRef((props:any, ref)=> {
-  const links = useGetVendorSelectorLinks();
+const VendorLinks = React.forwardRef((props:any, ref) => {
+  const links = useGetVendorLinks();
 
-  const { vendorSelectorLinksHeight } = props;
+  const { vendorLinksHeight } = props;
 
   // Hooks
   const state = useGetAppState();
-  const height = useGetLinksHeight(ref, vendorSelectorLinksHeight);
+  const height = useGetLinksHeight(ref, vendorLinksHeight);
 
   // Quick variable references
   const isVendorSelected = state.ui.isVendorSelected;
@@ -34,4 +34,4 @@ const VendorSelectorLinks = React.forwardRef((props:any, ref)=> {
   );
 })
 
-export default VendorSelectorLinks;
+export default VendorLinks;

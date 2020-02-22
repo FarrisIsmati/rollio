@@ -18,7 +18,7 @@ const useSetMobileMenuHeightOnScroll = (props:UseToggleVendorMenuOnScreenSwitchP
 
     const isVendorSelected = state.ui.isVendorSelected;
     const windowHeight = windowSizeEffects.useWindowHeight();
-    const vendorSelectorLinksHeight = windowHeight - windowHeight * .19;
+    const vendorLinksHeight = windowHeight - windowHeight * .19;
     const defaultScrollHeight = parseInt(expandedMenuStyle.height.substring(0, expandedMenuStyle.height.length - 2))
 
     // UI Effects
@@ -58,7 +58,7 @@ const useSetMobileMenuHeightOnScroll = (props:UseToggleVendorMenuOnScreenSwitchP
     return {
         properHeight,
         scrollPositionCb,
-        vendorSelectorLinksHeight
+        vendorLinksHeight
     }
 }
 

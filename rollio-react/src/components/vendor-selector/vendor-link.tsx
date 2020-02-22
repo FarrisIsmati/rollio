@@ -3,7 +3,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 
 // INTERFACES
-import { VendorSelectedLinkProps } from './interfaces';
+import { VendorLinkProps } from './interfaces';
 
 // HOOKS
 import useGetAppState from '../common/hooks/use-get-app-state';
@@ -19,7 +19,7 @@ const selectVendorProfile = (dispatch:any, regionID:string, vendorID:string) => 
   }))
 }
 
-const VendorSelectorLink = (props:VendorSelectedLinkProps) => {
+const VendorLink = (props:VendorLinkProps) => {
   const { name, id: vendorID, img } = props;
   const state = useGetAppState();
   const dispatch = useDispatch();
@@ -39,4 +39,4 @@ const VendorSelectorLink = (props:VendorSelectedLinkProps) => {
   )
 }
 
-export default VendorSelectorLink;
+export default VendorLink;

@@ -14,22 +14,13 @@
         margin: 0 16px;
     }
 
-    &__links_wrapper {
+    &__icon_wrapper {
         display: flex;
-        align-self: flex-end;
+        justify-content: center;
+        align-self: center;
 
-        span {
-            width: 40px;
-        }
-
-        &_mobile {
-            display: flex;
-            justify-content: center;
-            align-self: center;
-
-            i {
-                color: $color-font-alt;
-            }
+        i {
+            color: $color-font-alt;
         }
     }
 

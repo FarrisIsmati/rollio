@@ -4,7 +4,7 @@ import { useDispatch  } from 'react-redux';
 import { useCallbackRef } from 'use-callback-ref';
 
 // COMPONENTS
-import VendorSelectorLinks from './vendor-selector-links';
+import VendorLinks from './vendor-links';
 import VendorProfile from '../vendor-profile/vendor-profile'
 
 // ACTIONS
@@ -17,7 +17,7 @@ import useToggleVendorMenuOnScreenSwitch from './hooks/use-toggle-vendor-menu-on
 
 // TO DO: ONCE NAVBAR IS SET PERMANATLEY THEN SET HEIGHT TO A PERCENTAGE OF WIDNOWHEIGHT - NAVBAR HEIGHT
 
-const VendorSelectorMobile:FC = () => {
+const MenuMobile:FC = () => {
     // Refs
     const topRef = useCallbackRef(null, () => {});
     
@@ -27,12 +27,12 @@ const VendorSelectorMobile:FC = () => {
     const dispatch = useDispatch();
     const { isMenuExpanded, expandedMenuStyle, contractedMenuStyle} = useSetMobileMenuStyle();
     // Does vendor profile height size animation based on scroll position
-    const { vendorSelectorLinksHeight, scrollPositionCb, properHeight } = useSetMobileMenuHeightOnScroll({topRef, expandedMenuStyle})
+    const { vendorLinksHeight, scrollPositionCb, properHeight } = useSetMobileMenuHeightOnScroll({topRef, expandedMenuStyle})
 
     return (
         // Mobile resize this flex centers
         <div className="menu_mobile__wrapper" style={isMenuExpanded ? {...expandedMenuStyle, height: properHeight} : contractedMenuStyle} >
-            <VendorProfile scrollPositionCb={scrollPositionCb} />
+            <VendorProfile scrollPositionCb={scrollPositionCb} ref={topRef}/>
             <div className="menu_mobile__content_wrapper">
                 <div ref={topRef} className="menu_mobile__topbar_wrapper">
                     <div className="menu_mobile__topbar">
@@ -42,10 +42,10 @@ const VendorSelectorMobile:FC = () => {
                         </div>
                     </div>
                 </div>
-                <VendorSelectorLinks ref={topRef} {...{vendorSelectorLinksHeight}} />
+                <VendorLinks ref={topRef} {...{vendorLinksHeight}} />
             </div>
         </div>
     );
 }
 
-export default VendorSelectorMobile;
+export default MenuMobile;

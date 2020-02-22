@@ -31,17 +31,51 @@
         background-color: $color-vendor-profile-topbar;
     }
 
-    &__x_wrapper {
+    &__close_wrapper {
         display: flex;
         justify-content: center;
         align-items: center;
+        position: absolute;
+        right: 0px;
+        top: 0px;
+        z-index: 1000;
+        margin: 12px;
+        padding: 12px;   
+        width: 20px;
+        height: 20px;
+        background-color: $color-vendor-profile-close-icon-background;
+        transition: background-color 0.2s;
+        -moz-border-radius: 50px;
+        -webkit-border-radius: 50px;
+        border-radius: 50px;
+
+        &:hover {
+            background-color: $color-vendor-profile-close-icon-background-hover;
+            transition: background-color 0.2s;
+        }
 
         i {
-            color: $color-vendor-profile-header-icon;
+            color: $color-vendor-profile-close-icon;
+            transition: color 0.2s;
+            font-size: 32px;
+
+            &:hover {
+                color: $color-vendor-profile-close-icon-hover;
+                transition: color 0.2s ease;
+            }
         }
 
         &:hover {
             cursor: pointer;
+        }
+    }
+
+    &__title_wrapper {
+        font-size: 1.5em;
+        margin: 14px 16px;
+
+        h2 {
+            word-break: break-word;
         }
     }
 
@@ -143,6 +177,11 @@
 .font__vendor_profile_header {
     @include font-black;
     color: $color-font-white;
+}
+
+.font__vendor_profile_title {
+    @include font-black;
+    color:  $color-font-main;
 }
 
 .font__vendor_profile_header_alt {

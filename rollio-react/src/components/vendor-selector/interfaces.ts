@@ -1,4 +1,4 @@
-export interface VendorSelectedLinkProps  {
+export interface VendorLinkProps  {
     name: string,
     id: string,
     img?: string
