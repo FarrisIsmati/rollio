@@ -1,6 +1,5 @@
 // DEPENDENCIES
 import React  from 'react';
-import { ReactRef } from 'use-callback-ref/dist/es5/types';
 
 const RegionNavbar = React.forwardRef((props:any, ref:any) => {
   return (

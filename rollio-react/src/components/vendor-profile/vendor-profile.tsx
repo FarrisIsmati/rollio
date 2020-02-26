@@ -4,7 +4,6 @@ import { useDispatch  } from 'react-redux';
 import { Scrollbars } from 'react-custom-scrollbars';
 
 // COMPONENTS
-import Comments from '../comments/comment-section';
 import Chip from '../common/other/chip';
 import VendorProfileContent from './vendor-profile-content';
 
@@ -18,6 +17,9 @@ import useGetHeight from './hooks/use-get-vendor-profile-height';
 import { 
   deSelectVendor 
 } from '../../redux/actions/data-actions';
+import { 
+  toggleMobileMenu 
+} from '../../redux/actions/ui-actions';
 
 // Returns an array of categories
 const setCategoriesComponent = (args:any) => {
@@ -39,7 +41,7 @@ const setCategoriesComponent = (args:any) => {
 
 const VendorProfile = React.forwardRef((props:any, navbarRef)=> {
   // Refs
-  const profileTopBarRef:any = useRef();
+  const mobileHeaderRef:any = useRef();
 
   // Hooks
   const dispatch = useDispatch();
@@ -49,7 +51,7 @@ const VendorProfile = React.forwardRef((props:any, navbarRef)=> {
 
 
   // Height of the content minus ()
-  const vendorProfileContentHeight = useGetHeight(profileTopBarRef) + 'px';
+  const vendorProfileContentHeight = useGetHeight(mobileHeaderRef) + 'px';
 
   const handleScroll = useScrollPosition({
     isLoaded: state.loadState.isVendorLoaded, 
@@ -89,10 +91,15 @@ const VendorProfile = React.forwardRef((props:any, navbarRef)=> {
       <React.Fragment>
         { isLoaded ? 
           <React.Fragment>
-            <div ref={profileTopBarRef} className='font__vendor_profile_header vendorprofile__topbar_wrapper'>
-              <h2>{vendor.name}</h2>
-              <div className='vendorprofile__x_wrapper'>
-                <i className="material-icons-outlined" onClick={()=>{dispatch(deSelectVendor(vendor.id))}}>close</i>
+            <div ref={mobileHeaderRef} className='font__vendor_profile_header vendorprofile_mobile__header_wrapper'>
+              <div className='flex__center'>
+                <i className="material-icons-outlined" onClick={()=>{ dispatch(deSelectVendor(vendor.id)) }}>arrow_back</i>
+              </div>
+              <div className="vendorprofile_mobile_header">
+                <h2>{vendor.name}</h2>
+              </div>
+              <div className='flex__center'>
+                <i className="material-icons-outlined" onClick={ () => { dispatch(deSelectVendor(vendor.id, () => { dispatch(toggleMobileMenu()) })) } } >close</i>
               </div>
             </div>
 

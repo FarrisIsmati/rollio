@@ -25,13 +25,6 @@
         }
     }
 
-    &__topbar_wrapper {
-        display: flex;
-        justify-content: space-between;
-        padding: 8px 16px;
-        background-color: $color-vendor-profile-topbar;
-    }
-
     &__close_wrapper {
         display: flex;
         justify-content: center;
@@ -159,17 +152,38 @@
     }
 
     // MOBILE
-    &_mobile__wrapper {
-        @extend .vendorprofile__wrapper;
-        width: 100%;
-        position: absolute;
-        z-index: 2;
+    &_mobile {
+        &__wrapper {
+                @extend .vendorprofile__wrapper;
+                width: 100%;
+                position: absolute;
+                z-index: 2;
 
-        &_hidden {
-            @extend .vendorprofile__wrapper_hidden;
+                &_hidden {
+                    @extend .vendorprofile__wrapper_hidden;
+                    width: 100%;
+                    position: absolute;
+                    z-index: 2;
+                }
+        }
+        
+        &__header_wrapper {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 16px;
+            background-color: $color-vendor-profile-mobile-header;
+
+            h2 {
+                word-break: break-word;
+                text-align: center;
+            }
+        }
+
+        &_header {
             width: 100%;
-            position: absolute;
-            z-index: 2;
+            padding: 0px 10px;
+            display: flex;
+            justify-content: center;
         }
     }
 }
