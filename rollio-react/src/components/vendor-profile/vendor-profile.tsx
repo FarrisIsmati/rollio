@@ -6,6 +6,7 @@ import { Scrollbars } from 'react-custom-scrollbars';
 // COMPONENTS
 import Comments from '../comments/comment-section';
 import Chip from '../common/other/chip';
+import VendorProfileContent from './vendor-profile-content';
 
 // HOOKS
 import useGetAppState from '../common/hooks/use-get-app-state';
@@ -66,10 +67,12 @@ const VendorProfile = React.forwardRef((props:any, navbarRef)=> {
   
   // Variant Styles
   const vendorProfileClassType = isMobile ? 'vendorprofile_mobile' : 'vendorprofile'
-
+  
+  // Difference between the Desktop and Mobile version is how it scrolls the content
   return (
     <div className={isVendorSelected ? `${vendorProfileClassType}__wrapper` : `${vendorProfileClassType}__wrapper_hidden`}>
       { !isMobile ? 
+        // Desktop version
         <Scrollbars 
           style={{ width: isMobile ? '100%': '432px', height: vendorProfileHeight }} 
           onScroll={handleScroll}
@@ -78,86 +81,11 @@ const VendorProfile = React.forwardRef((props:any, navbarRef)=> {
             ({ style }:any) => <div style={{ ...style, borderRadius: 'inherit', backgroundColor: isVendorSelected ? 'rgba(0, 0, 0, 0.2)' : 'transparent' }} /> 
           }
         >
-        { isLoaded ? 
-        <React.Fragment>
-          <div>
-            <div className='vendorprofile__image_wrapper'>
-              <div className='vendorprofile__image'>
-                <div className="vendorprofile__close_wrapper">
-                  <i className="material-icons-outlined" onClick={()=>{dispatch(deSelectVendor(vendor.id))}}>close</i>
-                </div>
-                <img alt={`${vendor.name} logo`} src={vendor.bannerImageLink} /> 
-              </div>
-            </div>
-
-            <div className='font__vendor_profile_title vendorprofile__title_wrapper'>
-              <h2>{vendor.name}</h2>
-            </div>
-
-            <div className='vendorprofile__categories_wrapper'>
-              { Categories }
-            </div>
-
-            <div className='vendorprofile__info_wrapper'>
-              <div className='vendorprofile__info_row'>
-                <div className='vendorprofile__info_icon_wrapper'>
-                  <i className="material-icons-outlined">room</i> 
-                </div>
-                <div className='vendorprofile__info_text_wrapper font__vendor_profile_info'>
-                  <h2>FIND ON MAP</h2>
-                </div>
-              </div>
-
-              <div className='vendorprofile__info_row'>
-                <div className='vendorprofile__info_icon_wrapper'>
-                  <i className="material-icons-outlined">web</i> 
-                </div>
-                <div className='vendorprofile__info_text_wrapper font__vendor_profile_info'>
-                  { vendor.website ? <h2><a target='_blank' href={vendor.website}>WEBSITE</a></h2> : <h2>WEBSITE UNAVAILABLE</h2> }
-                </div>
-              </div>
-
-              <div className='vendorprofile__info_row'>
-                <div className='vendorprofile__info_icon_wrapper'>
-                  <i className="material-icons-outlined">local_phone</i> 
-                </div>
-                <div className='vendorprofile__info_text_wrapper font__vendor_profile_info'>
-                  { vendor.phoneNumber ? <h2><a href={`tel:${vendor.phoneNumber}`}>{vendor.phoneNumber}</a></h2> : <h2>PHONE UNAVAILABLE</h2> }
-                </div>
-              </div>
-
-              
-              <div className='vendorprofile__info_row'>
-                <div className='vendorprofile__info_icon_wrapper'>
-                  <i className="material-icons-outlined">local_shipping</i> 
-                </div>
-                <div className='vendorprofile__info_text_wrapper font__vendor_profile_info'>
-                  <h2>ABOUT</h2>
-                </div>
-              </div>
-
-              <div className='vendorprofile__info_row'>
-                <div className='vendorprofile__info_icon_wrapper_alt'>
-                  <i className="material-icons-outlined">credit_card</i> 
-                </div>
-                <div className='vendorprofile__info_text_wrapper font__vendor_profile_info_alt'>
-                  { vendor.creditCard === 'y' ? <h2>Accepts Credit Cards</h2> : <h2>Doesn't Accept Credit Card</h2>}
-                </div>
-              </div>
-
-              <div className='linebreak'></div>
-
-              <div className='vendorprofile__comments_wrapper'>
-                <h2 className='vendorprofile__comments_header font__vendor_profile_header_alt'>Comments</h2>
-                <Comments comments={state.data.selectedVendor.comments}/>
-              </div>
-            </div>
-          </div>
-        </React.Fragment> : <p>loading...</p>}
+        { isLoaded ? <VendorProfileContent isMobile={isMobile} onClickClose={() => dispatch(deSelectVendor(vendor.id))} vendor={vendor} Categories={Categories} state={state} /> : <p>loading...</p>}
       </Scrollbars> 
       
       :
-      
+      // Mobile version
       <React.Fragment>
         { isLoaded ? 
           <React.Fragment>
@@ -176,74 +104,7 @@ const VendorProfile = React.forwardRef((props:any, navbarRef)=> {
                 ({ style }:any) => <div style={{ ...style, borderRadius: 'inherit', backgroundColor: isVendorSelected ? 'rgba(0, 0, 0, 0.2)' : 'transparent' }} /> 
               }
             >
-              <div className='vendorprofile__image_wrapper'>
-                <div className='vendorprofile__image'>
-                  <img alt={`${vendor.name} logo`} src={vendor.bannerImageLink} /> 
-                </div>
-              </div>
-
-              <div className='font__vendor_profile_title vendorprofile__title_wrapper'>
-                <h2>{vendor.name}</h2>
-              </div>
-
-              <div className='vendorprofile__categories_wrapper'>
-                { Categories }
-              </div>
-
-              <div className='vendorprofile__info_wrapper'>
-                <div className='vendorprofile__info_row'>
-                  <div className='vendorprofile__info_icon_wrapper'>
-                    <i className="material-icons-outlined">room</i> 
-                  </div>
-                  <div className='vendorprofile__info_text_wrapper font__vendor_profile_info'>
-                    <h2>FIND ON MAP</h2>
-                  </div>
-                </div>
-
-                <div className='vendorprofile__info_row'>
-                  <div className='vendorprofile__info_icon_wrapper'>
-                    <i className="material-icons-outlined">web</i> 
-                  </div>
-                  <div className='vendorprofile__info_text_wrapper font__vendor_profile_info'>
-                    { vendor.website ? <h2><a target='_blank' href={vendor.website}>WEBSITE</a></h2> : <h2>WEBSITE UNAVAILABLE</h2> }
-                  </div>
-                </div>
-
-                <div className='vendorprofile__info_row'>
-                  <div className='vendorprofile__info_icon_wrapper'>
-                    <i className="material-icons-outlined">local_phone</i> 
-                  </div>
-                  <div className='vendorprofile__info_text_wrapper font__vendor_profile_info'>
-                    { vendor.phoneNumber ? <h2><a href={`tel:${vendor.phoneNumber}`}>{vendor.phoneNumber}</a></h2> : <h2>PHONE UNAVAILABLE</h2> }
-                  </div>
-                </div>
-
-                
-                <div className='vendorprofile__info_row'>
-                  <div className='vendorprofile__info_icon_wrapper'>
-                    <i className="material-icons-outlined">local_shipping</i> 
-                  </div>
-                  <div className='vendorprofile__info_text_wrapper font__vendor_profile_info'>
-                    <h2>ABOUT</h2>
-                  </div>
-                </div>
-
-                <div className='vendorprofile__info_row'>
-                  <div className='vendorprofile__info_icon_wrapper_alt'>
-                    <i className="material-icons-outlined">credit_card</i> 
-                  </div>
-                  <div className='vendorprofile__info_text_wrapper font__vendor_profile_info_alt'>
-                    { vendor.creditCard === 'y' ? <h2>Accepts Credit Cards</h2> : <h2>Doesn't Accept Credit Card</h2>}
-                  </div>
-                </div>
-
-                <div className='linebreak'></div>
-
-                <div className='vendorprofile__comments_wrapper'>
-                  <h2 className='vendorprofile__comments_header font__vendor_profile_header_alt'>Comments</h2>
-                  <Comments comments={state.data.selectedVendor.comments}/>
-                </div>
-              </div>
+              <VendorProfileContent isMobile={isMobile} onClickClose={() => dispatch(deSelectVendor(vendor.id))} vendor={vendor} Categories={Categories} state={state} />
             </Scrollbars>
           </React.Fragment> : <p>loading...</p>}
         </React.Fragment>
