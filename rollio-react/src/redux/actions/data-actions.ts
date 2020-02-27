@@ -260,10 +260,10 @@ export function deSelectVendor(vendorID:string, cb:()=>void = ()=>{}) {
 
             // Remove the currently selected vendor
             dispatch(setCurrentlySelectedRegionMap({ id: '', isSingle: null }));
-
-            // Any additional code to execute after vendor is deselected
-            cb();
         }
+
+        // Any additional code to execute after vendor is deselected
+        cb();
     }
 }
 

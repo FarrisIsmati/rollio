@@ -1,34 +1,29 @@
-// DEPENDENCIES
-import { useState } from 'react';
-
 // HOOKS
+import useGetAppState from '../../common/hooks/use-get-app-state';
 import useGlobalState from '../../common/hooks/use-global-state';
 
 const useMap = () => {
+    // Hooks
     const [globalState, setGlobalState] = useGlobalState();
+    const state = useGetAppState();
 
     return {
-        zoomToMarker: function(marker:any) {
-            globalState.map.flyTo({
-                // These options control the ending camera position: centered at
-                // the target, at zoom level 9, and north up.
-                center: [0,0],
-                zoom: 3,
-                bearing: 0,
-                 
-                // These options control the flight curve, making it move
-                // slowly and zoom out almost completely before starting
-                // to pan.
-                speed: 0.8, // make the flying slow
-                curve: 1, // change the speed at which it zooms out
-
-                 
-                // this animation is considered essential with respect to prefers-reduced-motion
-                essential: true
-            })
+        zoomToCurrentlySelectedVendor: function() {
+            if (state.data.selectedVendor.id && state.data.selectedVendor.location) {
+                const coords = state.data.selectedVendor.location.coordinates;
+                globalState.map.flyTo({
+                    center: [coords[1], coords[0]],
+                    zoom: 15,
+                    bearing: 0,
+                    speed: .5,
+                    curve: 2
+                })
+            } else {
+                console.error('There is currently no selected vendor');
+                return false;
+            }
         }
     }
 }
-
 
 export default useMap;

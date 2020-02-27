@@ -47,7 +47,8 @@ const VendorProfile = React.forwardRef((props:any, navbarRef)=> {
   // Hooks
   const dispatch = useDispatch();
   const state = useGetAppState();
-  const { zoomToMarker } = useMap();
+  const { zoomToCurrentlySelectedVendor } = useMap();
+
   // Height of the entire vendor profile (window height - navbarRef height)
   const vendorProfileHeight = useGetHeight(navbarRef) + 'px';
 
@@ -87,7 +88,7 @@ const VendorProfile = React.forwardRef((props:any, navbarRef)=> {
               <VendorProfileContent 
                 isMobile={isMobile} 
                 closeVendor={() => dispatch(deSelectVendor(vendor.id))}
-                findOnMap={() => { zoomToMarker('lol') }}
+                findOnMap={() => { zoomToCurrentlySelectedVendor() }}
                 vendor={vendor}
                 Categories={Categories}
                 state={state} /> : 
@@ -97,7 +98,7 @@ const VendorProfile = React.forwardRef((props:any, navbarRef)=> {
       :
       // Mobile version
       <div className={showMobileVendorProfile ? 'vendorprofile_mobile__wrapper' : 'vendorprofile_mobile__wrapper_hidden'}>
-        { isLoaded ? 
+        { isLoaded ?
           <React.Fragment>
             <div ref={mobileHeaderRef} className='font__vendor_profile_header vendorprofile_mobile__header_wrapper'>
               <div className='flex__center'>
@@ -107,7 +108,17 @@ const VendorProfile = React.forwardRef((props:any, navbarRef)=> {
                 <h2>{vendor.name}</h2>
               </div>
               <div className='flex__center'>
-                <i className="material-icons-outlined" onClick={ () => { dispatch(deSelectVendor(vendor.id, () => { dispatch(toggleMobileMenu()) })) } } >close</i>
+                <i className="material-icons-outlined" 
+                  onClick={ () => { 
+                    // If there is a currently selected vendor just toggle the menu
+                    if (vendor.isActive) {
+                        dispatch(toggleMobileMenu())
+                    // Else deselect the non active vendor and toggle menu (Because this vendor doesn't need to still be selected once the menu is hidden)
+                    } else {
+                      dispatch(deSelectVendor(vendor.id, () => dispatch(toggleMobileMenu())))
+                    }
+                  } 
+                } >close</i>
               </div>
             </div>
 
@@ -121,8 +132,11 @@ const VendorProfile = React.forwardRef((props:any, navbarRef)=> {
             >
               <VendorProfileContent 
                 isMobile={isMobile} 
-                closeVendor={() => dispatch(deSelectVendor(vendor.id))}
-                findOnMap={() => dispatch(toggleMobileMenu())}
+                findOnMap={() => {
+                    dispatch(toggleMobileMenu());
+                    zoomToCurrentlySelectedVendor();
+                  }
+                }
                 vendor={vendor} 
                 Categories={Categories} 
                 state={state} />

@@ -6,7 +6,7 @@ import Comments from '../comments/comment-section';
 
 interface VendorProfileContentProps  {
     isMobile: boolean,
-    closeVendor: any,
+    closeVendor?: any,
     findOnMap: any,
     vendor: any,
     Categories: ReactComponentElement<any>[],
@@ -42,7 +42,6 @@ const VendorProfileContent = (props:VendorProfileContentProps) => {
             </div>
           }
 
-    
           <div className='font__vendor_profile_title vendorprofile__title_wrapper'>
             <h2>{vendor.name}</h2>
           </div>
@@ -52,34 +51,43 @@ const VendorProfileContent = (props:VendorProfileContentProps) => {
           </div>
     
           <div className='vendorprofile__info_wrapper'>
-            <div className='vendorprofile__info_row'>
-              <div className='vendorprofile__info_icon_wrapper'>
-                <i className="material-icons-outlined">room</i> 
-              </div>
-              <div className='vendorprofile__info_text_wrapper font__vendor_profile_info'>
-                <h2 onClick={findOnMap}>FIND ON MAP</h2>
-              </div>
-            </div>
+
+            { vendor.isActive ? 
+              <div className='vendorprofile__info_row'>
+                <div className='vendorprofile__info_icon_wrapper'>
+                  <i className="material-icons-outlined">room</i> 
+                </div>
+                <div className='vendorprofile__info_text_wrapper font__vendor_profile_info'>
+                  <h2 onClick={findOnMap}>FIND ON MAP</h2>
+                </div>
+              </div> :
+              null
+            }
+
+            { vendor.website ? 
+              <div className='vendorprofile__info_row'>
+                <div className='vendorprofile__info_icon_wrapper'>
+                  <i className="material-icons-outlined">web</i> 
+                </div>
+                <div className='vendorprofile__info_text_wrapper font__vendor_profile_info'>
+                  { vendor.website ? <h2><a target='_blank' href={vendor.website}>WEBSITE</a></h2> : <h2>WEBSITE UNAVAILABLE</h2> }
+                </div>
+              </div> :
+              null
+            }
+
+            { vendor.phoneNumber ? 
+              <div className='vendorprofile__info_row'>
+                <div className='vendorprofile__info_icon_wrapper'>
+                  <i className="material-icons-outlined">local_phone</i> 
+                </div>
+                <div className='vendorprofile__info_text_wrapper font__vendor_profile_info'>
+                  { vendor.phoneNumber ? <h2><a href={`tel:${vendor.phoneNumber}`}>{vendor.phoneNumber}</a></h2> : <h2>PHONE UNAVAILABLE</h2> }
+                </div>
+              </div> :
+              null
+            }
     
-            <div className='vendorprofile__info_row'>
-              <div className='vendorprofile__info_icon_wrapper'>
-                <i className="material-icons-outlined">web</i> 
-              </div>
-              <div className='vendorprofile__info_text_wrapper font__vendor_profile_info'>
-                { vendor.website ? <h2><a target='_blank' href={vendor.website}>WEBSITE</a></h2> : <h2>WEBSITE UNAVAILABLE</h2> }
-              </div>
-            </div>
-    
-            <div className='vendorprofile__info_row'>
-              <div className='vendorprofile__info_icon_wrapper'>
-                <i className="material-icons-outlined">local_phone</i> 
-              </div>
-              <div className='vendorprofile__info_text_wrapper font__vendor_profile_info'>
-                { vendor.phoneNumber ? <h2><a href={`tel:${vendor.phoneNumber}`}>{vendor.phoneNumber}</a></h2> : <h2>PHONE UNAVAILABLE</h2> }
-              </div>
-            </div>
-    
-            
             <div className='vendorprofile__info_row'>
               <div className='vendorprofile__info_icon_wrapper'>
                 <i className="material-icons-outlined">local_shipping</i> 

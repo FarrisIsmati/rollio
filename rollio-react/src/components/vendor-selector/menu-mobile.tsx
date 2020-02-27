@@ -9,8 +9,10 @@ import VendorProfile from '../vendor-profile/vendor-profile'
 
 // ACTIONS
 import { toggleMobileMenu } from '../../redux/actions/ui-actions';
+import { deSelectVendor } from '../../redux/actions/data-actions';
 
 // HOOKS
+import useGetAppState from '../common/hooks/use-get-app-state';
 import useSetMobileMenuStyle from './hooks/use-set-mobile-menu-style';
 import useSetMobileMenuHeightOnScroll from './hooks/use-set-mobile-menu-height-on-scroll';
 import useToggleVendorMenuOnScreenSwitch from './hooks/use-toggle-vendor-menu-on-screen-switch';
@@ -18,6 +20,9 @@ import useToggleVendorMenuOnScreenSwitch from './hooks/use-toggle-vendor-menu-on
 // TO DO: ONCE NAVBAR IS SET PERMANATLEY THEN SET HEIGHT TO A PERCENTAGE OF WIDNOWHEIGHT - NAVBAR HEIGHT
 
 const MenuMobile:FC = () => {
+    // Hooks
+    const state = useGetAppState();
+
     // Refs
     const topRef = useCallbackRef(null, () => {});
     
@@ -38,7 +43,18 @@ const MenuMobile:FC = () => {
                     <div className="menu_mobile__topbar">
                         <div className="menu_mobile__topbar_text">
                             <h2 className="font__menu_topbar">All Food Trucks</h2>
-                            { isMenuExpanded ?  <i className="material-icons-outlined" onClick={()=>{dispatch(toggleMobileMenu())}}>close</i> : <i className="material-icons-outlined" onClick={()=>{dispatch(toggleMobileMenu())}}>keyboard_arrow_up</i> }
+                            { isMenuExpanded ? 
+                                <i className="material-icons-outlined" onClick={()=>{dispatch(toggleMobileMenu())}}>close</i> : 
+                                <i className="material-icons-outlined" onClick={()=>{
+                                    // If there is a currently selected vendor, deselect it then bring the vendor menu back
+                                    if (state.regionMap.currentlySelected.id) {
+                                        dispatch(deSelectVendor(state.data.selectedVendor.id, () => dispatch(toggleMobileMenu())));
+                                    // Else just bring the vendor menu back
+                                    } else {
+                                        dispatch(toggleMobileMenu());
+                                    }
+                                }}>keyboard_arrow_up</i> 
+                            }
                         </div>
                     </div>
                 </div>
