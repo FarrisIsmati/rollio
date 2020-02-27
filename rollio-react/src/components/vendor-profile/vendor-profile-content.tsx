@@ -6,14 +6,22 @@ import Comments from '../comments/comment-section';
 
 interface VendorProfileContentProps  {
     isMobile: boolean,
-    onClickClose: any,
+    closeVendor: any,
+    findOnMap: any,
     vendor: any,
     Categories: ReactComponentElement<any>[],
     state: any
 }
 
 const VendorProfileContent = (props:VendorProfileContentProps) => {
-    const { isMobile, onClickClose, vendor, Categories, state } = props;
+    const { 
+      isMobile, 
+      closeVendor, 
+      findOnMap, 
+      vendor, 
+      Categories, 
+      state 
+    } = props;
 
     return (     
         <React.Fragment>
@@ -27,7 +35,7 @@ const VendorProfileContent = (props:VendorProfileContentProps) => {
             <div className='vendorprofile__image_wrapper'>
                 <div className='vendorprofile__image'>
                 <div className="vendorprofile__close_wrapper">
-                    <i className="material-icons-outlined" onClick={onClickClose}>close</i>
+                    <i className="material-icons-outlined" onClick={closeVendor}>close</i>
                 </div>
                 <img alt={`${vendor.name} logo`} src={vendor.bannerImageLink} /> 
                 </div>
@@ -49,7 +57,7 @@ const VendorProfileContent = (props:VendorProfileContentProps) => {
                 <i className="material-icons-outlined">room</i> 
               </div>
               <div className='vendorprofile__info_text_wrapper font__vendor_profile_info'>
-                <h2>FIND ON MAP</h2>
+                <h2 onClick={findOnMap}>FIND ON MAP</h2>
               </div>
             </div>
     

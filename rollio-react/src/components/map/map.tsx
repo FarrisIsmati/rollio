@@ -1,11 +1,11 @@
 // DEPENDENCIES
 import React from 'react';
 import mapboxgl from 'mapbox-gl';
-import PropTypes from 'prop-types';
-import { useState, useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 
 // HOOKS
 import useMapMarkers from './hooks/useMapMarkers';
+import useGlobalState from '../common/hooks/use-global-state';
 
 // CONFIG
 import { MAPBOX_API_KEY } from '../../config'
@@ -16,15 +16,13 @@ import { MapProps } from './interfaces';
 const mapMarkerElement:any = (<div>lol</div>)
 
 const Map = (props: MapProps) => {
-  const { mapType, mapData } = props;
-
-  const [map, setMap] = useState<any>(null);
+  const [globalState, setGlobalState] = useGlobalState();
   const mapContainer = useRef<any>(null);
 
   useEffect(() => {
     //@ts-ignore
     mapboxgl.accessToken = MAPBOX_API_KEY;
-    const initializeMap = ({ setMap, mapContainer } : { setMap: any, mapContainer: any}) => {
+    const initializeMap = ({ mapContainer } : { mapContainer: any}) => {
       const map = new mapboxgl.Map({
         container: mapContainer.current,
         style: 'mapbox://styles/farrisismati/ck04ma9xw0mse1cp25m11fgqs',
@@ -34,31 +32,23 @@ const Map = (props: MapProps) => {
       });
 
       map.on("load", () => {
-        setMap(map);
+        setGlobalState({ map });
         map.resize();
       });
     };
 
     // If that map has not been rendered, render it
-    if (!map) initializeMap({ setMap, mapContainer });
-  }, [map])
+    if (!globalState.map) initializeMap({ mapContainer });
+  }, [globalState.map])
 
   // Should reupdate everytime the map updates
-  useMapMarkers({...props, map, mapMarkerElement})
+  useMapMarkers({...props, map: globalState.map, mapMarkerElement})
 
   return (
     <div className='map__wrapper'>
       <div ref={el => (mapContainer.current = el)}></div>
     </div>
   );
-}
-
-Map.propTypes = {
-  mapType: PropTypes.string.isRequired,
-}
-
-Map.defaultProps  = {
-  mapType: 'region'
 }
 
 export default Map;

@@ -1,6 +1,5 @@
 // DEPENDENCIES
-import { useState, useEffect } from 'react';
-import mapboxgl from 'mapbox-gl';
+import { useEffect } from 'react';
 
 // HOOKS
 import useGetAppState from '../../common/hooks/use-get-app-state';
