@@ -24,6 +24,14 @@
             z-index: 2;
         }
     }
+
+    &__infocard {
+        &_wrapper {
+            background-color: white;
+            width: 100px;
+            height: 100px;
+        }
+    }
 }
 
 .mapboxgl-map {

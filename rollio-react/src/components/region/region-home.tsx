@@ -47,6 +47,7 @@ const RegionHome = (props:any) => {
         <RegionNavbar /> :
         <VendorSelectorDesktop/> 
       }
+      {/* RIGHT HERE ADD MAP INFO CARD */}
       { Map }
       { isMobile ?
         <VendorSelectorMobile /> :
