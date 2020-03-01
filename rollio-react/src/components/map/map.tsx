@@ -3,9 +3,13 @@ import React from 'react';
 import mapboxgl from 'mapbox-gl';
 import { useRef, useEffect } from 'react';
 
+// COMPONENTS
+import MapInfoCard from './map-info-card';
+
 // HOOKS
 import useMapMarkers from './hooks/useMapMarkers';
 import useGlobalState from '../common/hooks/use-global-state';
+import windowSizeEffects from '../common/hooks/use-window-size';
 
 // CONFIG
 import { MAPBOX_API_KEY } from '../../config'
@@ -16,6 +20,8 @@ import { MapProps } from './interfaces';
 const mapMarkerElement:any = (<div>lol</div>)
 
 const Map = (props: MapProps) => {
+  const isMobile = windowSizeEffects.useIsMobile();
+
   const [globalState, setGlobalState] = useGlobalState();
   const mapContainer = useRef<any>(null);
 
@@ -46,6 +52,7 @@ const Map = (props: MapProps) => {
 
   return (
     <div className='map__wrapper'>
+      { isMobile ? <MapInfoCard /> : null }
       <div ref={el => (mapContainer.current = el)}></div>
     </div>
   );
