@@ -34,6 +34,9 @@
         box-shadow: 0 4px 8px -4px grey;
         padding: 8px 16px;
         box-sizing: border-box;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         
         &_wrapper {
             height: 72px;
@@ -44,6 +47,31 @@
             z-index: 2;
             padding: 0 15px;
             box-sizing: border-box;
+        }
+
+        &_image {
+            width: 56px;
+            height: 56px;
+
+            &_wrapper {
+                min-width: 56px;
+                min-height: 56px;
+                background-color: $color-blank-image;
+            }
+
+            img {
+                max-width: 100%;
+                max-height: 100%;
+            }
+        }
+
+        &_text {
+            margin-left: 16px;
+            color: $color-map-infocard-font;
+
+            h2 {
+                word-break: break-word;
+            }
         }
     }
 }
@@ -56,6 +84,11 @@
 .font__map_marker_font {
     @include font-bold;
     font-size: 18px;
+}
+
+.font__map_infocard_font {
+    @include font-bold;
+    font-size: 16px;
 }
 
 // MEDIA QUERIES

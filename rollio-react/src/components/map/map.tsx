@@ -7,6 +7,8 @@ import { useRef, useEffect } from 'react';
 import MapInfoCard from './map-info-card';
 
 // HOOKS
+import useShowInfoCard from './hooks/useShowInfoCard';
+import useGetInfoCardData from './hooks/useGetInfoCardData';
 import useMapMarkers from './hooks/useMapMarkers';
 import useGlobalState from '../common/hooks/use-global-state';
 import windowSizeEffects from '../common/hooks/use-window-size';
@@ -17,14 +19,15 @@ import { MAPBOX_API_KEY } from '../../config'
 // INTERFACES
 import { MapProps } from './interfaces';
 
-const mapMarkerElement:any = (<div>lol</div>)
+const mapMarkerElement:any = (<div></div>)
 
 const Map = (props: MapProps) => {
-  const isMobile = windowSizeEffects.useIsMobile();
-
+  // Effects
   const [globalState, setGlobalState] = useGlobalState();
   const mapContainer = useRef<any>(null);
-
+  const showInfoCard = useShowInfoCard();
+  const infoCardData = useGetInfoCardData();
+  
   useEffect(() => {
     //@ts-ignore
     mapboxgl.accessToken = MAPBOX_API_KEY;
@@ -52,7 +55,8 @@ const Map = (props: MapProps) => {
 
   return (
     <div className='map__wrapper'>
-      { isMobile ? <MapInfoCard /> : null }
+      {/*  Show if currentlySelected && !isMobileMenuExpanded */}
+      { showInfoCard ? <MapInfoCard name={ infoCardData.name } profileImageLink={ infoCardData.profileImageLink } onClick={() => console.log('lol')} /> : null }
       <div ref={el => (mapContainer.current = el)}></div>
     </div>
   );
