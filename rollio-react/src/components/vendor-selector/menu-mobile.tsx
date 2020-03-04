@@ -58,7 +58,8 @@ const MenuMobile:FC = () => {
                         </div>
                     </div>
                 </div>
-                <VendorLinks ref={topRef} {...{vendorLinksHeight}} />
+                <p>TEST GOES HERE</p>
+                <VendorLinks { ...{vendorLinksHeight, refs: [topRef]} } />
             </div>
         </div>
     );

@@ -15,6 +15,7 @@ const MenuDesktop = () => {
   // Set size of menu will be screen height - (div above menu links)
   // Callback ref runs after component is mounted
   const navbarRef = useCallbackRef(null, () => {});
+  const vendorActiveRef = useCallbackRef(null, () => {});
 
   const vendorLinksHeight = windowSizeEffects.useWindowHeight() - 26
 
@@ -26,7 +27,11 @@ const MenuDesktop = () => {
         <VendorProfile ref={navbarRef} />
       </div>
       <div className="menu__wrapper">
-          <VendorLinks ref={navbarRef} {...{ vendorLinksHeight }}/>
+        <div ref={ vendorActiveRef }>
+          <h3>Active Trucks</h3>
+          <h3>All Trucks</h3>
+        </div>
+        <VendorLinks {...{ vendorLinksHeight, refs: [navbarRef, vendorActiveRef] }}/>
       </div>
     </div>
   );
