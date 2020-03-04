@@ -14,7 +14,7 @@ const VendorLinks = React.forwardRef((props:any, ref) => {
 
   // Hooks
   const state = useGetAppState();
-  const height = useGetLinksHeight(ref, vendorLinksHeight);
+  const height = useGetLinksHeight([ref], vendorLinksHeight);
 
   // Quick variable references
   const isVendorSelected = state.ui.isVendorSelected;
