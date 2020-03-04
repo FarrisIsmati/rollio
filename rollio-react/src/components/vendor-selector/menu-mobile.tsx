@@ -42,7 +42,7 @@ const MenuMobile:FC = () => {
                 <div ref={topRef} className="menu_mobile__topbar_wrapper">
                     <div className="menu_mobile__topbar">
                         <div className="menu_mobile__topbar_text">
-                            <h2 className="font__menu_topbar">All Food Trucks</h2>
+                            <h2 className="font__menu_topbar">Food Trucks</h2>
                             { isMenuExpanded ? 
                                 <i className="material-icons-outlined" onClick={()=>{dispatch(toggleMobileMenu())}}>close</i> : 
                                 <i className="material-icons-outlined" onClick={()=>{
