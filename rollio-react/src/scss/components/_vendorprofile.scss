@@ -116,6 +116,23 @@
             display: inline-grid;
             grid-template-columns: 14.58% auto;
             margin: 16px 0;
+
+            
+            &_clickable {
+                @extend .vendorprofile__info_row;
+                transition: color 0.25s ease;
+                &:hover h2 {
+                    cursor: pointer;
+                    color: $color-vendor-info-main-hover !important;
+                    transition: color 0.15s ease;
+                }
+
+                &:hover i {
+                    cursor: pointer;
+                    color: $color-vendor-info-main-hover !important;
+                    transition: color 0.15s ease;
+                }
+            }
         }
 
         &_icon_wrapper {
@@ -133,11 +150,6 @@
             i {
                 color: $color-vendor-profile-info-icon-alt;
             }
-        }
-
-        &_text_wrapper {
-            display: flex;
-            align-items: center;
         }
     }
 

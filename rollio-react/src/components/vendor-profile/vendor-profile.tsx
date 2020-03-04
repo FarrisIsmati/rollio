@@ -15,12 +15,8 @@ import useGetHeight from './hooks/use-get-vendor-profile-height';
 import useMap from '../map/hooks/useMap';
 
 // ACTIONS
-import { 
-  deSelectVendor 
-} from '../../redux/actions/data-actions';
-import { 
-  toggleMobileMenu 
-} from '../../redux/actions/ui-actions';
+import { deSelectVendor } from '../../redux/actions/data-actions';
+import { toggleMobileMenu } from '../../redux/actions/ui-actions';
 
 // Returns an array of categories
 const setCategoriesComponent = (args:any) => {

@@ -56,7 +56,7 @@ const Map = (props: MapProps) => {
   return (
     <div className='map__wrapper'>
       {/*  Show if currentlySelected && !isMobileMenuExpanded */}
-      { showInfoCard ? <MapInfoCard name={ infoCardData.name } profileImageLink={ infoCardData.profileImageLink } onClick={() => console.log('lol')} /> : null }
+      { showInfoCard ? <MapInfoCard name={ infoCardData.name } profileImageLink={ infoCardData.profileImageLink } onClick={ infoCardData.onClick } /> : null }
       <div ref={el => (mapContainer.current = el)}></div>
     </div>
   );
