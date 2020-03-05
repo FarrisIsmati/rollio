@@ -6,6 +6,7 @@ import { useCallbackRef } from 'use-callback-ref';
 import VendorLinks from './vendor-links';
 import VendorProfile from '../vendor-profile/vendor-profile'
 import Navbar from '../navbar/region-navbar';
+import TwoOptionSwitch from '../common/other/two-option-switch';
 
 // HOOKS
 import windowSizeEffects from '../common/hooks/use-window-size';
@@ -15,7 +16,7 @@ const MenuDesktop = () => {
   // Set size of menu will be screen height - (div above menu links)
   // Callback ref runs after component is mounted
   const navbarRef = useCallbackRef(null, () => {});
-  const vendorActiveRef = useCallbackRef(null, () => {});
+  const menuActiveSwtichRef = useCallbackRef(null, () => {});
 
   const vendorLinksHeight = windowSizeEffects.useWindowHeight() - 26
 
@@ -27,11 +28,8 @@ const MenuDesktop = () => {
         <VendorProfile ref={navbarRef} />
       </div>
       <div className="menu__wrapper">
-        <div ref={ vendorActiveRef }>
-          <h3>Active Trucks</h3>
-          <h3>All Trucks</h3>
-        </div>
-        <VendorLinks {...{ vendorLinksHeight, refs: [navbarRef, vendorActiveRef] }}/>
+        <TwoOptionSwitch onClick={ (opt:string)=>{console.log(opt)} } vendorTypeName={ 'Trucks' } isOptionA={ false } ref={ menuActiveSwtichRef } font='font__menu_switch' />
+        <VendorLinks {...{ vendorLinksHeight, refs: [navbarRef, menuActiveSwtichRef] }}/>
       </div>
     </div>
   );
