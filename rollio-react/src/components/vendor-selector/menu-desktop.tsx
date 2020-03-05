@@ -1,5 +1,6 @@
 // DEPENDENCIES
 import React from 'react';
+import { useDispatch  } from 'react-redux';
 import { useCallbackRef } from 'use-callback-ref';
 
 // COMPONENTS
@@ -8,10 +9,18 @@ import VendorProfile from '../vendor-profile/vendor-profile'
 import Navbar from '../navbar/region-navbar';
 import TwoOptionSwitch from '../common/other/two-option-switch';
 
+// ACTIONS
+import { setMenuVendorsDisplay } from '../../redux/actions/ui-actions';
+
 // HOOKS
 import windowSizeEffects from '../common/hooks/use-window-size';
+import useGetAppState from '../common/hooks/use-get-app-state';
 
 const MenuDesktop = () => {
+  // Hooks
+  const dispatch = useDispatch();
+  const state = useGetAppState();
+
   // Create ref to figure out set size of the menu to allow scrolling
   // Set size of menu will be screen height - (div above menu links)
   // Callback ref runs after component is mounted
@@ -28,9 +37,16 @@ const MenuDesktop = () => {
         <VendorProfile ref={navbarRef} />
       </div>
       <div className="menu__wrapper">
-        <TwoOptionSwitch onClick={ (opt:string)=>{console.log(opt)} } vendorTypeName={ 'Trucks' } isOptionA={ false } ref={ menuActiveSwtichRef } font='font__menu_switch' />
+        <TwoOptionSwitch 
+          onClick={ (opt:string)=>{ dispatch(setMenuVendorsDisplay(opt === 'a' ? 'active' : 'all')) } }
+          vendorTypeName={ 'Trucks' } 
+          isOptionA={ state.ui.menuVendorsDisplay === 'all' ? true : false } 
+          ref={ menuActiveSwtichRef } 
+          font='font__menu_switch' 
+        />
         <VendorLinks {...{ vendorLinksHeight, refs: [navbarRef, menuActiveSwtichRef] }}/>
       </div>
+
     </div>
   );
 }

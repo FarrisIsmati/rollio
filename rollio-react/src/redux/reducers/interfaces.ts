@@ -133,5 +133,6 @@ export interface LoadStateDefaultState {
 // UI
 export interface UiDefaultState {
     isMobileMenuExpanded: boolean,
-    isVendorSelected: boolean
+    isVendorSelected: boolean,
+    menuVendorsDisplay: string
 }

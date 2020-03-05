@@ -6,10 +6,12 @@ import { useCallbackRef } from 'use-callback-ref';
 // COMPONENTS
 import VendorLinks from './vendor-links';
 import VendorProfile from '../vendor-profile/vendor-profile'
+import TwoOptionSwitch from '../common/other/two-option-switch';
 
 // ACTIONS
 import { toggleMobileMenu } from '../../redux/actions/ui-actions';
 import { deSelectVendor } from '../../redux/actions/data-actions';
+import { setMenuVendorsDisplay } from '../../redux/actions/ui-actions';
 
 // HOOKS
 import useGetAppState from '../common/hooks/use-get-app-state';
@@ -22,6 +24,7 @@ import useToggleVendorMenuOnScreenSwitch from './hooks/use-toggle-vendor-menu-on
 const MenuMobile:FC = () => {
     // Hooks
     const state = useGetAppState();
+    const dispatch = useDispatch();
 
     // Refs
     const topRef = useCallbackRef(null, () => {});
@@ -29,7 +32,6 @@ const MenuMobile:FC = () => {
     // Effects
     useToggleVendorMenuOnScreenSwitch();
 
-    const dispatch = useDispatch();
     const { isMenuExpanded, expandedMenuStyle, contractedMenuStyle} = useSetMobileMenuStyle();
     // Does vendor profile height size animation based on scroll position
     const { vendorLinksHeight, scrollPositionCb, properHeight } = useSetMobileMenuHeightOnScroll({topRef, expandedMenuStyle})
@@ -58,7 +60,12 @@ const MenuMobile:FC = () => {
                         </div>
                     </div>
                 </div>
-                <p>TEST GOES HERE</p>
+                <TwoOptionSwitch 
+                    onClick={ (opt:string)=>{ dispatch(setMenuVendorsDisplay(opt === 'a' ? 'active' : 'all')) } }
+                    vendorTypeName={ 'Trucks' } 
+                    isOptionA={ state.ui.menuVendorsDisplay === 'all' ? true : false } 
+                    font='font__menu_switch'
+                />
                 <VendorLinks { ...{vendorLinksHeight, refs: [topRef]} } />
             </div>
         </div>

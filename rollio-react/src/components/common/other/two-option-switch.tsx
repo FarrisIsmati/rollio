@@ -8,7 +8,7 @@ const TwoOptionSwitch = React.forwardRef((props:TwoOptionSwitchProps, ref:any) =
   const { vendorTypeName, isOptionA, onClick, font } = props;
 
   return ( 
-    <div ref={ ref } className="twooptionswitch__wrapper">
+    <div ref={ ref ? ref : null } className="twooptionswitch__wrapper">
       {/* Option A */}
       <div onClick={ () => onClick('a') } className={`${ isOptionA ? 'twooptionswitch__text_inactive' : 'twooptionswitch__text' } ${ font }` }>
           <h2>Active { vendorTypeName }</h2>
