@@ -4,7 +4,7 @@ import { useDispatch  } from 'react-redux';
 import { useCallbackRef } from 'use-callback-ref';
 
 // COMPONENTS
-import VendorLinks from './vendor-links';
+import MenuLinks from './menu-links';
 import VendorProfile from '../vendor-profile/vendor-profile'
 import Navbar from '../navbar/region-navbar';
 import TwoOptionSwitch from '../common/other/two-option-switch';
@@ -44,7 +44,7 @@ const MenuDesktop = () => {
           ref={ menuActiveSwtichRef } 
           font='font__menu_switch' 
         />
-        <VendorLinks {...{ vendorLinksHeight, refs: [navbarRef, menuActiveSwtichRef] }}/>
+        <MenuLinks {...{ vendorLinksHeight, refs: [navbarRef, menuActiveSwtichRef] }}/>
       </div>
 
     </div>

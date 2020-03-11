@@ -1,4 +1,4 @@
-export interface VendorLinkProps  {
+export interface MenuLinkProps  {
     name: string,
     id: string,
     img?: string

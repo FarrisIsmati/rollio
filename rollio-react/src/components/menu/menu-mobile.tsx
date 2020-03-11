@@ -4,7 +4,7 @@ import { useDispatch  } from 'react-redux';
 import { useCallbackRef } from 'use-callback-ref';
 
 // COMPONENTS
-import VendorLinks from './vendor-links';
+import MenuLinks from './menu-links';
 import VendorProfile from '../vendor-profile/vendor-profile'
 import TwoOptionSwitch from '../common/other/two-option-switch';
 
@@ -66,7 +66,7 @@ const MenuMobile:FC = () => {
                     isOptionA={ state.ui.menuVendorsDisplay === 'all' ? true : false } 
                     font='font__menu_switch'
                 />
-                <VendorLinks { ...{vendorLinksHeight, refs: [topRef]} } />
+                <MenuLinks { ...{vendorLinksHeight, refs: [topRef]} } />
             </div>
         </div>
     );

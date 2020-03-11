@@ -4,11 +4,11 @@ import { Scrollbars } from 'react-custom-scrollbars';
 
 // HOOKS
 import useGetLinksHeight from './hooks/use-get-links-height';
-import useGetVendorLinks from './hooks/use-get-links';
+import useGetMenuLinks from './hooks/use-get-links';
 import useGetAppState from '../common/hooks/use-get-app-state';
 
-const VendorLinks = React.forwardRef((props:any, ref:any) => {
-  const links = useGetVendorLinks();
+const MenuLinks = React.forwardRef((props:any, ref:any) => {
+  const links = useGetMenuLinks();
 
   const { vendorLinksHeight, refs } = props;
 
@@ -34,4 +34,4 @@ const VendorLinks = React.forwardRef((props:any, ref:any) => {
   );
 })
 
-export default VendorLinks;
+export default MenuLinks;

@@ -3,8 +3,8 @@ import React, { ReactComponentElement } from 'react';
 
 // COMPONENTS
 import Map from '../map/map';
-import VendorSelectorDesktop from '../vendor-selector/menu-desktop';
-import VendorSelectorMobile from '../vendor-selector/menu-mobile';
+import VendorSelectorDesktop from '../menu/menu-desktop';
+import VendorSelectorMobile from '../menu/menu-mobile';
 import RegionNavbar from '../navbar/region-navbar'
 
 // HOOKS
