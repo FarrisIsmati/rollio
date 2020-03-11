@@ -29,7 +29,7 @@ const useCommentAdd = (props:any) => {
     })
 
     const getNamePlaceHolder = () => {
-        return commentActive === false ? 'Share thoughts...' : 'Name (Optional)';   
+        return commentActive === false ? 'Add Comment' : 'Name (Optional)';   
     }
 
     const getIsLocked = () => {

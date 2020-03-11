@@ -57,7 +57,7 @@ const CommentAdd:FC = (props) => {
                     onBlur={blurComment} 
                     value={commentBody} 
                     ref={commentBodyTextArea} 
-                    placeholder={'Share thoughts...'} 
+                    placeholder={'Add Comment'} 
                     className={'textarea__grow font__textarea_grow font__comment_add_content'}/>
                 <div className='commentadd__button_holder'>
                     <ButtonBare

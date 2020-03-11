@@ -105,9 +105,7 @@ const VendorProfileContent = (props:VendorProfileContentProps) => {
                 { vendor.creditCard === 'y' ? <h2>Accepts Credit Cards</h2> : <h2>Doesn't Accept Credit Card</h2>}
               </div>
             </div>
-    
-            <div className='linebreak'></div>
-    
+        
             <div className='vendorprofile__comments_wrapper'>
               <h2 className='vendorprofile__comments_header font__vendor_profile_header_alt'>Comments</h2>
               <Comments comments={state.data.selectedVendor.comments}/>

@@ -12,6 +12,8 @@
         display: inline-grid;
         grid-template-columns: 14.58% auto;
         width: 100%;
+        border-bottom: 2px solid $color-comment-name-border;
+        padding-bottom: 16px;
     }
 
     &__icon_wrapper {
@@ -28,6 +30,13 @@
             width: 100%;
             display: flex;
             align-items: center;
+            
+           & #commentNameInput::-webkit-input-placeholder{
+                color: $color-comment-placeholder-text;
+            }
+            & #commentNameInput:-moz-placeholder {
+                color: $color-comment-placeholder-text;
+            }
 
             & input {
                 border-style: none;
@@ -63,13 +72,11 @@
 
         &_name {
             &_active {
-                border-bottom: 1px solid $color-comment-name-border;
-                transition:border-bottom .2s ease-in;
+                // Incase there needs to be styling
             }
 
             &_inactive {
-                border-bottom: 0px solid rgba(0,0,0,0);
-                transition:border-bottom .1s ease-out;
+                // Incase there needs to be styling
             }
         }
     }
@@ -154,10 +161,6 @@
         @include font-black;
         color: $color-font-main;
         font-size: 1em;
-
-        &::placeholder,::-moz-placeholder,:-moz-placeholder,::-webkit-input-placeholder,:-ms-input-placeholder  {
-            // This wont work?
-        }
     }
 
     &_error {
