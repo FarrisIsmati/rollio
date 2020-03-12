@@ -1,0 +1,20 @@
+How to deal with 'in front of', 'near', 'across from', 'by', 'right by', 'in the', etc.
+Hard code searches for 'intersection of', 'corner of' ???
+How to deal with multiple locations in one tweet
+How to deal with today, tomorrow, mon, tue, wed, times, etc.
+How to deal with ...
+Map all the gov't agencies...USDA, etc.
+
+Ignore all RT and 'Private'
+
+
+Need to have a mapping for common places (e.g. Noma, L'Enfant, Ballston, Rosslyn, Navy Yard, Union Station, Tyson's, Van Ness, Friendship Heights, Georgetown, State Department, State Dept, every farmers market, every metro, truckeroo, etc.)
+Get all the squares...they often just say 'farraget', for example
+
+
+send alert if they aren't sure what it is
+
+create other location types
+- brewery, neighborhood, intersection, reference, building, agency, company, events, etc.
+
+replace &amp; with and

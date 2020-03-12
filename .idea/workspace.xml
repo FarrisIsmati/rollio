@@ -1,0 +1,483 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="97f6a948-fb9f-4b86-8081-ddb773f8bc00" name="Default Changelist" comment="" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IgnoredFileRootStore">
+    <option name="generatedRoots">
+      <set>
+        <option value="$PROJECT_DIR$/.idea" />
+      </set>
+    </option>
+  </component>
+  <component name="ProjectId" id="1WV6FHC49lMAWCTS6xzTprfdy1G" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/rollio-react/src/components/tweets" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="nodejs.mocha.mocha_node_package_dir" value="$PROJECT_DIR$/rollio-service-vendor/node_modules/mocha" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="ts.external.directory.path" value="$PROJECT_DIR$/rollio-react/node_modules/typescript/lib" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/rollio-react/src/components/common/hooks" />
+      <recent name="$PROJECT_DIR$/rollio-react/src/components/authentication/interfaces" />
+      <recent name="$PROJECT_DIR$/rollio-react/src/components/authentication/utils" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/rollio-react/src/components/tweets" />
+      <recent name="$PROJECT_DIR$/rollio-react/src/components/error" />
+      <recent name="$PROJECT_DIR$/rollio-react/src/components/authentication/hooks" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Attach to Node.js/Chrome.Vendor service">
+    <configuration name="Vendor service" type="ChromiumRemoteDebugType" factoryName="Chromium Remote" port="8001">
+      <method v="2" />
+    </configuration>
+    <configuration name="Vendor Routes.POST" type="mocha-javascript-test-runner" temporary="true" nameIsGenerated="true">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <mocha-package>$PROJECT_DIR$/rollio-service-vendor/node_modules/mocha</mocha-package>
+      <working-directory>$PROJECT_DIR$/rollio-service-vendor</working-directory>
+      <pass-parent-env>true</pass-parent-env>
+      <envs>
+        <env name="NODE_ENV" value="TEST_LOCAL" />
+        <env name="PORT" value="3001" />
+        <env name="REGION" value="WASHINGTONDC" />
+      </envs>
+      <ui>bdd</ui>
+      <extra-mocha-options />
+      <test-kind>SUITE</test-kind>
+      <test-file>$PROJECT_DIR$/rollio-service-vendor/test/routes/vendor.spec.js</test-file>
+      <test-names>
+        <name value="Vendor Routes" />
+        <name value="POST" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="Vendor Routes.POST./vendor/:regionID/new.expect 400 if required fields are missing" type="mocha-javascript-test-runner" temporary="true" nameIsGenerated="true">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <mocha-package>$PROJECT_DIR$/rollio-service-vendor/node_modules/mocha</mocha-package>
+      <working-directory>$PROJECT_DIR$/rollio-service-vendor</working-directory>
+      <pass-parent-env>true</pass-parent-env>
+      <envs>
+        <env name="NODE_ENV" value="TEST_LOCAL" />
+        <env name="PORT" value="3001" />
+        <env name="REGION" value="WASHINGTONDC" />
+      </envs>
+      <ui>bdd</ui>
+      <extra-mocha-options />
+      <test-kind>TEST</test-kind>
+      <test-file>$PROJECT_DIR$/rollio-service-vendor/test/routes/vendor.spec.js</test-file>
+      <test-names>
+        <name value="Vendor Routes" />
+        <name value="POST" />
+        <name value="/vendor/:regionID/new" />
+        <name value="expect 400 if required fields are missing" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="Vendor Routes.POST./vendor/:regionID/new.expect 500 if required fields are missing" type="mocha-javascript-test-runner" temporary="true" nameIsGenerated="true">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <mocha-package>$PROJECT_DIR$/rollio-service-vendor/node_modules/mocha</mocha-package>
+      <working-directory>$PROJECT_DIR$/rollio-service-vendor</working-directory>
+      <pass-parent-env>true</pass-parent-env>
+      <envs>
+        <env name="NODE_ENV" value="TEST_LOCAL" />
+        <env name="PORT" value="3001" />
+        <env name="REGION" value="WASHINGTONDC" />
+      </envs>
+      <ui>bdd</ui>
+      <extra-mocha-options />
+      <test-kind>TEST</test-kind>
+      <test-file>$PROJECT_DIR$/rollio-service-vendor/test/routes/vendor.spec.js</test-file>
+      <test-names>
+        <name value="Vendor Routes" />
+        <name value="POST" />
+        <name value="/vendor/:regionID/new" />
+        <name value="expect 500 if required fields are missing" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="Vendor tests" type="mocha-javascript-test-runner">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <mocha-package>$PROJECT_DIR$/rollio-service-vendor/node_modules/mocha</mocha-package>
+      <working-directory>$PROJECT_DIR$</working-directory>
+      <pass-parent-env>true</pass-parent-env>
+      <envs>
+        <env name="NODE_ENV" value="TEST_LOCAL" />
+        <env name="PORT" value="3001" />
+        <env name="REGION" value="WASHINGTONDC" />
+      </envs>
+      <ui>bdd</ui>
+      <extra-mocha-options />
+      <test-kind>DIRECTORY</test-kind>
+      <test-directory />
+      <recursive>false</recursive>
+      <method v="2" />
+    </configuration>
+    <configuration name="rollio-service-vendor/test/db/Schemas.spec.js" type="mocha-javascript-test-runner" temporary="true" nameIsGenerated="true">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <mocha-package>$PROJECT_DIR$/rollio-service-vendor/node_modules/mocha</mocha-package>
+      <working-directory>$PROJECT_DIR$/rollio-service-vendor</working-directory>
+      <pass-parent-env>true</pass-parent-env>
+      <envs>
+        <env name="NODE_ENV" value="TEST_LOCAL" />
+        <env name="PORT" value="3001" />
+        <env name="REGION" value="WASHINGTONDC" />
+      </envs>
+      <ui>bdd</ui>
+      <extra-mocha-options />
+      <test-kind>TEST_FILE</test-kind>
+      <test-file>$PROJECT_DIR$/rollio-service-vendor/test/db/Schemas.spec.js</test-file>
+      <method v="2" />
+    </configuration>
+    <configuration name="rollio-service-vendor/test/routes/vendor.spec.js" type="mocha-javascript-test-runner" temporary="true" nameIsGenerated="true">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <mocha-package>$PROJECT_DIR$/rollio-service-vendor/node_modules/mocha</mocha-package>
+      <working-directory>$PROJECT_DIR$/rollio-service-vendor</working-directory>
+      <pass-parent-env>true</pass-parent-env>
+      <envs>
+        <env name="NODE_ENV" value="TEST_LOCAL" />
+        <env name="PORT" value="3001" />
+        <env name="REGION" value="WASHINGTONDC" />
+      </envs>
+      <ui>bdd</ui>
+      <extra-mocha-options />
+      <test-kind>TEST_FILE</test-kind>
+      <test-file>$PROJECT_DIR$/rollio-service-vendor/test/routes/vendor.spec.js</test-file>
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Attach to Node.js/Chrome.Vendor service" />
+      <item itemvalue="Mocha.Vendor tests" />
+      <item itemvalue="Mocha.rollio-service-vendor/test/db/Schemas.spec.js" />
+      <item itemvalue="Mocha.Vendor Routes.POST" />
+      <item itemvalue="Mocha.Vendor Routes.POST./vendor/:regionID/new.expect 400 if required fields are missing" />
+      <item itemvalue="Mocha.rollio-service-vendor/test/routes/vendor.spec.js" />
+      <item itemvalue="Mocha.Vendor Routes.POST./vendor/:regionID/new.expect 500 if required fields are missing" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Mocha.rollio-service-vendor/test/routes/vendor.spec.js" />
+        <item itemvalue="Mocha.Vendor Routes.POST./vendor/:regionID/new.expect 500 if required fields are missing" />
+        <item itemvalue="Mocha.Vendor Routes.POST./vendor/:regionID/new.expect 400 if required fields are missing" />
+        <item itemvalue="Mocha.Vendor Routes.POST" />
+        <item itemvalue="Mocha.rollio-service-vendor/test/db/Schemas.spec.js" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="97f6a948-fb9f-4b86-8081-ddb773f8bc00" name="Default Changelist" comment="" />
+      <created>1579222309053</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1579222309053</updated>
+      <workItem from="1579222311511" duration="73771000" />
+      <workItem from="1580258716585" duration="464000" />
+      <workItem from="1580843602640" duration="25000" />
+      <workItem from="1581005223442" duration="13000" />
+      <workItem from="1581381617037" duration="15000" />
+      <workItem from="1581382165215" duration="1002000" />
+      <workItem from="1581383379181" duration="1206000" />
+      <workItem from="1581468959378" duration="6000" />
+      <workItem from="1581469673625" duration="9000" />
+      <workItem from="1581470460853" duration="32000" />
+      <workItem from="1581470519293" duration="605000" />
+      <workItem from="1581870719588" duration="5566000" />
+      <workItem from="1581954078190" duration="2282000" />
+      <workItem from="1582738471606" duration="820000" />
+      <workItem from="1583016581615" duration="13000" />
+      <workItem from="1583016796850" duration="9000" />
+      <workItem from="1583696056762" duration="11000" />
+      <workItem from="1583696246207" duration="482000" />
+      <workItem from="1583971759580" duration="749000" />
+    </task>
+    <task id="LOCAL-00001" summary="get update vendors working">
+      <created>1579304098429</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1579304098429</updated>
+    </task>
+    <task id="LOCAL-00002" summary="fix db-operations.spec.js (returning vendor now)">
+      <created>1579304977244</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1579304977244</updated>
+    </task>
+    <task id="LOCAL-00003" summary="add .idea/** to gitignore">
+      <created>1579307566560</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1579307566560</updated>
+    </task>
+    <task id="LOCAL-00004" summary="remove .idea/** to gitignore">
+      <created>1579307610062</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1579307610062</updated>
+    </task>
+    <task id="LOCAL-00005" summary="add **/** to .idea/.gitignore">
+      <created>1579307707573</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1579307707573</updated>
+    </task>
+    <task id="LOCAL-00006" summary="add ** to .gitignore">
+      <created>1579307724298</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1579307724298</updated>
+    </task>
+    <task id="LOCAL-00007" summary="revert changes to .idea's gitignore">
+      <created>1579307750010</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1579307750010</updated>
+    </task>
+    <task id="LOCAL-00008" summary="add type to selectedVendor default">
+      <created>1579357103879</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1579357103879</updated>
+    </task>
+    <task id="LOCAL-00009" summary="update comments and spacing; delete fb and google stuff from user">
+      <created>1579362843555</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1579362843556</updated>
+    </task>
+    <task id="LOCAL-00010" summary="only unset vendorId if data.type and data.type !== vendor; through error if vendor not found in passVendorToNext">
+      <created>1579366410741</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1579366410741</updated>
+    </task>
+    <task id="LOCAL-00011" summary="install lodash and mongoose">
+      <created>1579367552478</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1579367552478</updated>
+    </task>
+    <task id="LOCAL-00012" summary="add user tests, etc; add users to dev and dev-seed;">
+      <created>1579373372317</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1579373372317</updated>
+    </task>
+    <task id="LOCAL-00013" summary="add seed user and tests for hasAllRequiredFields">
+      <created>1579373802447</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1579373802447</updated>
+    </task>
+    <task id="LOCAL-00014" summary="add approved to selectedVendor">
+      <created>1579383961907</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1579383961907</updated>
+    </task>
+    <task id="LOCAL-00015" summary="abstract out redirectToNewPage, useGetRegions, and useAuthentication">
+      <created>1579720264391</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1579720264391</updated>
+    </task>
+    <task id="LOCAL-00016" summary="use regionName instead of regionID in the route">
+      <created>1579794871937</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1579794871937</updated>
+    </task>
+    <task id="LOCAL-00017" summary="add admin route protection to useAuthentication; add permission-denied page">
+      <created>1579796671330</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1579796671330</updated>
+    </task>
+    <task id="LOCAL-00018" summary="add and use send403IfNoToken">
+      <created>1579827830810</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1579827830810</updated>
+    </task>
+    <task id="LOCAL-00019" summary="add tests for updating vendor route">
+      <created>1579829842658</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1579829842658</updated>
+    </task>
+    <task id="LOCAL-00020" summary="add restrictToAdmins on all tweet routes; update tweet.spec.js to get all passing and include all routes">
+      <created>1579889125570</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1579889125570</updated>
+    </task>
+    <task id="LOCAL-00021" summary="add admin route protection to useAuthentication">
+      <created>1579889712802</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1579889712802</updated>
+    </task>
+    <task id="LOCAL-00022" summary="update validation for coordinates; update coorinates test; add a test for hasAllRequiredFields">
+      <created>1579892549575</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1579892549575</updated>
+    </task>
+    <task id="LOCAL-00023" summary="update comment">
+      <created>1579892782763</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1579892782763</updated>
+    </task>
+    <task id="LOCAL-00024" summary="fix test for if required fields missing in creating a new vendor">
+      <created>1579893946032</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1579893946032</updated>
+    </task>
+    <task id="LOCAL-00025" summary="replace as many :any's as possible">
+      <created>1579987768454</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1579987768454</updated>
+    </task>
+    <task id="LOCAL-00026" summary="get user at app.tsx level if there is a token, but user is not authenticated">
+      <created>1580065994314</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1580065994315</updated>
+    </task>
+    <task id="LOCAL-00027" summary="move use-get-regions to it common/hooks">
+      <created>1581874189825</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1581874189825</updated>
+    </task>
+    <task id="LOCAL-00028" summary="move RegionName Only to interfaces.ts in redux/reducers">
+      <created>1581874504387</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1581874504387</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="add **/** to .idea/.gitignore" />
+    <MESSAGE value="add ** to .gitignore" />
+    <MESSAGE value="revert changes to .idea's gitignore" />
+    <MESSAGE value="add type to selectedVendor default" />
+    <MESSAGE value="update comments and spacing" />
+    <MESSAGE value="update comments and spacing; delete fb and google stuff from user" />
+    <MESSAGE value="only unset vendorId if data.type and data.type !== vendor; through error if vendor not found in passVendorToNext" />
+    <MESSAGE value="install lodash and mongoose" />
+    <MESSAGE value="add user tests, etc; add users to dev and dev-seed;" />
+    <MESSAGE value="add seed user and tests for hasAllRequiredFields" />
+    <MESSAGE value="add approved to selectedVendor" />
+    <MESSAGE value="abstract out redirectToNewPage, useGetRegions, and useAuthentication" />
+    <MESSAGE value="use regionName instead of regionID in the route" />
+    <MESSAGE value="add admin route protection to useAuthentication; add permission-denied page" />
+    <MESSAGE value="add and use send403IfNoToken" />
+    <MESSAGE value="add tests for updating vendor route" />
+    <MESSAGE value="add restrictToAdmins on all tweet routes; update tweet.spec.js to get all passing and include all routes" />
+    <MESSAGE value="add admin route protection to useAuthentication" />
+    <MESSAGE value="update validation for coordinates; update coorinates test; add a test for hasAllRequiredFields" />
+    <MESSAGE value="update comment" />
+    <MESSAGE value="fix test for if required fields missing in creating a new vendor" />
+    <MESSAGE value="replace as many :any's as possible" />
+    <MESSAGE value="get user at app.tsx level if there is a token, but user is not authenticated" />
+    <MESSAGE value="move use-get-regions to it common/hooks" />
+    <MESSAGE value="move RegionName Only to interfaces.ts in redux/reducers" />
+    <option name="LAST_COMMIT_MESSAGE" value="move RegionName Only to interfaces.ts in redux/reducers" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/rollio-service-vendor/test/routes/vendor.spec.js</url>
+          <line>413</line>
+          <option name="timeStamp" value="36" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
