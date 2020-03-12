@@ -2,7 +2,7 @@
 import React from 'react';
 
 // COMPONENTS
-import VendorSelectorLink from '../menu-link';
+import VendorSelectorLink from '../dashboard-link';
 
 // HOOKS
 import useGetAppState from '../../common/hooks/use-get-app-state';
@@ -15,13 +15,13 @@ const useGetLinks = () => {
 
     if (allVendors.length) {
       let list:any[] = [];
-      const menuVendorsDisplayState = state.ui.menuVendorsDisplay;
+      const dashboardVendorsDisplayState = state.ui.dashboardVendorsDisplay;
 
       // Links are dependent on menu state
       // May be changed if used else where than single menu
-      if (menuVendorsDisplayState === 'active') {
+      if (dashboardVendorsDisplayState === 'active') {
         list = allVendors.filter((vendor:any) => vendor.isActive);
-      } else if (menuVendorsDisplayState === 'all') {
+      } else if (dashboardVendorsDisplayState === 'all') {
         list = allVendors;
       } else {
         list = allVendors;

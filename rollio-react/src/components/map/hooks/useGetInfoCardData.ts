@@ -3,7 +3,7 @@ import { useDispatch  } from 'react-redux';
 
 // HOOKS
 import useGetAppState from '../../common/hooks/use-get-app-state';
-import { toggleMobileMenu } from '../../../redux/actions/ui-actions';
+import { toggleMobileDashboard } from '../../../redux/actions/ui-actions';
 
 
 const useGetInfoCardData = () => {
@@ -13,7 +13,7 @@ const useGetInfoCardData = () => {
 
     const vendor = state.data.selectedVendor;
 
-    const onClick = () => dispatch(toggleMobileMenu());
+    const onClick = () => dispatch(toggleMobileDashboard());
 
     return {
         profileImageLink: vendor.profileImageLink,

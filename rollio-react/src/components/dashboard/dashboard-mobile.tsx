@@ -4,24 +4,24 @@ import { useDispatch  } from 'react-redux';
 import { useCallbackRef } from 'use-callback-ref';
 
 // COMPONENTS
-import MenuLinks from './menu-links';
+import DashboardLinks from './dashboard-links';
 import VendorProfile from '../vendor-profile/vendor-profile'
 import TwoOptionSwitch from '../common/other/two-option-switch';
 
 // ACTIONS
-import { toggleMobileMenu } from '../../redux/actions/ui-actions';
+import { toggleMobileDashboard } from '../../redux/actions/ui-actions';
 import { deSelectVendor } from '../../redux/actions/data-actions';
-import { setMenuVendorsDisplay } from '../../redux/actions/ui-actions';
+import { setDashboardVendorsDisplay } from '../../redux/actions/ui-actions';
 
 // HOOKS
 import useGetAppState from '../common/hooks/use-get-app-state';
-import useSetMobileMenuStyle from './hooks/use-set-mobile-menu-style';
-import useSetMobileMenuHeightOnScroll from './hooks/use-set-mobile-menu-height-on-scroll';
-import useToggleVendorMenuOnScreenSwitch from './hooks/use-toggle-vendor-menu-on-screen-switch';
+import useSetDashboardMenuStyle from './hooks/use-set-mobile-dashboard-style';
+import useSetMobileMenuHeightOnScroll from './hooks/use-set-mobile-dashboard-height-on-scroll';
+import useToggleVendorMenuOnScreenSwitch from './hooks/use-toggle-vendor-dashboard-on-screen-switch';
 
 // TO DO: ONCE NAVBAR IS SET PERMANATLEY THEN SET HEIGHT TO A PERCENTAGE OF WIDNOWHEIGHT - NAVBAR HEIGHT
 
-const MenuMobile:FC = () => {
+const DashboardMobile:FC = () => {
     // Hooks
     const state = useGetAppState();
     const dispatch = useDispatch();
@@ -32,28 +32,28 @@ const MenuMobile:FC = () => {
     // Effects
     useToggleVendorMenuOnScreenSwitch();
 
-    const { isMenuExpanded, expandedMenuStyle, contractedMenuStyle} = useSetMobileMenuStyle();
+    const { isDashboardExpanded, expandedDashboardStyle, contractedDashboardStyle} = useSetDashboardMenuStyle();
     // Does vendor profile height size animation based on scroll position
-    const { vendorLinksHeight, scrollPositionCb, properHeight } = useSetMobileMenuHeightOnScroll({topRef, expandedMenuStyle})
+    const { vendorLinksHeight, scrollPositionCb, properHeight } = useSetMobileMenuHeightOnScroll({topRef, expandedDashboardStyle})
 
     return (
         // Mobile resize this flex centers
-        <div className="menu_mobile__wrapper" style={isMenuExpanded ? {...expandedMenuStyle, height: properHeight} : contractedMenuStyle} >
+        <div className="menu_mobile__wrapper" style={isDashboardExpanded ? {...expandedDashboardStyle, height: properHeight} : contractedDashboardStyle} >
             <VendorProfile scrollPositionCb={scrollPositionCb} ref={topRef}/>
             <div className="menu_mobile__content_wrapper">
                 <div ref={topRef} className="menu_mobile__topbar_wrapper">
                     <div className="menu_mobile__topbar">
                         <div className="menu_mobile__topbar_text">
                             <h2 className="font__menu_topbar">Food Trucks</h2>
-                            { isMenuExpanded ? 
-                                <i className="material-icons-outlined" onClick={()=>{dispatch(toggleMobileMenu())}}>close</i> : 
+                            { isDashboardExpanded ? 
+                                <i className="material-icons-outlined" onClick={()=>{dispatch(toggleMobileDashboard())}}>close</i> : 
                                 <i className="material-icons-outlined" onClick={()=>{
                                     // If there is a currently selected vendor, deselect it then bring the vendor menu back
                                     if (state.regionMap.currentlySelected.id) {
-                                        dispatch(deSelectVendor(state.data.selectedVendor.id, () => dispatch(toggleMobileMenu())));
+                                        dispatch(deSelectVendor(state.data.selectedVendor.id, () => dispatch(toggleMobileDashboard())));
                                     // Else just bring the vendor menu back
                                     } else {
-                                        dispatch(toggleMobileMenu());
+                                        dispatch(toggleMobileDashboard());
                                     }
                                 }}>keyboard_arrow_up</i> 
                             }
@@ -61,15 +61,15 @@ const MenuMobile:FC = () => {
                     </div>
                 </div>
                 <TwoOptionSwitch 
-                    onClick={ (opt:string)=>{ dispatch(setMenuVendorsDisplay(opt === 'a' ? 'active' : 'all')) } }
+                    onClick={ (opt:string)=>{ dispatch(setDashboardVendorsDisplay(opt === 'a' ? 'active' : 'all')) } }
                     vendorTypeName={ 'Trucks' } 
                     isOptionA={ state.ui.menuVendorsDisplay === 'all' ? true : false } 
                     font='font__menu_switch'
                 />
-                <MenuLinks { ...{vendorLinksHeight, refs: [topRef]} } />
+                <DashboardLinks { ...{vendorLinksHeight, refs: [topRef]} } />
             </div>
         </div>
     );
 }
 
-export default MenuMobile;
+export default DashboardMobile;

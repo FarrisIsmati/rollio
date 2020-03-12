@@ -4,19 +4,19 @@ import { useDispatch  } from 'react-redux';
 import { useCallbackRef } from 'use-callback-ref';
 
 // COMPONENTS
-import MenuLinks from './menu-links';
+import DashboardLinks from './dashboard-links';
 import VendorProfile from '../vendor-profile/vendor-profile'
 import Navbar from '../navbar/region-navbar';
 import TwoOptionSwitch from '../common/other/two-option-switch';
 
 // ACTIONS
-import { setMenuVendorsDisplay } from '../../redux/actions/ui-actions';
+import { setDashboardVendorsDisplay } from '../../redux/actions/ui-actions';
 
 // HOOKS
 import windowSizeEffects from '../common/hooks/use-window-size';
 import useGetAppState from '../common/hooks/use-get-app-state';
 
-const MenuDesktop = () => {
+const DashboardDesktop = () => {
   // Hooks
   const dispatch = useDispatch();
   const state = useGetAppState();
@@ -34,21 +34,22 @@ const MenuDesktop = () => {
       <div>
         {/* Navbar takes navbarRef and sets it the other elements just use it */}
         <Navbar ref={navbarRef}/>
+        {/* <div className='menu__dropdown'>LOOOOL</div> */}
         <VendorProfile ref={navbarRef} />
       </div>
       <div className="menu__wrapper">
         <TwoOptionSwitch 
-          onClick={ (opt:string)=>{ dispatch(setMenuVendorsDisplay(opt === 'a' ? 'active' : 'all')) } }
+          onClick={ (opt:string)=>{ dispatch(setDashboardVendorsDisplay(opt === 'a' ? 'active' : 'all')) } }
           vendorTypeName={ 'Trucks' } 
           isOptionA={ state.ui.menuVendorsDisplay === 'all' ? true : false } 
           ref={ menuActiveSwtichRef } 
           font='font__menu_switch' 
         />
-        <MenuLinks {...{ vendorLinksHeight, refs: [navbarRef, menuActiveSwtichRef] }}/>
+        <DashboardLinks {...{ vendorLinksHeight, refs: [navbarRef, menuActiveSwtichRef] }}/>
       </div>
 
     </div>
   );
 }
 
-export default MenuDesktop;
+export default DashboardDesktop;

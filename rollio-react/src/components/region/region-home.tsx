@@ -3,8 +3,8 @@ import React, { ReactComponentElement } from 'react';
 
 // COMPONENTS
 import Map from '../map/map';
-import VendorSelectorDesktop from '../menu/menu-desktop';
-import VendorSelectorMobile from '../menu/menu-mobile';
+import DashboardDesktop from '../dashboard/dashboard-desktop';
+import DashboardMobile from '../dashboard/dashboard-mobile';
 import RegionNavbar from '../navbar/region-navbar'
 
 // HOOKS
@@ -45,11 +45,11 @@ const RegionHome = (props:any) => {
       { /* Mobile Responsiveness */ }
       { isMobile ? 
         <RegionNavbar /> :
-        <VendorSelectorDesktop/> 
+        <DashboardDesktop/> 
       }
       { Map }
       { isMobile ?
-        <VendorSelectorMobile /> :
+        <DashboardMobile /> :
         null 
       }
     </div>

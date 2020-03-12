@@ -1,13 +1,20 @@
 // CONSTANTS
 import {
-    TOGGLE_MOBILE_MENU,
+    TOGGLE_MOBILE_DASHBOARD,
+    TOGGLE_MAIN_DROPDOWN_MENU,
     SET_IS_VENDOR_SELECTED,
-    SET_MENU_VENDORS_DISPLAY
+    SET_DASHBOARD_VENDORS_DISPLAY
 } from '../constants/constants'
 
-export function toggleMobileMenu() {
+export function toggleMobileDashboard() {
     return {
-        type: TOGGLE_MOBILE_MENU
+        type: TOGGLE_MOBILE_DASHBOARD
+    }
+}
+
+export function toggleMainDropDownMenu() {
+    return {
+        type: TOGGLE_MAIN_DROPDOWN_MENU
     }
 }
 
@@ -18,9 +25,9 @@ export function setIsVendorSelected(payload:boolean) {
     }
 }
 
-export function setMenuVendorsDisplay(payload:string) {
+export function setDashboardVendorsDisplay(payload:string) {
     return {
-        type: SET_MENU_VENDORS_DISPLAY,
-        payload: { menuVendorsDisplay: payload}
+        type: SET_DASHBOARD_VENDORS_DISPLAY,
+        payload: { dashboardVendorsDisplay: payload}
     }
 }

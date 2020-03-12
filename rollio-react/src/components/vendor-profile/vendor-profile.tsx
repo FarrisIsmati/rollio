@@ -16,7 +16,7 @@ import useMap from '../map/hooks/useMap';
 
 // ACTIONS
 import { deSelectVendor } from '../../redux/actions/data-actions';
-import { toggleMobileMenu } from '../../redux/actions/ui-actions';
+import { toggleMobileDashboard } from '../../redux/actions/ui-actions';
 
 // Returns an array of categories
 const setCategoriesComponent = (args:any) => {
@@ -108,10 +108,10 @@ const VendorProfile = React.forwardRef((props:any, navbarRef)=> {
                   onClick={ () => { 
                     // If there is a currently selected vendor just toggle the menu
                     if (vendor.isActive) {
-                        dispatch(toggleMobileMenu())
+                        dispatch(toggleMobileDashboard())
                     // Else deselect the non active vendor and toggle menu (Because this vendor doesn't need to still be selected once the menu is hidden)
                     } else {
-                      dispatch(deSelectVendor(vendor.id, () => dispatch(toggleMobileMenu())))
+                      dispatch(deSelectVendor(vendor.id, () => dispatch(toggleMobileDashboard())))
                     }
                   } 
                 } >close</i>
@@ -129,7 +129,7 @@ const VendorProfile = React.forwardRef((props:any, navbarRef)=> {
               <VendorProfileContent 
                 isMobile={isMobile} 
                 findOnMap={() => {
-                    dispatch(toggleMobileMenu());
+                    dispatch(toggleMobileDashboard());
                     zoomToCurrentlySelectedVendor();
                   }
                 }

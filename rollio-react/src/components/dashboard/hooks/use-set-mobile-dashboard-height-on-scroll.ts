@@ -6,20 +6,20 @@ import useGetAppState from '../../common/hooks/use-get-app-state';
 import windowSizeEffects from '../../common/hooks/use-window-size';
 
 // INTERFACES
-import { UseToggleVendorMenuOnScreenSwitchProps } from '../interfaces';
+import { UseToggleVendorDashboardOnScreenSwitchProps } from '../interfaces';
 
 // Gets screen size, component height, and determines scroll direction to set the vendor profile height to full height minus the navbar or leave some space inbetween
 // Topbar ref is the navbar component to subtract the the total height of the screen by so the profile doesn't cover it on expansion
-const useSetMobileMenuHeightOnScroll = (props:UseToggleVendorMenuOnScreenSwitchProps) => {
+const useSetMobileDashboardHeightOnScroll = (props:UseToggleVendorDashboardOnScreenSwitchProps) => {
     // Effects
     const state = useGetAppState();
 
-    const { expandedMenuStyle, topRef } = props;
+    const { expandedDashboardStyle, topRef } = props;
 
     const isVendorSelected = state.ui.isVendorSelected;
     const windowHeight = windowSizeEffects.useWindowHeight();
     const vendorLinksHeight = windowHeight - windowHeight * .19;
-    const defaultScrollHeight = parseInt(expandedMenuStyle.height.substring(0, expandedMenuStyle.height.length - 2))
+    const defaultScrollHeight = parseInt(expandedDashboardStyle.height.substring(0, expandedDashboardStyle.height.length - 2))
 
     // UI Effects
     const [isScrollDivExpanded, setIsScrollDivExpanded] = useState(false);
@@ -53,7 +53,7 @@ const useSetMobileMenuHeightOnScroll = (props:UseToggleVendorMenuOnScreenSwitchP
     }
     
     // Change scroll height to on window change size or scroll change size
-    const properHeight = isScrollDivExpanded ? `${scrollHeight}px` : expandedMenuStyle.height;
+    const properHeight = isScrollDivExpanded ? `${scrollHeight}px` : expandedDashboardStyle.height;
 
     return {
         properHeight,
@@ -62,4 +62,4 @@ const useSetMobileMenuHeightOnScroll = (props:UseToggleVendorMenuOnScreenSwitchP
     }
 }
 
-export default useSetMobileMenuHeightOnScroll;
+export default useSetMobileDashboardHeightOnScroll;

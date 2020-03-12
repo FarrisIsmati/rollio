@@ -35,7 +35,7 @@ import {
 } from '../constants/constants'
 
 // ACTIONS
-import { toggleMobileMenu, setIsVendorSelected } from './ui-actions';
+import { toggleMobileDashboard, setIsVendorSelected } from './ui-actions';
 import { setRegionMapVendor, setPreviouslySelectedRegionMap, setCurrentlySelectedRegionMap } from './map-actions';
 
 // INTERFACES

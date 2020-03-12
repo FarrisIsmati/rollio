@@ -3,30 +3,37 @@ import { UiDefaultState } from "./interfaces";
 
 // CONSTANTS
 import {
-    TOGGLE_MOBILE_MENU, 
+    TOGGLE_MOBILE_DASHBOARD,
+    TOGGLE_MAIN_DROPDOWN_MENU,
     SET_IS_VENDOR_SELECTED,
-    SET_MENU_VENDORS_DISPLAY
+    SET_DASHBOARD_VENDORS_DISPLAY
 } from "../constants/constants"
 
 const defaultState:UiDefaultState = {
-    isMobileMenuExpanded: false,
+    isMobileDashboardExpanded: false,
+    isMainDropDownMenuExpanded: false,
     isVendorSelected: false,
-    menuVendorsDisplay: 'active'
+    dashboardVendorsDisplay: 'active'
 }
 
 export function uiReducer(state = defaultState, action: any) {
     switch (action.type) {
-        case TOGGLE_MOBILE_MENU:
+        case TOGGLE_MOBILE_DASHBOARD:
             return {
                 ...state,
-                isMobileMenuExpanded: !state.isMobileMenuExpanded
+                isMobileDashboardExpanded: !state.isMobileDashboardExpanded
+            }
+        case TOGGLE_MAIN_DROPDOWN_MENU:
+            return {
+                ...state,
+                isMainDropDownMenuExpanded: !state.isMainDropDownMenuExpanded
             }
         case SET_IS_VENDOR_SELECTED:
             return {
                 ...state,
                 ...action.payload
             }
-        case SET_MENU_VENDORS_DISPLAY:
+        case SET_DASHBOARD_VENDORS_DISPLAY:
             return {
                 ...state,
                 ...action.payload

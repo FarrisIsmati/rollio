@@ -4,8 +4,8 @@ export interface MenuLinkProps  {
     img?: string
   }
 
-export interface UseToggleVendorMenuOnScreenSwitchProps {
-  expandedMenuStyle: {
+export interface UseToggleVendorDashboardOnScreenSwitchProps {
+  expandedDashboardStyle: {
     height: string,
     transition: string,
     transitionTimingFunction: string
