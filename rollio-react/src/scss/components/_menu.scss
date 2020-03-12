@@ -1,0 +1,21 @@
+.menu {
+    &__wrapper {
+        position: absolute;
+        width: 100%;
+        background-color: $color-menu-background;
+        z-index: 1;
+    }
+
+    &__link {
+        color: $color-menu-link;
+        margin: 10px 15px;
+    }
+}
+
+// APPLIED FONTS
+
+.font__menu_link {
+    @include font-black;
+    color: $color-font-white;
+    font-size: .75em;
+}

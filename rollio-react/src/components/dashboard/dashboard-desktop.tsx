@@ -4,6 +4,7 @@ import { useDispatch  } from 'react-redux';
 import { useCallbackRef } from 'use-callback-ref';
 
 // COMPONENTS
+import Menu from '../menu/menu';
 import DashboardLinks from './dashboard-links';
 import VendorProfile from '../vendor-profile/vendor-profile'
 import Navbar from '../navbar/region-navbar';
@@ -31,10 +32,10 @@ const DashboardDesktop = () => {
 
   return (      
     <div className='region__vendor_dashboard_wrapper'>
-      <div>
+      <div className='dashboard__top'>
         {/* Navbar takes navbarRef and sets it the other elements just use it */}
         <Navbar ref={navbarRef}/>
-        <div className='dashboard__dropdown'>LOOOOL</div>
+        <Menu />
         <VendorProfile ref={navbarRef} />
       </div>
       <div className="dashboard__wrapper">

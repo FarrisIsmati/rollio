@@ -13,6 +13,10 @@
         overflow-y: auto;
         margin-top: 10px;
     }
+
+    &__top {
+        position: relative;
+    }
     
     // Individual Link
     &_link {
