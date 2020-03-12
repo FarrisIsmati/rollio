@@ -11,7 +11,7 @@
 
 # misc
 .DS_Store
-**.idea/**
+.idea/**
 .env
 dump.rdb
 npm-debug.log*
