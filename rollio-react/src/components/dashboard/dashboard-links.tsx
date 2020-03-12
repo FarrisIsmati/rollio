@@ -22,7 +22,7 @@ const MenuLinks = React.forwardRef((props:any, ref:any) => {
   return (
     // Mobile resize this flex centers
     <Scrollbars 
-      className="menu_links__wrapper" 
+      className="dashboard_links__wrapper" 
       style={{ width: '100%', height: height }} 
       // Hide scrollbar when vendor profile is being animated on
       renderThumbVertical={            

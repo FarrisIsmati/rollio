@@ -38,13 +38,13 @@ const DashboardMobile:FC = () => {
 
     return (
         // Mobile resize this flex centers
-        <div className="menu_mobile__wrapper" style={isDashboardExpanded ? {...expandedDashboardStyle, height: properHeight} : contractedDashboardStyle} >
+        <div className="dashboard_mobile__wrapper" style={isDashboardExpanded ? {...expandedDashboardStyle, height: properHeight} : contractedDashboardStyle} >
             <VendorProfile scrollPositionCb={scrollPositionCb} ref={topRef}/>
-            <div className="menu_mobile__content_wrapper">
-                <div ref={topRef} className="menu_mobile__topbar_wrapper">
-                    <div className="menu_mobile__topbar">
-                        <div className="menu_mobile__topbar_text">
-                            <h2 className="font__menu_topbar">Food Trucks</h2>
+            <div className="dashboard_mobile__content_wrapper">
+                <div ref={topRef} className="dashboard_mobile__topbar_wrapper">
+                    <div className="dashboard_mobile__topbar">
+                        <div className="dashboard_mobile__topbar_text">
+                            <h2 className="font__dashboard_topbar">Food Trucks</h2>
                             { isDashboardExpanded ? 
                                 <i className="material-icons-outlined" onClick={()=>{dispatch(toggleMobileDashboard())}}>close</i> : 
                                 <i className="material-icons-outlined" onClick={()=>{
@@ -64,7 +64,7 @@ const DashboardMobile:FC = () => {
                     onClick={ (opt:string)=>{ dispatch(setDashboardVendorsDisplay(opt === 'a' ? 'active' : 'all')) } }
                     vendorTypeName={ 'Trucks' } 
                     isOptionA={ state.ui.menuVendorsDisplay === 'all' ? true : false } 
-                    font='font__menu_switch'
+                    font='font__dashboard_switch'
                 />
                 <DashboardLinks { ...{vendorLinksHeight, refs: [topRef]} } />
             </div>
