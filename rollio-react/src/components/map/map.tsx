@@ -5,13 +5,13 @@ import { useRef, useEffect } from 'react';
 
 // COMPONENTS
 import MapInfoCard from './map-info-card';
+import MapOverlay from './map-overlay'
 
 // HOOKS
 import useShowInfoCard from './hooks/useShowInfoCard';
 import useGetInfoCardData from './hooks/useGetInfoCardData';
 import useMapMarkers from './hooks/useMapMarkers';
 import useGlobalState from '../common/hooks/use-global-state';
-import windowSizeEffects from '../common/hooks/use-window-size';
 
 // CONFIG
 import { MAPBOX_API_KEY } from '../../config'
@@ -55,6 +55,8 @@ const Map = (props: MapProps) => {
 
   return (
     <div className='map__wrapper'>
+      {/* Map OVerlay only for mobile */}
+      <MapOverlay />
       {/*  Show if currentlySelected && !isMobileMenuExpanded */}
       { showInfoCard ? <MapInfoCard name={ infoCardData.name } profileImageLink={ infoCardData.profileImageLink } onClick={ infoCardData.onClick } /> : null }
       <div ref={el => (mapContainer.current = el)}></div>

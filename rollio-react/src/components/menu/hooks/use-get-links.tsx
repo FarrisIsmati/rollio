@@ -16,6 +16,9 @@ const useGetLinks = () => {
     if (allVendors.length) {
       let list:any[] = [];
       const menuVendorsDisplayState = state.ui.menuVendorsDisplay;
+
+      // Links are dependent on menu state
+      // May be changed if used else where than single menu
       if (menuVendorsDisplayState === 'active') {
         list = allVendors.filter((vendor:any) => vendor.isActive);
       } else if (menuVendorsDisplayState === 'all') {

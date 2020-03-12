@@ -25,6 +25,25 @@
         }
     }
 
+    &__overlay {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        margin-bottom: 56px;
+        z-index: 3;
+        pointer-events: none;
+
+        &_inactive {
+            @extend .map__overlay;
+            transition: background-color 0.15s;
+        }
+        &_active {
+            @extend .map__overlay;
+            background-color: $color-map-overlay-active;
+            transition: background-color 0.4s;
+        }
+    }
+
     &__infocard {
         background-color: white;
         width: 100%;
