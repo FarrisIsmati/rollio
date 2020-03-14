@@ -14,13 +14,42 @@
         margin: 0 16px;
     }
 
-    &__icon_wrapper {
+    &__icon {
         display: flex;
         justify-content: center;
         align-self: center;
+        background-color: $color-navbar-icon-background;
+        transition: background-color .15s;
+        padding: 5px;
+        -moz-border-radius: 50px;
+        -webkit-border-radius: 50px;
+        border-radius: 50px;
 
         i {
-            color: $color-font-alt;
+            color: $color-navbar-icon;
+            transition: color .15s;
+
+        }
+
+        &:hover {
+            cursor: pointer;
+            background-color: $color-navbar-icon-background-hover;
+            transition: background-color .15s;
+
+
+            & i {
+                color: $color-navbar-icon-hover;
+                transition: color .15s;
+            }
+        }
+
+        &_close {
+            @extend .navbar__icon;
+            background-color: $color-navbar-icon-background-hover;
+
+            i {
+                color: $color-navbar-icon-hover;
+            }
         }
     }
 

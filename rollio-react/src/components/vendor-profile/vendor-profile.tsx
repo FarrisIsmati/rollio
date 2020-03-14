@@ -56,7 +56,7 @@ const VendorProfile = React.forwardRef((props:any, navbarRef)=> {
     cb: windowSizeEffects.useIsMobile() ? props.scrollPositionCb : ()=>{}
   });
 
-  // Quick variable references
+  // Variables
   const isMobile = windowSizeEffects.useIsMobile();
   const isVendorSelected = state.ui.isVendorSelected;
   const showMobileVendorProfile = isVendorSelected && state.ui.isMobileMenuExpanded;
