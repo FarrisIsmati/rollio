@@ -22,9 +22,10 @@ const DashboardDesktop = () => {
   const dispatch = useDispatch();
   const state = useGetAppState();
 
-  // Create ref to figure out set size of the menu to allow scrolling
-  // Set size of menu will be screen height - (div above menu links)
-  // Callback ref runs after component is mounted
+  // Variables
+  const showMenu = state.ui.isMainDropDownMenuExpanded
+
+  // Refs (used to get size of elements to set scroll height)
   const navbarRef = useCallbackRef(null, () => {});
   const menuActiveSwtichRef = useCallbackRef(null, () => {});
 
@@ -35,7 +36,11 @@ const DashboardDesktop = () => {
       <div className='dashboard__top'>
         {/* Navbar takes navbarRef and sets it the other elements just use it */}
         <Navbar ref={navbarRef}/>
-        <Menu />
+        { 
+          showMenu ?
+            <Menu /> :
+            null
+        }
         <VendorProfile ref={navbarRef} />
       </div>
       <div className="dashboard__wrapper">

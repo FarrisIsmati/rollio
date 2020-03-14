@@ -1,6 +1,5 @@
 .map {
     &__wrapper {
-        display: inline-block;
         height: 100%;
         width: 100%;
     }
@@ -109,13 +108,3 @@
     @include font-bold;
     font-size: 16px;
 }
-
-// MEDIA QUERIES
-
-@media only screen and (max-width: 768px) {
-    .map {
-        &__wrapper {
-            margin-bottom: $map-mobile-bottom-margin;
-        }
-    }
-  }
