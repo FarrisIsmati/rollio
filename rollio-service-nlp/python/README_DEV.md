@@ -39,3 +39,17 @@ The `install_deps.sh` script installs the modules from `requirements.txt` (and a
 ### Add a new module
 1. Update `requirements.txt` - provide the module, and a version if possible
 2. Run `install_deps.sh`
+
+
+## Get parser endpoint running
+```
+export FLASK_APP=app.py
+flask run
+```
+
+## To simply test the nlp parser from your command line
+
+```
+python update_model.py
+```
+Then, just type in an example tweet (e.g. 'see you at Union Station') and hit enter
