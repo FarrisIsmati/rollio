@@ -17,6 +17,7 @@ def extract_schema():
         else:
             raise Exception( "Missing required field text")
 
+        print(response)
         return Response(json.dumps(response), status=200, mimetype='application/json')
     except Exception as e:
         print(str(e))

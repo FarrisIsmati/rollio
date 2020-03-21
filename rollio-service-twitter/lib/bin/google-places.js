@@ -14,14 +14,25 @@ module.exports = {
         return res.data.candidates;
       })
       .catch((err) => {
-        console.log(err)
+        console.log(err);
         logger.error(`Google Places API Failure: ${err}`);
         return err;
       });
   },
   async neighborhoodFromCoords(lat, lng) {
     return axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&result_type=neighborhood&key=${config.GOOGLE_PLACES_API_KEY}`)
-      .then(res => res.data.results[0].address_components[0].long_name.toLowerCase())
+      .then((res) => {
+        const lowerCaseLongName = addressComponent => (addressComponent && addressComponent.long_name.toLowerCase()) || '';
+        const addressComponents = res.data.results[0].address_components;
+        const neighborhood = addressComponents.find(component => component.types.includes('neighborhood'));
+        const city = addressComponents.find(component => component.types.includes('locality'));
+        const state = addressComponents.find(component => component.types.includes('administrative_area_level_1'));
+        return {
+          neighborhood: lowerCaseLongName(neighborhood),
+          city: lowerCaseLongName(city),
+          state: lowerCaseLongName(state),
+        };
+      })
       .catch((err) => {
         logger.error(`Google Places API Failure: ${err}`);
         return err;

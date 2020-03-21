@@ -1,6 +1,7 @@
 // DEPENDENCIES
 const googlePlaces = require('../../bin/google-places');
 const knownLocationKeys = require('../data/known-location-keys');
+const nlp = require('../../bin/nlp');
 
 const tweetParser = {
   async scanAddress(payload) {
@@ -31,8 +32,14 @@ const tweetParser = {
       };
       return result;
     }
-    // match a known location, then match a phrase with that known location
-    result = this.matchPhrase(await this.matchKnownLocation(Object.assign({}, result)));
+    const nlpParseResult = await this.nlpParseText(result);
+    if (nlpParseResult) {
+      result = nlpParseResult;
+    } else {
+      // we can keep this as a backup for now and phase it out later
+      // match a known location, then match a phrase with that known location
+      result = this.matchPhrase(await this.matchKnownLocation(Object.assign({}, result)));
+    }
     if (result.match) {
       result.location.locationDate = payload.createdAt;
     }
@@ -40,34 +47,53 @@ const tweetParser = {
   },
   async googlePlacesResolve(googlePlacesPayload) {
     const {
-      payload, rgxMatchLocation, city, searchAddress,
+      payload, rgxMatchLocation = '', searchAddress,
     } = googlePlacesPayload;
-    const address = await googlePlaces.search(searchAddress);
+    const [address] = await googlePlaces.search(searchAddress);
+    if (!address) {
+      return null;
+    }
 
     // find neighborhood from coordinates
-    const neighborhood = await googlePlaces.neighborhoodFromCoords(
-      address[0].geometry.location.lat, address[0].geometry.location.lng,
+    const { neighborhood, city } = await googlePlaces.neighborhoodFromCoords(
+      address.geometry.location.lat, address.geometry.location.lng,
     );
 
-    let matchedPayload;
-    if (address.length) {
-      matchedPayload = {
-        ...payload,
-        match: true,
-        rgxMatch: rgxMatchLocation[0],
-        certainty: 'partial',
-        location: {
-          locationDate: payload.date,
-          accuracy: 0,
-          address: address[0].formatted_address,
-          city,
-          neighborhood,
-          coordinates: [address[0].geometry.location.lat, address[0].geometry.location.lng],
-          matchMethod: 'Tweet location',
-        },
-      };
+    return {
+      ...payload,
+      match: true,
+      rgxMatch: rgxMatchLocation,
+      certainty: 'partial',
+      location: {
+        locationDate: payload.date,
+        accuracy: 0,
+        address: address.formatted_address,
+        city,
+        neighborhood,
+        coordinates: [address.geometry.location.lat, address.geometry.location.lng],
+        matchMethod: 'Tweet location',
+      },
+    };
+  },
+  async nlpParseText(payload) {
+    const entities = await nlp.parse(payload.tweet).catch((err) => {
+      console.error('Error calling the nlp service', err);
+      return [];
+    });
+    if (!entities.length) {
+      return null;
     }
-    return matchedPayload;
+    const googlePromises = entities.map((entity) => {
+      // TODO: later, will priorities certain labels over others
+      const { text: searchAddress } = entity;
+      const googlePlacesPayload = {
+        payload,
+        searchAddress,
+      };
+      return this.googlePlacesResolve(googlePlacesPayload);
+    });
+    const [searchedAddressResult] = await Promise.all(googlePromises);
+    return searchedAddressResult || payload;
   },
   async matchKnownLocation(payload) {
     // eslint-disable-next-line global-require
