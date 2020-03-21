@@ -23,9 +23,7 @@ const useGetLinks = () => {
         list = allVendors.filter((vendor:any) => vendor.isActive);
       } else if (dashboardVendorsDisplayState === 'all') {
         list = allVendors;
-      } else {
-        list = allVendors;
-      }
+      } 
       links = list.sort((a:any, b:any) => (a.name > b.name) ? 1 : -1).map((vendor:any) => {
         return <VendorSelectorLink name={vendor.name} id={vendor.id} img={vendor.profileImageLink} key={vendor.id}/>
       })

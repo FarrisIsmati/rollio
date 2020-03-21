@@ -67,8 +67,3 @@ const RegionHome = (props:any) => {
 }
 
 export default RegionHome;
-      // { 
-      //     showMenu ?
-      //       <Menu /> :
-      //       null
-      //     }
