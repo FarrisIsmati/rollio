@@ -1,0 +1,40 @@
+
+.twooptionswitch {
+    &__wrapper {
+        display: flex;
+        padding: 0px 16px;
+
+        // Second Text Element
+        & div:nth-child(2) {
+            padding-left: 16px;
+        }
+    }
+
+    &__text {
+        padding-bottom: 14px;
+        border-bottom: 3px solid;
+        border-color: $color-vendor-switch-active;
+        transition: color .2s, border-color .2s;
+
+        &:hover {
+            cursor:pointer;
+        }
+
+        &_inactive {
+            // Overwrites font color
+            color: $color-vendor-switch-inactive !important;
+            padding-bottom: 14px;
+            border-bottom: 3px solid;
+            border-color: $color-vendor-switch-inactive;;
+            transition: color .2s, border-color .2s;
+
+            &:hover {
+                cursor:pointer;
+                color: $color-vendor-switch-active !important;
+                border-bottom: 3px solid;
+                border-color: $color-vendor-switch-active;;
+                transition: color .2s, border-color .2s;
+            }
+        }
+    }
+}

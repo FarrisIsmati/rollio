@@ -31,11 +31,9 @@ const CommentAdd:FC = (props) => {
     return (
         <div className='commentadd__wrapper'>
             <div className='commentadd__tophalf'>
-                <IconContext.Provider value={{ size: '32', className: 'commentadd__icon_type_text' }}>
-                    <div className='commentadd__icon_wrapper'>
-                        <MdInsertComment/>
-                    </div>
-                </IconContext.Provider>
+                <div className='commentadd__icon_wrapper'>
+                    <i className="material-icons-outlined">comment</i> 
+                </div>
                 {/* Optional Add name but place holder and class changes on click */}
                 <div className={ commentActive ? 'commentadd__text_name_active commentadd__text_wrapper' : 'commentadd__text_name_inactive commentadd__text_wrapper'}>
                     <input 
@@ -59,7 +57,7 @@ const CommentAdd:FC = (props) => {
                     onBlur={blurComment} 
                     value={commentBody} 
                     ref={commentBodyTextArea} 
-                    placeholder={'Share thoughts...'} 
+                    placeholder={'Add Comment'} 
                     className={'textarea__grow font__textarea_grow font__comment_add_content'}/>
                 <div className='commentadd__button_holder'>
                     <ButtonBare

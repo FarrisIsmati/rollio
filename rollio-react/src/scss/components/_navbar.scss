@@ -14,24 +14,41 @@
         margin: 0 16px;
     }
 
-    &__logo_wrapper {
-
-    }
-
-    &__links_wrapper {
+    &__icon {
         display: flex;
-        align-self: flex-end;
+        justify-content: center;
+        align-self: center;
+        background-color: $color-navbar-icon-background;
+        transition: background-color .15s;
+        padding: 5px;
+        -moz-border-radius: 50px;
+        -webkit-border-radius: 50px;
+        border-radius: 50px;
 
-        span {
-            width: 40px;
+        i {
+            color: $color-navbar-icon;
+            transition: color .15s;
+
         }
 
-        &_mobile {
-            align-self: center;
+        &:hover {
+            cursor: pointer;
+            background-color: $color-navbar-icon-background-hover;
+            transition: background-color .15s;
 
-            svg {
-                fill: $color-font-alt;
-                height: 2em;
+
+            & i {
+                color: $color-navbar-icon-hover;
+                transition: color .15s;
+            }
+        }
+
+        &_close {
+            @extend .navbar__icon;
+            background-color: $color-navbar-icon-background-hover;
+
+            i {
+                color: $color-navbar-icon-hover;
             }
         }
     }

@@ -2,10 +2,11 @@
 import React, { ReactComponentElement } from 'react';
 
 // COMPONENTS
+import Menu from '../menu/menu';
 import Map from '../map/map';
-import VendorSelectorDesktop from '../vendor-selector/vendor-selector-desktop';
-import VendorSelectorMobile from '../vendor-selector/vendor-selector-mobile';
-import RegionNavbarMobile from './region-navbar-mobile'
+import DashboardDesktop from '../dashboard/dashboard-desktop';
+import DashboardMobile from '../dashboard/dashboard-mobile';
+import RegionNavbar from '../navbar/region-navbar'
 
 // HOOKS
 import useLoadRegion from './hooks/use-load-region';
@@ -32,7 +33,8 @@ const RegionHome = (props:any) => {
   useUpdateRegionVendorData(); // Set socket listeners
   useProcessMapPoints(props);  // Get all vendors in to the Map Pins on first load
 
-  // Quick variable references
+  // Variables
+  const showMenu = state.ui.isMainDropDownMenuExpanded
   const isMobile = windowSizeEffects.useIsMobile();
   const isRegionLoaded = state.loadState.isRegionLoaded;
   const areVendorsLoaded = state.loadState.areVendorsLoaded;
@@ -42,15 +44,23 @@ const RegionHome = (props:any) => {
 
   return (
     <div className={ isMobile ? 'region_mobile__wrapper' : 'region__wrapper' }>
-      { /* Mobile Responsiveness */ }
-      { isMobile ? 
-        <RegionNavbarMobile /> :
-        <VendorSelectorDesktop/> 
-      }
-      { Map }
       { isMobile ?
-        <VendorSelectorMobile /> :
-        null 
+        <React.Fragment>
+          <RegionNavbar />
+            <div className='region_mobile__map_wrapper'>
+              { 
+                showMenu ?
+                  <Menu /> :
+                  null
+              }
+              { Map }
+            </div>
+          <DashboardMobile />
+        </React.Fragment> :
+        <React.Fragment>
+          <DashboardDesktop/> 
+          { Map }
+        </React.Fragment>
       }
     </div>
   );

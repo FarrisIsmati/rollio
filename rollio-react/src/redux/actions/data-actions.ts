@@ -45,8 +45,7 @@ import {
     UpdateVendorPayload,
     UpdateDailyActiveVendorsPayload,
     SelectVendorAsyncPayload,
-    SetVendorsAllPayload,
-    SetPreviouslySelectedVendorPayload
+    SetVendorsAllPayload
 } from './interfaces';
 import {
     MapDefaultState
@@ -88,6 +87,7 @@ export function recieveVendorData(vendor:any) {
         name: vendor.name ?  vendor.name : '',
         phoneNumber: vendor.phonenumber ? vendor.phonenumber : '',
         profileImageLink: vendor.profileImageLink ? vendor.profileImageLink : '',
+        bannerImageLink: vendor.bannerImageLink ? vendor.bannerImageLink : '',
         price: vendor.price ? vendor.price : '',
         rating: vendor.rating ? vendor.rating : '',
         twitterID: vendor.twitterID ? vendor.twitterID : '',
@@ -236,7 +236,7 @@ export function selectVendorAsync(payload:SelectVendorAsyncPayload) {
 
 // Sets all selected vendor states to deselected, resets selectedVender object to original states
 // Doesn't need a payload thanks to previouslySelected Vendor state being stored
-export function deSelectVendor(vendorID:string) {
+export function deSelectVendor(vendorID:string, cb:()=>void = ()=>{}) {
     return (dispatch:any, getState:any) => {
         const state = getState();
 
@@ -261,6 +261,9 @@ export function deSelectVendor(vendorID:string) {
             // Remove the currently selected vendor
             dispatch(setCurrentlySelectedRegionMap({ id: '', isSingle: null }));
         }
+
+        // Any additional code to execute after vendor is deselected
+        cb();
     }
 }
 

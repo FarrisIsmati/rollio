@@ -1,83 +1,21 @@
 .menu {
     &__wrapper {
-        margin: 16px 16px 0px 16px;
-        width: 400px;
+        position: absolute;
+        width: 100%;
+        z-index: 5;
     }
 
-    // Collection of links
-    &_links__wrapper {
-        overflow-y: auto;
-        margin-top: 10px;
-    }
-    
-    // Individual Link
-    &_link {
-        &__wrapper {
-            display: flex;
-            align-items: center;
-            margin-bottom: 16px;
-    
-            h2 {
-                margin-left: 16px;
-            }
-        }
+    &__link {
+        color: $color-menu-link;
+        background-color: $color-menu-link-background;
+        padding: 10px 15px;
 
-        &__image {
-            width: 56px;
-            height: 56px;
+        &:hover {
+            cursor: pointer;
+            background-color: $color-menu-link-background-hover;
 
-            &_wrapper {
-                min-width: 56px;
-                min-height: 56px;
-                background-color: $color-blank-image;
-            }
-
-            img {
-                max-width: 100%;
-                max-height: 100%;
-            }
-        }
-    }
-
-    &__type {
-        margin-top: 16px;
-    }
-    
-
-    // MOBILE
-    &_mobile {
-        &__wrapper {
-            height: 56px;
-            width: 100%;
-            background-color: white;
-            position: fixed;
-            z-index: 2;
-            bottom: 0;
-        }
-
-        &__content_wrapper {
-            display: flex;
-            flex-direction: column;
-            margin:0 16px;
-            height: 100%;
-        }
-
-        &__topbar {
-            width: 100%;
-            display: flex;
-            align-self: center;
-
-            &_wrapper {
-                display: flex;
-                min-height: 56px;
-                width: 100%;
-            }
-
-            &_text {
-                display: flex;
-                width: 100%;
-                justify-content: space-between;
-                align-items: center;
+            & h1 {
+                color: $color-menu-link-hover;
             }
         }
     }
@@ -86,11 +24,7 @@
 // APPLIED FONTS
 
 .font__menu_link {
-    @include font-bold;
-    color: $color-font-main;
-}
-
-.font__menu_topbar {
-    @include font-bold;
-    color: $color-font-main;
+    @include font-black;
+    color: $color-font-white;
+    font-size: .75em;
 }

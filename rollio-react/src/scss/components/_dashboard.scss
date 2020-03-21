@@ -1,0 +1,115 @@
+.dashboard {
+    &__wrapper {
+        margin-top: 16px;
+        width: $vendor-dashboard-width;
+    }
+
+    &__title_wrapper {
+        margin: 0 16px;
+    }
+
+    // Collection of links
+    &_links__wrapper {
+        overflow-y: auto;
+        margin-top: 10px;
+    }
+
+    &__top {
+        position: relative;
+    }
+    
+    // Individual Link
+    &_link {
+        &__wrapper {
+            display: flex;
+            align-items: center;
+            padding: 8px 16px;
+            background-color: $color-vendor-dashboard-link-background;
+
+            h2 {
+                margin-left: 16px;
+            }
+
+            &:hover {
+                background-color: $color-vendor-dashboard-link-background-hover;
+                cursor: pointer;
+            }
+        }
+
+        &__image {
+            width: 56px;
+            height: 56px;
+
+            &_wrapper {
+                min-width: 56px;
+                min-height: 56px;
+                background-color: $color-blank-image;
+            }
+
+            img {
+                max-width: 100%;
+                max-height: 100%;
+            }
+        }
+    }
+
+    &__type {
+        margin-top: 16px;
+    }
+    
+
+    // MOBILE
+    &_mobile {
+        &__wrapper {
+            height: 56px;
+            width: 100%;
+            background-color: white;
+            position: fixed;
+            z-index: 4;
+            bottom: 0;
+        }
+
+        &__content_wrapper {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        &__topbar {
+            width: 100%;
+            display: flex;
+            align-self: center;
+            margin: 0 16px;
+
+            &_wrapper {
+                display: flex;
+                min-height: 56px;
+                width: 100%;
+            }
+
+            &_text {
+                display: flex;
+                width: 100%;
+                justify-content: space-between;
+                align-items: center;
+            }
+        }
+    }
+}
+
+// APPLIED FONTS
+
+.font__dashboard_link {
+    @include font-bold;
+    color: $color-font-main;
+}
+
+.font__dashboard_switch {
+    @include font-bold;
+    color: $color-font-main;
+}
+
+.font__dashboard_topbar {
+    @include font-bold;
+    color: $color-font-main;
+}

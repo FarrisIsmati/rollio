@@ -94,6 +94,10 @@ const VendorSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+  bannerImageLink: {
+    type: String,
+    required: false,
+  },
   // $$$
   price: { type: String, required: false },
   // Use Yelp API to search and find the ID

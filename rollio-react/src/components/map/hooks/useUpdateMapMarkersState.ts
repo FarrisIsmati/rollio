@@ -17,7 +17,6 @@ import {
 
 // INTERFACES
 import { MarkerComparisonObject } from './interfaces';
-import { isString } from 'util';
 
 const useUpdateMapMarkersState = (props: any) => {
     // Way to get data from tweet stream without storing it in Redux

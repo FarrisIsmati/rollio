@@ -3,27 +3,27 @@ import useGetAppState from '../../common/hooks/use-get-app-state';
 import useWindowSize from '../../common/hooks/use-window-size';
 
 // Get data from redux state
-const useSetMobileMenuStyle = () => {
+const useSetMobileDashboardStyle = () => {
     const state = useGetAppState();
     
-    const isMenuExpanded = state.ui.isMobileMenuExpanded;
+    const isDashboardExpanded = state.ui.isMobileDashboardExpanded;
 
     const windowHeight = useWindowSize.useWindowHeight();
 
-    const expandedMenuStyle = {
+    const expandedDashboardStyle = {
         // .81 golden ratio number
         height: `${windowHeight * .81}px`,
-        transition: 'height .25s',
-        transitionTimingFunction: 'ease-in'
+        transition: 'height .35s',
+        transitionTimingFunction: 'cubic-bezier(.7,1.1,.67,.97)'
     }
 
-    const contractedMenuStyle = {
+    const contractedDashboardStyle = {
         height: '56px',
         transition: 'height .15s',
         transitionTimingFunction: 'ease-out'
     }
 
-    return { isMenuExpanded, expandedMenuStyle, contractedMenuStyle }
+    return { isDashboardExpanded, expandedDashboardStyle, contractedDashboardStyle }
 }
 
-export default useSetMobileMenuStyle;
+export default useSetMobileDashboardStyle;
