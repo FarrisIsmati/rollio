@@ -1,0 +1,10 @@
+.DS_Store
+__pycache__/
+*.py[cod]
+.venv
+.coverage
+test-reports/
+htmlcov/
+python_modules/
+build_branch
+build_commit
