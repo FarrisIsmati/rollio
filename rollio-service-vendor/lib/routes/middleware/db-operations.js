@@ -320,9 +320,9 @@ const userRouteOps = {
   send403IfNoToken: (err, req, res, next) => {
     if (err) {
       if (err.name === 'UnauthorizedError') {
-        res.send(403, 'User must be logged in');
+        res.status(403).send('User must be logged in');
       } else {
-        res.send(500, 'Something went wrong');
+        res.status(403).send('Something went wrong');
       }
     }
     next();
@@ -333,24 +333,24 @@ const userRouteOps = {
         req.user = user;
         next();
       } else {
-        res.send(401, 'User Not Authenticated');
+        res.status(401).send('User Not Authenticated');
       }
     }).catch((err) => {
       console.error(err);
-      res.send(401, 'User Not Authenticated');
+      res.status(401).send('User Not Authenticated');
     });
   },
   passVendorToNext: async (req, res, next) => {
     const { vendorID, regionID } = req.params;
     const vendor = vendorID && regionID ? await getVendor(regionID, vendorID).catch((err) => {
       console.error(err);
-      res.send(500, 'error looking up vendor');
+      res.status(500).send('error looking up vendor');
     }) : null;
     if (vendor) {
       req.vendor = vendor;
       next();
     } else {
-      res.send(404, 'Vendor not found');
+      res.status(401).send('Vendor not found');
     }
   },
   getUser: async (req, res) => {
@@ -358,11 +358,11 @@ const userRouteOps = {
       if (user) {
         res.json({ user });
       } else {
-        res.send(401, 'User Not Authenticated');
+        res.status(401).send('User Not Authenticated');
       }
     }).catch((err) => {
       console.error(err);
-      res.send(401, 'User Not Authenticated');
+      res.status(401).send('User Not Authenticated');
     });
   },
   updateUser: async (req, res) => {
@@ -370,11 +370,11 @@ const userRouteOps = {
       if (user) {
         res.json({ user });
       } else {
-        res.send(401, 'User Not Authenticated');
+        res.status(401).send('User Not Authenticated');
       }
     }).catch((err) => {
       console.error(err);
-      res.send(401, 'User Not Authenticated');
+      res.status(401).send('User Not Authenticated');
     });
   },
 };
@@ -385,7 +385,7 @@ const tweetRouteOps = {
       res.json({ tweets });
     }).catch((err) => {
       console.error(err);
-      res.send(401, 'Error fetching tweets');
+      res.status(401).send('Error fetching tweets');
     });
   },
   vendorsForFiltering: async (req, res) => {
@@ -393,7 +393,7 @@ const tweetRouteOps = {
       res.json({ vendors });
     }).catch((err) => {
       console.error(err);
-      res.send(401, 'Error fetching vendors');
+      res.status(401).send('Error fetching vendors');
     });
   },
   getTweetWithPopulatedVendorAndLocation: async (req, res) => {
@@ -401,7 +401,7 @@ const tweetRouteOps = {
       res.json({ tweet });
     }).catch((err) => {
       console.error(err);
-      res.send(401, 'Error fetching tweet');
+      res.status(401).send('Error fetching tweet');
     });
   },
   deleteLocation: async (req, res) => {
@@ -409,7 +409,7 @@ const tweetRouteOps = {
       res.json({ tweet });
     }).catch((err) => {
       console.error(err);
-      res.send(401, 'Error deleting location');
+      res.status(401).send('Error deleting location');
     });
   },
   createNewLocation: async (req, res) => {
@@ -417,7 +417,7 @@ const tweetRouteOps = {
       res.json({ tweet });
     }).catch((err) => {
       console.error(err);
-      res.send(401, 'Error creating new location');
+      res.status(401).send('Error creating new location');
     });
   },
 };
