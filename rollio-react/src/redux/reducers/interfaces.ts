@@ -25,8 +25,8 @@ export interface Location {
     matchMethod: string,
     tweetID: string | null,
     id: string,
-    startDate: Date,
-    endDate: Date
+    startDate: Date | null,
+    endDate: Date | null
 }
 
 // Full set of vendor data; also used in vendor-profile.tsx
