@@ -1,4 +1,4 @@
-# WW Python Dev Environment Info
+# Rolio Python Dev Environment Info
 
 ## TL;DR
 1. Install `pyenv` and python 3.6.6 with it [sdf](#Env)
