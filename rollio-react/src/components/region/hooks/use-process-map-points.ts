@@ -2,9 +2,10 @@
 import { useDispatch  } from 'react-redux';
 import { useEffect } from 'react';
 import uuid from 'uuid/v1';
+import moment from 'moment';
 
 // ACTIONS
-import { 
+import {
     setMapPins,
     setMapPinsLoadState
  } from '../../../redux/actions/map-actions';
@@ -13,14 +14,14 @@ import {
 import useGetAppState from '../../common/hooks/use-get-app-state';
 
 // INTERFACES
-import { 
+import {
     Pin,
     GroupPin
 } from '../../../redux/reducers/interfaces';
 
 const stringifyCoordinates = (coordinates: {lat:number, long:number}) => {
     return String(coordinates.lat) + String(coordinates.long)
-} 
+};
 
 // Processes all map points for the given region
 // Currently only groups points if they are at the same exact coordinate
@@ -29,30 +30,26 @@ const useProcessMapPoints = (props:any) => {
     const dispatch = useDispatch();
     const state = useGetAppState();
 
-    const allVendors = state.data.vendorsAll
+    const allVendors = state.data.vendorsAll;
 
     useEffect(() => {
         // Once vendor data has been loaded & if the map pins have not already been loaded
         if (Object.keys(allVendors).length && !state.loadState.areMapPinsLoaded) {
-            // Sets map pins loaded state to true so this wont be called infinitely 
+            // Sets map pins loaded state to true so this wont be called infinitely
             dispatch(setMapPinsLoadState({areMapPinsLoaded: true}))
 
-            const sortedLocations: { [s: string]: any[] } = {};
-
-            Object.values(allVendors).forEach( (vendor:any) => {
-                const isActive = vendor.isActive;
+            const sortedLocations = Object.values(allVendors).reduce( (acc:{ [s: string]: any[] }, vendor:any) => {
+                const isActive = vendor.isActive();
                 // If the vendor has a location for the day
-                if (isActive && vendor.location !== null) {
-                    const coordString: string = stringifyCoordinates(vendor.location.coordinates);
-                    // Add value to sortedLocations
-                    if (sortedLocations[coordString]) {
-                        sortedLocations[coordString].push({ vendorId: vendor.id, selected: false });
-                    } else {
-                        sortedLocations[coordString] = [];
-                        sortedLocations[coordString].push({ vendorId: vendor.id, selected: false });
-                    }
+                if (isActive) {
+                    const activeLocations = vendor.locations.filter((location:any) => moment().isAfter(location.startDate) && moment().isBefore(location.endDate));
+                    activeLocations.forEach((location:any) => {
+                        const coordString: string = stringifyCoordinates(location.coordinates);
+                        acc[coordString] = [...(acc[coordString] || []), { vendorId: vendor.id, selected: false }];
+                    })
                 }
-            });
+                return acc;
+            }, {});
 
             const singlePins:  { [key: string]: Pin } = {};
             const groupPins: { [key: string]: GroupPin } = {};
@@ -67,7 +64,7 @@ const useProcessMapPoints = (props:any) => {
                     // for single pins its the first element
                     singlePins[location[0].vendorId] = location[0];
                 }
-            })
+            });
 
             dispatch(setMapPins({
                 vendorsDisplayedSingle: singlePins,

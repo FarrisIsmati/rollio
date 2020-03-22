@@ -8,7 +8,6 @@ import {
     SET_VENDORS_ALL,
     POST_VENDOR_COMMENT,
     UPDATE_VENDOR,
-    UPDATE_DAILY_ACTIVE_VENDORS
 } from "../constants/constants"
 
 // INTERFACES
@@ -41,17 +40,22 @@ const defaultState:DataDefaultState = {
         twitterID: '',
         comments: [],
         creditCard: 'u',
-        location: {
-            id: '',
-            coordinates: { lat: null, long: null },
-            address: '',
-            neighborhood: '',
-            municipality: '',
-            matchMethod: '',
-            tweetID: null,
-            accuracy: 0,
-        },
-        isActive: false,
+        // TODO: talk to Farris...do locations need a default value?
+        locations: [
+        //     {
+        //     id: '',
+        //     coordinates: { lat: null, long: null },
+        //     address: '',
+        //     neighborhood: '',
+        //     municipality: '',
+        //     matchMethod: '',
+        //     tweetID: null,
+        //     accuracy: 0,
+        //     startDate: null,
+        //     endDate: null
+        // }
+        ],
+        isActive: () => false,
         lastUpdated: null,
         approved: false
     },
@@ -110,7 +114,7 @@ export function dataReducer(state = defaultState, action: any) {
                 }
             }
         }
-    // case SET_PREVIOUSLY_SELECTED_VENDOR: 
+    // case SET_PREVIOUSLY_SELECTED_VENDOR:
     //     return {
     //         ...state,
     //         previouslySelected: {
@@ -123,12 +127,7 @@ export function dataReducer(state = defaultState, action: any) {
 
         return {
             ...state,
-            vendorsAll: { ...vendorsAll, [action.payload.vendorID]: { ...vendorsAll[action.payload.vendorID], location: action.payload.location, isActive: action.payload.isActive } }
-        }
-    case UPDATE_DAILY_ACTIVE_VENDORS:
-        return {
-            ...state,
-            dailyActiveVendors: state.dailyActiveVendors.add(action.payload.vendorID)
+            vendorsAll: { ...vendorsAll, [action.payload.vendorID]: { ...vendorsAll[action.payload.vendorID], locations: action.payload.locations, isActive: action.payload.isActive } }
         }
     case POST_VENDOR_COMMENT:
         return {
