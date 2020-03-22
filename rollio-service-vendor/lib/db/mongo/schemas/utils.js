@@ -1,5 +1,7 @@
 // DEPENDENCIES
 const PhoneNumber = require('awesome-phonenumber');
+const config = require('../../../../config');
+
 const phoneNumberValidate = (number) => {
   // If no phonenumber was entered
   if (number === '') {
@@ -10,10 +12,10 @@ const phoneNumberValidate = (number) => {
     const pn = new PhoneNumber(number, 'US');
     return pn.isValid();
   } catch (err) {
-    console.error(err);
-    return false
+    // eslint-disable-next-line no-console
+    if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') { console.log(err); }
+    return false;
   }
-
 };
 
 module.exports = {

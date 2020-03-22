@@ -1,5 +1,8 @@
-const mongoose = require('../mongoose/index');
+// DEPENDENCIES
 const { omit } = require('lodash');
+const mongoose = require('../mongoose/index');
+
+// SCHEMAs
 const User = mongoose.model('User');
 const Vendor = mongoose.model('Vendor');
 
@@ -22,6 +25,7 @@ module.exports = {
     } = profile;
     const existingUser = await User.findOne({ 'twitterProvider.id': id });
     if (existingUser) {
+      // eslint-disable-next-line max-len
       // TODO: think about how to allow users to change 'type' if they want to.  For now, they are locked in after the first time
       return { user: existingUser };
     }
@@ -40,6 +44,7 @@ module.exports = {
       type,
     }).save();
     const user = newUser.toJSON();
+    // eslint-disable-next-line max-len
     // annoyingly, .save doesn't seem to honor the 'select: false' on the schema.  So, just deleting here
     delete user.twitterProvider;
     return { user };

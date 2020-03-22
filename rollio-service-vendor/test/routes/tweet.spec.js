@@ -271,7 +271,6 @@ describe('Tweet Routes', () => {
         it('expect error', (done) => {
           chai.request(server)
             .post(`/tweets/createnewlocation/${tweet._id}`)
-            .status(200)
             .send(newLocationData)
             .end((err, res) => {
               expect(res).to.have.status(403);
@@ -284,7 +283,6 @@ describe('Tweet Routes', () => {
         it('expect error', (done) => {
           chai.request(server)
             .post(`/tweets/createnewlocation/${tweet._id}`)
-            .status(200)
             .send(newLocationData)
             .set('Authorization', `Bearer ${customerToken}`)
             .end((err, res) => {
@@ -298,7 +296,6 @@ describe('Tweet Routes', () => {
         it('expect success', (done) => {
           chai.request(server)
             .post(`/tweets/createnewlocation/${tweet._id}`)
-            .status(200)
             .send(newLocationData)
             .set('Authorization', `Bearer ${adminToken}`)
             .end((err, res) => {
