@@ -40,20 +40,19 @@ const defaultState:DataDefaultState = {
         twitterID: '',
         comments: [],
         creditCard: 'u',
-        // TODO: talk to Farris...do locations need a default value?
         locations: [
-        //     {
-        //     id: '',
-        //     coordinates: { lat: null, long: null },
-        //     address: '',
-        //     neighborhood: '',
-        //     municipality: '',
-        //     matchMethod: '',
-        //     tweetID: null,
-        //     accuracy: 0,
-        //     startDate: null,
-        //     endDate: null
-        // }
+            {
+            id: '',
+            coordinates: { lat: null, long: null },
+            address: '',
+            neighborhood: '',
+            municipality: '',
+            matchMethod: '',
+            tweetID: null,
+            accuracy: 0,
+            startDate: null,
+            endDate: null
+        }
         ],
         isActive: () => false,
         lastUpdated: null,
@@ -85,7 +84,7 @@ export function dataReducer(state = defaultState, action: any) {
     case CLEAR_SELECTED_VENDOR:
         return {
             ...state,
-            selectedVendor: { ...defaultState.selectedVendor, location: { ...defaultState.selectedVendor.location, coordinates: { lat: null, long: null } } }
+            selectedVendor: { ...defaultState.selectedVendor }
         }
     case RECEIVE_ALL_REGIONS:
         return {

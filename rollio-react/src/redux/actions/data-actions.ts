@@ -20,7 +20,7 @@ import {
     RECIEVE_ALL_VENDORS,
 
     CLEAR_SELECTED_VENDOR,
-    
+
     FETCH_ALL_REGIONS,
     FETCH_ALL_REGIONS_SUCCESS,
     RECEIVE_ALL_REGIONS,
@@ -28,8 +28,6 @@ import {
     SET_VENDORS_ALL,
 
     UPDATE_VENDOR,
-
-    UPDATE_DAILY_ACTIVE_VENDORS,
 
     POST_VENDOR_COMMENT,
 } from '../constants/constants'
@@ -43,7 +41,6 @@ import {
     VendorDataAsyncPayload,
     RegionDataAsyncPayload,
     UpdateVendorPayload,
-    UpdateDailyActiveVendorsPayload,
     SelectVendorAsyncPayload,
     SetVendorsAllPayload
 } from './interfaces';
@@ -57,21 +54,17 @@ import {
 
 // Gets the detailed set of vendor profile data
 export function recieveVendorData(vendor:any) {
-    let location = null;
-    // If the vendor is active set its location
-    if (vendor.dailyActive) {
-        location = vendor.locationHistory[vendor.locationHistory.length - 1];
-    }
+    const locations = vendor.locationHistory.filter((location:any) => moment().isBefore(location.endDate));
 
     // If an empty object is passed as an arg then reset all data
-    const profile = {
+        const profile = {
         categories: vendor.categories ? vendor.categories : '',
         comments: vendor.comments ? vendor.comments : [],
         creditCard: vendor.creditCard ? vendor.creditCard : '',
         description: vendor.description ? vendor.description : '',
         email: vendor.email ? vendor.email : '',
         id: vendor._id ? vendor._id : '',
-        location: vendor.dailyActive ? location : {
+        locations: locations.length ? locations : [{
             id: "",
             coordinates: {
                 lat: null,
@@ -82,8 +75,10 @@ export function recieveVendorData(vendor:any) {
             municipality: "",
             matchMethod: "",
             tweetID: null,
-            accuracy: 0
-        },
+            accuracy: 0,
+            startDate: null,
+            endDate: null
+        }],
         name: vendor.name ?  vendor.name : '',
         phoneNumber: vendor.phonenumber ? vendor.phonenumber : '',
         profileImageLink: vendor.profileImageLink ? vendor.profileImageLink : '',
@@ -92,9 +87,11 @@ export function recieveVendorData(vendor:any) {
         rating: vendor.rating ? vendor.rating : '',
         twitterID: vendor.twitterID ? vendor.twitterID : '',
         website: vendor.website ? vendor.website : '',
-        isActive: vendor.dailyActive ? vendor.dailyActive : false,
+        isActive: () => locations.some((location:any) =>
+            moment().isBefore(location.endDate) && moment().isAfter(location.startDate)
+        ),
         lastUpdated: vendor.updateDate ? vendor.updateDate : null
-    }
+    };
 
     return {
         type: RECIEVE_VENDOR_DATA,
@@ -212,8 +209,8 @@ export function selectVendorAsync(payload:SelectVendorAsyncPayload) {
 
                 // Get regionVendorMap data whether it's in a group or not and the ID of the vendor or the group
                 const { isSingle, regionMapID } = getRegionMapVendorData({
-                    stateRegionMap, 
-                    vendorID: payload.vendorId, 
+                    stateRegionMap,
+                    vendorID: payload.vendorId,
                     regionMapID: payload.vendorId
                 })
 
@@ -247,14 +244,14 @@ export function deSelectVendor(vendorID:string, cb:()=>void = ()=>{}) {
 
         if (stateRegionMapCurrentlySelectedID) {
             const { isSingle, regionMapID } = getRegionMapVendorData({
-                stateRegionMap, 
-                vendorID: vendorID, 
+                stateRegionMap,
+                vendorID,
                 regionMapID: stateRegionMapCurrentlySelectedID
             });
 
             // Set the new region map vendor/group status to selected
             dispatch(setRegionMapVendor({id: regionMapID, vendorID, isSingle, data: { selected: false }}));
-            
+
             // Set previously selected vendor
             dispatch(setPreviouslySelectedRegionMap({ id: stateRegionMapCurrentlySelectedID, isSingle }));
 
@@ -419,14 +416,6 @@ export function fetchAllVendorsAsync(payload: any) {
 export function updateVendor(payload: UpdateVendorPayload) {
     return {
         type: UPDATE_VENDOR,
-        payload
-    }
-}
-
-// Add a vendorID to dailyActiveVendors
-export function updateDailyActiveVendors(payload: UpdateDailyActiveVendorsPayload) {
-    return {
-        type: UPDATE_DAILY_ACTIVE_VENDORS,
         payload
     }
 }

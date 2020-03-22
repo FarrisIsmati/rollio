@@ -39,8 +39,8 @@ export interface AllVendorsPayload {
 interface LimitedLocation {
   lat: number,
   long: number,
-  startDate: Date,
-  endDate: Date
+  startDate: Date | null,
+  endDate: Date | null
 }
 
 export interface UpdateVendorPayload {
