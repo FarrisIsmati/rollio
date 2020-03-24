@@ -9,7 +9,6 @@ module.exports = {
     return axios.post(`${config.NLP_API}/parse-location`, { text })
       .then(res => res.data)
       .catch((err) => {
-        console.log(err);
         logger.error(`NLP API Failure: ${err}`);
         throw err;
       });
