@@ -8,6 +8,9 @@ const logger = require('../../log/index')('mongo/index');
 const options = {
   autoIndex: false,
   useNewUrlParser: true,
+  useFindAndModify: false,
+  useCreateIndex: true,
+  useUnifiedTopology: true,
 };
 
 let connectionStatus = false;

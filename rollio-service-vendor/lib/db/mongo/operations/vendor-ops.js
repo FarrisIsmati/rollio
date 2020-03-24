@@ -178,7 +178,7 @@ module.exports = {
       const newDocument = field === 'tweetHistory' ? await Tweet.create(createPayload) : await Location.create(createPayload);
       payload = newDocument._id;
     }
-    return Vendor.update({
+    return Vendor.updateOne({
       regionID,
       _id: vendorID,
     }, {
@@ -269,7 +269,7 @@ module.exports = {
       return err;
     }
 
-    return Vendor.update({
+    return Vendor.updateOne({
       regionID,
       _id: vendorID,
     }, {

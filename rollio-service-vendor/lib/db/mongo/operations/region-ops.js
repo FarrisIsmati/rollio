@@ -56,7 +56,7 @@ module.exports = {
     if (!regionID) {
       id = { name: regionName };
     }
-    return Region.update(id, {
+    return Region.updateOne(id, {
       $addToSet: { dailyActiveVendorIDs: vendorID },
     })
       .then(async (res) => {

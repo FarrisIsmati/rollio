@@ -414,7 +414,7 @@ describe('Vendor Routes', () => {
             expect(res).to.have.status(500);
             expect(res.body.message.includes('Vendor validation')).to.be.true;
             done();
-          })
+          });
       });
 
       it('expect vendor to be created with twitterID matching the vendor twitter id, if user is a vendor', (done) => {

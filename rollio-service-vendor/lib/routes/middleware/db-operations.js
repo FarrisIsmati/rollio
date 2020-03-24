@@ -3,6 +3,7 @@
 // DEPENDENCIES
 const MongoQS = require('mongo-querystring');
 const logger = require('../../log/index')('routes/middleware/db-operations');
+const config = require('../../../config');
 
 const qs = new MongoQS(); // MongoQS takes req.query and converts it into MongoQuery
 const { client: redisClient } = require('../../redis/index');
@@ -21,7 +22,7 @@ const {
 
 const {
   findUserById,
-  patchUser
+  patchUser,
 } = require('../../db/mongo/operations/user-ops');
 
 const {
@@ -313,112 +314,116 @@ const vendorRouteOps = {
 const userRouteOps = {
   restrictToAdmins: async (req, res, next) => {
     if (req.user.type !== 'admin') {
-      res.send(403, 'You must be an admin');
+      return res.status(403).send('You must be an admin');
     }
     next();
   },
   send403IfNoToken: (err, req, res, next) => {
     if (err) {
       if (err.name === 'UnauthorizedError') {
-        res.send(403, 'User must be logged in');
-      } else {
-        res.send(500, 'Something went wrong');
+        return res.status(403).send('User must be logged in');
       }
+
+      return res.status(403).send('Something went wrong');
     }
     next();
   },
   passUserToNext: async (req, res, next) => {
-    findUserById(req.user.id, true).then((user) => {
+    const userID = req.user ? req.user.id : null;
+    findUserById(userID, true).then((user) => {
       if (user) {
         req.user = user;
         next();
       } else {
-        res.send(401, 'User Not Authenticated');
+        return res.status(401).send('User Not Authenticated');
       }
-    }).catch((err) => {
-      console.error(err);
-      res.send(401, 'User Not Authenticated');
+    }).catch(() => {
+      logger.error('Authentication: User not authenticated, passUserToNext func()');
+      if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') { console.log('Authentication: User not authenticated, passUserToNext func()'); }
+      res.status(401).send('User Not Authenticated');
     });
   },
   passVendorToNext: async (req, res, next) => {
     const { vendorID, regionID } = req.params;
-    const vendor = vendorID && regionID ? await getVendor(regionID, vendorID).catch((err) => {
-      console.error(err);
-      res.send(500, 'error looking up vendor');
+    const vendor = vendorID && regionID ? await getVendor(regionID, vendorID).catch(() => {
+      logger.error('Vendor: Failed to look up vendor, passVendorToNext func()');
+      if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') { console.log('Authentication: User not authenticated, passVendorToNext func()'); }
+      res.status(500).send('error looking up vendor');
     }) : null;
     if (vendor) {
       req.vendor = vendor;
       next();
     } else {
-      res.send(404, 'Vendor not found');
+      return res.status(404).send('Vendor not found');
     }
   },
   getUser: async (req, res) => {
     findUserById(req.user.id).then((user) => {
       if (user) {
-        res.json({ user });
-      } else {
-        res.send(401, 'User Not Authenticated');
+        return res.status(200).json({ user });
       }
-    }).catch((err) => {
-      console.error(err);
-      res.send(401, 'User Not Authenticated');
+      return res.status(401).send('User Not Authenticated');
+    }).catch(() => {
+      logger.error('Authentication: User not authenticated, getUser func()');
+      if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') { console.log('Authentication: User not authenticated, getUserFunc()'); }
+      res.status(401).send('User Not Authenticated');
     });
   },
   updateUser: async (req, res) => {
     patchUser(req.user.id, req.body).then((user) => {
       if (user) {
-        res.json({ user });
-      } else {
-        res.send(401, 'User Not Authenticated');
+        return res.status(200).json({ user });
       }
-    }).catch((err) => {
-      console.error(err);
-      res.send(401, 'User Not Authenticated');
+
+      return res.status(401).send('User Not Authenticated');
+    }).catch(() => {
+      logger.error('Authentication: User not authenticated, updateUser func()');
+      if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') { console.log('Authentication: User not authenticated, updateUser func()'); }
+      res.status(401).send('User Not Authenticated');
     });
   },
 };
 
 const tweetRouteOps = {
   tweetSearch: async (req, res) => {
-    getAllTweets(req.query).then((tweets) => {
-      res.json({ tweets });
-    }).catch((err) => {
-      console.error(err);
-      res.send(401, 'Error fetching tweets');
-    });
+    getAllTweets(req.query).then(tweets => res.status(200).json({ tweets }))
+      .catch(() => {
+        logger.error('Authentication: User not authenticated, tweetSearch func()');
+        if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') { console.log('Twitter: Error fetching tweets, tweetSearch func()'); }
+        res.status(401).send('Error fetching tweets');
+      });
   },
   vendorsForFiltering: async (req, res) => {
-    getVendorsForFiltering(req.query).then((vendors) => {
-      res.json({ vendors });
-    }).catch((err) => {
-      console.error(err);
-      res.send(401, 'Error fetching vendors');
-    });
+    getVendorsForFiltering(req.query).then(vendors => res.status(200).json({ vendors }))
+      .catch(() => {
+        logger.error('Twitter: User not authenticated, vendorsForFiltering func()');
+        if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') { console.log('Twitter: Error fetching tweets, vendorsForFiltering func()'); }
+        res.status(401).send('Error fetching vendors');
+      });
   },
   getTweetWithPopulatedVendorAndLocation: async (req, res) => {
-    getTweetWithPopulatedVendorAndLocation(req.params.tweetId).then((tweet) => {
-      res.json({ tweet });
-    }).catch((err) => {
-      console.error(err);
-      res.send(401, 'Error fetching tweet');
-    });
+    getTweetWithPopulatedVendorAndLocation(req.params.tweetId).then(tweet => res.status(200).json({ tweet }))
+      .catch(() => {
+        logger.error('Twitter: User not authenticated, getTweetWithPopulatedVendorAndLocation func()');
+        if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') { console.log('Twitter: Error fetching tweets, getTweetWithPopulatedVendorAndLocation func()'); }
+        res.status(401).send('Error fetching tweet');
+      });
   },
   deleteLocation: async (req, res) => {
-    deleteTweetLocation(req.params.tweetId).then((tweet) => {
-      res.json({ tweet });
-    }).catch((err) => {
-      console.error(err);
-      res.send(401, 'Error deleting location');
-    });
+    deleteTweetLocation(req.params.tweetId).then(tweet => res.status(200).json({ tweet }))
+      .catch(() => {
+        logger.error('Twitter: User not authenticated, deleteTweetLocation func()');
+        if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') { console.log('Twitter: Error fetching tweets, deleteTweetLocation func()'); }
+        res.status(401).send('Error deleting location');
+      });
   },
   createNewLocation: async (req, res) => {
-    createTweetLocation(req.params.tweetId, req.body).then((tweet) => {
-      res.json({ tweet });
-    }).catch((err) => {
-      console.error(err);
-      res.send(401, 'Error creating new location');
-    });
+    createTweetLocation(req.params.tweetId, req.body).then(tweet => res.status(200).json({ tweet }))
+      .catch(() => {
+        logger.error('Twitter: User not authenticated, createTweetLocation func()');
+        if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') { console.log('Twitter: Error fetching tweets, createTweetLocation func()'); }
+        res.status(401).send('Error creating new location');
+      });
   },
 };
 
