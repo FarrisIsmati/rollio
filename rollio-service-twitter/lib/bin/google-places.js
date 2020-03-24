@@ -19,10 +19,10 @@ module.exports = {
         return err;
       });
   },
-  async neighborhoodFromCoords(lat, lng) {
+  async neighborhoodCityStateFromCoords(lat, lng) {
     return axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&result_type=neighborhood&key=${config.GOOGLE_PLACES_API_KEY}`)
       .then((res) => {
-        const lowerCaseLongName = addressComponent => (addressComponent && addressComponent.long_name.toLowerCase()) || '';
+        const lowerCaseLongName = addressComponent => (addressComponent ? addressComponent.long_name.toLowerCase() : '');
         const addressComponents = res.data.results[0].address_components;
         const neighborhood = addressComponents.find(component => component.types.includes('neighborhood'));
         const city = addressComponents.find(component => component.types.includes('locality'));

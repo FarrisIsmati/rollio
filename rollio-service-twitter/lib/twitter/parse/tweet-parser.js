@@ -55,7 +55,7 @@ const tweetParser = {
     }
 
     // find neighborhood from coordinates
-    const { neighborhood, city } = await googlePlaces.neighborhoodFromCoords(
+    const { neighborhood, city } = await googlePlaces.neighborhoodCityStateFromCoords(
       address.geometry.location.lat, address.geometry.location.lng,
     );
 

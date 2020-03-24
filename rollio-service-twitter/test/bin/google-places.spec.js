@@ -29,13 +29,13 @@ describe('Google Places', async () => {
   // });
 
   // describe('Neighborhood from coordinates', () => {
-  //   it('expect googlePlaces neighborhoodFromCoords to return a promise', async () => {
-  //     const res = googlePlaces.neighborhoodFromCoords(38.906483, -77.005863);
+  //   it('expect googlePlaces neighborhoodCityStateFromCoords to return a promise', async () => {
+  //     const res = googlePlaces.neighborhoodCityStateFromCoords(38.906483, -77.005863);
   //     expect(res).to.be.a('promise');
   //   });
 
-  //   it('expect googlePlaces neighborhoodFromCoords to resolve the neighborhood noma from coordinates 38.906483, -77.005863', async () => {
-  //     const res = await googlePlaces.neighborhoodFromCoords(38.906483, -77.005863);
+  //   it('expect googlePlaces neighborhoodCityStateFromCoords to resolve the neighborhood noma from coordinates 38.906483, -77.005863', async () => {
+  //     const res = await googlePlaces.neighborhoodCityStateFromCoords(38.906483, -77.005863);
   //     expect(res).to.be.equal('noma');
   //   });
   });
