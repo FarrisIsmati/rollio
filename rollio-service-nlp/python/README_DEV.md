@@ -53,3 +53,10 @@ flask run
 python update_model.py
 ```
 Then, just type in an example tweet (e.g. 'see you at Union Station') and hit enter
+
+```
+Windows Troubleshoot
+1. ensure using python3 64 bit
+2. Target install packages to correct folder
+   pip3 install --target="C:\Users\Farris Ismati\Desktop\Code Projects\rollio\rollio-service-nlp\python\python_modules" spacy==2.2.3 flask==0.12.2
+3. Debug spacy 4 windows error https://spacy.io/usage#troubleshooting
