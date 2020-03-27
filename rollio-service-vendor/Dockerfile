@@ -11,5 +11,3 @@ COPY . .
 EXPOSE 3001
 
 CMD ["node", "index.js"]
-
-# https://stackoverflow.com/questions/41093812/how-to-get-docker-containers-to-talk-to-each-other-while-running-on-my-local-hos

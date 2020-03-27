@@ -23,6 +23,8 @@ const connectToMongoDB = () => util.retryExternalServiceConnection(
     })
     .catch((err) => {
       logger.error(err);
+      console.log(err);
+      console.log(config.MONGO_CONNECT)
       return false;
     }),
   'Mongo',

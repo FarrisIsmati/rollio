@@ -5,3 +5,16 @@ This service also currently has a small API that allows users to get regions, ge
 Most all get routes are chaced in the RedisDB except for any routes with a QS.
 All routes have a general rate limit to prevent throttling. 
 Comments are currently rate limited to one post per vendor per day.
+
+# Docker Setup
+Containerizing
+docker images
+docker ps
+docker run -d -p port:port --name *name* *image* *image*:*tag*
+docker-machine ip default (get docker ip)
+docker exec -it mongodb bash
+
+stopping
+docker ps
+docker stop *container_id*
+docker rm *container_id*
