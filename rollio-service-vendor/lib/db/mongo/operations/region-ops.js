@@ -43,6 +43,7 @@ module.exports = {
         return err;
       });
   },
+  // TODO: look at what calls this
   incrementRegionDailyActiveVendorIDs(payload) {
     const { regionID, regionName, vendorID } = payload;
     if ((!regionID && !regionName) || !vendorID) {

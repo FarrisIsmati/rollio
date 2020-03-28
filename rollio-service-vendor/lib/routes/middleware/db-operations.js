@@ -110,6 +110,7 @@ const vendorRouteOpsUtil = {
 
     // Check to see if the vendor was updated and has a location history
     // If so set the location
+    // TODO: here..look at how location is set
     if (vendor.dailyActive && vendor.locationHistory.length) {
       const vendorLocation = vendor.locationHistory[vendor.locationHistory.length - 1];
       location = {
@@ -136,6 +137,7 @@ const vendorRouteOpsUtil = {
       profileImageLink: vendor.profileImageLink,
       location,
       selected: false,
+      // TODO: here
       isActive: vendor.dailyActive,
       lastUpdated: vendor.updateDate,
     };

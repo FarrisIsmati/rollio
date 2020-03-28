@@ -1,3 +1,4 @@
+// TODO: check dailyActive throughout here
 const { ObjectId } = require('mongoose').Types;
 const faker = require('faker');
 

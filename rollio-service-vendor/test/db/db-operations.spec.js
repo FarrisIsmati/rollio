@@ -203,6 +203,7 @@ describe('DB Operations', () => {
         expect(updatedDailyTweets.length).to.equal(prevDailyTweets.length + 1);
       });
 
+      // TODO: here
       it('expect dailyActive to be set from false to true', async () => {
         const targetVendor = await Vendor.findOne({ dailyActive: false });
 
@@ -723,6 +724,7 @@ describe('DB Operations', () => {
               .then(async (res) => {
                 // populates vendorID in the response
                 expect(res.vendorID.name).to.be.equal(vendor.name);
+                // TODO: here
                 expect(res.location).to.be.an('undefined');
                 expect(res.usedForLocation).to.be.false;
                 const updatedLocation = await Location.findById(locationID);

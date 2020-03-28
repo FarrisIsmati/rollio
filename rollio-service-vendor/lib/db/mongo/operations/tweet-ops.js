@@ -15,6 +15,7 @@ const deleteTweetLocation = async (_id) => {
   // set previously used location to overriden
   await Location.updateOne({ _id: originalTweet.location }, { $set: { overriden: true } });
   // pull location from vendor's location history, set usedForLocation to false, and if tweet is from today, set dailyActive to false
+  // TODO: here
   const tweetIsFromToday = moment(Date.now()).isSame(moment(originalTweet.date), 'days');
   const dailyActiveUpdate = tweetIsFromToday ? { $set: { dailyActive: false } } : {};
   // update vendor
@@ -45,6 +46,7 @@ module.exports = {
       }
       const tweetIsFromToday = moment(Date.now()).isSame(moment(newLocationData.locationDate), 'days');
       const newLocation = await Location.create({ ...newLocationData, matchMethod: 'Manual from Tweet' });
+      // TODO
       const dailyActiveUpdate = tweetIsFromToday ? { $set: { dailyActive: true } } : {};
       const { _id: vendorID, regionID, twitterID } = await Vendor.findOneAndUpdate(
         { _id: originalTweet.vendorID }, {

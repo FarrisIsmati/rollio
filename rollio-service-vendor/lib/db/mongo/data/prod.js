@@ -15,6 +15,7 @@ module.exports = {
       locationHistory: [],
       locationAccuracy: 0,
       comments: [],
+      // TODO: here
       dailyActive: false,
       consecutiveDaysInactive: 0,
       categories: ['spanish', 'sandwhich', 'traditional'],

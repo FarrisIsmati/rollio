@@ -11,10 +11,6 @@ const logger = require('../../log/index')('messaging/receive/receive-vendor-loca
 const { io } = require('../../sockets/index');
 
 const updateTweet = async (payload, region, vendor) => {
-  // Formating
-  const tweet = { ...payload };
-  delete tweet.twitterID;
-
   const params = {
     regionID: region._id, vendorID: vendor._id, field: 'tweetHistory', payload,
   };
@@ -56,6 +52,7 @@ const updateLocation = async (payload, region, vendor) => {
   }
 };
 
+// TODO: look here
 const setVendorActive = async (region, vendor) => {
   // Add vendorID to dailyActiveVendorIDs
   try {
@@ -67,6 +64,7 @@ const setVendorActive = async (region, vendor) => {
   }
 
   // Set daily active of vendor to true AND reset consecutive days inactive of vendor
+  // TODO: here
   try {
     await vendorOps.updateVendorSet({
       regionID: region._id, vendorID: vendor._id, field: ['dailyActive', 'consecutiveDaysInactive'], data: [true, -1],
@@ -94,6 +92,7 @@ const receiveTweets = async () => {
 
     let newLocation = null;
 
+    // TODO: here!!!!!
     if (message.match) {
       newLocation = await vendorOps.createLocation({ ...message.location, tweetID: message.tweetID });
       tweetPayload.location = newLocation._id;

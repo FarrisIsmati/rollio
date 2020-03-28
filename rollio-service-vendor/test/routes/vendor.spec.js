@@ -233,6 +233,7 @@ describe('Vendor Routes', () => {
       let regionId;
       let adminToken;
       let selectedVendor;
+      // TODO: here?
       const data = { field: ['dailyActive', 'type'], data: [true, 'airstream'] };
 
       beforeEach((done) => {
