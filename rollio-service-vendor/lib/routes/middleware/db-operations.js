@@ -1,6 +1,7 @@
 /* eslint-disable no-shadow */
 /* eslint-disable no-console */
 // DEPENDENCIES
+const moment = require('moment');
 const MongoQS = require('mongo-querystring');
 const logger = require('../../log/index')('routes/middleware/db-operations');
 const config = require('../../../config');
@@ -106,27 +107,28 @@ const vendorRouteOpsUtil = {
   // Returned a remapped vendor
   // Data is used to format the get all vendors calls
   formatData: (vendor) => {
-    let location = null;
-
-    // Check to see if the vendor was updated and has a location history
-    // If so set the location
-    // TODO: here..look at how location is set
-    if (vendor.dailyActive && vendor.locationHistory.length) {
-      const vendorLocation = vendor.locationHistory[vendor.locationHistory.length - 1];
-      location = {
-        id: vendorLocation._id,
-        coordinates: {
-          lat: vendorLocation.coordinates[0],
-          long: vendorLocation.coordinates[1],
-        },
-        address: vendorLocation.address,
-        neighborhood: vendorLocation.neighborhood,
-        municipality: vendorLocation.city,
-        accuracy: vendorLocation.accuracy,
-        matchMethod: vendorLocation.matchMethod,
-        tweetID: vendorLocation.tweetID,
-      };
-    }
+    const locations = vendor.locationHistory.reduce((acc, location) => {
+      const {
+        _id: id,
+        coordinates,
+        address,
+        neighborhood,
+        city,
+        accuracy,
+        matchMethod,
+        tweetId,
+        startDate,
+        endDate,
+      } = location;
+      const [lat, long] = coordinates;
+      if (moment().isBefore(endDate)) {
+        acc.push({
+          // eslint-disable-next-line max-len
+          id, coordinates: { lat, long }, address, neighborhood, city, accuracy, matchMethod, tweetId, startDate, endDate,
+        });
+      }
+      return acc;
+    }, []);
 
     return {
       id: vendor._id,
@@ -135,10 +137,9 @@ const vendorRouteOpsUtil = {
       categories: vendor.categories,
       consecutiveDaysInactive: vendor.consecutiveDaysInactive,
       profileImageLink: vendor.profileImageLink,
-      location,
+      locations,
       selected: false,
-      // TODO: here
-      isActive: vendor.dailyActive,
+      isActive: locations.some(location => moment().isBefore(location.endDate) && moment().isAfter(location.startDate)),
       lastUpdated: vendor.updateDate,
     };
   },
