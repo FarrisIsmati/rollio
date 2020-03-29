@@ -17,7 +17,7 @@ module.exports = {
       },
     },
   ],
-  dc: [
+  washington: [
     {
       neighborhood: '',
       regex: /(\w*)\s*(and|&|&&|nd)\s*(\d(\w*)?)/i,

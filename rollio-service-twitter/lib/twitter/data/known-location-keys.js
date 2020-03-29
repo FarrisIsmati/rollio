@@ -1,4 +1,4 @@
 module.exports = {
-  dc: ', Washington, DC',
+  washington: ', Washington, DC',
   arlington: ', Arlington, VA',
 };

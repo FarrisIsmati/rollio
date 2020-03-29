@@ -109,7 +109,7 @@ const receiveTweets = async () => {
 
     try {
       await updateTweet(tweetPayload, region, vendor);
-      console.log(tweetPayload);
+      if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') { console.log(tweetPayload); }
 
       const tweetPayloadLocationUpdate = { ...tweetPayload };
 

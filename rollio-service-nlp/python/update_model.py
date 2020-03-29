@@ -33,7 +33,7 @@ TRAIN_DATA = []
 nlp.to_disk(PATH)
 
 #Test your text
-test_text = input("Enter your testing text: ")
+test_text = input("Enter test tweet text to parse: ")
 doc = nlp(test_text)
 for ent in doc.ents:
     print(ent.text, ent.start_char, ent.end_char, ent.label_)

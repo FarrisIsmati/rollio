@@ -1,26 +1,6 @@
 version: '2'
 
 services:
-  mongo:
-    container_name: mongo
-    image: mongo
-    ports: 
-      - '27017:27017'
-    # volumes:
-    #   - ./data/db:/data/db
-    restart: always
-  redis:
-    container_name: redis
-    image: 'redis:4.0.11'
-    ports: 
-      - '6379:6379'
-    restart: always
-  rabbitmq:
-    container_name: rabbitmq
-    image: 'rabbitmq'
-    ports: 
-      - '5672:5672'
-    restart: always
   app-service-vendor:
     container_name: rollio-service-vendor
     build: .
@@ -34,17 +14,4 @@ services:
     links:
       - redis
       - mongo
-      - rabbitmq
-  app-service-twitter:
-    container_name: rollio-service-twitter
-    build: ..\Rollio-Service-Twitter
-    env_file:
-      - ..\Rollio-Service-Twitter\.env
-    environment:
-      - NODE_ENV=DEVELOPMENT_DOCKER
-      - PORT=3002
-    restart: always
-    ports: 
-      - '81:3002'
-    links:
       - rabbitmq
