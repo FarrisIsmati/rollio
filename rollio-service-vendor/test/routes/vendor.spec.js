@@ -233,8 +233,7 @@ describe('Vendor Routes', () => {
       let regionId;
       let adminToken;
       let selectedVendor;
-      // TODO: here?
-      const data = { field: ['dailyActive', 'type'], data: [true, 'airstream'] };
+      const data = { field: ['type'], data: ['airstream'] };
 
       beforeEach((done) => {
         seed.runSeed().then(async () => {
@@ -349,7 +348,6 @@ describe('Vendor Routes', () => {
     };
     const defaultData = {
       approved: false,
-      dailyActive: false,
       consecutiveDaysInactive: 0,
       __v: 0,
       categories: [],
