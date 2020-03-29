@@ -1,6 +1,6 @@
-// TODO: check dailyActive throughout here
 const { ObjectId } = require('mongoose').Types;
 const faker = require('faker');
+const moment = require('moment');
 
 const tweet1Id = ObjectId();
 const tweet2Id = ObjectId();
@@ -47,6 +47,8 @@ const secondVendorWithAVendorId = ObjectId();
 const getTwitterId = () => faker.random.number({ min: 100000000, max: 999999999 });
 const vendor1TwitterID = getTwitterId();
 const vendor2TwitterID = '2185580414';
+const startDate = moment();
+const endDate = moment(startDate).add(1, 'days');
 
 module.exports = {
   vendors: [
@@ -72,7 +74,6 @@ module.exports = {
       locationHistory: [location1Id],
       userLocationHistory: [location2Id],
       comments: [],
-      dailyActive: false,
       consecutiveDaysInactive: 4,
       categories: ['Luxury', 'Caviar', 'Lobster', 'Michelan Star'],
       approved: true,
@@ -96,7 +97,6 @@ module.exports = {
       tweetHistory: [tweet2Id],
       locationHistory: [location3Id],
       comments: [],
-      dailyActive: true,
       consecutiveDaysInactive: 4,
       categories: ['Balkan', 'Mediterranean', 'Hearty', 'Meat'],
       approved: true,
@@ -120,7 +120,6 @@ module.exports = {
       tweetHistory: [tweet3Id],
       locationHistory: [location4Id],
       comments: [],
-      dailyActive: true,
       consecutiveDaysInactive: 4,
       categories: ['Cheese', 'Comfort', 'Hearty', 'Bread'],
       approved: true,
@@ -145,7 +144,6 @@ module.exports = {
       locationHistory: [location5Id],
       userLocationHistory: [],
       comments: [],
-      dailyActive: true,
       consecutiveDaysInactive: -1,
       categories: ['Fast Food', 'American', 'Comfort Food', 'Meat', 'Chicken'],
       approved: true,
@@ -170,7 +168,6 @@ module.exports = {
       locationHistory: [location6Id],
       userLocationHistory: [],
       comments: [],
-      dailyActive: true,
       consecutiveDaysInactive: -1,
       categories: ['Hawaiian', 'Poke', 'Casual', 'Seafood'],
       approved: true,
@@ -195,7 +192,6 @@ module.exports = {
       locationHistory: [location7Id],
       userLocationHistory: [],
       comments: [],
-      dailyActive: true,
       consecutiveDaysInactive: -1,
       categories: ['South American', 'Venezuelan', 'Arepa', 'Comfort Food', 'Street Food'],
       approved: true,
@@ -220,7 +216,6 @@ module.exports = {
       locationHistory: [location8Id],
       userLocationHistory: [],
       comments: [],
-      dailyActive: true,
       consecutiveDaysInactive: -1,
       categories: ['American', 'Donuts', 'Fried Chicken', 'Comfort Food', 'Street Food'],
       approved: true,
@@ -245,7 +240,6 @@ module.exports = {
       locationHistory: [location9Id],
       userLocationHistory: [],
       comments: [],
-      dailyActive: true,
       consecutiveDaysInactive: -1,
       categories: ['Italian', 'Fried Chicken', 'Pasta', 'Meat'],
       approved: true,
@@ -271,7 +265,6 @@ module.exports = {
       locationHistory: [],
       userLocationHistory: [],
       comments: [],
-      dailyActive: false,
       consecutiveDaysInactive: 0,
       categories: ['Luxury', 'Caviar', 'Lobster', 'Michelan Star'],
       approved: true,
@@ -295,7 +288,6 @@ module.exports = {
       locationHistory: [],
       userLocationHistory: [],
       comments: [],
-      dailyActive: false,
       consecutiveDaysInactive: -1,
       categories: ['Barbeque', 'American', 'Comfort Food', 'Meat'],
       approved: true,
@@ -319,7 +311,6 @@ module.exports = {
       locationHistory: [],
       userLocationHistory: [],
       comments: [],
-      dailyActive: false,
       consecutiveDaysInactive: -1,
       categories: ['Fast Food', 'American', 'Comfort Food', 'Soul Food'],
       approved: true,
@@ -416,6 +407,8 @@ module.exports = {
       matchMethod: 'Tweet location',
       tweetID: tweet1IdString,
       coordinates: [39.2934, -77.1234],
+      startDate,
+      endDate,
     },
     {
       _id: location2Id,
@@ -427,6 +420,8 @@ module.exports = {
       matchMethod: 'User Input',
       tweetID: null,
       coordinates: [38.902033, -77.038995],
+      startDate,
+      endDate,
     },
     {
       _id: location3Id,
@@ -438,6 +433,8 @@ module.exports = {
       matchMethod: 'Tweet location',
       coordinates: [38.897182, -77.022013],
       tweetID: tweet2IdString,
+      startDate,
+      endDate,
     },
     {
       _id: location4Id,
@@ -449,6 +446,8 @@ module.exports = {
       matchMethod: 'Tweet location',
       tweetID: tweet3IdString,
       coordinates: [38.897156, -77.07239],
+      startDate,
+      endDate,
     },
     {
       _id: location5Id,
@@ -460,6 +459,8 @@ module.exports = {
       matchMethod: 'Tweet location',
       tweetID: tweet4IdString,
       coordinates: [38.898482, -77.021965],
+      startDate,
+      endDate,
     },
     {
       _id: location6Id,
@@ -470,6 +471,8 @@ module.exports = {
       neighborhood: 'farragut square',
       tweetID: tweet5IdString,
       coordinates: [38.902033, -77.038995],
+      startDate,
+      endDate,
     },
     {
       _id: location7Id,
@@ -480,6 +483,8 @@ module.exports = {
       neighborhood: 'farragut square',
       tweetID: tweet6IdString,
       coordinates: [38.902033, -77.038995],
+      startDate,
+      endDate,
     },
     {
       _id: location8Id,
@@ -490,6 +495,8 @@ module.exports = {
       neighborhood: 'chinatown',
       tweetID: tweet7IdString,
       coordinates: [38.898482, -77.021965],
+      startDate,
+      endDate,
     },
     {
       _id: location9Id,
@@ -500,6 +507,8 @@ module.exports = {
       neighborhood: 'chinatown',
       coordinates: [38.898482, -77.021965],
       tweetID: tweet8IdString,
+      startDate,
+      endDate,
     },
   ],
   users: [
@@ -581,6 +590,6 @@ module.exports = {
         displayName: faker.random.words(2)
       },
       regionID: region1Id,
-    }
+    },
   ],
 };
