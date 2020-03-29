@@ -49,8 +49,8 @@ flask run
 
 ## To run the docker image locally
 ```
-docker build -t nlp:latest .
-docker run -d -p 5000:5000 nlp
+docker build -t rollio-service-nlp:latest .
+docker run -d -p 5000:5000 rollio-service-nlp
 ```
 you can confirm that the image is running by going to http://127.0.0.1:5000/ in your browswer.  You should see "Hello there!".  Be patient- it can take a minute
 
