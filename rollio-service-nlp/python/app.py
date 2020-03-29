@@ -1,8 +1,11 @@
-import flask
 from flask import Flask, request, jsonify, Response
 import json
 from parse import parse_tweet
 app = Flask(__name__)
+
+@app.route('/')
+def say_hello():
+    return Response(json.dumps('Hello there!'), status=200, mimetype='application/json')
 
 @app.route("/parse-location", methods=['POST'])
 def extract_schema():
