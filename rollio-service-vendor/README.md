@@ -10,9 +10,11 @@ Comments are currently rate limited to one post per vendor per day.
 Containerizing
 docker images
 docker ps
-docker run -d -p port:port --name *name* *image* *image*:*tag*
+
+docker build -t *imagename*:*tag* .
+docker run -d -p *port*:*port* --env-file *./env* --name *containername* *image:tag*
 docker-machine ip default (get docker ip)
-docker exec -it mongodb bash
+docker exec -it *containerid* bash
 
 stopping
 docker ps

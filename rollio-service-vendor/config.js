@@ -24,6 +24,7 @@ switch (NODE_ENV) {
     REDIS_PORT = process.env.REDIS_PORT_PROD;
     RABBITMQ_CONNECT = process.env.RABBITMQ_SERVER_ID_PROD;
     REDIS_TWITTER_CHANNEL = process.env.REDIS_TWITTER_CHANNEL_PROD;
+    JWT_SECRET = process.env.SECRET_PROD;
     break;
   case 'DEVELOPMENT_LOCAL':
     MONGO_CONNECT = process.env.MONGO_DEV_LOCAL;
