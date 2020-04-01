@@ -58,6 +58,12 @@ switch (NODE_ENV) {
     REDIS_HOST = process.env.REDIS_HOST_DOCKER;
     REDIS_TWITTER_CHANNEL = process.env.REDIS_TWITTER_CHANNEL_DEV;
     RABBITMQ_CONNECT = process.env.RABBITMQ_SERVER_ID_DOCKER;
+    TWITTER_CONFIG = {
+      consumerKey: process.env.TWITTER_CONSUMER_KEY_LOCAL,
+      consumerSecret: process.env.TWITTER_CONSUMER_SECRET_LOCAL,
+      callbackURL: process.env.OAUTH_CALLBACK_LOCAL,
+    };
+    JWT_SECRET = process.env.SECRET_LOCAL;
     break;
   case 'TEST_DOCKER':
     MONGO_CONNECT = process.env.MONGO_TEST_DOCKER;
