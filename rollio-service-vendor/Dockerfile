@@ -1,5 +1,5 @@
 # Base image
-FROM node:13-alpine
+FROM node:13
 
 # Working Directory
 WORKDIR /usr/src/app
@@ -7,9 +7,13 @@ WORKDIR /usr/src/app
 # Ensure both package.json AND package-lock.json are copied
 COPY package*.json ./
 
-# Add bash (for SSH) to alpine image
-RUN apk add --no-cache bash
+# Install Vim
+RUN apt-get update \
+    && apt-get install -y \
+        nmap \
+        vim
 
+# Install node modules
 RUN npm install
 
 # Bundle app source code

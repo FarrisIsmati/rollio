@@ -12,7 +12,7 @@ docker images
 docker ps
 
 docker build -t *imagename*:*tag* .
-docker run -d -p *port*:*port* --env-file *./env* --name *containername* *image:tag*
+docker run -d -p *port*:*port* --env-file *./.env* --name *containername* *image:tag*
 docker-machine ip default (get docker ip)
 docker exec -it *containerid* bash
 
