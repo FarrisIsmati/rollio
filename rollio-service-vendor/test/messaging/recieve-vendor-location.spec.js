@@ -18,7 +18,7 @@ const Region = mongoose.model('Region');
 const seed = require('../../lib/db/mongo/seeds/dev-seed');
 
 describe('Message Receive Vendor Location', () => {
-  describe('setVendorActive', () => {
+  describe('update location', () => {
     let region;
     let vendor;
 
@@ -37,51 +37,10 @@ describe('Message Receive Vendor Location', () => {
       });
     });
 
-    it('expect setVendorActive to clear cache for getVendorID route', async () => {
-      const query = `q::method::GET::path::/${region._id}/${vendor._id}`;
-      const collectionKey = 'vendor';
-      await redisClient.hsetAsync(collectionKey, query, '{"test":"data"}');
-      const cacheResBefore = await redisClient.hgetAsync(collectionKey, query);
-
-      await receiveVendorLocation.setVendorActive(region, vendor);
-      const cacheResAfter = await redisClient.hgetAsync(collectionKey, query);
-
-      expect(cacheResBefore).to.be.equal('{"test":"data"}');
-      expect(cacheResAfter).to.be.equal(null);
-    });
-
-    it('expect setVendorActive to add vendorID to dailyActiveVendorIDs', async () => {
-      const dailyActiveVendorIDsLenBefore = region.dailyActiveVendorIDs.length;
-      await receiveVendorLocation.setVendorActive(region, vendor);
-      const updatedRegion = await Region.findOne({ _id: region._id })
-        .catch((err) => {
-          const errMsg = new Error(err);
-          console.error(errMsg);
-        });
-      const dailyActiveVendorIDsLenAfter = updatedRegion.dailyActiveVendorIDs.length;
-
-      expect(dailyActiveVendorIDsLenBefore).to.equal(0);
-      expect(dailyActiveVendorIDsLenAfter).to.equal(dailyActiveVendorIDsLenBefore + 1);
-    });
-
-    it('expect setVendorActive to set dailyActive of vendor to true', async () => {
-      const dailyActiveBefore = vendor.dailyActive;
-      await receiveVendorLocation.setVendorActive(region, vendor);
-      const updatedVendor = await Vendor.findOne({ _id: vendor._id })
-        .catch((err) => {
-          const errMsg = new Error(err);
-          console.error(errMsg);
-        });
-      const dailyActiveAfter = updatedVendor.dailyActive;
-
-      expect(dailyActiveBefore).to.equal(false);
-      expect(dailyActiveAfter).to.equal(true);
-    });
-
     it('expect updateLocation to update a vendors location and its updateDate properties', async () => {
       const vendorBefore = await vendorOps.getVendor(region._id, vendor._id);
 
-      const updateLocationPayload = { 
+      const updateLocationPayload = {
         accuracy: 3,
         coordinates: [72, 35],
         locationDate: '2018-11-01T12:00:00.000Z',

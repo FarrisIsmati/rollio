@@ -52,28 +52,6 @@ const updateLocation = async (payload, region, vendor) => {
   }
 };
 
-// TODO: look here
-const setVendorActive = async (region, vendor) => {
-  // Add vendorID to dailyActiveVendorIDs
-  try {
-    await regionOps.incrementRegionDailyActiveVendorIDs(
-      { regionID: region._id, vendorID: vendor._id },
-    );
-  } catch (err) {
-    logger.error(err);
-  }
-
-  // Set daily active of vendor to true AND reset consecutive days inactive of vendor
-  // TODO: here
-  try {
-    await vendorOps.updateVendorSet({
-      regionID: region._id, vendorID: vendor._id, field: ['dailyActive', 'consecutiveDaysInactive'], data: [true, -1],
-    });
-  } catch (err) {
-    logger.error(err);
-  }
-};
-
 const receiveTweets = async () => {
   mq.receive(config.AWS_SQS_PARSED_TWEETS, async (msg) => {
     const message = JSON.parse(msg.content);
@@ -97,7 +75,6 @@ const receiveTweets = async () => {
       newLocation = await vendorOps.createLocation({ ...message.location, tweetID: message.tweetID });
       tweetPayload.location = newLocation._id;
       await updateLocation(newLocation._id, region, vendor);
-      await setVendorActive(region, vendor);
     }
 
     try {
@@ -142,6 +119,5 @@ const receiveTweets = async () => {
 
 module.exports = {
   receiveTweets,
-  setVendorActive,
   updateLocation,
 };
