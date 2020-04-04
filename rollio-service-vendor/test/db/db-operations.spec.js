@@ -675,7 +675,6 @@ describe('DB Operations', () => {
               expect(updatedLocation.overriden).to.be.true;
               const updatedVendor = await Vendor.findById(vendor._id);
               expect(updatedVendor.locationHistory.find(location => location.toString() === tweetID.toString())).to.be.an('undefined');
-              expect(updatedVendor.dailyActive).to.be.true;
               done();
             })
             .catch(err => console.error(err));
@@ -699,7 +698,6 @@ describe('DB Operations', () => {
             const updatedVendor = await Vendor.findById(vendor._id);
             expect(!!updatedVendor.locationHistory.find(location => location.toString() === tweetID.toString())).to.be.false;
             expect(!!updatedVendor.locationHistory.find(location => location.toString() === res.location._id.toString())).to.be.true;
-            expect(updatedVendor.dailyActive).to.be.true;
             done();
           })
           .catch(err => console.error(err));
@@ -721,8 +719,6 @@ describe('DB Operations', () => {
               }));
               const updatedVendor = await Vendor.findById(vendor._id);
               expect(!!updatedVendor.locationHistory.find(location => location.toString() === res.location._id.toString())).to.be.true;
-              // doesn't updated dailyActive to true, as tweet was not from today
-              expect(updatedVendor.dailyActive).to.be.false;
               done();
             })
             .catch(err => console.error(err));
