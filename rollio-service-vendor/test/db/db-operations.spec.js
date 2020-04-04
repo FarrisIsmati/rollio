@@ -203,22 +203,6 @@ describe('DB Operations', () => {
         expect(updatedDailyTweets.length).to.equal(prevDailyTweets.length + 1);
       });
 
-      // TODO: here
-      it('expect dailyActive to be set from false to true', async () => {
-        const targetVendor = await Vendor.findOne({ dailyActive: false });
-
-        const vendorID = targetVendor._id;
-        const prevDailyActive = targetVendor.dailyActive;
-
-        const params = {
-          regionID, vendorID, field: 'dailyActive', data: true,
-        };
-        const updatedDailyActive = await vendorOps.updateVendorSet(params).then(vendorUpdated => vendorUpdated.dailyActive);
-
-        expect(prevDailyActive).to.be.false;
-        expect(updatedDailyActive).to.be.true;
-      });
-
       it('expect updateVendorSet to update multiple fields in one operation', async () => {
         const newEmail = 'test@gmail.com';
         const newDescription = 'test123';
@@ -578,64 +562,6 @@ describe('DB Operations', () => {
       });
     });
 
-    describe('Update Region Operations', () => {
-      const regionName = 'WASHINGTONDC';
-      let regionID;
-      let vendorID;
-
-      beforeEach((done) => {
-        seed.runSeed().then(async () => {
-          regionID = await Region.findOne().then(region => region._id);
-          vendorID = await Vendor.findOne({ regionID: await regionID }).then(vendor => vendor._id);
-          done();
-        });
-      });
-
-      it('expect incrementRegionDailyActiveVendorIDs to be incremented by 1 given a regionID', async () => {
-        const prevRegionDailyActiveVendorIDs = await regionOps.getRegion(regionID)
-          .then(res => res.dailyActiveVendorIDs.length);
-        const updateRegionDailyActiveVendorIDsRes = await regionOps
-          .incrementRegionDailyActiveVendorIDs({ regionID, vendorID });
-        const updatedRegionDailyActiveVendorIDs = await regionOps.getRegion(regionID)
-          .then(res => res.dailyActiveVendorIDs.length);
-
-        expect(updateRegionDailyActiveVendorIDsRes.nModified).to.equal(1);
-        expect(updatedRegionDailyActiveVendorIDs).to.equal(prevRegionDailyActiveVendorIDs + 1);
-      });
-
-      it('expect incrementRegionTotalDailyActive to be incremented by 1 given a regionName', async () => {
-        const prevRegionDailyActiveVendorIDs = await regionOps.getRegionByName(regionName)
-          .then(res => res.dailyActiveVendorIDs.length);
-        const updateRegionDailyActiveVendorIDsRes = await regionOps
-          .incrementRegionDailyActiveVendorIDs({ regionName, vendorID });
-        const updatedRegionDailyActiveVendorIDs = await regionOps.getRegion(regionID)
-          .then(res => res.dailyActiveVendorIDs.length);
-
-        expect(updateRegionDailyActiveVendorIDsRes.nModified).to.equal(1);
-        expect(updatedRegionDailyActiveVendorIDs).to.equal(prevRegionDailyActiveVendorIDs + 1);
-      });
-
-      it('expect incrementRegionDailyActiveVendorIDs to not insert a duplicate vendorID given a regionID', async () => {
-        const prevRegionDailyActiveVendorIDs = await regionOps
-          .getRegion(regionID).then(res => res.dailyActiveVendorIDs.length);
-        const updateRegionDailyActiveVendorIDsRes = await regionOps
-          .incrementRegionDailyActiveVendorIDs({ regionID, vendorID });
-        const updateRegionDailyActiveVendorIDsDuplicateRes = await regionOps
-          .incrementRegionDailyActiveVendorIDs({ regionID, vendorID });
-        const updatedRegionDailyActiveVendorIDs = await regionOps.getRegion(regionID)
-          .then(res => res.dailyActiveVendorIDs.length);
-
-        expect(updateRegionDailyActiveVendorIDsRes.nModified).to.equal(1);
-        expect(updateRegionDailyActiveVendorIDsDuplicateRes.nModified).to.equal(0);
-        expect(updatedRegionDailyActiveVendorIDs).to.equal(prevRegionDailyActiveVendorIDs + 1);
-      });
-
-      afterEach((done) => {
-        seed.emptyRegions()
-          .then(() => seed.emptyVendors())
-          .then(() => done());
-      });
-    });
   });
 
   describe('Tweet DB Operations', () => {
@@ -724,14 +650,12 @@ describe('DB Operations', () => {
               .then(async (res) => {
                 // populates vendorID in the response
                 expect(res.vendorID.name).to.be.equal(vendor.name);
-                // TODO: here
                 expect(res.location).to.be.an('undefined');
                 expect(res.usedForLocation).to.be.false;
                 const updatedLocation = await Location.findById(locationID);
                 expect(updatedLocation.overriden).to.be.true;
                 const updatedVendor = await Vendor.findById(vendor._id);
                 expect(updatedVendor.locationHistory.find(location => location.toString() === tweetID.toString())).to.be.an('undefined');
-                expect(updatedVendor.dailyActive).to.be.false;
                 done();
               })
               .catch(err => console.error(err));
