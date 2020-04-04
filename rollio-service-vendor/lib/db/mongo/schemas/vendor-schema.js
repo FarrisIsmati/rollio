@@ -1,4 +1,5 @@
 // DEPENDENCIES
+const moment = require('moment');
 const mongoose = require('../index');
 const mUtilities = require('./utils');
 
@@ -27,8 +28,11 @@ const LocationSchema = new mongoose.Schema({
   // possibly replace this with a reference to the tweet in the Tweet collection
   // possibly make required if matchMethod is Tweet Location or Manual from Tweet
   tweetID: { type: String, required: false },
-  startDate: { type: Date, default: () => Date.now, required: true },
-  endDate: { type: Date, default: () => Date.now, required: true },
+  startDate: { type: Date, default: () => new Date() },
+  endDate: {
+    type: Date,
+    default: () => moment(new Date()).endOf('day').toDate(),
+  },
   matchMethod: {
     type: String, enum: ['Tweet location', 'User Input', 'Manual from Tweet'], default: 'Tweet location', required: false,
   },
