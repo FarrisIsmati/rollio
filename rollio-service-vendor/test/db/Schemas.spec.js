@@ -1,5 +1,6 @@
 // DEPENDENCIES
 const chai = require('chai');
+const moment = require('moment');
 const { ObjectId } = require('mongoose').Types;
 const mongoose = require('../../lib/db/mongo/mongoose/index');
 
@@ -45,6 +46,19 @@ describe('Schemas', () => {
       coordinates.validate((err) => {
         expect(err.errors.coordinates).to.exist;
         expect(err.errors.coordinates.message).to.equal('Latitude and longitude are not in the correct ranges');
+        done();
+      });
+    });
+
+    it('expect default startDate, endDate, and locationDate to be set correctly', (done) => {
+      const newLocation = new Location({ address: '123 street', coordinates: [5, 5] });
+
+      newLocation.save((err, location) => {
+        const { locationDate, startDate, endDate } = location;
+        const endOfTomorrow = moment(new Date()).endOf('day').toDate();
+        expect(endDate).to.be.eql(endOfTomorrow);
+        expect(moment(locationDate).isSame(new Date(), 'second')).to.be.true;
+        expect(moment(startDate).isSame(new Date(), 'second')).to.be.true;
         done();
       });
     });

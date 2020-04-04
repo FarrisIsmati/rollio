@@ -20,7 +20,7 @@ const MenuSchema = new mongoose.Schema({
 
 // LOCATION SCHEMA
 const LocationSchema = new mongoose.Schema({
-  locationDate: { type: Date, default: () => Date.now, required: true },
+  locationDate: { type: Date, default: Date.now, required: true },
   accuracy: { type: Number, default: 0, required: true },
   address: { type: String, required: true },
   city: { type: String, required: false },
@@ -28,10 +28,10 @@ const LocationSchema = new mongoose.Schema({
   // possibly replace this with a reference to the tweet in the Tweet collection
   // possibly make required if matchMethod is Tweet Location or Manual from Tweet
   tweetID: { type: String, required: false },
-  startDate: { type: Date, default: () => new Date() },
+  startDate: { type: Date, default: Date.now },
   endDate: {
     type: Date,
-    default: () => moment(new Date()).endOf('day').toDate(),
+    default() { return moment(new Date()).endOf('day').toDate(); },
   },
   matchMethod: {
     type: String, enum: ['Tweet location', 'User Input', 'Manual from Tweet'], default: 'Tweet location', required: false,
