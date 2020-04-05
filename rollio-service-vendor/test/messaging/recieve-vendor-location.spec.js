@@ -7,7 +7,6 @@ const mongoose = require('../../lib/db/mongo/mongoose/index');
 
 const { expect } = chai;
 const receiveVendorLocation = require('../../lib/messaging/receive/receive-vendor-location.js');
-const { client: redisClient } = require('../../lib/redis/index');
 const vendorOps = require('../../lib/db/mongo/operations/vendor-ops');
 
 // SCHEMAS
@@ -29,7 +28,7 @@ describe('Message Receive Vendor Location', () => {
             const errMsg = new Error(err);
             console.error(errMsg);
           });
-        vendor = await Vendor.findOne({ regionID: await region._id, dailyActive: false })
+        vendor = await Vendor.findOne({ regionID: region._id })
           .catch((err) => {
             const errMsg = new Error(err);
             console.error(errMsg);
