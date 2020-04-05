@@ -45,8 +45,11 @@ import {
     SetVendorsAllPayload
 } from './interfaces';
 import {
-    MapDefaultState
+    MapDefaultState, VendorCard
 } from '../reducers/interfaces'
+
+// UTILS
+import {returnIsActiveFn} from '../../util/index';
 
 // -------
 // VENDOR PROFILE
@@ -87,9 +90,7 @@ export function recieveVendorData(vendor:any) {
         rating: vendor.rating ? vendor.rating : '',
         twitterID: vendor.twitterID ? vendor.twitterID : '',
         website: vendor.website ? vendor.website : '',
-        isActive: () => locations.some((location:any) =>
-            moment().isBefore(location.endDate) && moment().isAfter(location.startDate)
-        ),
+        isActive: returnIsActiveFn(locations),
         lastUpdated: vendor.updateDate ? vendor.updateDate : null
     };
 
@@ -366,11 +367,18 @@ export function fetchRegionDataAsync(payload:RegionDataAsyncPayload) {
 // VENDOR DATA
 // -----------
 
-export function recieveAllVendors(vendors:any) {
+export function recieveAllVendors(vendorLookUp: { [key: string]: VendorCard }) {
     return {
         type: RECIEVE_ALL_VENDORS,
         payload: {
-            ...vendors
+            ...Object.entries(vendorLookUp).reduce((acc, entry) => {
+                const [vendorId, vendorInfo] = entry;
+                const {locations} = vendorInfo;
+                const filteredLocations = locations.filter((location:any) => moment().isBefore(location.endDate));
+                // @ts-ignore
+                acc[vendorId] = {...vendorInfo, locations: filteredLocations, isActive: () => returnIsActiveFn(filteredLocations)};
+                return acc;
+            }, {})
         }
     }
 }

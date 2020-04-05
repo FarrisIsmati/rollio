@@ -118,8 +118,7 @@ const VendorSchema = new mongoose.Schema({
     required: false,
   },
   // Means truck was active at some point in the current day
-  // TODO: here
-  dailyActive: { type: Boolean, required: true },
+  // TODO: probably get rid of consecutiveDaysInactive, too
   consecutiveDaysInactive: { type: Number, required: true },
   // YOU NEED TO DEFINE HOW YOU DEFINE CATEGORIES
   categories: { type: [{ type: String, required: true }], required: true },

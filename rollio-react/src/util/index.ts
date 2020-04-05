@@ -1,3 +1,5 @@
+import moment from "moment";
+
 interface LocationProp {
     location: {
         pathname: string
@@ -12,3 +14,11 @@ export const getRouteIds = (props:LocationProp) => {
         vendorId: route[3]
     }
 }
+
+export const isLocationActive = (location:any) => {
+    return moment().isBefore(location.endDate) && moment().isAfter(location.startDate)
+};
+
+export const returnIsActiveFn = (locations:any) => {
+    return () => locations.some(isLocationActive)
+};

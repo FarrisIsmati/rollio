@@ -345,7 +345,7 @@ module.exports = {
       date: new Date('2016-05-18T16:00:00Z'),
       text: 'We are in China Town',
       location: location3Id,
-      usedForLocation: false,
+      usedForLocation: true,
     }, {
       _id: tweet3Id,
       vendorID: vendor3Id,

@@ -139,7 +139,6 @@ const vendorRouteOpsUtil = {
       profileImageLink: vendor.profileImageLink,
       locations,
       selected: false,
-      isActive: locations.some(location => moment().isBefore(location.endDate) && moment().isAfter(location.startDate)),
       lastUpdated: vendor.updateDate,
     };
   },
