@@ -39,10 +39,9 @@ const TweetTable = (props:any) => {
     const [tweets, setTweets] = useState<Tweet[]>([]);
 
     const { user } = useGetAppState();
-    console.log(user);
     const { isAuthenticated } = user;
     const tweetUrl = `${VENDOR_API}/tweets`;
-    
+
     const fetchTweets = () => {
         setLoading(true);
         const query = { startDate, endDate, vendorID: vendorID === 'all' ? null : vendorID };
@@ -122,6 +121,16 @@ const TweetTable = (props:any) => {
             id: 'location',
             Header: 'Location',
             accessor: (d:any) => d.location ? d.location.address : 'N/A'
+        },
+        {
+            id: 'startDate',
+            Header: 'Start Date',
+            accessor: (d:any) => d.location ? moment(d.location.startDate).format('YYYY-MM-DD LT') : 'N/A'
+        },
+        {
+            id: 'endDate',
+            Header: 'End Date',
+            accessor: (d:any) => d.location ? moment(d.location.endDate).format('YYYY-MM-DD LT') : 'N/A'
         },
         {
             id: 'usedForLocation',

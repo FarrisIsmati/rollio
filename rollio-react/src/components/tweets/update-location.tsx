@@ -70,6 +70,7 @@ const UpdateLocation = (props:any) => {
             address: searchedLocation.formatted_address,
             city: searchedLocation.address_components.find((component:any) => component.types.includes('locality')).long_name,
             coordinates: [searchedLocation.geometry.location.lat(), searchedLocation.geometry.location.lng()]
+            // TODO: add startDate and endDate options
         };
         axios({
             method: "POST",
@@ -86,6 +87,10 @@ const UpdateLocation = (props:any) => {
             console.error(err);
             throw err;
         })
+    };
+
+    const saveDatesOnly = () => {
+        // TODO: wire this up
     };
 
     useAuthentication(props, true, true);
@@ -122,6 +127,14 @@ const UpdateLocation = (props:any) => {
                             <td>Location</td>
                             <td>{tweet.location ? tweet.location.address : 'N/A'}</td>
                         </tr>
+                        <tr>
+                            <td>Start Date</td>
+                            <td>{tweet.location ? moment(tweet.location.startDate).format('YYYY-MM-DD LT') : 'N/A'}</td>
+                        </tr>
+                        <tr>
+                            <td>End Date</td>
+                            <td>{tweet.location ? moment(tweet.location.endDate).format('YYYY-MM-DD LT') : 'N/A'}</td>
+                        </tr>
                         {
                             usedForLocation &&
                                 <tr>
@@ -151,6 +164,13 @@ const UpdateLocation = (props:any) => {
                         onClick={saveSearchedLocation}
                     >
                         Update the location for this tweet
+                    </button>
+                </div>
+                <div>
+                    <button
+                        onClick={saveDatesOnly}
+                    >
+                        Update the start and end date only
                     </button>
                 </div>
                 <div>
