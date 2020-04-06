@@ -113,7 +113,7 @@ const useUpdateMapMarkersState = (props: any) => {
         return updatedVendorsDisplayedGroup;
     }
 
-    // TODO: confirm this all works
+    // TODO!: confirm this all works
     // --------------------------------------------
     // CASE 1: If current vendor is a single vendor
     // --------------------------------------------
@@ -564,6 +564,7 @@ const useUpdateMapMarkersState = (props: any) => {
     useEffectMarkerComparisonObject(() => {
         if (currentVendorID) {
             const currentVendorData = state.data.vendorsAll[currentVendorID]
+            // TODO: here
             const currentVendorCoords = currentVendorData.location.coordinates;
 
             // --------------------------------------------
@@ -619,6 +620,7 @@ const useUpdateMapMarkersState = (props: any) => {
 // Return the marker comparison object which needs to be compared
 const markerObjectComparisonState = (state:any, currentVendorID:string) => {
     if (currentVendorID !== null) {
+        // TODO: here
         return {
             currentVendorID,
             coordinates: state.data.vendorsAll[currentVendorID].location.coordinates

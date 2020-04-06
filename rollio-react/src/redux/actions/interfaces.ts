@@ -35,7 +35,7 @@ export interface AllVendorsPayload {
   regionId: string
 }
 
-// TODO: Farris, what about all the other location keys ?
+// TODO!: Farris, what about all the other location keys ?
 interface LimitedLocation {
   lat: number,
   long: number,

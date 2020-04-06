@@ -12,7 +12,7 @@ const createMapMarker = (props: { numberOfGroupedVendors?: boolean | number, sel
     const { numberOfGroupedVendors, selected } = props;
 
     const mapMarkerEl = document.createElement('div');
-    
+
     if (!selected) {
         mapMarkerEl.className = 'map__marker_default font__map_marker_font';
     } else {
@@ -20,7 +20,7 @@ const createMapMarker = (props: { numberOfGroupedVendors?: boolean | number, sel
     }
 
     if (numberOfGroupedVendors) {
-        const textnode = document.createTextNode(numberOfGroupedVendors.toString()); 
+        const textnode = document.createTextNode(numberOfGroupedVendors.toString());
         mapMarkerEl.appendChild(textnode);
     }
 
@@ -31,7 +31,8 @@ const createMapMarker = (props: { numberOfGroupedVendors?: boolean | number, sel
 const addSingleVendorToMap = (props: { vendor:any, map:any, selected: boolean }) => {
     const { vendor, map, selected } = props;
     // Current vendor location data
-    const vendorLocation = vendor.location
+    // TODO: update here!
+    const vendorLocation = vendor.locations[0];
     // Current vendor [lng,lat]
     const coordinates:[number, number] = [vendorLocation.coordinates.long, vendorLocation.coordinates.lat]
 
@@ -39,15 +40,16 @@ const addSingleVendorToMap = (props: { vendor:any, map:any, selected: boolean })
     const marker = new mapboxgl.Marker(createMapMarker({selected}))
         .setLngLat(coordinates)
         .addTo(map)
-    
+
     return marker
 }
 
 // Adds a grouped pin marker to map
-const addGroupedVendorsToMap = (props: { vendors:any, map:any, selected: boolean, firstVendor: any }) => {  
+const addGroupedVendorsToMap = (props: { vendors:any, map:any, selected: boolean, firstVendor: any }) => {
     const {vendors, firstVendor, map, selected} = props;
     // First chosen vendor location data
-    const firstVendorLocation = firstVendor.location
+    // TODO: update here!
+    const firstVendorLocation = firstVendor.locations[0];
     // First vendor [lng,lat]
     const coordinates:[number, number] = [firstVendorLocation.coordinates.long, firstVendorLocation.coordinates.lat]
     // Add marker to map
@@ -73,7 +75,7 @@ const useMapMarkers = (props: any) => {
     const [groupVendorMarkers, setGroupVendorMarkers] = useState<any>(null);
 
     // General variables
-    const vendorsData = state.data.vendorsAll
+    const vendorsData = state.data.vendorsAll;
 
     // Initilization of all markers
     useEffect(() => {
@@ -87,21 +89,22 @@ const useMapMarkers = (props: any) => {
                 const groupVendors = mapData.vendorsDisplayedGroup;
                 const groupVendorKeys = Object.keys(groupVendors);
 
-                let singleVendorMarkersTemp = {}
+                let singleVendorMarkersTemp = {};
                 // Add single vendors to map
+                // TODO...must be updated
                 for (let i = 0; i < singleVendorsKeys.length; i += 1) {
                     const key = singleVendorsKeys[i]
                     const marker = addSingleVendorToMap({ vendor: vendorsData[key], map, selected: vendorsData[key].selected });
                     singleVendorMarkersTemp = { ...singleVendorMarkersTemp, [key]: marker }
                 }
                 setSingleVendorMarkers(singleVendorMarkersTemp)
-                
-                let groupVendorMarkersTemp = {}
+
+                let groupVendorMarkersTemp = {};
                 // Add grouped pin vendors to map
                 for (let i = 0; i < groupVendorKeys.length; i += 1) {
                     const key = groupVendorKeys[i];
                     const vendorsGroup = groupVendors[key];
-                    // Since all vendors in a grouped pin location currently have the same exact coords (not a area/radius thing) 
+                    // Since all vendors in a grouped pin location currently have the same exact coords (not a area/radius thing)
                     // Take the first vendors coords and use that to make a marker
                     const firstVendor = vendorsData[vendorsGroup.vendors[0].vendorId]
                     const marker = addGroupedVendorsToMap({vendors: vendorsGroup.vendors, firstVendor, map, selected: vendorsGroup.selected });
@@ -115,20 +118,20 @@ const useMapMarkers = (props: any) => {
     // Sets map markers in real time
     useUpdateMapMarkersState({
         map,
-        singleVendorMarkers, 
+        singleVendorMarkers,
         setSingleVendorMarkers,
-        addSingleVendorToMap, 
-        groupVendorMarkers, 
+        addSingleVendorToMap,
+        groupVendorMarkers,
         setGroupVendorMarkers,
         addGroupedVendorsToMap,
     });
 
     // Update map markers style
     useUpdateMapMarkersStyle({
-        singleVendorMarkers, 
+        singleVendorMarkers,
         setSingleVendorMarkers,
-        addSingleVendorToMap, 
-        groupVendorMarkers, 
+        addSingleVendorToMap,
+        groupVendorMarkers,
         setGroupVendorMarkers,
         addGroupedVendorsToMap
     })
