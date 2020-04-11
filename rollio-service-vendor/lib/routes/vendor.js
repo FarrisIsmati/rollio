@@ -21,8 +21,6 @@ router.put('/:regionID/:vendorID/locationaccuracy', routeLimitVendor, vendorRout
 // Update push a comment to a Vendor
 router.put('/:regionID/:vendorID/comments', vendorRouteOps.putRegionIdVendorIdComments);
 // Update a given vendor, authenticated route
-console.log(JWT_SECRET)
-
 router.put('/:regionID/:vendorID/update', expressJwt({ secret: JWT_SECRET }), userRouteOps.send403IfNoToken, userRouteOps.passUserToNext, userRouteOps.passVendorToNext, vendorRouteOps.updateVendor);
 
 // POST
