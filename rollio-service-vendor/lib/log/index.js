@@ -12,7 +12,7 @@ const getLabel = callingModule => `[${callingModule}]`;
 module.exports = (callingModule) => {
   const now = moment();
 
-  const isAWS = config.NODE_ENV !== 'DEVELOPMENT_LOCAL' || config.NODE_ENV !== 'TEST_LOCAL' || config.NODE_ENV !== 'TEST_DOCKER';
+  const isAWS = config.NODE_ENV !== 'DEVELOPMENT_LOCAL' || config.NODE_ENV !== 'TEST_LOCAL';
 
   // eslint-disable-next-line new-cap
   const logger = new winston.createLogger({
@@ -60,11 +60,11 @@ module.exports = (callingModule) => {
       awsAccessKeyId: config.CLOUDWATCH_ACCESS_KEY_ID,
       awsSecretKey: config.CLOUDWATCH_SECRET_ACCESS_KEY,
       awsRegion: config.CLOUDWATCH_REGION,
-      messageFormatter: ({ level, message, additionalInfo }) => `[${level}] : ${message} \nAdditional Info: ${JSON.stringify(additionalInfo)}}`,
+      messageFormatter: ({ level, message }) => `[${level}] : ${message}`,
     };
 
     logger.add(new WinstonCloudWatch(cloudwatchConfig));
-  } else if (config.NODE_ENV === 'DEVELOPMENT_DOCKER') {
+  } else {
     logger.add(new winston.transports.Console({
       format: winston.format.simple(),
     }));
