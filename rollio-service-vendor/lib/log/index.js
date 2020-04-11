@@ -36,16 +36,33 @@ module.exports = (callingModule) => {
     ],
   });
 
-  const cloudwatchConfig = {
-    logGroupName: 'rollio-service-vendor-dev',
-    logStreamName: `rollio-service-vendor -  ${now.format('YYYY-MM-DD')}`,
-    awsAccessKeyId: config.CLOUDWATCH_ACCESS_KEY_ID,
-    awsSecretKey: config.CLOUDWATCH_SECRET_ACCESS_KEY,
-    awsRegion: config.CLOUDWATCH_REGION,
-    messageFormatter: ({ level, message, additionalInfo }) => `[${level}] : ${message} \nAdditional Info: ${JSON.stringify(additionalInfo)}}`,
-  };
-
+  // If hosted on AWS send logs to Cloud Watch
   if (isAWS) {
+    let logGroupName = '';
+
+    switch (config.NODE_ENV) {
+      case 'DEVELOPMENT_DOCKER':
+        logGroupName = 'rollio-service-vendor-dev';
+        break;
+      case 'PRODUCTION':
+        logGroupName = 'rollio-service-vendor-prod';
+        break;
+      case 'TEST_DOCKER':
+        logGroupName = 'rollio-service-vendor-test';
+        break;
+      default:
+        logGroupName = 'rollio-service-vendor-dev';
+    }
+
+    const cloudwatchConfig = {
+      logGroupName,
+      logStreamName: `rollio-service-vendor | ${now.format('YYYY-MM-DD')}`,
+      awsAccessKeyId: config.CLOUDWATCH_ACCESS_KEY_ID,
+      awsSecretKey: config.CLOUDWATCH_SECRET_ACCESS_KEY,
+      awsRegion: config.CLOUDWATCH_REGION,
+      messageFormatter: ({ level, message, additionalInfo }) => `[${level}] : ${message} \nAdditional Info: ${JSON.stringify(additionalInfo)}}`,
+    };
+
     logger.add(new WinstonCloudWatch(cloudwatchConfig));
   } else if (config.NODE_ENV === 'DEVELOPMENT_DOCKER') {
     logger.add(new winston.transports.Console({
