@@ -19,6 +19,9 @@ import {
     GroupPin
 } from '../../../redux/reducers/interfaces';
 
+// UTILS
+import {isActive} from "../../../util";
+
 const stringifyCoordinates = (coordinates: {lat:number, long:number}) => {
     return String(coordinates.lat) + String(coordinates.long)
 };
@@ -39,9 +42,8 @@ const useProcessMapPoints = (props:any) => {
             dispatch(setMapPinsLoadState({areMapPinsLoaded: true}))
 
             const sortedLocations = Object.values(allVendors).reduce( (acc:{ [s: string]: any[] }, vendor:any) => {
-                const isActive = vendor.isActive();
                 // If the vendor has a location for the day
-                if (isActive) {
+                if (isActive(vendor.location)) {
                     const activeLocations = vendor.locations.filter((location:any) => moment().isAfter(location.startDate) && moment().isBefore(location.endDate));
                     activeLocations.forEach((location:any) => {
                         const coordString: string = stringifyCoordinates(location.coordinates);

@@ -54,6 +54,7 @@ const LocationSchema = new mongoose.Schema({
     ],
     required: false,
   },
+  truckNum: { type: Number },
 });
 
 // TWEET SCHEMA
@@ -87,6 +88,7 @@ const VendorSchema = new mongoose.Schema({
   creditCard: { type: String, required: true, enum: ['y', 'n', 'u'] },
   email: { type: String, required: false },
   website: { type: String, required: false },
+  numTrucks: { type: Number, default: 1 },
   phoneNumber: {
     type: String,
     validate: [number => mUtilities.phoneNumberValidate(number), 'Not a valid phone number.'],

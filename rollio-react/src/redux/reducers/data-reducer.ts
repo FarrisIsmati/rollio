@@ -40,6 +40,7 @@ const defaultState:DataDefaultState = {
         twitterID: '',
         comments: [],
         creditCard: 'u',
+        numTrucks: 1,
         locations: [
             {
             id: '',
@@ -51,10 +52,10 @@ const defaultState:DataDefaultState = {
             tweetID: null,
             accuracy: 0,
             startDate: null,
-            endDate: null
+            endDate: null,
+            truckNum: 1,
         }
         ],
-        isActive: () => false,
         lastUpdated: null,
         approved: false
     },
@@ -126,7 +127,7 @@ export function dataReducer(state = defaultState, action: any) {
 
         return {
             ...state,
-            vendorsAll: { ...vendorsAll, [action.payload.vendorID]: { ...vendorsAll[action.payload.vendorID], locations: action.payload.locations, isActive: action.payload.isActive } }
+            vendorsAll: { ...vendorsAll, [action.payload.vendorID]: { ...vendorsAll[action.payload.vendorID], locations: action.payload.locations } }
         }
     case POST_VENDOR_COMMENT:
         return {

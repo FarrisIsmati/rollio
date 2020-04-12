@@ -2,6 +2,9 @@
 import useGetAppState from '../../common/hooks/use-get-app-state';
 import useGlobalState from '../../common/hooks/use-global-state';
 
+// UTILS
+import {isActive} from "../../../util";
+
 const useMap = () => {
     // Hooks
     const [globalState, setGlobalState] = useGlobalState();
@@ -9,8 +12,8 @@ const useMap = () => {
 
     return {
         zoomToCurrentlySelectedVendor: function() {
-            if (state.data.selectedVendor.id && state.data.selectedVendor.isActive()) {
-                const {locations} = state.data.state.data.selectedVendor;
+            if (state.data.selectedVendor.id && isActive(state.data.selectedVendor.locations)) {
+                const {locations} = state.data.selectedVendor;
                 if (locations.length === 1) {
                     const {coordinates} = locations[0];
                     globalState.map.flyTo({

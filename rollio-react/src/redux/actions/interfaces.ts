@@ -46,7 +46,6 @@ interface LimitedLocation {
 export interface UpdateVendorPayload {
   locations: LimitedLocation[],
   vendorID: string,
-  isActive: () => void
 }
 
 // Pin on map
@@ -68,7 +67,6 @@ export interface SetVendorsAllPayload {
   description?: string,
   location?: Location[] | Location | null,
   selected?: boolean,
-  isActive?: () => void,
   lastUpdated?: Date | null,
 }
 

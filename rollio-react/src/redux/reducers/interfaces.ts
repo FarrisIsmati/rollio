@@ -12,7 +12,6 @@ export interface VendorCard {
     consecutiveDaysInactive: number,
     locations: Location[],
     selected: boolean,
-    isActive: () => void,
     lastUpdated: string,
 }
 
@@ -26,7 +25,8 @@ export interface Location {
     tweetID: string | null,
     id: string,
     startDate: Date | null,
-    endDate: Date | null
+    endDate: Date | null,
+    truckNum: number | null
 }
 
 // Full set of vendor data; also used in vendor-profile.tsx
@@ -47,9 +47,9 @@ export interface VendorFull {
     comments: Comment[],
     creditCard: string,
     locations: Location[],
-    isActive: () => void,
     lastUpdated: Date | null,
-    approved: boolean
+    approved: boolean,
+    numTrucks: number
 }
 
 export interface Region {

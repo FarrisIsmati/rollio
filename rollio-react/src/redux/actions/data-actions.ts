@@ -48,9 +48,6 @@ import {
     MapDefaultState, VendorCard
 } from '../reducers/interfaces'
 
-// UTILS
-import {returnIsActiveFn} from '../../util/index';
-
 // -------
 // VENDOR PROFILE
 // -------
@@ -90,7 +87,6 @@ export function recieveVendorData(vendor:any) {
         rating: vendor.rating ? vendor.rating : '',
         twitterID: vendor.twitterID ? vendor.twitterID : '',
         website: vendor.website ? vendor.website : '',
-        isActive: returnIsActiveFn(locations),
         lastUpdated: vendor.updateDate ? vendor.updateDate : null
     };
 
@@ -376,7 +372,7 @@ export function recieveAllVendors(vendorLookUp: { [key: string]: VendorCard }) {
                 const {locations} = vendorInfo;
                 const filteredLocations = locations.filter((location:any) => moment().isBefore(location.endDate));
                 // @ts-ignore
-                acc[vendorId] = {...vendorInfo, locations: filteredLocations, isActive: () => returnIsActiveFn(filteredLocations)};
+                acc[vendorId] = {...vendorInfo, locations: filteredLocations};
                 return acc;
             }, {})
         }

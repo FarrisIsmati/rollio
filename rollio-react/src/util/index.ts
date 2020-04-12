@@ -19,6 +19,7 @@ export const isLocationActive = (location:any) => {
     return moment().isBefore(location.endDate) && moment().isAfter(location.startDate)
 };
 
-export const returnIsActiveFn = (locations:any) => {
-    return () => locations.some(isLocationActive)
+
+export const isActive = (locations:any) => {
+    return locations.some(isLocationActive)
 };

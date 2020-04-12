@@ -10,6 +10,7 @@ const tweet5Id = ObjectId();
 const tweet6Id = ObjectId();
 const tweet7Id = ObjectId();
 const tweet8Id = ObjectId();
+const tweet9Id = ObjectId();
 const tweet1IdString = faker.random.word();
 const tweet2IdString = faker.random.word();
 const tweet3IdString = faker.random.word();
@@ -18,6 +19,7 @@ const tweet5IdString = faker.random.word();
 const tweet6IdString = faker.random.word();
 const tweet7IdString = faker.random.word();
 const tweet8IdString = faker.random.word();
+const tweet9IdString = faker.random.word();
 const location1Id = ObjectId();
 const location2Id = ObjectId();
 const location3Id = ObjectId();
@@ -27,6 +29,7 @@ const location6Id = ObjectId();
 const location7Id = ObjectId();
 const location8Id = ObjectId();
 const location9Id = ObjectId();
+const location10Id = ObjectId();
 const vendor1Id = ObjectId();
 const vendor2Id = ObjectId();
 const vendor3Id = ObjectId();
@@ -77,6 +80,7 @@ module.exports = {
       consecutiveDaysInactive: 4,
       categories: ['Luxury', 'Caviar', 'Lobster', 'Michelan Star'],
       approved: true,
+      numTrucks: 1,
     },
     {
       _id: vendor2Id,
@@ -100,6 +104,7 @@ module.exports = {
       consecutiveDaysInactive: 4,
       categories: ['Balkan', 'Mediterranean', 'Hearty', 'Meat'],
       approved: true,
+      numTrucks: 1,
     },
     {
       _id: vendor3Id,
@@ -123,6 +128,7 @@ module.exports = {
       consecutiveDaysInactive: 4,
       categories: ['Cheese', 'Comfort', 'Hearty', 'Bread'],
       approved: true,
+      numTrucks: 1,
     },
     {
       _id: vendor4Id,
@@ -147,6 +153,7 @@ module.exports = {
       consecutiveDaysInactive: -1,
       categories: ['Fast Food', 'American', 'Comfort Food', 'Meat', 'Chicken'],
       approved: true,
+      numTrucks: 1,
     },
     {
       _id: vendor5Id,
@@ -171,6 +178,7 @@ module.exports = {
       consecutiveDaysInactive: -1,
       categories: ['Hawaiian', 'Poke', 'Casual', 'Seafood'],
       approved: true,
+      numTrucks: 1,
     },
     {
       _id: vendor6Id,
@@ -195,6 +203,7 @@ module.exports = {
       consecutiveDaysInactive: -1,
       categories: ['South American', 'Venezuelan', 'Arepa', 'Comfort Food', 'Street Food'],
       approved: true,
+      numTrucks: 1,
     },
     {
       _id: vendor7Id,
@@ -219,6 +228,7 @@ module.exports = {
       consecutiveDaysInactive: -1,
       categories: ['American', 'Donuts', 'Fried Chicken', 'Comfort Food', 'Street Food'],
       approved: true,
+      numTrucks: 1,
     },
     {
       _id: vendor8Id,
@@ -237,12 +247,13 @@ module.exports = {
       yelpId: 'ball-or-nothing-washington',
       twitterID: '488727238',
       tweetHistory: [tweet8Id],
-      locationHistory: [location9Id],
+      locationHistory: [location9Id, location10Id],
       userLocationHistory: [],
       comments: [],
       consecutiveDaysInactive: -1,
       categories: ['Italian', 'Fried Chicken', 'Pasta', 'Meat'],
       approved: true,
+      numTrucks: 2,
     },
     {
       regionID: region1Id,
@@ -268,6 +279,7 @@ module.exports = {
       consecutiveDaysInactive: 0,
       categories: ['Luxury', 'Caviar', 'Lobster', 'Michelan Star'],
       approved: true,
+      numTrucks: 1,
     },
     {
       regionID: region1Id,
@@ -291,6 +303,7 @@ module.exports = {
       consecutiveDaysInactive: -1,
       categories: ['Barbeque', 'American', 'Comfort Food', 'Meat'],
       approved: true,
+      numTrucks: 1,
     },
     {
       regionID: region1Id,
@@ -314,6 +327,7 @@ module.exports = {
       consecutiveDaysInactive: -1,
       categories: ['Fast Food', 'American', 'Comfort Food', 'Soul Food'],
       approved: true,
+      numTrucks: 1,
     },
   ],
   regions: [
@@ -351,7 +365,7 @@ module.exports = {
       vendorID: vendor3Id,
       tweetID: tweet3IdString,
       date: new Date('2016-05-18T16:00:00Z'),
-      text: 'We are in China Town',
+      text: 'We are in Rosslyn',
       location: location4Id,
       usedForLocation: true,
     }, {
@@ -393,6 +407,15 @@ module.exports = {
       date: new Date('2018-04-12T12:10:00Z'),
       text: 'Capital One Arena today',
       location: location9Id,
+      usedForLocation: true,
+    },
+    {
+      _id: tweet9Id,
+      vendorID: vendor8Id,
+      tweetID: tweet9IdString,
+      date: new Date('2016-05-18T16:00:00Z'),
+      text: 'We are in Rosslyn',
+      location: location10Id,
       usedForLocation: true,
     },
   ],
@@ -509,6 +532,21 @@ module.exports = {
       tweetID: tweet8IdString,
       startDate,
       endDate,
+      truckNum: 1,
+    },
+    {
+      _id: location10Id,
+      locationDate: new Date('2018-04-12T12:10:00Z'),
+      accuracy: 0,
+      address: 'Rosslyn, Virginia 22209',
+      city: 'arlington',
+      neighborhood: 'rosslyn',
+      matchMethod: 'Tweet location',
+      tweetID: tweet9IdString,
+      coordinates: [38.897156, -77.07239],
+      startDate,
+      endDate,
+      truckNum: 2,
     },
   ],
   users: [
@@ -521,7 +559,7 @@ module.exports = {
         token: faker.random.word(),
         tokenSecret: faker.random.word(),
         username: faker.random.word(),
-        displayName: faker.random.words(2)
+        displayName: faker.random.words(2),
       },
       regionID: region1Id,
     },
@@ -534,8 +572,8 @@ module.exports = {
         token: faker.random.word(),
         tokenSecret: faker.random.word(),
         username: faker.random.word(),
-        displayName: faker.random.words(2)
-      }
+        displayName: faker.random.words(2),
+      },
     },
     {
       _id: adminId,
@@ -546,7 +584,7 @@ module.exports = {
         token: faker.random.word(),
         tokenSecret: faker.random.word(),
         username: faker.random.word(),
-        displayName: faker.random.words(2)
+        displayName: faker.random.words(2),
       },
       regionID: region1Id,
     },
@@ -559,10 +597,10 @@ module.exports = {
         token: faker.random.word(),
         tokenSecret: faker.random.word(),
         username: faker.random.word(),
-        displayName: faker.random.words(2)
+        displayName: faker.random.words(2),
       },
       regionID: region1Id,
-      vendorID: vendor1Id
+      vendorID: vendor1Id,
     },
     {
       _id: secondVendorWithAVendorId,
@@ -573,10 +611,10 @@ module.exports = {
         token: faker.random.word(),
         tokenSecret: faker.random.word(),
         username: faker.random.word(),
-        displayName: faker.random.words(2)
+        displayName: faker.random.words(2),
       },
       regionID: region1Id,
-      vendorID: vendor2Id
+      vendorID: vendor2Id,
     },
     {
       _id: vendorWithoutAVendorId,
@@ -587,7 +625,7 @@ module.exports = {
         token: faker.random.word(),
         tokenSecret: faker.random.word(),
         username: faker.random.word(),
-        displayName: faker.random.words(2)
+        displayName: faker.random.words(2),
       },
       regionID: region1Id,
     },

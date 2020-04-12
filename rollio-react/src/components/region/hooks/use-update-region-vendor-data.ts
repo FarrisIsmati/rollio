@@ -15,9 +15,6 @@ import useGlobalState from '../../common/hooks/use-global-state';
 // CONFIG
 import { VENDOR_API } from '../../../config';
 
-// UTILS
-import {returnIsActiveFn} from "../../../util";
-
 // @ts-ignore
 const socket = socketIOClient(VENDOR_API);
 
@@ -39,7 +36,6 @@ const useUpdateRegionVendorData = () => {
                 ...currentVendorData,
                 locations,
                 vendorID: data.vendorID,
-                isActive: returnIsActiveFn(locations)
             };
             dispatch(updateVendor(payload));
             setGlobalState({ vendorID: data.vendorID });
