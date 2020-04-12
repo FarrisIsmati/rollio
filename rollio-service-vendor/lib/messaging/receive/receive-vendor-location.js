@@ -16,6 +16,20 @@ const {
 // SOCKET
 const { io } = require('../../sockets/index');
 
+// Get proper message name depending on if service is SQS or RabbitMQ
+const getMessageLocation = (msg) => {
+  if (config.AWS_ENV) {
+    switch (msg) {
+      case 'parsedTweets':
+        return config.AWS_SQS_PARSED_TWEETS;
+      default:
+        logger.error(`No QUEUE URL associated with ${msg}`);
+    }
+  }
+
+  return msg;
+};
+
 const updateTweet = async (payload, region, vendor) => {
   // Formating
   const tweet = { ...payload };
@@ -83,7 +97,7 @@ const setVendorActive = async (region, vendor) => {
 };
 
 const receiveTweets = async () => {
-  mq.receive('parsedTweets', async (msg) => {
+  mq.receive(getMessageLocation('parsedTweets'), async (msg) => {
     const message = JSON.parse(msg.content);
     logger.info('Recieved tweet');
     logger.info(message);

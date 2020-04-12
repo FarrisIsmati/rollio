@@ -8,6 +8,9 @@ const {
   REGION,
   YELP_API_KEY,
   YELP_CLIENT_ID,
+  AWS_REGION,
+  AWS_SQS_REQUEST_VENDORS,
+  AWS_SQS_PARSED_TWEETS,
 } = process.env;
 
 let MONGO_CONNECT;
@@ -17,6 +20,7 @@ let REDIS_TWITTER_CHANNEL;
 let RABBITMQ_CONNECT;
 let TWITTER_CONFIG;
 let JWT_SECRET;
+let AWS_ENV = false;
 
 switch (NODE_ENV) {
   case 'PRODUCTION':
@@ -31,6 +35,7 @@ switch (NODE_ENV) {
       callbackURL: process.env.OAUTH_CALLBACK_PROD,
     };
     JWT_SECRET = process.env.SECRET_PROD;
+    AWS_ENV = true;
     break;
   case 'DEVELOPMENT_LOCAL':
     MONGO_CONNECT = process.env.MONGO_DEV_LOCAL;
@@ -70,6 +75,7 @@ switch (NODE_ENV) {
       callbackURL: process.env.OAUTH_CALLBACK_LOCAL,
     };
     JWT_SECRET = process.env.SECRET_LOCAL;
+    AWS_ENV = true;
     break;
   case 'TEST_DOCKER':
     MONGO_CONNECT = process.env.MONGO_TEST_DOCKER;
@@ -83,6 +89,7 @@ switch (NODE_ENV) {
       callbackURL: process.env.OAUTH_CALLBACK_LOCAL,
     };
     JWT_SECRET = process.env.SECRET_LOCAL;
+    AWS_ENV = true;
     break;
   default:
 }
@@ -110,4 +117,8 @@ module.exports = {
   RABBITMQ_CONNECT,
   TWITTER_CONFIG,
   JWT_SECRET,
+  AWS_REGION,
+  AWS_ENV,
+  AWS_SQS_REQUEST_VENDORS,
+  AWS_SQS_PARSED_TWEETS,
 };

@@ -36,6 +36,7 @@
   "dependencies": {
     "amqplib": "^0.5.3",
     "awesome-phonenumber": "^2.10.0",
+    "aws-sdk": "^2.656.0",
     "bluebird": "^3.5.4",
     "body-parser": "^1.19.0",
     "chai": "^4.2.0",
