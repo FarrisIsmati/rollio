@@ -432,6 +432,7 @@ module.exports = {
       coordinates: [39.2934, -77.1234],
       startDate,
       endDate,
+      truckNum: 1,
     },
     {
       _id: location2Id,
@@ -445,6 +446,7 @@ module.exports = {
       coordinates: [38.902033, -77.038995],
       startDate,
       endDate,
+      truckNum: 1,
     },
     {
       _id: location3Id,
@@ -458,6 +460,7 @@ module.exports = {
       tweetID: tweet2IdString,
       startDate,
       endDate,
+      truckNum: 1,
     },
     {
       _id: location4Id,
@@ -471,6 +474,7 @@ module.exports = {
       coordinates: [38.897156, -77.07239],
       startDate,
       endDate,
+      truckNum: 1,
     },
     {
       _id: location5Id,
@@ -484,6 +488,7 @@ module.exports = {
       coordinates: [38.898482, -77.021965],
       startDate,
       endDate,
+      truckNum: 1,
     },
     {
       _id: location6Id,
@@ -496,6 +501,7 @@ module.exports = {
       coordinates: [38.902033, -77.038995],
       startDate,
       endDate,
+      truckNum: 1,
     },
     {
       _id: location7Id,
@@ -508,6 +514,7 @@ module.exports = {
       coordinates: [38.902033, -77.038995],
       startDate,
       endDate,
+      truckNum: 1,
     },
     {
       _id: location8Id,
@@ -520,6 +527,7 @@ module.exports = {
       coordinates: [38.898482, -77.021965],
       startDate,
       endDate,
+      truckNum: 1,
     },
     {
       _id: location9Id,

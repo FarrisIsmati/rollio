@@ -305,7 +305,6 @@ export function recieveRegionData(region:any) {
         payload: {
             regionId: region._id,
             regionName: region.name,
-            dailyActiveVendors: new Set(region.dailyActiveVendorIDs),
             regionCoordinates: {
                 lat: region.coordinates.coordinates[0],
                 long: region.coordinates.coordinates[1]
@@ -338,7 +337,7 @@ function fetchRegionDataStart() {
 export function fetchRegionDataAsync(payload:RegionDataAsyncPayload) {
     const { regionName, regionId, shouldFetchVendors, cb } = payload;
     // Set route based on payload params
-    const route = regionId === '' || regionId === undefined ? `${VENDOR_API}/region/name/${regionName}` : `${VENDOR_API}/region/${regionId}`
+    const route = !regionId ? `${VENDOR_API}/region/name/${regionName}` : `${VENDOR_API}/region/${regionId}`
 
     return (dispatch:any) => {
         // Set region load status to false when fetching a new region

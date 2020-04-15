@@ -85,7 +85,6 @@ export interface Filter {
 export interface DataDefaultState {
     regionID: string,
     regionName: string,
-    dailyActiveVendors: Set<string>,
     regionCoordinates: Coordinates,
     regionTimezone: string,
     vendorsAll: { [key: string]: VendorCard },

@@ -28,13 +28,10 @@ const createMapMarker = (props: { numberOfGroupedVendors?: boolean | number, sel
 }
 
 // Adds a single pin marker to map
-const addSingleVendorToMap = (props: { vendor:any, map:any, selected: boolean }) => {
-    const { vendor, map, selected } = props;
-    // Current vendor location data
-    // TODO: update here!
-    const vendorLocation = vendor.locations[0];
+const addSingleVendorToMap = (props: { map:any, selected: boolean, location:any }) => {
+    const { map, selected, location } = props;
     // Current vendor [lng,lat]
-    const coordinates:[number, number] = [vendorLocation.coordinates.long, vendorLocation.coordinates.lat]
+    const coordinates:[number, number] = [location.coordinates.long, location.coordinates.lat];
 
     // // Add marker to map
     const marker = new mapboxgl.Marker(createMapMarker({selected}))
@@ -45,20 +42,17 @@ const addSingleVendorToMap = (props: { vendor:any, map:any, selected: boolean })
 }
 
 // Adds a grouped pin marker to map
-const addGroupedVendorsToMap = (props: { vendors:any, map:any, selected: boolean, firstVendor: any }) => {
-    const {vendors, firstVendor, map, selected} = props;
-    // First chosen vendor location data
-    // TODO: update here!
-    const firstVendorLocation = firstVendor.locations[0];
-    // First vendor [lng,lat]
-    const coordinates:[number, number] = [firstVendorLocation.coordinates.long, firstVendorLocation.coordinates.lat]
+const addGroupedVendorsToMap = (props: { vendors:any, map:any, selected: boolean, location: any }) => {
+    const {vendors, location, map, selected} = props;
+    // [lng,lat]
+    const coordinates:[number, number] = [location.coordinates.long, location.coordinates.lat];
     // Add marker to map
     const marker = new mapboxgl.Marker(createMapMarker({ numberOfGroupedVendors: vendors.length, selected }))
         .setLngLat(coordinates)
-        .addTo(map)
+        .addTo(map);
 
     return marker
-}
+};
 
 // useMapMarkers loads the initial vendor markers in a map, all live updates hereforth will be updated form another component TBD
 const useMapMarkers = (props: any) => {
@@ -84,32 +78,31 @@ const useMapMarkers = (props: any) => {
             // Ensures when this component is loaded this will only run once
             setAreMarkersLoaded(true);
             if ( mapType === 'region') {
-                const singleVendors = mapData.vendorsDisplayedSingle;
-                const singleVendorsKeys = Object.keys(singleVendors);
-                const groupVendors = mapData.vendorsDisplayedGroup;
-                const groupVendorKeys = Object.keys(groupVendors);
+                const {vendorsDisplayedSingle, vendorsDisplayedGroup} = mapData;
+                // add single pins to map
+                const singleVendorMarkersTemp = Object.keys(vendorsDisplayedSingle).reduce((acc: { [key: string]: any }, key: string) => {
+                    const vendor = vendorsData[key.split('-')[0]];
+                    const {selected, locations} = vendor;
+                    // NOTE: might have to filter locations by date
+                    locations.forEach((location:any, index:number) => {
+                        acc[key] = addSingleVendorToMap({ map, selected, location });
+                    });
+                    return acc;
+                }, {});
+                setSingleVendorMarkers(singleVendorMarkersTemp);
 
-                let singleVendorMarkersTemp = {};
-                // Add single vendors to map
-                // TODO...must be updated
-                for (let i = 0; i < singleVendorsKeys.length; i += 1) {
-                    const key = singleVendorsKeys[i]
-                    const marker = addSingleVendorToMap({ vendor: vendorsData[key], map, selected: vendorsData[key].selected });
-                    singleVendorMarkersTemp = { ...singleVendorMarkersTemp, [key]: marker }
-                }
-                setSingleVendorMarkers(singleVendorMarkersTemp)
-
-                let groupVendorMarkersTemp = {};
                 // Add grouped pin vendors to map
-                for (let i = 0; i < groupVendorKeys.length; i += 1) {
-                    const key = groupVendorKeys[i];
-                    const vendorsGroup = groupVendors[key];
+                const groupVendorMarkersTemp = Object.entries(vendorsDisplayedGroup).reduce((acc: { [key: string]: any }, entry: [string, any]) => {
+                    const [key, vendorsGroup] = entry;
                     // Since all vendors in a grouped pin location currently have the same exact coords (not a area/radius thing)
                     // Take the first vendors coords and use that to make a marker
-                    const firstVendor = vendorsData[vendorsGroup.vendors[0].vendorId]
-                    const marker = addGroupedVendorsToMap({vendors: vendorsGroup.vendors, firstVendor, map, selected: vendorsGroup.selected });
-                    groupVendorMarkersTemp = { ...groupVendorMarkersTemp, [key]: marker }
-                }
+                    const [firstVendorId, truckNum] = vendorsGroup.vendors[0].vendorId.split('-');
+                    const firstVendor = vendorsData[firstVendorId];
+                    const {vendors, selected} = vendorsGroup;
+                    const location = firstVendor.locations.find((location:any) => location.truckNum === truckNum) || firstVendor.locations[0];
+                    acc[key] = addGroupedVendorsToMap({vendors, location, map, selected });
+                    return acc;
+                }, {});
                 setGroupVendorMarkers(groupVendorMarkersTemp)
             }
         }

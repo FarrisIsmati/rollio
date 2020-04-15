@@ -1,3 +1,4 @@
+// TODO: update this whole file!!!
 // DEPENDENCIES
 import { useDispatch  } from 'react-redux';
 import { useEffect } from 'react';
@@ -20,7 +21,7 @@ import {
 } from '../../../redux/reducers/interfaces';
 
 // UTILS
-import {isActive} from "../../../util";
+import {isActive, isLocationActive} from "../../../util";
 
 const stringifyCoordinates = (coordinates: {lat:number, long:number}) => {
     return String(coordinates.lat) + String(coordinates.long)
@@ -43,11 +44,12 @@ const useProcessMapPoints = (props:any) => {
 
             const sortedLocations = Object.values(allVendors).reduce( (acc:{ [s: string]: any[] }, vendor:any) => {
                 // If the vendor has a location for the day
-                if (isActive(vendor.location)) {
-                    const activeLocations = vendor.locations.filter((location:any) => moment().isAfter(location.startDate) && moment().isBefore(location.endDate));
+                if (isActive(vendor.locations)) {
+                    const activeLocations = vendor.locations.filter(isLocationActive);
                     activeLocations.forEach((location:any) => {
                         const coordString: string = stringifyCoordinates(location.coordinates);
-                        acc[coordString] = [...(acc[coordString] || []), { vendorId: vendor.id, selected: false }];
+                        const vendorId = `${vendor.id}-${location.truckNum}`;
+                        acc[coordString] = [...(acc[coordString] || []), { vendorId, selected: false }];
                     })
                 }
                 return acc;
