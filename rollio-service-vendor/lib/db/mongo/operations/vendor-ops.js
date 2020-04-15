@@ -78,9 +78,7 @@ module.exports = {
     }).populate('tweetHistory')
       .populate('locationHistory')
       .populate('userLocationHistory')
-      .then((res) => {
-        return res;
-      })
+      .then(res => res)
       .catch((err) => {
         const errMsg = new Error(err);
         logger.error(errMsg);

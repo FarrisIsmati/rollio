@@ -36,7 +36,7 @@ const LocationSchema = new mongoose.Schema({
   matchMethod: {
     type: String, enum: ['Tweet location', 'User Input', 'Manual from Tweet'], default: 'Tweet location', required: false,
   },
-  overriden: { type: Boolean, default: false },
+  overridden: { type: Boolean, default: false },
   coordinates: {
     type: [{ type: Number, required: true }],
     validate: [

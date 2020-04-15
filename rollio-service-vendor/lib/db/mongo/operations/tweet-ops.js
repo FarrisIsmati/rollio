@@ -11,8 +11,8 @@ const deleteTweetLocation = async (_id) => {
   // TODO: figure out a way to publish that the old location was deleted
   // look up tweet
   const originalTweet = await Tweet.findById(_id).lean(true);
-  // set previously used location to overriden
-  await Location.updateOne({ _id: originalTweet.location }, { $set: { overriden: true } });
+  // set previously used location to overridden
+  await Location.updateOne({ _id: originalTweet.location }, { $set: { overridden: true } });
   await Vendor.updateOne({ _id: originalTweet.vendorID }, { $pull: { locationHistory: { _id: originalTweet.location } } });
   // delete the old location and set usedForLocation to false
   return Tweet.findOneAndUpdate({ _id }, { $unset: { location: 1 }, $set: { usedForLocation: false } }, { new: true }).populate('vendorID').populate('location').lean(true);

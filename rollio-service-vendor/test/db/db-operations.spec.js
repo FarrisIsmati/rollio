@@ -653,7 +653,7 @@ describe('DB Operations', () => {
                 expect(res.location).to.be.an('undefined');
                 expect(res.usedForLocation).to.be.false;
                 const updatedLocation = await Location.findById(locationID);
-                expect(updatedLocation.overriden).to.be.true;
+                expect(updatedLocation.overridden).to.be.true;
                 const updatedVendor = await Vendor.findById(vendor._id);
                 expect(updatedVendor.locationHistory.find(location => location.toString() === tweetID.toString())).to.be.an('undefined');
                 done();
@@ -672,7 +672,7 @@ describe('DB Operations', () => {
               expect(res.location).to.be.an('undefined');
               expect(res.usedForLocation).to.be.false;
               const updatedLocation = await Location.findById(locationID);
-              expect(updatedLocation.overriden).to.be.true;
+              expect(updatedLocation.overridden).to.be.true;
               const updatedVendor = await Vendor.findById(vendor._id);
               expect(updatedVendor.locationHistory.find(location => location.toString() === tweetID.toString())).to.be.an('undefined');
               done();
@@ -694,7 +694,7 @@ describe('DB Operations', () => {
             const updatedLocation = await Location.findById(locationID);
             const newLocation = await Location.findById(res.location);
             expect(JSON.stringify(newLocation.toObject())).to.be.equal(JSON.stringify({ ...newLocationData, _id: newLocation._id, matchMethod: 'Manual from Tweet' }));
-            expect(updatedLocation.overriden).to.be.true;
+            expect(updatedLocation.overridden).to.be.true;
             const updatedVendor = await Vendor.findById(vendor._id);
             expect(!!updatedVendor.locationHistory.find(location => location.toString() === tweetID.toString())).to.be.false;
             expect(!!updatedVendor.locationHistory.find(location => location.toString() === res.location._id.toString())).to.be.true;

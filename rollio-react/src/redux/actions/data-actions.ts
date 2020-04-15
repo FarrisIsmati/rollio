@@ -54,7 +54,7 @@ import {
 
 // Gets the detailed set of vendor profile data
 export function recieveVendorData(vendor:any) {
-    const locations = vendor.locationHistory.filter((location:any) => moment().isBefore(location.endDate));
+    const locations = vendor.locationHistory.filter((location:any) => moment().isBefore(location.endDate) && !location.overridden);
 
     // If an empty object is passed as an arg then reset all data
         const profile = {
@@ -369,7 +369,7 @@ export function recieveAllVendors(vendorLookUp: { [key: string]: VendorCard }) {
             ...Object.entries(vendorLookUp).reduce((acc, entry) => {
                 const [vendorId, vendorInfo] = entry;
                 const {locations} = vendorInfo;
-                const filteredLocations = locations.filter((location:any) => moment().isBefore(location.endDate));
+                const filteredLocations = locations.filter((location:any) => moment().isBefore(location.endDate) && !location.overridden);
                 // @ts-ignore
                 acc[vendorId] = {...vendorInfo, locations: filteredLocations};
                 return acc;
