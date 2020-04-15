@@ -16,7 +16,7 @@ export const getRouteIds = (props:LocationProp) => {
 }
 
 export const isLocationActive = (location:any) => {
-    return moment().isBefore(location.endDate) && moment().isAfter(location.startDate)
+    return moment().isBefore(location.endDate) && moment().isAfter(location.startDate) && !location.overridden
 };
 
 
