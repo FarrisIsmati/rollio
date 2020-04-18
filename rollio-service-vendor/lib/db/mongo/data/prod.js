@@ -27,6 +27,7 @@ module.exports = {
         locationDate: new Date(''),
         address: '',
         coordinates: [],
+        vendorID: 'n/a',
       },
       location: 'Washington, D.C.',
       timezone: 'EST',

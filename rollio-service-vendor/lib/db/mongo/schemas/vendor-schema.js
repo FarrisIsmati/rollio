@@ -20,6 +20,7 @@ const MenuSchema = new mongoose.Schema({
 
 // LOCATION SCHEMA
 const LocationSchema = new mongoose.Schema({
+  vendorID: { type: String, required: true },
   locationDate: { type: Date, default: Date.now, required: true },
   accuracy: { type: Number, default: 0, required: true },
   address: { type: String, required: true },
@@ -54,7 +55,7 @@ const LocationSchema = new mongoose.Schema({
     ],
     required: false,
   },
-  truckNum: { type: Number },
+  truckNum: { type: Number, default: 1 },
 });
 
 // TWEET SCHEMA

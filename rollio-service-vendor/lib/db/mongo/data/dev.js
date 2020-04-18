@@ -338,6 +338,7 @@ module.exports = {
         locationDate: new Date('2018-04-12T12:10:00Z'),
         address: 'Washington, D.C.',
         coordinates: [38.9072, 77.0369],
+        vendorID: 'n/a',
       },
       location: 'Washington, D.C.',
       timezone: 'EST',
@@ -433,6 +434,7 @@ module.exports = {
       startDate,
       endDate,
       truckNum: 1,
+      vendorID: vendor1Id,
     },
     {
       _id: location2Id,
@@ -447,6 +449,7 @@ module.exports = {
       startDate,
       endDate,
       truckNum: 1,
+      vendorID: vendor1Id,
     },
     {
       _id: location3Id,
@@ -461,6 +464,7 @@ module.exports = {
       startDate,
       endDate,
       truckNum: 1,
+      vendorID: vendor2Id,
     },
     {
       _id: location4Id,
@@ -475,6 +479,7 @@ module.exports = {
       startDate,
       endDate,
       truckNum: 1,
+      vendorID: vendor3Id,
     },
     {
       _id: location5Id,
@@ -489,6 +494,7 @@ module.exports = {
       startDate,
       endDate,
       truckNum: 1,
+      vendorID: vendor4Id,
     },
     {
       _id: location6Id,
@@ -502,6 +508,7 @@ module.exports = {
       startDate,
       endDate,
       truckNum: 1,
+      vendorID: vendor5Id,
     },
     {
       _id: location7Id,
@@ -515,6 +522,7 @@ module.exports = {
       startDate,
       endDate,
       truckNum: 1,
+      vendorID: vendor6Id,
     },
     {
       _id: location8Id,
@@ -528,6 +536,7 @@ module.exports = {
       startDate,
       endDate,
       truckNum: 1,
+      vendorID: vendor7Id,
     },
     {
       _id: location9Id,
@@ -541,6 +550,7 @@ module.exports = {
       startDate,
       endDate,
       truckNum: 1,
+      vendorID: vendor8Id,
     },
     {
       _id: location10Id,
@@ -555,6 +565,7 @@ module.exports = {
       startDate,
       endDate,
       truckNum: 2,
+      vendorID: vendor8Id,
     },
   ],
   users: [

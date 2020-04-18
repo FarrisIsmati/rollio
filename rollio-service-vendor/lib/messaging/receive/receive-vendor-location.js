@@ -60,18 +60,26 @@ const receiveTweets = async () => {
 
     const region = await regionOps.getRegionByName(config.REGION);
     const vendor = await vendorOps.getVendorByTwitterID(region._id, message.twitterID);
-    // Formating
+    const vendorID = vendor._id;
+
+    const {
+      tweet: text, tweetID, twitterID, date, location
+    } = message;
+
     const tweetPayload = {
-      text: message.tweet,
-      tweetID: message.tweetID,
-      twitterID: message.twitterID,
-      date: message.date,
+      text,
+      tweetID,
+      twitterID,
+      date,
     };
 
     let newLocation = null;
+    let updatedLocations = [];
 
     if (message.match) {
-      newLocation = await vendorOps.createLocation({ ...message.location, tweetID: message.tweetID });
+      // NOTE: newLocation could be an array now, as we update old locations that might overlap with the new one
+      updatedLocations = await vendorOps.createLocationAndCorrectConflicts({ ...location, tweetID, vendorID });
+      newLocation = updatedLocations.pop();
       tweetPayload.location = newLocation._id;
       await updateLocation(newLocation._id, region, vendor);
     }
@@ -90,7 +98,7 @@ const receiveTweets = async () => {
       const redisTwitterChannelMessage = {
         serverID: config.SERVER_ID,
         tweetPayload: tweetPayloadLocationUpdate,
-        vendorID: vendor._id,
+        vendorID,
         regionID: region._id,
       };
 
@@ -102,7 +110,9 @@ const receiveTweets = async () => {
 
       // eslint-disable-next-line max-len
       // Send tweet data, location data, only, everything else will be updated on a get req (comments, ratings, etc)
-      io.sockets.emit('TWITTER_DATA', { tweet: tweetPayloadLocationUpdate, vendorID: vendor._id, regionID: region._id });
+      io.sockets.emit('TWITTER_DATA', {
+        tweet: tweetPayloadLocationUpdate, updatedLocations, vendorID: vendor._id, regionID: region._id,
+      });
     } catch (err) {
       logger.error('Failed to emit socket: twitter payload');
     }

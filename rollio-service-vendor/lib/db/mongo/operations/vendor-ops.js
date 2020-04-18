@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 // DEPENDENCIES
+const moment = require('moment');
 const mongoose = require('../mongoose/index');
 const { client: redisClient } = require('../../../redis/index');
 const logger = require('../../../log/index')('mongo/operations/vendor-ops');
@@ -11,8 +12,35 @@ const Location = mongoose.model('Location');
 const User = mongoose.model('User');
 
 module.exports = {
-  async createLocation(locationData) {
-    return Location.create(locationData);
+  async createLocationAndCorrectConflicts(locationData) {
+    const {
+      vendorID, startDate = new Date(), endDate = moment(new Date()).endOf('day').toDate(), truckNum = 1,
+    } = locationData;
+    const newStartDate = moment(startDate);
+    const newEndDate = moment(endDate);
+    const conflictingTruckLocations = await Location.find({
+      vendorID, startDate: { $lte: endDate }, endDate: { $gte: startDate }, truckNum,
+    });
+    return Promise.all([...conflictingTruckLocations.map((existingLocation) => {
+      const { _id, startDate: existingStartDate, endDate: existingEndDate } = existingLocation;
+      const existingStartsBeforeNewStart = moment(existingStartDate).isSameOrBefore(newStartDate);
+      const existingEndsBeforeNewEnd = moment(existingEndDate).isSameOrBefore(newEndDate);
+      let update = {};
+      // 1. if loc E start date is before loc N start date and loc E end date is before loc N end date,
+      // set loc E end date to loc N start date
+      if (existingStartsBeforeNewStart && existingEndsBeforeNewEnd) {
+        update = { endDate: startDate };
+        // 2. if local E start date is before loc N end date and loc E end date is after loc N end date,
+        // set local E start date to loc N end date
+      } if (!existingEndsBeforeNewEnd) {
+        update = { startDate: endDate };
+        // 3. if local E start date is after loc N's start date and local E end date is before loc N end date,
+        // then nullify it (overridden = true);
+      } else {
+        update = { overridden: true };
+      }
+      return Location.findOneAndUpdate({ _id }, update, { returnNewDocument: true });
+    }), Location.create(locationData)]);
   },
   // Gets all vendors given a regionID
   getVendors(regionID) {

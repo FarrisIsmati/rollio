@@ -26,19 +26,28 @@ const useUpdateRegionVendorData = () => {
 
     useEffect(() => {
       socket.on('TWITTER_DATA', (data: any) => {
-          // format vendorsAll then update that
-          if (data.tweet.location) {
-            const location = data.tweet.location;
+          const { tweet, updatedLocations = [], vendorID, regionID } = data;
+          if (tweet.location) {
+              const { location } = tweet;
             location.coordinates = { lat: location.coordinates[0], long: location.coordinates[1] };
-            const currentVendorData = globalState.vendorsAll[data.vendorId];
-            const locations = [location, ...currentVendorData.locations];
+            // TODO: figure out why globalState is not set
+            const currentVendorData = globalState.vendorsAll[vendorID];
+            const locations = [location, ...currentVendorData.locations.map((existingLocation:any) => {
+                const updatedLocation = updatedLocations.find((updatedLocation:any) => updatedLocation._id === existingLocation._id);
+                if (updatedLocation) {
+                    return {...updatedLocation, coordinates: { lat: updatedLocation.coordinates[0], long: updatedLocation.coordinates[1] } };
+                } else {
+                    return existingLocation;
+                }
+            })];
             const payload = {
                 ...currentVendorData,
                 locations,
-                vendorID: data.vendorID,
+                vendorID: `${vendorID}-${location.truckNum}`,
             };
             dispatch(updateVendor(payload));
-            setGlobalState({ vendorID: data.vendorID });
+            // TODO: this is where we need to figure out which location to update!!!
+            setGlobalState({ vendorID });
           }
         })
     }, [])

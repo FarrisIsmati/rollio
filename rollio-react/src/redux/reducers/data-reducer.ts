@@ -43,6 +43,7 @@ const defaultState:DataDefaultState = {
         locations: [
             {
             id: '',
+            vendorID: '',
             coordinates: { lat: null, long: null },
             address: '',
             neighborhood: '',
