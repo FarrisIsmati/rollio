@@ -47,6 +47,7 @@ import {
 import {
     MapDefaultState, VendorCard
 } from '../reducers/interfaces'
+import {isLocationActive} from "../../util";
 
 // -------
 // VENDOR PROFILE
@@ -203,26 +204,28 @@ export function selectVendorAsync(payload:SelectVendorAsyncPayload) {
 
                 // Set current vendor to active
                 dispatch(setVendorsAll({id: payload.vendorId, selected: true}));
+                const activeTrucksNumbers = state.data.vendorsAll[payload.vendorId].locations.filter(isLocationActive).map((location:any) => location.truckNum);
+                activeTrucksNumbers.forEach((truckNum:number) => {
+                    const vendorID = `${payload.vendorId}-${truckNum}`;
+                    // Get regionVendorMap data whether it's in a group or not and the ID of the vendor or the group
+                    const { isSingle, regionMapID } = getRegionMapVendorData({
+                        stateRegionMap,
+                        vendorID: vendorID,
+                        regionMapID: vendorID
+                    })
+                    if (stateRegionMapCurrentID !== regionMapID) {
+                        dispatch(setCurrentlySelectedRegionMap({ id: regionMapID, isSingle }));
+                    }
 
-                // Get regionVendorMap data whether it's in a group or not and the ID of the vendor or the group
-                const { isSingle, regionMapID } = getRegionMapVendorData({
-                    stateRegionMap,
-                    vendorID: payload.vendorId,
-                    regionMapID: payload.vendorId
+                    // Set the new region map vendor/group status to selected
+                    dispatch(setRegionMapVendor({id: regionMapID, vendorID: vendorID, isSingle, data: { selected: true }}));
+
+                    // If there is a stateRegionMapID and the same case as above
+                    if (stateRegionMapPreviouslySelectedID && stateRegionMapPreviouslySelectedID !== regionMapID) {
+                        // Set previous region map vendor to unselected
+                        dispatch(setRegionMapVendor({id: stateRegionMapPreviouslySelectedID, vendorID: vendorID, isSingle: stateRegionMapPreviouslySelectedIsSingle, data: { selected: false }}));
+                    }
                 })
-
-                if (stateRegionMapCurrentID !== regionMapID) {
-                    dispatch(setCurrentlySelectedRegionMap({ id: regionMapID, isSingle }));
-                }
-
-                // Set the new region map vendor/group status to selected
-                dispatch(setRegionMapVendor({id: regionMapID, vendorID: payload.vendorId, isSingle, data: { selected: true }}));
-
-                // If there is a stateRegionMapID and the same case as above
-                if (stateRegionMapPreviouslySelectedID && stateRegionMapPreviouslySelectedID !== regionMapID) {
-                    // Set previous region map vendor to unselected
-                    dispatch(setRegionMapVendor({id: stateRegionMapPreviouslySelectedID, vendorID: payload.vendorId, isSingle: stateRegionMapPreviouslySelectedIsSingle, data: { selected: false }}));
-                }
             }
         }))
     }

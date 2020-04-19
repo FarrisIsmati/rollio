@@ -329,6 +329,37 @@ module.exports = {
       approved: true,
       numTrucks: 1,
     },
+    // sloan's test account
+    {
+      _id: ObjectId('5e9b6be2169b1f125fa0744b'),
+      numTrucks: 1,
+      tweetHistory: [
+
+      ],
+      locationHistory: [
+
+      ],
+      userLocationHistory: [
+
+      ],
+      categories: [
+        'Mexican',
+      ],
+      approved: false,
+      consecutiveDaysInactive: 0,
+      type: 'mobileTruck',
+      name: "sloan's truck",
+      description: 'asdf',
+      email: 'fake@fake.com',
+      website: 'sloan.com',
+      phoneNumber: '9178808790',
+      comments: [
+
+      ],
+      creditCard: 'y',
+      twitterID: '1249003826520166401',
+      regionID: region1Id,
+    }
   ],
   regions: [
     {
@@ -338,7 +369,7 @@ module.exports = {
         locationDate: new Date('2018-04-12T12:10:00Z'),
         address: 'Washington, D.C.',
         coordinates: [38.9072, 77.0369],
-        vendorID: 'n/a',
+        vendorID: ObjectId(),
       },
       location: 'Washington, D.C.',
       timezone: 'EST',
@@ -569,6 +600,22 @@ module.exports = {
     },
   ],
   users: [
+    // sloan's test account
+    {
+      _id: ObjectId('5e9b6bc6169b1f125fa0744a'),
+      type: 'vendor',
+      email: 'fake@fake.com',
+      twitterProvider: {
+        id: '1249003826520166401',
+        token: '1249003826520166401-3NpoC6U3gbskONAsE3etxK7nxZYrmZ',
+        tokenSecret: 'Hi4rLo274z0C7OicbT2ONSg3mFGItM4bxHDWHE03wAxtx',
+        username: 'fakeacc51947888',
+        displayName: 'fake account',
+      },
+      __v: 0,
+      regionID: region1Id,
+      vendorID: ObjectId('5e9b6be2169b1f125fa0744b'),
+    },
     {
       _id: customerId,
       type: 'customer',

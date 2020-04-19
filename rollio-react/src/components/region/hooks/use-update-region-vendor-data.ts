@@ -2,7 +2,6 @@
 import socketIOClient from 'socket.io-client';
 import { useEffect } from 'react';
 import { useDispatch  } from 'react-redux';
-import moment from 'moment';
 
 // ACTIONS
 import {
@@ -26,28 +25,16 @@ const useUpdateRegionVendorData = () => {
 
     useEffect(() => {
       socket.on('TWITTER_DATA', (data: any) => {
-          const { tweet, updatedLocations = [], vendorID, regionID } = data;
+          // TODO: confirm if regionID is needed!
+          const { tweet, locations = [], vendorID, regionID } = data;
           if (tweet.location) {
-              const { location } = tweet;
-            location.coordinates = { lat: location.coordinates[0], long: location.coordinates[1] };
-            // TODO: figure out why globalState is not set
-            const currentVendorData = globalState.vendorsAll[vendorID];
-            const locations = [location, ...currentVendorData.locations.map((existingLocation:any) => {
-                const updatedLocation = updatedLocations.find((updatedLocation:any) => updatedLocation._id === existingLocation._id);
-                if (updatedLocation) {
-                    return {...updatedLocation, coordinates: { lat: updatedLocation.coordinates[0], long: updatedLocation.coordinates[1] } };
-                } else {
-                    return existingLocation;
-                }
-            })];
+            const truckNum = parseInt(tweet.location.truckNum);
             const payload = {
-                ...currentVendorData,
-                locations,
-                vendorID: `${vendorID}-${location.truckNum}`,
+                locations: locations.map((location:any)=> ({...location, coordinates: { lat: location.coordinates[0], long: location.coordinates[1] } })),
+                vendorID,
             };
             dispatch(updateVendor(payload));
-            // TODO: this is where we need to figure out which location to update!!!
-            setGlobalState({ vendorID });
+            setGlobalState({ vendorID, truckNum });
           }
         })
     }, [])

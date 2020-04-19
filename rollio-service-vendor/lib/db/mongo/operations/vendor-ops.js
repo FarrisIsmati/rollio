@@ -12,6 +12,7 @@ const Location = mongoose.model('Location');
 const User = mongoose.model('User');
 
 module.exports = {
+  // Creates a new location and ensures that each truck does not have two locations at once
   async createLocationAndCorrectConflicts(locationData) {
     const {
       vendorID, startDate = new Date(), endDate = moment(new Date()).endOf('day').toDate(), truckNum = 1,
@@ -21,26 +22,35 @@ module.exports = {
     const conflictingTruckLocations = await Location.find({
       vendorID, startDate: { $lte: endDate }, endDate: { $gte: startDate }, truckNum,
     });
-    return Promise.all([...conflictingTruckLocations.map((existingLocation) => {
-      const { _id, startDate: existingStartDate, endDate: existingEndDate } = existingLocation;
-      const existingStartsBeforeNewStart = moment(existingStartDate).isSameOrBefore(newStartDate);
-      const existingEndsBeforeNewEnd = moment(existingEndDate).isSameOrBefore(newEndDate);
-      let update = {};
-      // 1. if loc E start date is before loc N start date and loc E end date is before loc N end date,
-      // set loc E end date to loc N start date
-      if (existingStartsBeforeNewStart && existingEndsBeforeNewEnd) {
-        update = { endDate: startDate };
-        // 2. if local E start date is before loc N end date and loc E end date is after loc N end date,
-        // set local E start date to loc N end date
-      } if (!existingEndsBeforeNewEnd) {
-        update = { startDate: endDate };
-        // 3. if local E start date is after loc N's start date and local E end date is before loc N end date,
-        // then nullify it (overridden = true);
-      } else {
-        update = { overridden: true };
-      }
-      return Location.findOneAndUpdate({ _id }, update, { returnNewDocument: true });
-    }), Location.create(locationData)]);
+    if (conflictingTruckLocations.length) {
+      await Promise.all(conflictingTruckLocations.map((existingLocation) => {
+        const { _id, startDate: existingStartDate, endDate: existingEndDate } = existingLocation;
+        const existingStartsBeforeNewStart = moment(existingStartDate).isSameOrBefore(newStartDate);
+        const existingEndsBeforeNewEnd = moment(existingEndDate).isSameOrBefore(newEndDate);
+        let update = {};
+        // 1. if loc E start date is before loc N start date and loc E end date is before loc N end date,
+        // set loc E end date to loc N start date
+        if (existingStartsBeforeNewStart && existingEndsBeforeNewEnd) {
+          update = { endDate: startDate };
+          // 2. if local E start date is before loc N end date and loc E end date is after loc N end date,
+          // set local E start date to loc N end date
+        }
+        if (!existingEndsBeforeNewEnd) {
+          update = { startDate: endDate };
+          // 3. if local E start date is after loc N's start date and local E end date is before loc N end date,
+          // then nullify it (overridden = true);
+        } else {
+          update = { overridden: true };
+        }
+        return Location.findOneAndUpdate({ _id }, update);
+      }));
+    }
+    return Location.create(locationData);
+  },
+  // Gets all locations for a particular vendor that are currently active or will be in the future
+  async getVendorLocations(vendorID) {
+    const now = new Date();
+    return Location.find({ vendorID, endDate: { $gte: now } });
   },
   // Gets all vendors given a regionID
   getVendors(regionID) {

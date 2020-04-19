@@ -3,6 +3,8 @@ const moment = require('moment');
 const mongoose = require('../index');
 const mUtilities = require('./utils');
 
+const { ObjectId } = mongoose.Schema.Types;
+
 // MENU SCHEMA
 const MenuSchema = new mongoose.Schema({
   section: { type: String, required: true },
@@ -20,7 +22,7 @@ const MenuSchema = new mongoose.Schema({
 
 // LOCATION SCHEMA
 const LocationSchema = new mongoose.Schema({
-  vendorID: { type: String, required: true },
+  vendorID: { type: ObjectId, required: true },
   locationDate: { type: Date, default: Date.now, required: true },
   accuracy: { type: Number, default: 0, required: true },
   address: { type: String, required: true },
@@ -63,8 +65,8 @@ const TweetSchema = new mongoose.Schema({
   tweetID: { type: String, required: true },
   date: { type: Date, required: true },
   text: { type: String, required: true },
-  location: { type: mongoose.Schema.Types.ObjectId, ref: 'Location', required: false },
-  vendorID: { type: mongoose.Schema.Types.ObjectId, ref: 'Vendor', required: true },
+  location: { type: ObjectId, ref: 'Location', required: false },
+  vendorID: { type: ObjectId, ref: 'Vendor', required: true },
   usedForLocation: { type: Boolean, default: false },
 });
 
@@ -113,9 +115,9 @@ const VendorSchema = new mongoose.Schema({
   yelpId: { type: String, required: false },
   yelpRating: { type: String, required: false },
   twitterID: { type: String, required: false },
-  tweetHistory: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tweet' }],
-  locationHistory: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Location' }],
-  userLocationHistory: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Location' }],
+  tweetHistory: [{ type: ObjectId, ref: 'Tweet' }],
+  locationHistory: [{ type: ObjectId, ref: 'Location' }],
+  userLocationHistory: [{ type: ObjectId, ref: 'Location' }],
   comments: {
     type: [CommentSchema],
     required: false,
@@ -125,7 +127,7 @@ const VendorSchema = new mongoose.Schema({
   consecutiveDaysInactive: { type: Number, required: true },
   // YOU NEED TO DEFINE HOW YOU DEFINE CATEGORIES
   categories: { type: [{ type: String, required: true }], required: true },
-  regionID: { type: mongoose.Schema.Types.ObjectId, required: true },
+  regionID: { type: ObjectId, required: true },
   date: { type: Date, default: Date.now },
   updateDate: { type: Date, default: Date.now },
   approved: { type: Boolean, default: false },

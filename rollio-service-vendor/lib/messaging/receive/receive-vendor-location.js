@@ -74,12 +74,12 @@ const receiveTweets = async () => {
     };
 
     let newLocation = null;
-    let updatedLocations = [];
+    let locations = [];
 
     if (message.match) {
       // NOTE: newLocation could be an array now, as we update old locations that might overlap with the new one
-      updatedLocations = await vendorOps.createLocationAndCorrectConflicts({ ...location, tweetID, vendorID });
-      newLocation = updatedLocations.pop();
+      newLocation = await vendorOps.createLocationAndCorrectConflicts({ ...location, tweetID, vendorID });
+      locations = await vendorOps.getVendorLocations(vendorID, newLocation.truckNum);
       tweetPayload.location = newLocation._id;
       await updateLocation(newLocation._id, region, vendor);
     }
@@ -111,7 +111,7 @@ const receiveTweets = async () => {
       // eslint-disable-next-line max-len
       // Send tweet data, location data, only, everything else will be updated on a get req (comments, ratings, etc)
       io.sockets.emit('TWITTER_DATA', {
-        tweet: tweetPayloadLocationUpdate, updatedLocations, vendorID: vendor._id, regionID: region._id,
+        tweet: tweetPayloadLocationUpdate, locations, vendorID: vendor._id, regionID: region._id,
       });
     } catch (err) {
       logger.error('Failed to emit socket: twitter payload');

@@ -54,7 +54,7 @@ describe('DB Operations', () => {
             done();
           })
           .catch((err) => {
-            console.log(err);
+            console.error(err);
             throw err;
           });
       });
@@ -68,7 +68,7 @@ describe('DB Operations', () => {
             done();
           })
           .catch((err) => {
-            console.log(err);
+            console.error(err);
             throw err;
           });
       });
@@ -96,7 +96,7 @@ describe('DB Operations', () => {
             done();
           })
           .catch((err) => {
-            console.log(err);
+            console.error(err);
             throw err;
           });
       });
@@ -129,7 +129,7 @@ describe('DB Operations', () => {
 
       it('expect new coordinate object pushed into locationHistory', async () => {
         const coordinatesPayload = { locationDate: new Date('2018-02-18T16:22:00Z'), address: '28 Ist', coordinates: [1.123, 4.523] };
-        const newLocation = await Location.create({ ...coordinatesPayload, TweetID: 'blah' });
+        const newLocation = await Location.create({ ...coordinatesPayload, TweetID: 'blah', vendorID: vendor._id });
 
 
         const prevCoordHist = await Vendor.findOne({ _id: vendor._id })
