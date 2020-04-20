@@ -82,8 +82,6 @@ const useMapMarkers = (props: any) => {
             // Ensures when this component is loaded this will only run once
             setAreMarkersLoaded(true);
             if ( mapType === 'region') {
-                console.log(mapData);
-                console.log('!!!!!')
                 const singleVendors = mapData.vendorsDisplayedSingle;
                 const singleVendorsKeys = Object.keys(singleVendors);
                 const groupVendors = mapData.vendorsDisplayedGroup;
