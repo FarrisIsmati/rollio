@@ -78,7 +78,7 @@ const redisConnect = {
     sub.on('message', (channel, msg) => {
       const message = JSON.parse(msg);
       if (message.serverID !== SERVER_ID) {
-        logger.info(`Redis Subscriber: Recieved message from server: ${SERVER_ID}`);
+        logger.info(`Redis Subscriber: Received message from server: ${SERVER_ID}`);
         logger.info(`Redis Subscriber: ${message}`);
         // TODO: confirm with Farris, but shouldn't this just forward along the exact same message ?  or are the keys different ?
         io.sockets.emit('TWITTER_DATA', message);

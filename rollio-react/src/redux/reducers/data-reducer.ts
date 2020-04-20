@@ -2,9 +2,9 @@ import { isEmpty } from 'lodash';
 
 // CONSTANTS
 import {
-    RECIEVE_REGION_DATA,
-    RECIEVE_VENDOR_DATA,
-    RECIEVE_ALL_VENDORS,
+    RECEIVE_REGION_DATA,
+    RECEIVE_VENDOR_DATA,
+    RECEIVE_ALL_VENDORS,
     CLEAR_SELECTED_VENDOR,
     RECEIVE_ALL_REGIONS,
     SET_VENDORS_ALL,
@@ -70,19 +70,19 @@ const defaultState:DataDefaultState = {
 
 export function dataReducer(state = defaultState, action: any) {
     switch (action.type) {
-    case RECIEVE_REGION_DATA:
+    case RECEIVE_REGION_DATA:
         return {
             ...state,
             ...action.payload
         }
-    case RECIEVE_VENDOR_DATA:
+    case RECEIVE_VENDOR_DATA:
         const vendorsAllUpdate = isEmpty(state.vendorsAll) ? {} : { vendorsAll: {...state.vendorsAll, [action.payload.id]: action.payload } };
         return {
             ...state,
             ...vendorsAllUpdate,
             selectedVendor: { ...state.selectedVendor, ...action.payload },
         }
-    case RECIEVE_ALL_VENDORS:
+    case RECEIVE_ALL_VENDORS:
         return {
             ...state,
             vendorsAll: { ...action.payload }

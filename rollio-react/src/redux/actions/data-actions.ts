@@ -9,15 +9,15 @@ import { VENDOR_API } from '../../config';
 import {
     FETCH_VENDOR_DATA,
     FETCH_VENDOR_DATA_SUCCESS,
-    RECIEVE_VENDOR_DATA,
+    RECEIVE_VENDOR_DATA,
 
     FETCH_REGION_DATA,
     FETCH_REGION_DATA_SUCCESS,
-    RECIEVE_REGION_DATA,
+    RECEIVE_REGION_DATA,
 
     FETCH_ALL_VENDORS,
     FETCH_ALL_VENDORS_SUCCESS,
-    RECIEVE_ALL_VENDORS,
+    RECEIVE_ALL_VENDORS,
 
     CLEAR_SELECTED_VENDOR,
 
@@ -54,7 +54,7 @@ import {isLocationActive} from "../../util";
 // -------
 
 // Gets the detailed set of vendor profile data
-export function recieveVendorData(vendor:any) {
+export function receiveVendorData(vendor:any) {
     const locations = vendor.locationHistory.filter((location:any) => moment().isBefore(location.endDate) && !location.overridden);
 
     // If an empty object is passed as an arg then reset all data
@@ -94,7 +94,7 @@ export function recieveVendorData(vendor:any) {
     };
 
     return {
-        type: RECIEVE_VENDOR_DATA,
+        type: RECEIVE_VENDOR_DATA,
         payload: {
             ...profile
         }
@@ -126,7 +126,7 @@ export function fetchVendorDataAsync(payload:VendorDataAsyncPayload) {
         dispatch(fetchVendorDataStart())
         axios.get(`${VENDOR_API}/vendor/${regionId}/${vendorId}`)
             .then((res: AxiosResponse<any>) => {
-                dispatch(recieveVendorData(res.data));
+                dispatch(receiveVendorData(res.data));
                 dispatch(fetchVendorDataSuccess());
                 // Any function you want to run after successful get of all data
                 if (cbSuccess) {
@@ -304,9 +304,9 @@ export function requestPostVendorComment(payload:any) {
 // REGION DATA
 // -----------
 
-export function recieveRegionData(region:any) {
+export function receiveRegionData(region:any) {
     return {
-        type: RECIEVE_REGION_DATA,
+        type: RECEIVE_REGION_DATA,
         payload: {
             regionId: region._id,
             regionName: region.name,
@@ -349,7 +349,7 @@ export function fetchRegionDataAsync(payload:RegionDataAsyncPayload) {
         dispatch(fetchRegionDataStart());
         axios.get(route)
         .then((res: AxiosResponse<any>) => {
-            dispatch(recieveRegionData(res.data));
+            dispatch(receiveRegionData(res.data));
             dispatch(fetchRegionDataSuccess());
             if ( shouldFetchVendors ) {
                 dispatch(fetchAllVendorsAsync({regionId: res.data._id}))
@@ -367,9 +367,9 @@ export function fetchRegionDataAsync(payload:RegionDataAsyncPayload) {
 // VENDOR DATA
 // -----------
 
-export function recieveAllVendors(vendorLookUp: { [key: string]: VendorCard }) {
+export function receiveAllVendors(vendorLookUp: { [key: string]: VendorCard }) {
     return {
-        type: RECIEVE_ALL_VENDORS,
+        type: RECEIVE_ALL_VENDORS,
         payload: {
             ...Object.entries(vendorLookUp).reduce((acc, entry) => {
                 const [vendorId, vendorInfo] = entry;
@@ -411,7 +411,7 @@ export function fetchAllVendorsAsync(payload: any) {
         dispatch(fetchAllVendorsStart());
         axios.get(`${VENDOR_API}/vendor/${regionId}/object`)
             .then((res: AxiosResponse<any>) => {
-                dispatch(recieveAllVendors(res.data));
+                dispatch(receiveAllVendors(res.data));
                 dispatch(fetchAllVendorsSuccess());
             })
             .catch((err:AxiosError) => {

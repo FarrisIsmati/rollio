@@ -3,7 +3,7 @@ import React, {useEffect, useState} from "react";
 import { withRouter } from 'react-router';
 import {receiveUser} from "../../redux/actions/user-actions";
 import {useDispatch} from "react-redux";
-import {recieveVendorData, fetchVendorDataAsync} from "../../redux/actions/data-actions";
+import {receiveVendorData, fetchVendorDataAsync} from "../../redux/actions/data-actions";
 import axios, {AxiosResponse} from "axios";
 import {VENDOR_API} from "../../config";
 import useGetRegions from './hooks/use-get-regions';
@@ -121,7 +121,7 @@ const UserProfile = (props:any) => {
             .then((res: AxiosResponse<any>) => {
                 const vendorID = res.data.vendor._id;
                 // TODO: confirm that redis cache gets wiped
-                recieveVendorData(res.data.vendor);
+                receiveVendorData(res.data.vendor);
                 if (type === 'vendor') {
                     receiveUser({ ...user, vendorID });
                 }

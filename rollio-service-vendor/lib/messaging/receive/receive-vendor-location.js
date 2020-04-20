@@ -55,7 +55,7 @@ const updateLocation = async (payload, region, vendor) => {
 const receiveTweets = async () => {
   mq.receive(config.AWS_SQS_PARSED_TWEETS, async (msg) => {
     const message = JSON.parse(msg.content);
-    logger.info('Recieved tweet');
+    logger.info('Received tweet');
     logger.info(msg.content);
 
     const region = await regionOps.getRegionByName(config.REGION);
