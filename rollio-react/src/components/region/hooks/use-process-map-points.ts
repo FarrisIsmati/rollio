@@ -1,4 +1,3 @@
-// TODO: update this whole file!!!
 // DEPENDENCIES
 import { useDispatch  } from 'react-redux';
 import { useEffect } from 'react';

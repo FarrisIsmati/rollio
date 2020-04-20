@@ -77,7 +77,6 @@ const receiveTweets = async () => {
     let locations = [];
 
     if (message.match) {
-      // NOTE: newLocation could be an array now, as we update old locations that might overlap with the new one
       newLocation = await vendorOps.createLocationAndCorrectConflicts({ ...location, tweetID, vendorID });
       locations = await vendorOps.getVendorLocations(vendorID, newLocation.truckNum);
       tweetPayload.location = newLocation._id;

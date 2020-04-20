@@ -1,5 +1,5 @@
 import moment from "moment";
-import {get} from "lodash";
+import { get, toNumber } from "lodash";
 
 interface LocationProp {
     location: {
@@ -20,6 +20,10 @@ export const isLocationActive = (location:any) => {
     return moment().isBefore(location.endDate) && moment().isAfter(location.startDate) && !location.overridden
 };
 
+export const isLocationActiveOrWillBeActive = (location:any) => {
+    return moment().isBefore(location.endDate) && !location.overridden
+};
+
 
 export const isActive = (locations:any) => {
     return locations.some(isLocationActive)
@@ -27,5 +31,5 @@ export const isActive = (locations:any) => {
 
 export const getCurrentTruckLocation = (vendorID: string, truckNum: number, vendorsAll: any) => {
     const locations = get(vendorsAll, `${vendorID}.locations`, []);
-    return locations.find((location:any) => truckNum === location.truckNum && isLocationActive(location))
+    return locations.find((location:any) => toNumber(truckNum) === toNumber(location.truckNum) && isLocationActive(location))
 }

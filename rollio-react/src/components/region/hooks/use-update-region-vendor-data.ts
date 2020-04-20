@@ -2,6 +2,7 @@
 import socketIOClient from 'socket.io-client';
 import { useEffect } from 'react';
 import { useDispatch  } from 'react-redux';
+import { toNumber } from 'lodash';
 
 // ACTIONS
 import {
@@ -25,10 +26,10 @@ const useUpdateRegionVendorData = () => {
 
     useEffect(() => {
       socket.on('TWITTER_DATA', (data: any) => {
-          // TODO: confirm if regionID is needed!
+          // TODO: why do we sent regionID if we don't use it ?
           const { tweet, locations = [], vendorID, regionID } = data;
           if (tweet.location) {
-            const truckNum = parseInt(tweet.location.truckNum);
+            const truckNum = toNumber(tweet.location.truckNum);
             const payload = {
                 locations: locations.map((location:any)=> ({...location, coordinates: { lat: location.coordinates[0], long: location.coordinates[1] } })),
                 vendorID,

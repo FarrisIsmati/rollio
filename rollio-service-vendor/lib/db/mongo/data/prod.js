@@ -1,3 +1,5 @@
+const { ObjectId } = require('mongoose').Types;
+
 module.exports = {
   vendors: [
     {
@@ -24,10 +26,10 @@ module.exports = {
     {
       name: 'WASHINGTONDC',
       coordinates: {
-        locationDate: new Date(''),
-        address: '',
-        coordinates: [],
-        vendorID: 'n/a',
+        locationDate: new Date('2018-04-12T12:10:00Z'),
+        address: 'Washington, D.C.',
+        coordinates: [38.9072, 77.0369],
+        vendorID: ObjectId(),
       },
       location: 'Washington, D.C.',
       timezone: 'EST',

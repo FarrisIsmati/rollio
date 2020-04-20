@@ -1,4 +1,5 @@
 // DEPENDENCIES
+import { toNumber } from 'lodash';
 import { useState, useEffect } from 'react';
 import mapboxgl from 'mapbox-gl';
 
@@ -6,6 +7,7 @@ import mapboxgl from 'mapbox-gl';
 import useGetAppState from '../../common/hooks/use-get-app-state';
 import useUpdateMapMarkersState from './useUpdateMapMarkersState';
 import useUpdateMapMarkersStyle from './useUpdateMapMarkersStyle';
+import {getCurrentTruckLocation} from "../../../util";
 
 // Create Marker Style
 const createMapMarker = (props: { numberOfGroupedVendors?: boolean | number, selected: boolean }) => {
@@ -97,9 +99,8 @@ const useMapMarkers = (props: any) => {
                     // Since all vendors in a grouped pin location currently have the same exact coords (not a area/radius thing)
                     // Take the first vendors coords and use that to make a marker
                     const [firstVendorId, truckNum] = vendorsGroup.vendors[0].vendorId.split('-');
-                    const firstVendor = vendorsData[firstVendorId];
                     const {vendors, selected} = vendorsGroup;
-                    const location = firstVendor.locations.find((location:any) => location.truckNum === truckNum) || firstVendor.locations[0];
+                    const location = getCurrentTruckLocation(firstVendorId, toNumber(truckNum), vendorsData);
                     acc[key] = addGroupedVendorsToMap({vendors, location, map, selected });
                     return acc;
                 }, {});

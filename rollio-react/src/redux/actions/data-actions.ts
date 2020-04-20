@@ -47,7 +47,7 @@ import {
 import {
     MapDefaultState, VendorCard
 } from '../reducers/interfaces'
-import {isLocationActive} from "../../util";
+import { isLocationActive, isLocationActiveOrWillBeActive } from "../../util";
 
 // -------
 // VENDOR PROFILE
@@ -55,7 +55,7 @@ import {isLocationActive} from "../../util";
 
 // Gets the detailed set of vendor profile data
 export function receiveVendorData(vendor:any) {
-    const locations = vendor.locationHistory.filter((location:any) => moment().isBefore(location.endDate) && !location.overridden);
+    const locations = vendor.locationHistory.filter(isLocationActiveOrWillBeActive);
 
     // If an empty object is passed as an arg then reset all data
         const profile = {
@@ -342,8 +342,7 @@ function fetchRegionDataStart() {
 export function fetchRegionDataAsync(payload:RegionDataAsyncPayload) {
     const { regionName, regionId, shouldFetchVendors, cb } = payload;
     // Set route based on payload params
-    const route = !regionId ? `${VENDOR_API}/region/name/${regionName}` : `${VENDOR_API}/region/${regionId}`
-
+    const route = regionId ? `${VENDOR_API}/region/${regionId}` : `${VENDOR_API}/region/name/${regionName}`;
     return (dispatch:any) => {
         // Set region load status to false when fetching a new region
         dispatch(fetchRegionDataStart());
