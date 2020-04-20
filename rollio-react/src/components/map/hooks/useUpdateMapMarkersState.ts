@@ -1,5 +1,3 @@
-// TODO: deal better with points that are really close to each other; I had two different points in different parts of farragut square that weren't grouped
-
 // DEPENDENCIES
 import { useEffect, useRef } from 'react';
 import { useDispatch  } from 'react-redux';
