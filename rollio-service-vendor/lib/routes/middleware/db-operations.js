@@ -6,6 +6,9 @@ const MongoQS = require('mongo-querystring');
 const logger = require('../../log/index')('routes/middleware/db-operations');
 const config = require('../../../config');
 
+// MESSAGING
+const sendVendorTwitterIDs = require('../../messaging/send/send-vendor-twitterid');
+
 const qs = new MongoQS(); // MongoQS takes req.query and converts it into MongoQuery
 const { client: redisClient } = require('../../redis/index');
 
@@ -168,10 +171,17 @@ const vendorRouteOps = {
     const { type } = req.user;
     const isAdmin = type === 'admin';
     const isVendor = type === 'vendor';
+
     if (isAdmin || isVendor) {
       return createVendor(req.body, req.params.regionID, req.user)
-        .then(vendor => res.status(200).json({ vendor }))
+        .then(async (vendor) => {
+          // Need to tell twitter service to start listening for new vendors
+          await sendVendorTwitterIDs();
+
+          return res.status(200).json({ vendor });
+        })
         .catch((err) => {
+          console.log(err);
           console.error(err);
           res.status(500).send(err);
         });

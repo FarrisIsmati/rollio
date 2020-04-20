@@ -45,6 +45,7 @@ describe('Tweet Routes', () => {
         id: admin._id,
       }, JWT_SECRET, { expiresIn: 60 * 60 });
       newLocationData = {
+        vendorID: mongoose.Types.ObjectId(),
         locationDate: new Date(),
         tweetID: tweet._id,
         address: '123 street',

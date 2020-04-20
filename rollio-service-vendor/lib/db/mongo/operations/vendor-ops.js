@@ -4,7 +4,6 @@ const moment = require('moment');
 const mongoose = require('../mongoose/index');
 const { client: redisClient } = require('../../../redis/index');
 const logger = require('../../../log/index')('mongo/operations/vendor-ops');
-const sendVendorTwitterIDs = require('../../../messaging/send/send-vendor-twitterid');
 
 // SCHEMA
 const Vendor = mongoose.model('Vendor');
@@ -102,8 +101,6 @@ module.exports = {
     if (userIsAVendor && newVendor) {
       await User.findOneAndUpdate({ _id: userID }, { vendorID: newVendor._id });
     }
-    // need to tell twitter service to start listening for this new vendor
-    await sendVendorTwitterIDs();
     return newVendor;
   },
   // Gets a single vendor given a regionID and vendorID

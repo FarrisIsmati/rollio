@@ -51,14 +51,21 @@ describe('Schemas', () => {
     });
 
     it('expect default startDate, endDate, and locationDate to be set correctly', (done) => {
-      const newLocation = new Location({ address: '123 street', coordinates: [5, 5] });
+      const newLocation = new Location({ vendorID: mongoose.Types.ObjectId(), address: '123 street', coordinates: [5, 5] });
 
       newLocation.save((err, location) => {
+        if (err) {
+          // Error won't show without this log
+          // eslint-disable-next-line no-console
+          console.log(err);
+        }
+
         const { locationDate, startDate, endDate } = location;
         const endOfTomorrow = moment(new Date()).endOf('day').toDate();
+        const currentDate = moment().format();
         expect(endDate).to.be.eql(endOfTomorrow);
-        expect(moment(locationDate).isSame(new Date(), 'second')).to.be.true;
-        expect(moment(startDate).isSame(new Date(), 'second')).to.be.true;
+        expect(moment(locationDate).format()).to.be.eql(currentDate);
+        expect(moment(startDate).format()).to.be.eql(currentDate);
         done();
       });
     });
