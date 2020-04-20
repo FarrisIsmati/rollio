@@ -23,8 +23,8 @@ const getMessageLocation = (msg) => {
 const receiveVendorsRequest = () => {
   mq.receive(getMessageLocation('requestVendors'), async (msg) => {
     // eslint-disable-next-line no-console
-    logger.info(`Vendors list requrest recieved: ${msg.content}`);
-    const twitterServiceRequest = JSON.parse(msg.content);
+    logger.info(`Vendors list requrest recieved: ${JSON.stringify(msg.content)}`);
+    const twitterServiceRequest = msg.content;
 
     // Send updated vendors list
     if (twitterServiceRequest) {
@@ -34,4 +34,6 @@ const receiveVendorsRequest = () => {
   });
 };
 
-module.exports = receiveVendorsRequest;
+module.exports = {
+  recieveRequest: receiveVendorsRequest,
+};

@@ -100,7 +100,7 @@ const receiveTweets = async () => {
   mq.receive(getMessageLocation('parsedTweets'), async (msg) => {
     const message = JSON.parse(msg.content);
     logger.info('Recieved tweet');
-    logger.info(message);
+    logger.info(msg.content);
 
     const region = await regionOps.getRegionByName(config.REGION);
     const vendor = await vendorOps.getVendorByTwitterID(region._id, message.twitterID);

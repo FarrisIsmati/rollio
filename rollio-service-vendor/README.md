@@ -12,7 +12,7 @@ docker images
 docker ps
 
 docker build -t *imagename*:*tag* .
-docker run -d -p *port*:*port* --env-file *./.env* --name *containername* *image:tag*
+docker run -rm -p 3001:3001 --env-file ./.env 417837038293.dkr.ecr.us-east-1.amazonaws.com/rollio-service-vendor
 docker-machine ip default (get docker ip)
 docker exec -it *containerid* bash
 
@@ -23,3 +23,10 @@ stopping
 docker ps
 docker stop *container_id*
 docker rm *container_id*
+
+# Get IP
+docker-machine ip
+
+# Push to AWS
+aws ecr get-login --no-include-email --region us-east-1
+

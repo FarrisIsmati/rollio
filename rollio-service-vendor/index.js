@@ -75,8 +75,8 @@ server.listen(app.get('port'), async () => {
 
   // Send init vendor twitterIDs via RabbitMQ to Twitter Service
   if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') {
-    logger.info(`Server on port ${app.get('port')}`);
-    receiveVendorsRequest();
+    logger.info(`Server on port: ${app.get('port')}`);
+    receiveVendorsRequest.recieveRequest();
     receiveVendorLocation.receiveTweets();
   }
 });

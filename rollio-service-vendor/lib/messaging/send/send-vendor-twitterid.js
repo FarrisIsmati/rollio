@@ -31,7 +31,7 @@ const sendVendorTwitterIDs = async () => {
     });
   const vendors = await vendorOps.getVendors(regionID)
     .catch((err) => {
-      logger.info(err);
+      logger.error(err);
       return err;
     });
   // Puts vendors list into a string separated by ','

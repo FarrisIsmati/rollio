@@ -2,6 +2,7 @@
 // DEPENDENCIES
 const amqplib = require('amqplib');
 const AWS = require('aws-sdk');
+const { Consumer } = require('sqs-consumer');
 const util = require('../util/util');
 const config = require('../../config');
 const logger = require('../log/index')('messaging/index');
@@ -26,44 +27,32 @@ const getMessageService = () => {
 
         sqs.sendMessage(params, (err, data) => {
           if (err) {
-            console.log('Error', err);
+            logger.error(err);
           } else {
-            console.log('Success', data.MessageId);
+            logger.info(`Message Sent: ${JSON.stringify(data)}`);
           }
         });
       },
-      receive: async (queueURL, cb) => {
-        const params = {
-          AttributeNames: [
-            'SentTimestamp',
-          ],
-          MaxNumberOfMessages: 10,
-          MessageAttributeNames: [
-            'All',
-          ],
-          QueueUrl: queueURL,
-          VisibilityTimeout: 20,
-          WaitTimeSeconds: 0,
-        };
 
-        sqs.receiveMessage(params, (err, data) => {
-          if (err) {
-            console.log('Receive Error', err);
-          } else if (data.Messages) {
-            cb({ content: data.Messages });
-            const deleteParams = {
-              QueueUrl: queueURL,
-              ReceiptHandle: data.Messages[0].ReceiptHandle,
-            };
-            sqs.deleteMessage(deleteParams, (err, data) => {
-              if (err) {
-                console.log('Delete Error', err);
-              } else {
-                console.log('Message Deleted', data);
-              }
-            });
-          }
+      receive: async (queueURL, cb) => {
+        const consumer = Consumer.create({
+          queueUrl: queueURL,
+          handleMessage: async (message) => {
+            cb({ content: message.Body });
+          },
         });
+
+        consumer.on('error', (err) => {
+          logger.error(err.message);
+        });
+
+        consumer.on('processing_error', (err) => {
+          logger.error(err.message);
+        });
+
+        consumer.start();
+
+        return consumer;
       },
     };
   }
