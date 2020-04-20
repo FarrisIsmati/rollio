@@ -120,6 +120,7 @@ const UserProfile = (props:any) => {
         })
             .then((res: AxiosResponse<any>) => {
                 const vendorID = res.data.vendor._id;
+                // TODO: confirm that redis cache gets wiped
                 recieveVendorData(res.data.vendor);
                 if (type === 'vendor') {
                     receiveUser({ ...user, vendorID });

@@ -59,12 +59,13 @@ export function recieveVendorData(vendor:any) {
 
     // If an empty object is passed as an arg then reset all data
         const profile = {
-        categories: vendor.categories ? vendor.categories : '',
-        comments: vendor.comments ? vendor.comments : [],
-        creditCard: vendor.creditCard ? vendor.creditCard : '',
-        description: vendor.description ? vendor.description : '',
-        email: vendor.email ? vendor.email : '',
-        id: vendor._id ? vendor._id : '',
+        categories: vendor.categories || '',
+        comments: vendor.comments || [],
+        creditCard: vendor.creditCard || '',
+        description: vendor.description || '',
+        email: vendor.email || '',
+        id: vendor._id || '',
+        // TODO: confirm if we really need to set this empty location object ?
         locations: locations.length ? locations : [{
             id: "",
             coordinates: {
@@ -78,17 +79,18 @@ export function recieveVendorData(vendor:any) {
             tweetID: null,
             accuracy: 0,
             startDate: null,
-            endDate: null
+            endDate: null,
+            overridden: true
         }],
-        name: vendor.name ?  vendor.name : '',
-        phoneNumber: vendor.phonenumber ? vendor.phonenumber : '',
-        profileImageLink: vendor.profileImageLink ? vendor.profileImageLink : '',
-        bannerImageLink: vendor.bannerImageLink ? vendor.bannerImageLink : '',
-        price: vendor.price ? vendor.price : '',
-        rating: vendor.rating ? vendor.rating : '',
-        twitterID: vendor.twitterID ? vendor.twitterID : '',
-        website: vendor.website ? vendor.website : '',
-        lastUpdated: vendor.updateDate ? vendor.updateDate : null
+        name: vendor.name || '',
+        phoneNumber: vendor.phonenumber || '',
+        profileImageLink: vendor.profileImageLink || '',
+        bannerImageLink: vendor.bannerImageLink || '',
+        price: vendor.price || '',
+        rating: vendor.rating || '',
+        twitterID: vendor.twitterID || '',
+        website: vendor.website || '',
+        lastUpdated: vendor.updateDate || null
     };
 
     return {
@@ -438,7 +440,6 @@ export function receiveAllRegions(regions:any) {
         ]
     }
 }
-
 
 function fetchAllRegionsSuccess() {
     return {
