@@ -15,7 +15,7 @@ const MapOverlay = () => {
     return (
         <React.Fragment>
             { isMobile ?
-            <div style={{height: `${windowHeight - 200}px`}} className={ state.ui.isMobileMenuExpanded ? 'map__overlay_active' : 'map__overlay_inactive' }></div> :
+            <div style={{height: `${windowHeight - 200}px`}} className={ state.ui.isMobileDashboardExpanded ? 'map__overlay_active' : 'map__overlay_inactive' }></div> :
             null
             }
         </React.Fragment>

@@ -63,7 +63,7 @@ const DashboardMobile:FC = () => {
                 <TwoOptionSwitch 
                     onClick={ (opt:string)=>{ dispatch(setDashboardVendorsDisplay(opt === 'a' ? 'active' : 'all')) } }
                     vendorTypeName={ 'Trucks' } 
-                    isOptionA={ state.ui.menuVendorsDisplay === 'all' ? true : false } 
+                    isOptionA={ state.ui.dashboardVendorsDisplay === 'all' ? true : false } 
                     font='font__dashboard_switch'
                 />
                 <DashboardLinks { ...{vendorLinksHeight, refs: [topRef]} } />
