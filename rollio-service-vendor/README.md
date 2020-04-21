@@ -27,6 +27,6 @@ docker rm *container_id*
 # Get IP
 docker-machine ip
 
-# Push to AWS
+# Login to AWS
 aws ecr get-login --no-include-email --region us-east-1
 
