@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "local": "NODE_ENV=DEVELOPMENT_LOCAL nodemon --inspect=8002 index.js",
-    "start": "nodemon index.js",
+    "start": "node index.js",
     "test": "set NODE_ENV=TEST_LOCAL&& mocha ./test/**/*spec.js --timeout 10000 --exit",
     "testunix": "NODE_ENV=TEST_LOCAL&& mocha ./test/**/*spec.js --timeout 10000 --exit"
   },
@@ -42,7 +42,8 @@
   },
   "devDependencies": {
     "eslint": "^5.16.0",
-    "eslint-plugin-import": "^2.17.2"
+    "eslint-plugin-import": "^2.17.2",
+    "nodemon": "^2.0.3"
   },
   "keywords": []
 }

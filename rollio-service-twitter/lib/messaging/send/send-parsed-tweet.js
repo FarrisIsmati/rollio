@@ -1,6 +1,6 @@
 // DEPENDENCIES
 const mq = require('../index');
-const logger = require('../../log/index');
+const logger = require('../../log/index')('send-parsed-tweet');
 const config = require('../../../config');
 
 // Get proper message name depending on if service is SQS or RabbitMQ

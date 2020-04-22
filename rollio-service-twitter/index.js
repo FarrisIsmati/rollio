@@ -6,7 +6,7 @@ const morgan = require('morgan');
 const cors = require('cors');
 const server = require('http').createServer(app);
 const config = require('./config');
-const logger = require('./lib/log/index');
+const logger = require('./lib/log/index')('index');
 
 // LIB
 const sendVendorsRequest = require('./lib/messaging/send/send-vendors-request');

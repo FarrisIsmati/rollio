@@ -1,7 +1,7 @@
 // DEPENDENCIES
 const mq = require('../index');
 const twitter = require('../../twitter/index');
-const logger = require('../../log/index');
+const logger = require('../../log/index')('receive-vendor-list');
 const config = require('../../../config');
 
 // Get proper message name depending on if service is SQS or RabbitMQ

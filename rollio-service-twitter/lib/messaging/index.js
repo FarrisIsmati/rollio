@@ -5,7 +5,7 @@ const AWS = require('aws-sdk');
 const { Consumer } = require('sqs-consumer');
 const util = require('../util/util');
 const config = require('../../config');
-const logger = require('../log/index');
+const logger = require('../log/index')('messaging/index');
 
 // If running in an AWS environment use Amazons SQS for messaging
 // If running in a local environment use RabbitMQ for messaging
