@@ -7,12 +7,6 @@ const { client: redisClient, pub } = require('../../redis/index');
 const config = require('../../../config');
 const logger = require('../../log/index')('messaging/receive/receive-vendor-location');
 
-// CONFIG
-const {
-  REDIS_TWITTER_CHANNEL,
-  SERVER_ID,
-} = require('../../../config');
-
 // SOCKET
 const { io } = require('../../sockets/index');
 
@@ -50,7 +44,7 @@ const updateTweet = async (payload, region, vendor) => {
 const updateLocation = async (payload, region, vendor) => {
   // Clear cache for getVendors route & getRegion route
   try {
-    const resy = await redisClient.hdelAsync('vendor', `q::method::GET::path::/${region._id}/object`);
+    await redisClient.hdelAsync('vendor', `q::method::GET::path::/${region._id}/object`);
   } catch (err) {
     logger.error(err);
   }

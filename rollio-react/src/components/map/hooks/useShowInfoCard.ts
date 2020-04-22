@@ -7,7 +7,7 @@ const useShowInfoCard = () => {
     const state = useGetAppState();
     const isMobile = windowSizeEffects.useIsMobile();
     
-    return isMobile && !state.ui.isMobileMenuExpanded && state.regionMap.currentlySelected.id !== ''
+    return isMobile && !state.ui.isMobileDashboardExpanded && state.regionMap.currentlySelected.id !== ''
 }
 
 export default useShowInfoCard;

@@ -47,7 +47,7 @@ const DashboardDesktop = () => {
         <TwoOptionSwitch 
           onClick={ (opt:string)=>{ dispatch(setDashboardVendorsDisplay(opt === 'a' ? 'active' : 'all')) } }
           vendorTypeName={ 'Trucks' } 
-          isOptionA={ state.ui.menuVendorsDisplay === 'all' } 
+          isOptionA={ state.ui.dashboardVendorsDisplay === 'all' } 
           ref={ menuActiveSwtichRef } 
           font='font__dashboard_switch' 
         />
