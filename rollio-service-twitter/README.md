@@ -9,12 +9,12 @@ docker images
 docker ps
 
 docker build -t *imagename*:*tag* .
-docker run -rm -p 3001:3001 --env-file ./.env *imagename*:*tag*
+docker run -rm -p 3002:3002 --env-file ./.env *imagename*:*tag*
 docker-machine ip default (get docker ip)
 docker exec -it *containerid* bash
 
 # Running With Logs
-docker run -it --log-driver="awslogs" --log-opt awslogs-region="us-east-1" --log-opt awslogs-group="rollio-service-vendor-dev" --log-opt awslogs-stream="log-stream" -p 3001:3001 --env-file ./.env --name rollio-service-vendor-tst rollio-service-vendor:dev
+docker run -it --log-driver="awslogs" --log-opt awslogs-region="us-east-1" --log-opt awslogs-group="rollio-service-vendor-dev" --log-opt awslogs-stream="log-stream" -p 3002:3002 --env-file ./.env --name rollio-service-vendor-tst rollio-service-vendor:dev
 
 stopping
 docker ps
