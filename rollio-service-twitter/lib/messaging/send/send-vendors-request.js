@@ -19,7 +19,7 @@ const getMessageLocation = (msg) => {
 
 const sendVendorsRequest = async () => {
   await mq.send(getMessageLocation('requestVendors'), true);
-  logger.info('RabbitMQ: Sent request for vendors');
+  logger.info('Message Service: Sent request for vendors');
 };
 
 module.exports = sendVendorsRequest;

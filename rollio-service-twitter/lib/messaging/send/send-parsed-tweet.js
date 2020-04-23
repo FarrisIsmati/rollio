@@ -19,6 +19,7 @@ const getMessageLocation = (msg) => {
 
 const sendParsedTweet = async (tweet) => {
   await mq.send(getMessageLocation('parsedTweets'), tweet);
+  logger.info('Message Service: Sent parsed tweet');
 };
 
 module.exports = sendParsedTweet;

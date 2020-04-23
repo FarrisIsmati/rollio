@@ -10,6 +10,7 @@ const logger = require('../log/index')('messaging/index');
 // If running in an AWS environment use Amazons SQS for messaging
 // If running in a local environment use RabbitMQ for messaging
 const getMessageService = () => {
+  console.log(config.AWS_ENV);
   // AWS Setup
   if (config.AWS_ENV) {
     AWS.config.update({ region: 'us-east-1' });
@@ -21,10 +22,11 @@ const getMessageService = () => {
       send: async (queueURL, messageBody) => {
         const params = {
           DelaySeconds: 2,
-          MessageBody: messageBody,
+          MessageBody: JSON.stringify(messageBody),
           QueueUrl: queueURL,
         };
-
+        logger.info(`Message sent: ${queueURL}`);
+        logger.info(JSON.stringify(params));
         sqs.sendMessage(params, (err, data) => {
           if (err) {
             logger.error(err);
@@ -38,6 +40,8 @@ const getMessageService = () => {
         const consumer = Consumer.create({
           queueUrl: queueURL,
           handleMessage: async (message) => {
+            logger.info(`Message received: ${queueURL}`);
+            logger.info(message.Body);
             cb({ content: message.Body });
           },
         });

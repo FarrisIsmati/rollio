@@ -21,7 +21,7 @@ const getMessageLocation = (msg) => {
 const receiveVendorList = () => {
   let stream;
   mq.receive(getMessageLocation('twitterid'), async (msg) => {
-    const vendorList = JSON.parse(msg.content);
+    const vendorList = msg.content;
     logger.info(`Received VendorIDs, length: ${vendorList.split(',').length}`);
     // Reset stream if received an updated vendors list
     if (!stream) {
