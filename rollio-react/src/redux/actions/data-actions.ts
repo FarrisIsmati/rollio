@@ -159,7 +159,10 @@ const getRegionMapVendorData = (args: {stateRegionMap:MapDefaultState , vendorID
     // Set vendor in region map to active
     let regionMapIDRes:string = regionMapID;
     let isSingle:boolean = true;
-    if (!stateRegionMap.vendorsDisplayedSingle[regionMapID]) {
+    if (stateRegionMap.vendorsDisplayedGroup[regionMapID]) {
+        regionMapIDRes = regionMapID;
+        isSingle = false;
+    } else if (!stateRegionMap.vendorsDisplayedSingle[regionMapID]) {
         const vendorsDisplayedGroup = stateRegionMap.vendorsDisplayedGroup;
         let groupId:string = '';
         // Label the loop to break out of the nested loop instead of writing a function for the loop
@@ -177,7 +180,6 @@ const getRegionMapVendorData = (args: {stateRegionMap:MapDefaultState , vendorID
         }
         regionMapIDRes = groupId;
     }
-
     return {
         regionMapID : regionMapIDRes,
         isSingle
@@ -201,7 +203,6 @@ export function selectVendorAsync(payload:SelectVendorAsyncPayload) {
                 const stateRegionMapPreviouslySelectedIsSingle = state.regionMap.previouslySelected.isSingle;
 
                 const stateRegionMapCurrentID = state.regionMap.currentlySelected.id;
-
                 dispatch(setIsVendorSelected(true));
 
                 // Set current vendor to active
