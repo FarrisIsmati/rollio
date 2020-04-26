@@ -31,7 +31,7 @@ const useUpdateRegionVendorData = () => {
           if (tweet.location) {
             const truckNum = toNumber(tweet.location.truckNum);
             const payload = {
-                locations: locations.map((location:any)=> ({...location, coordinates: { lat: location.coordinates[0], long: location.coordinates[1] } })),
+                locations,
                 vendorID,
             };
             dispatch(updateVendor(payload));

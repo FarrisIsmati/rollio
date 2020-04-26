@@ -15,14 +15,8 @@ const defaultState:MapDefaultState = {
   vendorsDisplayedSingle: {},
   vendorsDisplayedGroup: {},
   activeFilters: [],
-  previouslySelected: {
-    id: '',
-    isSingle: null
-  },
-  currentlySelected: {
-    id: '',
-    isSingle: null
-  }
+  previouslySelected: [],
+  currentlySelected: []
 }
 
 export function mapReducer(state = defaultState, action: any) {
@@ -65,7 +59,7 @@ export function mapReducer(state = defaultState, action: any) {
       if (action.payload.data.selected) {
         const vendorIndex = state.vendorsDisplayedGroup[action.payload.id].vendors.findIndex((vendor) => vendor.vendorId === action.payload.vendorID);
         group.vendors[vendorIndex].selected = true;
-        // Set all vendors in group to not 
+        // Set all vendors in group to not selected
       } else if (!action.payload.data.selected) {
         group.vendors = group.vendors.map((vendor) => { return {...vendor, selected: false} })
       }
@@ -79,25 +73,23 @@ export function mapReducer(state = defaultState, action: any) {
             ...action.payload.data,
           }
         }
-      } 
+      }
     }
 
     return payload
   case SET_PREVIOUSLY_SELECTED_REGION_MAP:
     return {
       ...state,
-      previouslySelected: {
-        ...state.previouslySelected,
+      previouslySelected: [
         ...action.payload
-      }
+      ]
     }
   case SET_CURRENTLY_SELECTED_REGION_MAP:
     return {
       ...state,
-      currentlySelected: {
-        ...state.currentlySelected,
+      currentlySelected: [
         ...action.payload
-      }
+      ]
     }
   default:
       return state

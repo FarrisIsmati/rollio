@@ -17,7 +17,7 @@ const useMap = () => {
                 if (activeLocations.length === 1) {
                     const {coordinates} = activeLocations[0];
                     globalState.map.flyTo({
-                        center: [coordinates[1], coordinates[0]],
+                        center: [coordinates.long, coordinates.lat],
                         zoom: 15,
                         bearing: 0,
                         speed: .5,

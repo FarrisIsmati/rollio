@@ -41,21 +41,26 @@ const LocationSchema = new mongoose.Schema({
   },
   overridden: { type: Boolean, default: false },
   coordinates: {
-    type: [{ type: Number, required: true }],
-    validate: [
-      { validator: val => val.length === 2, msg: 'There should be exactly two coordinates (lat and long)' },
-      {
-        validator: (val) => {
-          const lat = val[0];
-          const long = val[1];
-          const latInCorrectRange = lat >= -90 && lat <= 90;
-          const longInCorrectRange = long >= -180 && long <= 180;
-          return latInCorrectRange && longInCorrectRange;
+    lat: {
+      type: Number,
+      required: true,
+      validate: [
+        {
+          validator: val => val >= -90 && val <= 90,
+          msg: 'Latitude is not in the correct range',
         },
-        msg: 'Latitude and longitude are not in the correct ranges',
-      },
-    ],
-    required: false,
+      ],
+    },
+    long: {
+      type: Number,
+      required: true,
+      validate: [
+        {
+          validator: val => val >= -180 && val <= 180,
+          msg: 'Longitude is not in the correct range',
+        },
+      ],
+    },
   },
   truckNum: { type: Number, default: 1 },
 });

@@ -109,18 +109,17 @@ export interface UserDefaultState {
     hasAllRequiredFields: boolean
 }
 
+interface SelectedMarker {
+    id: string,
+    isSingle: boolean|null
+}
+
 export interface MapDefaultState {
     vendorsDisplayedSingle: { [key: string]: Pin },
     vendorsDisplayedGroup: { [key: string]: GroupPin },
     activeFilters: Filter[],
-    previouslySelected: {
-        id: string,
-        isSingle: boolean|null
-    },
-    currentlySelected: {
-        id: string,
-        isSingle: boolean|null
-    }
+    previouslySelected: SelectedMarker[],
+    currentlySelected: SelectedMarker[]
 }
 
 // Async

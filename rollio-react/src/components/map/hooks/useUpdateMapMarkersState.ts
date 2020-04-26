@@ -46,9 +46,10 @@ const useUpdateMapMarkersState = (props: any) => {
 
         if (selectedState) {
             if (setPrevious) {
-                dispatch(setPreviouslySelectedRegionMap({ id: state.regionMap.currentlySelected.id, isSingle: state.regionMap.currentlySelected.isSingle }))
+                dispatch(setPreviouslySelectedRegionMap(state.regionMap.currentlySelected))
             }
-            dispatch(setCurrentlySelectedRegionMap({ id: curID, isSingle: curIsSingle }))
+            // TODO: confirm how this is supposed to work - not sure I understand
+            dispatch(setCurrentlySelectedRegionMap([{ id: curID, isSingle: curIsSingle }]))
         }
     }
     // --------------------------------------------
@@ -262,10 +263,11 @@ const useUpdateMapMarkersState = (props: any) => {
 
             // 4. Set the group getting removed was selected then set the previously selected vendor to the vendor staying behind (Necessary in order to remove styles)
             if (updatedVendorsDisplayedGroup[groupID].selected && !vendorStayingData.selected) {
-                dispatch(setPreviouslySelectedRegionMap({ id: vendorStayingData.vendorId, isSingle: true }));
+                dispatch(setPreviouslySelectedRegionMap([{ id: vendorStayingData.vendorId, isSingle: true }]));
             } else if (vendorStayingData.selected) {
-                dispatch(setPreviouslySelectedRegionMap({ id: "", isSingle: null }));
-                dispatch(setCurrentlySelectedRegionMap({ id: vendorStayingData.vendorId, isSingle: true }));
+                // dispatch(setPreviouslySelectedRegionMap([{ id: "", isSingle: null }]));
+                dispatch(setPreviouslySelectedRegionMap([]));
+                dispatch(setCurrentlySelectedRegionMap([{ id: vendorStayingData.vendorId, isSingle: true }]));
             }
 
             // 5. Remove current group from vendorsDisplayedGroup Redux

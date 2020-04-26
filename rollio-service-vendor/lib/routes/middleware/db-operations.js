@@ -124,11 +124,10 @@ const vendorRouteOpsUtil = {
         endDate,
         truckNum,
       } = location;
-      const [lat, long] = coordinates;
       if (moment().isBefore(endDate)) {
         acc.push({
           // eslint-disable-next-line max-len
-          id, coordinates: { lat, long }, address, neighborhood, city, accuracy, matchMethod, tweetId, startDate, endDate, truckNum,
+          id, coordinates, address, neighborhood, city, accuracy, matchMethod, tweetId, startDate, endDate, truckNum,
         });
       }
       return acc;

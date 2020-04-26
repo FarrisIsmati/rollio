@@ -76,7 +76,8 @@ export interface SetPreviouslySelectedVendorPayload {
 
 export interface SetRegionMapVendorPayload {
   id: string,
-  vendorID: string,
+  // TODO: confirm what this is used for!
+  vendorID?: string,
   isSingle: boolean
   data: {
     selected?: boolean
@@ -84,11 +85,9 @@ export interface SetRegionMapVendorPayload {
 }
 
 export interface SetPreviouslySelectedRegionMapPayload {
-  id: string,
-  isSingle?: boolean | null
+  [index: number]: { id: string, isSingle?: boolean | null }
 }
 
 export interface SetCurrentlySelectedRegionMapPayload {
-  id: string,
-  isSingle?: boolean | null
+  [index: number]: { id: string, isSingle?: boolean | null }
 }

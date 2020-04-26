@@ -128,7 +128,7 @@ describe('DB Operations', () => {
       });
 
       it('expect new coordinate object pushed into locationHistory', async () => {
-        const coordinatesPayload = { locationDate: new Date('2018-02-18T16:22:00Z'), address: '28 Ist', coordinates: [1.123, 4.523] };
+        const coordinatesPayload = { locationDate: new Date('2018-02-18T16:22:00Z'), address: '28 Ist', coordinates: {lat: 1.123, long: 4.523} };
         const newLocation = await Location.create({ ...coordinatesPayload, TweetID: 'blah', vendorID: vendor._id });
 
 
@@ -149,7 +149,7 @@ describe('DB Operations', () => {
           .to.equalDate(coordinatesPayload.locationDate);
         expect(updatedCoordHist[updatedCoordHist.length - 1].address)
           .to.deep.equal(coordinatesPayload.address);
-        expect(updatedCoordHist[updatedCoordHist.length - 1].coordinates)
+        expect(updatedCoordHist[updatedCoordHist.length - 1].coordinates.toObject())
           .to.deep.equal(coordinatesPayload.coordinates);
         expect(updatedCoordHist.length).to.equal(prevCoordHist.length + 1);
       });
@@ -684,7 +684,7 @@ describe('DB Operations', () => {
       it('expect createTweetLocation to delete old tweet location if there is one, create new tweet, and update as appropriate', (done) => {
         const locationDate = new Date();
         const newLocationData = {
-          ...tweet.location.toObject(), locationDate, coordinates: [0, 0], _id: undefined,
+          ...tweet.location.toObject(), locationDate, coordinates: {lat: 0, long: 0}, _id: undefined,
         };
         tweetOps.createTweetLocation(tweetID, newLocationData)
           .then(async (res) => {
@@ -704,7 +704,7 @@ describe('DB Operations', () => {
       });
 
       it('expect createTweetLocation to create new tweet, and update as appropriate, even if no old tweet', (done) => {
-        const newLocationData = { ...tweet.location.toObject(), coordinates: [0, 0], _id: undefined };
+        const newLocationData = { ...tweet.location.toObject(), coordinates: {lat: 0, long: 0}, _id: undefined };
         Vendor.updateOne({ _id: vendor._id }, { dailyActive: false }).then(() => {
           tweetOps.createTweetLocation(tweetID, newLocationData)
             .then(async (res) => {

@@ -15,7 +15,7 @@ module.exports = {
   // Creates a new location and ensures that each truck does not have two locations at once
   async createLocationAndCorrectConflicts(locationData) {
     const {
-      vendorID, startDate = new Date(), endDate = moment(new Date()).endOf('day').toDate(), truckNum = 1,
+      vendorID, startDate = new Date(), endDate = moment(new Date()).endOf('day').toDate(), truckNum = 1, coordinates,
     } = locationData;
     const newStartDate = moment(startDate);
     const newEndDate = moment(endDate);
@@ -45,7 +45,8 @@ module.exports = {
         return Location.findOneAndUpdate({ _id }, update);
       }));
     }
-    return Location.create(locationData);
+    const [lat, long] = coordinates;
+    return Location.create({ ...locationData, coordinates: { lat, long } });
   },
   // Gets all locations for a particular vendor that are currently active or will be in the future
   async getVendorLocations(vendorID) {
