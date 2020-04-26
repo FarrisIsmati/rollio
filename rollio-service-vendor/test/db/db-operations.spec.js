@@ -108,6 +108,7 @@ describe('DB Operations', () => {
       });
     });
 
+    // TODO: add tests for createLocationAndCorrectConflicts
     // UPDATE VENDOR DB OPERATIONS
     describe('Update Vendor Operations', () => {
       let vendor;
