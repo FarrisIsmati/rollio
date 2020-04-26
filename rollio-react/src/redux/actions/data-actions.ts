@@ -91,7 +91,8 @@ export function receiveVendorData(vendor:any) {
         rating: vendor.rating || '',
         twitterID: vendor.twitterID || '',
         website: vendor.website || '',
-        lastUpdated: vendor.updateDate || null
+        lastUpdated: vendor.updateDate || null,
+        approved: vendor.approved || false
     };
 
     return {

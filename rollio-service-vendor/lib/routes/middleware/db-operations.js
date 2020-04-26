@@ -133,16 +133,20 @@ const vendorRouteOpsUtil = {
       return acc;
     }, []);
 
+    const {
+      _id: id, name, description, categories, consecutiveDaysInactive, profileImageLink, updateDate: lastUpdated, approved,
+    } = vendor;
     return {
-      id: vendor._id,
-      name: vendor.name,
-      description: vendor.description,
-      categories: vendor.categories,
-      consecutiveDaysInactive: vendor.consecutiveDaysInactive,
-      profileImageLink: vendor.profileImageLink,
+      id,
+      name,
+      description,
+      categories,
+      consecutiveDaysInactive,
+      profileImageLink,
       locations,
       selected: false,
-      lastUpdated: vendor.updateDate,
+      lastUpdated,
+      approved,
     };
   },
 };

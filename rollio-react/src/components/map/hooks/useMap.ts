@@ -12,7 +12,7 @@ const useMap = () => {
 
     return {
         zoomToCurrentlySelectedVendor: function() {
-            if (state.data.selectedVendor.id && isActive(state.data.selectedVendor.locations)) {
+            if (state.data.selectedVendor.id && isActive(state.data.selectedVendor)) {
                 const activeLocations = state.data.selectedVendor.locations.filter(isLocationActive);
                 if (activeLocations.length === 1) {
                     const {coordinates} = activeLocations[0];

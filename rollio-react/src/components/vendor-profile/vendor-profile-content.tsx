@@ -55,7 +55,7 @@ const VendorProfileContent = (props:VendorProfileContentProps) => {
 
           <div className='vendorprofile__info_wrapper'>
 
-            { isActive(vendor.locations) ?
+            { isActive(vendor) ?
               <div className='vendorprofile__info_row_clickable'>
                 <div className='vendorprofile__info_icon_wrapper'>
                   <i className="material-icons-outlined">room</i>

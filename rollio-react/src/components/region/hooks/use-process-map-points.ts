@@ -43,7 +43,7 @@ const useProcessMapPoints = (props:any) => {
 
             const sortedLocations = Object.values(allVendors).reduce( (acc:{ [s: string]: any[] }, vendor:any) => {
                 // If the vendor has a location for the day
-                if (isActive(vendor.locations)) {
+                if (isActive(vendor)) {
                     const activeLocations = vendor.locations.filter(isLocationActive);
                     activeLocations.forEach((location:any) => {
                         const coordString: string = stringifyCoordinates(location.coordinates);

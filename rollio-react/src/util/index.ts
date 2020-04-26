@@ -25,8 +25,9 @@ export const isLocationActiveOrWillBeActive = (location:any) => {
 };
 
 
-export const isActive = (locations:any) => {
-    return locations.some(isLocationActive)
+export const isActive = (vendor:any) => {
+    const { locations, approved } = vendor;
+    return approved && locations.some(isLocationActive)
 };
 
 export const getCurrentTruckLocation = (vendorID: string, truckNum: number, vendorsAll: any) => {

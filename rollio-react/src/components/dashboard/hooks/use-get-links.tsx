@@ -23,7 +23,7 @@ const useGetLinks = () => {
       // Links are dependent on menu state
       // May be changed if used else where than single menu
       if (dashboardVendorsDisplayState === 'active') {
-        list = allVendors.filter((vendor:any) => isActive(vendor.locations));
+        list = allVendors.filter(isActive);
       } else if (dashboardVendorsDisplayState === 'all') {
         list = allVendors;
       }
