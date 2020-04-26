@@ -61,6 +61,7 @@ const VendorProfileContent = (props:VendorProfileContentProps) => {
                   <i className="material-icons-outlined">room</i>
                 </div>
                 <div className='vendorprofile__info_text_wrapper font__vendor_profile_info flex__verticle_center'>
+                  {/* TODO: provide multiple links if there are multiple trucks, or some other approach  */}
                   <h2 onClick={ findOnMap }>FIND ON MAP</h2>
                 </div>
               </div> :
