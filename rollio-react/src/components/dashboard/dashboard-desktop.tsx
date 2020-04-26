@@ -31,12 +31,12 @@ const DashboardDesktop = () => {
 
   const vendorLinksHeight = windowSizeEffects.useWindowHeight() - 26
 
-  return (      
+  return (
     <div className='region__vendor_dashboard_wrapper'>
       <div className='dashboard__top'>
         {/* Navbar takes navbarRef and sets it the other elements just use it */}
         <Navbar ref={navbarRef}/>
-        { 
+        {
           showMenu ?
             <Menu /> :
             null
@@ -44,12 +44,12 @@ const DashboardDesktop = () => {
         <VendorProfile ref={navbarRef} />
       </div>
       <div className="dashboard__wrapper">
-        <TwoOptionSwitch 
+        <TwoOptionSwitch
           onClick={ (opt:string)=>{ dispatch(setDashboardVendorsDisplay(opt === 'a' ? 'active' : 'all')) } }
-          vendorTypeName={ 'Trucks' } 
-          isOptionA={ state.ui.dashboardVendorsDisplay === 'all' } 
-          ref={ menuActiveSwtichRef } 
-          font='font__dashboard_switch' 
+          vendorTypeName={ 'Trucks' }
+          isOptionA={ state.ui.dashboardVendorsDisplay === 'all' }
+          ref={ menuActiveSwtichRef }
+          font='font__dashboard_switch'
         />
         <DashboardLinks {...{ vendorLinksHeight, refs: [navbarRef, menuActiveSwtichRef] }}/>
       </div>
