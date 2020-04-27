@@ -50,7 +50,10 @@ describe('Tweet Routes', () => {
         tweetID: tweet._id,
         address: '123 street',
         city: 'washington, dc',
-        coordinates: [45, 45],
+        coordinates: {
+          long: 45,
+          lat: 45,
+        },
       };
       done();
     });

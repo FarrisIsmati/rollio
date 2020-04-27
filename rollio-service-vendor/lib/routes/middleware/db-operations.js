@@ -434,9 +434,11 @@ const tweetRouteOps = {
       });
   },
   createNewLocation: async (req, res) => {
-    createTweetLocation(req.params.tweetId, req.body).then(tweet => res.status(200).json({ tweet }))
-      .catch(() => {
-        logger.error('Twitter: User not authenticated, createTweetLocation func()');
+    createTweetLocation(req.params.tweetId, req.body)
+      .then(tweet => res.status(200).json({ tweet }))
+      .catch((err) => {
+        logger.error(err);
+        console.error(err);
         if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') { console.log('Twitter: Error fetching tweets, createTweetLocation func()'); }
         res.status(401).send('Error creating new location');
       });
