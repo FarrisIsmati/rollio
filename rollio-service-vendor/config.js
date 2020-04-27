@@ -1,3 +1,4 @@
+/* eslint-disable prefer-destructuring */
 // ENV
 require('dotenv').config();
 
@@ -7,6 +8,10 @@ const {
   REGION,
   YELP_API_KEY,
   YELP_CLIENT_ID,
+  AWS_REGION,
+  AWS_SQS_REQUEST_VENDORS,
+  AWS_SQS_PARSED_TWEETS,
+  AWS_SQS_TWITTER_IDS,
 } = process.env;
 
 let MONGO_CONNECT;
@@ -16,6 +21,7 @@ let REDIS_TWITTER_CHANNEL;
 let RABBITMQ_CONNECT;
 let TWITTER_CONFIG;
 let JWT_SECRET;
+let AWS_ENV = false;
 
 switch (NODE_ENV) {
   case 'PRODUCTION':
@@ -24,6 +30,13 @@ switch (NODE_ENV) {
     REDIS_PORT = process.env.REDIS_PORT_PROD;
     RABBITMQ_CONNECT = process.env.RABBITMQ_SERVER_ID_PROD;
     REDIS_TWITTER_CHANNEL = process.env.REDIS_TWITTER_CHANNEL_PROD;
+    TWITTER_CONFIG = {
+      consumerKey: process.env.TWITTER_CONSUMER_KEY_PROD,
+      consumerSecret: process.env.TWITTER_CONSUMER_SECRET_PROD,
+      callbackURL: process.env.OAUTH_CALLBACK_PROD,
+    };
+    JWT_SECRET = process.env.SECRET_PROD;
+    AWS_ENV = true;
     break;
   case 'DEVELOPMENT_LOCAL':
     MONGO_CONNECT = process.env.MONGO_DEV_LOCAL;
@@ -57,6 +70,13 @@ switch (NODE_ENV) {
     REDIS_HOST = process.env.REDIS_HOST_DOCKER;
     REDIS_TWITTER_CHANNEL = process.env.REDIS_TWITTER_CHANNEL_DEV;
     RABBITMQ_CONNECT = process.env.RABBITMQ_SERVER_ID_DOCKER;
+    TWITTER_CONFIG = {
+      consumerKey: process.env.TWITTER_CONSUMER_KEY_LOCAL,
+      consumerSecret: process.env.TWITTER_CONSUMER_SECRET_LOCAL,
+      callbackURL: process.env.OAUTH_CALLBACK_LOCAL,
+    };
+    JWT_SECRET = process.env.SECRET_LOCAL;
+    AWS_ENV = true;
     break;
   case 'TEST_DOCKER':
     MONGO_CONNECT = process.env.MONGO_TEST_DOCKER;
@@ -70,6 +90,7 @@ switch (NODE_ENV) {
       callbackURL: process.env.OAUTH_CALLBACK_LOCAL,
     };
     JWT_SECRET = process.env.SECRET_LOCAL;
+    AWS_ENV = true;
     break;
   default:
 }
@@ -97,4 +118,9 @@ module.exports = {
   RABBITMQ_CONNECT,
   TWITTER_CONFIG,
   JWT_SECRET,
+  AWS_REGION,
+  AWS_ENV,
+  AWS_SQS_REQUEST_VENDORS,
+  AWS_SQS_PARSED_TWEETS,
+  AWS_SQS_TWITTER_IDS,
 };

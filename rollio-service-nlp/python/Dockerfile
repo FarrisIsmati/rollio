@@ -1,3 +1,4 @@
+# Base image
 FROM ubuntu:18.04
 
 # Required deb packages

@@ -36,6 +36,7 @@
   "dependencies": {
     "amqplib": "^0.5.3",
     "awesome-phonenumber": "^2.10.0",
+    "aws-sdk": "^2.656.0",
     "bluebird": "^3.5.4",
     "body-parser": "^1.19.0",
     "chai": "^4.2.0",
@@ -71,8 +72,10 @@
     "sinon-chai": "^3.3.0",
     "sinon-express-mock": "^2.2.0",
     "socket.io": "^2.3.0",
+    "sqs-consumer": "^5.4.0",
     "uuid": "^3.3.3",
     "winston": "^3.2.1",
+    "winston-cloudwatch": "^2.3.2",
     "yelp-fusion": "^2.2.1"
   }
 }

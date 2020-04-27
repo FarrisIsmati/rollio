@@ -2,7 +2,7 @@
 // DEPENDENCIES
 const axios = require('axios');
 const config = require('../../config');
-const logger = require('../log/index');
+const logger = require('../log/index')('google-places');
 
 module.exports = {
   async search(address) {

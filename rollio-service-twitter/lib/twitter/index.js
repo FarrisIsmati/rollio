@@ -2,7 +2,7 @@
 // DEPENDENCIES
 const Twitter = require('twitter');
 const config = require('../../config');
-const logger = require('../log/index');
+const logger = require('../log/index')('twitter/index');
 
 // LIB
 const tweetParser = require('./parse/tweet-parser');

@@ -7,6 +7,8 @@ const { label } = format;
 const getLabel = callingModule => `[${callingModule}]`;
 
 module.exports = (callingModule) => {
+  const isAWS = config.NODE_ENV === 'DEVELOPMENT_DOCKER' || config.NODE_ENV === 'PRODUCTION' || config.NODE_ENV === 'TEST_DOCKER';
+
   const logger = winston.createLogger({
     levels: winston.config.syslog.levels,
     format: format.combine(
@@ -16,21 +18,18 @@ module.exports = (callingModule) => {
       }),
       format.json(),
     ),
-    transports: [
+    transports: isAWS ? [
+      new winston.transports.Console({
+        format: winston.format.simple(),
+      }),
+    ] : [
       new winston.transports.File({ name: 'console.error', filename: 'error.log', level: 'error' }),
       new winston.transports.File({ name: 'console.info', filename: 'combined.log' }),
+      new winston.transports.Console({
+        format: winston.format.simple(),
+      }),
     ],
   });
-
-  //
-  // If we're not in production then log to the `console` with the format:
-  // `${info.level}: ${info.message} JSON.stringify({ ...rest }) `
-  //
-  if (config.NODE_ENV === 'DEVELOPMENT_LOCAL' || config.NODE_ENV === 'DEVELOPMENT_DOCKER') {
-    logger.add(new winston.transports.Console({
-      format: winston.format.simple(),
-    }));
-  }
 
   return logger;
 };
