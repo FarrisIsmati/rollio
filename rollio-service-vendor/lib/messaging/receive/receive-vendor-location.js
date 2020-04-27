@@ -10,20 +10,6 @@ const logger = require('../../log/index')('messaging/receive/receive-vendor-loca
 // SOCKET
 const { io } = require('../../sockets/index');
 
-// Get proper message name depending on if service is SQS or RabbitMQ
-const getMessageLocation = (msg) => {
-  if (config.AWS_ENV) {
-    switch (msg) {
-      case 'parsedTweets':
-        return config.AWS_SQS_PARSED_TWEETS;
-      default:
-        logger.error(`No QUEUE URL associated with ${msg}`);
-    }
-  }
-
-  return msg;
-};
-
 const updateTweet = async (payload, region, vendor) => {
   // Formating
   const tweet = { ...payload };
@@ -91,7 +77,7 @@ const setVendorActive = async (region, vendor) => {
 };
 
 const receiveTweets = async () => {
-  mq.receive(getMessageLocation('parsedTweets'), async (msg) => {
+  mq.receive(config.AWS_SQS_PARSED_TWEETS, async (msg) => {
     const message = JSON.parse(msg.content);
     logger.info('Recieved tweet');
     logger.info(msg.content);
@@ -127,14 +113,14 @@ const receiveTweets = async () => {
       }
       // Send the tweetPayload to all subscribed instances
       const redisTwitterChannelMessage = {
-        serverID: SERVER_ID,
+        serverID: config.SERVER_ID,
         tweetPayload: tweetPayloadLocationUpdate,
         vendorID: vendor._id,
         regionID: region._id,
       };
 
       try {
-        pub.publish(REDIS_TWITTER_CHANNEL, JSON.stringify(redisTwitterChannelMessage));
+        pub.publish(config.REDIS_TWITTER_CHANNEL, JSON.stringify(redisTwitterChannelMessage));
       } catch (err) {
         logger.error(err);
       }
@@ -143,7 +129,7 @@ const receiveTweets = async () => {
       // Send tweet data, location data, only, everything else will be updated on a get req (comments, ratings, etc)
       io.sockets.emit('TWITTER_DATA', { tweet: tweetPayloadLocationUpdate, vendorID: vendor._id, regionID: region._id });
     } catch (err) {
-      logger.error(err);
+      logger.error('Failed to emit socket: twitter payload');
     }
 
     // Clear cache for getVendorID route

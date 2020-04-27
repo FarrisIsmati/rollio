@@ -18,7 +18,6 @@ let MONGO_CONNECT;
 let REDIS_HOST;
 let REDIS_PORT;
 let REDIS_TWITTER_CHANNEL;
-let RABBITMQ_CONNECT;
 let TWITTER_CONFIG;
 let JWT_SECRET;
 let AWS_ENV = false;
@@ -28,7 +27,6 @@ switch (NODE_ENV) {
     MONGO_CONNECT = process.env.MONGO_PROD;
     REDIS_HOST = process.env.REDIS_HOST_PROD;
     REDIS_PORT = process.env.REDIS_PORT_PROD;
-    RABBITMQ_CONNECT = process.env.RABBITMQ_SERVER_ID_PROD;
     REDIS_TWITTER_CHANNEL = process.env.REDIS_TWITTER_CHANNEL_PROD;
     TWITTER_CONFIG = {
       consumerKey: process.env.TWITTER_CONSUMER_KEY_PROD,
@@ -43,7 +41,6 @@ switch (NODE_ENV) {
     REDIS_PORT = process.env.REDIS_PORT_LOCAL;
     REDIS_HOST = process.env.REDIS_HOST_LOCAL;
     REDIS_TWITTER_CHANNEL = process.env.REDIS_TWITTER_CHANNEL_DEV;
-    RABBITMQ_CONNECT = process.env.RABBITMQ_SERVER_ID_LOCAL;
     TWITTER_CONFIG = {
       consumerKey: process.env.TWITTER_CONSUMER_KEY_LOCAL,
       consumerSecret: process.env.TWITTER_CONSUMER_SECRET_LOCAL,
@@ -56,7 +53,6 @@ switch (NODE_ENV) {
     REDIS_PORT = process.env.REDIS_PORT_LOCAL;
     REDIS_HOST = process.env.REDIS_HOST_LOCAL;
     REDIS_TWITTER_CHANNEL = process.env.REDIS_TWITTER_CHANNEL_TEST;
-    RABBITMQ_CONNECT = process.env.RABBITMQ_SERVER_ID_LOCAL;
     TWITTER_CONFIG = {
       consumerKey: process.env.TWITTER_CONSUMER_KEY_LOCAL,
       consumerSecret: process.env.TWITTER_CONSUMER_SECRET_LOCAL,
@@ -69,7 +65,6 @@ switch (NODE_ENV) {
     REDIS_PORT = process.env.REDIS_PORT_DOCKER;
     REDIS_HOST = process.env.REDIS_HOST_DOCKER;
     REDIS_TWITTER_CHANNEL = process.env.REDIS_TWITTER_CHANNEL_DEV;
-    RABBITMQ_CONNECT = process.env.RABBITMQ_SERVER_ID_DOCKER;
     TWITTER_CONFIG = {
       consumerKey: process.env.TWITTER_CONSUMER_KEY_LOCAL,
       consumerSecret: process.env.TWITTER_CONSUMER_SECRET_LOCAL,
@@ -83,7 +78,6 @@ switch (NODE_ENV) {
     REDIS_PORT = process.env.REDIS_PORT_DOCKER;
     REDIS_HOST = process.env.REDIS_HOST_DOCKER;
     REDIS_TWITTER_CHANNEL = process.env.REDIS_TWITTER_CHANNEL_TEST;
-    RABBITMQ_CONNECT = process.env.RABBITMQ_SERVER_ID_DOCKER;
     TWITTER_CONFIG = {
       consumerKey: process.env.TWITTER_CONSUMER_KEY_LOCAL,
       consumerSecret: process.env.TWITTER_CONSUMER_SECRET_LOCAL,
@@ -115,7 +109,6 @@ module.exports = {
   REDIS_PORT,
   REDIS_HOST,
   REDIS_TWITTER_CHANNEL,
-  RABBITMQ_CONNECT,
   TWITTER_CONFIG,
   JWT_SECRET,
   AWS_REGION,
