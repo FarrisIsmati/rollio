@@ -349,10 +349,8 @@ export function fetchRegionDataAsync(payload:RegionDataAsyncPayload) {
     return (dispatch:any) => {
         // Set region load status to false when fetching a new region
         dispatch(fetchRegionDataStart());
-        console.log(route);
         axios.get(route)
         .then((res: AxiosResponse<any>) => {
-            console.log(res);
             dispatch(recieveRegionData(res.data));
             dispatch(fetchRegionDataSuccess());
             if ( shouldFetchVendors ) {
