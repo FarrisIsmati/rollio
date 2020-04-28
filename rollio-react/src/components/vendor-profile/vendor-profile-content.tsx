@@ -4,6 +4,9 @@ import React, { ReactComponentElement } from 'react';
 // COMPONENTS
 import Comments from '../comments/comment-section';
 
+// HOOKS
+import useToggleComponents from './hooks/use-toggle-components';
+
 interface VendorProfileContentProps  {
     isMobile: boolean,
     closeVendor?: any,
@@ -20,8 +23,13 @@ const VendorProfileContent = (props:VendorProfileContentProps) => {
       findOnMap, 
       vendor, 
       Categories, 
-      state 
+      state,
     } = props;
+
+    const {components, toggleComponents} = useToggleComponents(vendor.id, {
+      about: false
+    });
+
 
     return (     
         <React.Fragment>
@@ -66,7 +74,7 @@ const VendorProfileContent = (props:VendorProfileContentProps) => {
 
             { vendor.website ? 
               <div className='vendorprofile__info_row_clickable'>
-                <div className='vendorprofile__info_icon_wrapper'>
+                <div className='vendorprofile__info_icon_wrapper'>  
                   <i className="material-icons-outlined">web</i> 
                 </div>
                 <div className='vendorprofile__info_text_wrapper font__vendor_profile_info flex__verticle_center'>
@@ -88,13 +96,16 @@ const VendorProfileContent = (props:VendorProfileContentProps) => {
               null
             }
     
-            <div className='vendorprofile__info_row_clickable'>
+            <div className='vendorprofile__info_row_clickable' onClick={() => toggleComponents('about')}>
               <div className='vendorprofile__info_icon_wrapper'>
                 <i className="material-icons-outlined">local_shipping</i> 
               </div>
               <div className='vendorprofile__info_text_wrapper font__vendor_profile_info flex__verticle_center'>
                 <h2>ABOUT</h2>
               </div>
+            </div>
+            <div className={`vendorprofile__info_row_expanded${components['about'] ? '': '_hidden'} font__vendor_profile_info_desc`}>
+              <p>{vendor.description}</p>
             </div>
     
             <div className='vendorprofile__info_row'>

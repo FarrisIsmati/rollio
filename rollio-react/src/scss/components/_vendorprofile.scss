@@ -133,6 +133,10 @@
                     transition: color 0.15s ease;
                 }
             }
+
+            &_expanded_hidden {
+                display: none;
+            }
         }
 
         &_icon_wrapper {
@@ -225,5 +229,11 @@
 .font__vendor_profile_info_alt {
     @include font-light;
     color: $color-vendor-info-alt;
+}
+
+.font__vendor_profile_info_desc {
+    @include font-reg;
+    color: $color-font-main;
+    font-size: 14px;
 }
 

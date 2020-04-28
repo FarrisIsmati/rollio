@@ -12,8 +12,7 @@
         }
 
         &__map_wrapper {
-            height: 100%;
-            margin-bottom: $map-mobile-bottom-margin;
+            height: calc(100% - #{$map-mobile-bottom-margin + $map-mobile-bottom-margin});
         }
     }
 }
