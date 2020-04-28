@@ -3,6 +3,7 @@ import React, { ReactComponentElement } from 'react';
 
 // COMPONENTS
 import Comments from '../comments/comment-section';
+import VendorProfileToggleComponent from './vendor-profile-toggle-component';
 
 // HOOKS
 import useToggleComponents from './hooks/use-toggle-components';
@@ -27,9 +28,8 @@ const VendorProfileContent = (props:VendorProfileContentProps) => {
     } = props;
 
     const {components, toggleComponents} = useToggleComponents(vendor.id, {
-      about: false
+      ABOUT: false
     });
-
 
     return (     
         <React.Fragment>
@@ -95,18 +95,10 @@ const VendorProfileContent = (props:VendorProfileContentProps) => {
               </div> :
               null
             }
-    
-            <div className='vendorprofile__info_row_clickable' onClick={() => toggleComponents('about')}>
-              <div className='vendorprofile__info_icon_wrapper'>
-                <i className="material-icons-outlined">local_shipping</i> 
-              </div>
-              <div className='vendorprofile__info_text_wrapper font__vendor_profile_info flex__verticle_center'>
-                <h2>ABOUT</h2>
-              </div>
-            </div>
-            <div className={`vendorprofile__info_row_expanded${components['about'] ? '': '_hidden'} font__vendor_profile_info_desc`}>
+
+            <VendorProfileToggleComponent components={components} toggleComponents={toggleComponents} componentName='about'>
               <p>{vendor.description}</p>
-            </div>
+            </VendorProfileToggleComponent>
     
             <div className='vendorprofile__info_row'>
               <div className='vendorprofile__info_icon_wrapper_alt'>
