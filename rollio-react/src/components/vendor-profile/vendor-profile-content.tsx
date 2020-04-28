@@ -4,6 +4,7 @@ import React, { ReactComponentElement } from 'react';
 // COMPONENTS
 import Comments from '../comments/comment-section';
 import VendorProfileToggleComponent from './vendor-profile-toggle-component';
+import { faTwitter } from "@fortawesome/free-brands-svg-icons"
 
 // HOOKS
 import useToggleComponents from './hooks/use-toggle-components';
@@ -28,7 +29,8 @@ const VendorProfileContent = (props:VendorProfileContentProps) => {
     } = props;
 
     const {components, toggleComponents} = useToggleComponents(vendor.id, {
-      ABOUT: false
+      ABOUT: false,
+      TWITTER: false,
     });
 
     return (     
@@ -96,7 +98,11 @@ const VendorProfileContent = (props:VendorProfileContentProps) => {
               null
             }
 
-            <VendorProfileToggleComponent components={components} toggleComponents={toggleComponents} componentName='about'>
+            <VendorProfileToggleComponent iconFa={ faTwitter } components={components} toggleComponents={toggleComponents} componentName='twitter'>
+              <p>twitter :)</p>
+            </VendorProfileToggleComponent>
+
+            <VendorProfileToggleComponent iconMa='local_shipping' components={components} toggleComponents={toggleComponents} componentName='about'>
               <p>{vendor.description}</p>
             </VendorProfileToggleComponent>
     
