@@ -13,6 +13,7 @@
         }
 
         &_content {
+            margin-top: 5px;
             text-overflow: ellipsis;
             white-space: nowrap;
             overflow: hidden;
@@ -24,10 +25,11 @@
 
         &_profiletag {
             margin-right: 10px;
+            color: $color-tweet-light-font !important;
         }
 
         &_date {
-
+            color: $color-tweet-light-font !important;
         }
     }
 
