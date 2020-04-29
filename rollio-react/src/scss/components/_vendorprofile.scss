@@ -146,6 +146,13 @@
             i {
                 color: $color-vendor-profile-info-icon;
             }
+
+            & svg {
+                height: 18px;
+                width: 18px !important;
+                padding-left: 2px;
+                color: $color-vendor-profile-info-icon;
+            }
         }
 
         &_icon_wrapper_alt {
