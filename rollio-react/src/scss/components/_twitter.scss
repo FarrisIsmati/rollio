@@ -1,0 +1,54 @@
+.tweet {
+    &__wrapper {
+        height: 90px;
+        width: 100%;
+        border-top: solid 1px $color-tweet-border;
+        border-bottom: solid 1px $color-tweet-border;
+        padding: 10px 0 10px 0;
+    }
+
+    &__body {
+        &_header {
+            display: flex;
+        }
+
+        &_content {
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+        
+        &_profilename {
+            margin-right: 5px;
+        }
+
+        &_profiletag {
+            margin-right: 10px;
+        }
+
+        &_date {
+
+        }
+    }
+
+    &__visual {
+        &_profileimage {
+
+        }
+    }
+}
+
+// APPLIED FONTS
+
+.font__twitter_bold {
+    @include font-black;
+    color: $color-font-main;
+    font-size: 14px;
+}
+
+.font__twitter_light {
+    @include font-reg;
+    color: $color-font-main;
+    font-size: 14px;
+}
+
