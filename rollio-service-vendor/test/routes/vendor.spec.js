@@ -118,6 +118,19 @@ describe('Vendor Routes', () => {
             done();
           });
       });
+
+      it('expect to vendor to only return 1 tweet in its tweet history', (done) => {
+        chai.request(app)
+          .get(`/vendor/${regionID}/${vendor._id}`, {
+            params: {
+              tweetLimit: 1,
+            },
+          })
+          .end((err, res) => {
+            expect(res.body.tweetHistory.length).to.be.equal(1);
+            done();
+          });
+      });
     });
   });
 
