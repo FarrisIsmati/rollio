@@ -49,7 +49,7 @@
 }
 
 .font__twitter_light {
-    @include font-reg;
+    @include font-light;
     color: $color-font-main;
     font-size: 14px;
 }

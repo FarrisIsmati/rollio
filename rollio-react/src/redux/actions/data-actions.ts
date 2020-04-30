@@ -62,7 +62,6 @@ export function recieveVendorData(vendor:any) {
     if (vendor.dailyActive) {
         location = vendor.locationHistory[vendor.locationHistory.length - 1];
     }
-
     // If an empty object is passed as an arg then reset all data
     const profile = {
         categories: vendor.categories ? vendor.categories : '',
@@ -91,6 +90,7 @@ export function recieveVendorData(vendor:any) {
         price: vendor.price ? vendor.price : '',
         rating: vendor.rating ? vendor.rating : '',
         twitterID: vendor.twitterID ? vendor.twitterID : '',
+        tweetHistory: vendor.tweetHistory,
         website: vendor.website ? vendor.website : '',
         isActive: vendor.dailyActive ? vendor.dailyActive : false,
         lastUpdated: vendor.updateDate ? vendor.updateDate : null

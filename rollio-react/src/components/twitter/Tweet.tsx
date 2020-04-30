@@ -2,8 +2,7 @@
 import React, { ReactComponentElement } from 'react';
 import Dotdotdot from 'react-dotdotdot'
 
-const Tweet = () => {
-
+const Tweet = (props:any) => {
     return (     
         <div className='tweet__wrapper'>
             <div className='tweet__visual'>

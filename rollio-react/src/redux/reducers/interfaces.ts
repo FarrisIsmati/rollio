@@ -27,6 +27,20 @@ export interface Location {
     id: string,
 }
 
+// Tweet
+
+// Tweet History
+export interface Tweet {
+    date: string,
+    location: string,
+    text: string,
+    tweetID: string,
+    usedForLocation: boolean,
+    vendorID: string,
+    __v: number,
+    _id: string
+}
+
 // Full set of vendor data; also used in vendor-profile.tsx
 export interface VendorFull {
     id: string,
@@ -42,6 +56,7 @@ export interface VendorFull {
     price: string,
     rating: number | null,
     twitterID: string,
+    tweetHistory: Tweet[],
     comments: Comment[],
     creditCard: string,
     location: Location[] | Location | null,
