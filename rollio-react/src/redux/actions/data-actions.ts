@@ -90,6 +90,8 @@ export function recieveVendorData(vendor:any) {
         price: vendor.price ? vendor.price : '',
         rating: vendor.rating ? vendor.rating : '',
         twitterID: vendor.twitterID ? vendor.twitterID : '',
+        twitterUserName: vendor.twitterUserName,
+        twitterHandle: vendor.twitterHandle,
         tweetHistory: vendor.tweetHistory,
         website: vendor.website ? vendor.website : '',
         isActive: vendor.dailyActive ? vendor.dailyActive : false,

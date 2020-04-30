@@ -39,6 +39,8 @@ const defaultState:DataDefaultState = {
         price: '',
         rating: null,
         twitterID: '',
+        twitterUserName: '',
+        twitterHandle: '',
         tweetHistory: [],
         comments: [],
         creditCard: 'u',

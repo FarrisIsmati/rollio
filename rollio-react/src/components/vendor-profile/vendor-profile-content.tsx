@@ -33,10 +33,14 @@ const VendorProfileContent = (props:VendorProfileContentProps) => {
       ABOUT: false,
       TWITTER: false,
     });
+    
+    const tweets = state.data.selectedVendor.tweetHistory.map((tweetData:any) => <Tweet 
+      twitterUserName={state.data.selectedVendor.twitterUserName} 
+      twitterHandle={state.data.selectedVendor.twitterHandle} 
+      tweetData={tweetData}
+    />)
 
-    const tweets = state.data.selectedVendor.tweetHistory.map((props:any) => <Tweet id={props._id} tweetID={props.tweetID} text={props.text} />)
-
-    return (     
+    return (
         <React.Fragment>
         {/* Show or don't show close out X in profile image depending on Mobile or Desktop */}
           { isMobile ?

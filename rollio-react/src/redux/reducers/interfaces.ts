@@ -56,6 +56,8 @@ export interface VendorFull {
     price: string,
     rating: number | null,
     twitterID: string,
+    twitterUserName: string,
+    twitterHandle: string,
     tweetHistory: Tweet[],
     comments: Comment[],
     creditCard: string,

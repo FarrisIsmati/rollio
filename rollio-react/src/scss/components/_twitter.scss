@@ -5,7 +5,15 @@
         border-top: solid 1px $color-tweet-border;
         border-bottom: solid 1px $color-tweet-border;
         padding: 10px 0 10px 0;
+        background-color: $color-tweet-background;
+        transition: background-color 0.2s ease;
 
+        &:hover {
+            background-color: $color-tweet-background-hover;
+            transition: background-color 0.2s ease;
+            cursor: pointer;
+        }
+        
         &:first-child {
             border-top: none;
         }
@@ -13,6 +21,7 @@
         &:last-child {
             border-bottom: none;
         }
+
     }
 
     &__body {
