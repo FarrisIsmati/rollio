@@ -127,7 +127,11 @@ export function fetchVendorDataAsync(payload:VendorDataAsyncPayload) {
 
     return (dispatch:any) => {
         dispatch(fetchVendorDataStart())
-        axios.get(`${VENDOR_API}/vendor/${regionId}/${vendorId}`)
+        axios.get(`${VENDOR_API}/vendor/${regionId}/${vendorId}`, {
+            params: {
+              tweetLimit: 3
+            }
+          })
             .then((res: AxiosResponse<any>) => {
                 dispatch(recieveVendorData(res.data));
                 dispatch(fetchVendorDataSuccess());

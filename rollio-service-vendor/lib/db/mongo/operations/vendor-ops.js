@@ -66,16 +66,28 @@ module.exports = {
     return newVendor;
   },
   // Gets a single vendor given a regionID and vendorID
-  getVendor(regionID, vendorID) {
-    if (arguments.length !== 2) {
+  // tweetLimit optional argument controls how many tweets are returned
+  // in the tweet history
+  getVendor(regionID, vendorID, tweetLimit = 10) {
+    if (arguments.length < 2) {
       const err = new Error('Must include a regionID and vendorID as arguments');
+      console.error(err);
       logger.error(err);
       return err;
     }
+
     return Vendor.findOne({
       regionID,
       _id: vendorID,
-    }).populate('tweetHistory')
+    }).populate({
+      path: 'tweetHistory',
+      options: {
+        limit: tweetLimit,
+        sort: {
+          date: -1,
+        },
+      },
+    })
       .populate('locationHistory')
       .populate('userLocationHistory')
       .then((res) => {
