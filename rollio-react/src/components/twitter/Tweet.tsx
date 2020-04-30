@@ -3,6 +3,10 @@ import React, { ReactComponentElement } from 'react';
 import Dotdotdot from 'react-dotdotdot'
 
 const Tweet = (props:any) => {
+    const {
+        tweetID,
+        text
+    } = props;
     return (     
         <div className='tweet__wrapper'>
             <div className='tweet__visual'>
@@ -16,7 +20,7 @@ const Tweet = (props:any) => {
                 </div>
                 <div className='tweet__body_content'>
                     <Dotdotdot clamp={4}>
-                        <p className='font__twitter_light'>Noma? a;skdjfa;kdflj as;kdf ljas;kdflkfkdkfdfaksfskfd Noma? a;skdjfa;kdflj as;kdf ljas;kdflkfkdkfdfaksfskfdNoma? a;skdjfa;kdflj as;kdf ljas;kdflkfkdkfdfaksfskfdNoma? a;skdjfa;kdflj as;kdf ljas;kdflkfkdkfdfaksfskfdNoma? a;skdjfa;kdflj as;kdf ljas;kdflkfkdkfdfaksfskfdNoma? a;skdjfa;kdflj as;kdf ljas;kdflkfkdkfdfaksfskfd vNoma? a;skdjfa;kdflj as;kdf ljas;kdflkfkdkfdfaksfskfdNoma? a;skdjfa;kdflj as;kdf ljas;kdflkfkdkfdfaksfskfdNoma? a;skdjfa;kdflj as;kdf ljas;kdflkfkdkfdfaksfskfdNoma? a;skdjfa;kdflj as;kdf ljas;kdflkfkdkfdfaksfskfdNoma? a;skdjfa;kdflj as;kdf ljas;kdflkfkdkfdfaksfskfdNoma? a;skdjfa;kdflj as;kdf ljas;kdflkfkdkfdfaksfskfdNoma? a;skdjfa;kdflj as;kdf ljas;kdflkfkdkfdfaksfskfdNoma? a;skdjfa;kdflj as;kdf ljas;kdflkfkdkfdfaksfskfdNoma? a;skdjfa;kdflj as;kdf ljas;kdflkfkdkfdfaksfskfd</p>
+                        <p className='font__twitter_light'>{text}</p>
                     </Dotdotdot>
                 </div>
             </div>

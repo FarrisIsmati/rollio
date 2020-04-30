@@ -34,27 +34,7 @@ const VendorProfileContent = (props:VendorProfileContentProps) => {
       TWITTER: false,
     });
 
-    const tweetData = {
-      id_str: 'XXX',
-      user: {
-        name: 'XXX',
-        screen_name: 'XXX',
-        profile_image_url: 'XXX'
-      },
-      text: 'XXX',
-      created_at: 'XXX',
-      favorite_count: 'XXX',
-      retweet_count: 'XXX',
-      entities: {
-        media: [],
-        urls: [],
-        user_mentions: [],
-        hashtags: [],
-        symbols: []
-      } 
-    }
-    
-    const linkProps = {target: '_blank', rel: 'noreferrer'}
+    const tweets = state.data.selectedVendor.tweetHistory.map((props:any) => <Tweet id={props._id} tweetID={props.tweetID} text={props.text} />)
 
     return (     
         <React.Fragment>
@@ -122,7 +102,7 @@ const VendorProfileContent = (props:VendorProfileContentProps) => {
             }
 
             <VendorProfileToggleComponent iconFa={ faTwitter } components={components} toggleComponents={toggleComponents} componentName='twitter'>
-              <Tweet />
+              { tweets }
             </VendorProfileToggleComponent>
 
             <VendorProfileToggleComponent iconMa='local_shipping' components={components} toggleComponents={toggleComponents} componentName='about'>

@@ -5,6 +5,14 @@
         border-top: solid 1px $color-tweet-border;
         border-bottom: solid 1px $color-tweet-border;
         padding: 10px 0 10px 0;
+
+        &:first-child {
+            border-top: none;
+        }
+
+        &:last-child {
+            border-bottom: none;
+        }
     }
 
     &__body {
