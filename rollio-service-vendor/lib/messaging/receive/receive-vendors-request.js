@@ -21,5 +21,5 @@ const receiveVendorsRequest = () => {
 };
 
 module.exports = {
-  recieveRequest: receiveVendorsRequest,
+  receiveRequest: receiveVendorsRequest,
 };
