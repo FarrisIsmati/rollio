@@ -27,15 +27,19 @@ const useUpdateRegionVendorData = () => {
     useEffect(() => {
       socket.on('TWITTER_DATA', (data: any) => {
           // TODO: why do we sent regionID if we don't use it ?
-          const { tweet, locations = [], vendorID, regionID } = data;
-          if (tweet.location) {
-            const truckNum = toNumber(tweet.location.truckNum);
+          const {
+              tweet, newLocations, allLocations, vendorID, regionID,
+          } = data;
+          if (newLocations.length) {
             const payload = {
-                locations,
+                locations: allLocations,
                 vendorID,
             };
             dispatch(updateVendor(payload));
-            setGlobalState({ vendorID, truckNum });
+              newLocations.forEach((location:any) => {
+                const truckNum = toNumber(location.truckNum);
+                setGlobalState({ vendorID, truckNum })
+            });
           }
         })
     }, [])

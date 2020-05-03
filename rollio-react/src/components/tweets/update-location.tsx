@@ -103,98 +103,100 @@ const UpdateLocation = (props:any) => {
 
     const contentText = !(loading || tweet) && !isAuthenticated ? 'You must be logged in' : 'Loading...';
     const usedForLocation = tweet && tweet.usedForLocation;
-    const content = tweet ?
-        (
-            <div>
-                <table>
-                    <tbody>
-                        <tr>
-                            <td>Date</td>
-                            <td>{moment(tweet.date).format('YYYY-MM-DD LT')}</td>
-                        </tr>
-                        <tr>
-                            <td>Text</td>
-                            <td>{tweet.text}</td>
-                        </tr>
-                        <tr>
-                            <td>Vendor</td>
-                            <td>{tweet.vendorID.name}</td>
-                        </tr>
-                        <tr>
-                            <td>UsedForLocation</td>
-                            <td>{tweet.usedForLocation ? 'Yes' : 'No'}</td>
-                        </tr>
-                        <tr>
-                            <td>Location</td>
-                            <td>{tweet.location ? tweet.location.address : 'N/A'}</td>
-                        </tr>
-                        <tr>
-                            <td>Start Date</td>
-                            <td>{tweet.location ? moment(tweet.location.startDate).format('YYYY-MM-DD LT') : 'N/A'}</td>
-                        </tr>
-                        <tr>
-                            <td>End Date</td>
-                            <td>{tweet.location ? moment(tweet.location.endDate).format('YYYY-MM-DD LT') : 'N/A'}</td>
-                        </tr>
-                        {
-                            usedForLocation &&
-                                <tr>
-                                    <td>
-                                        <button
-                                            onClick={() => noLongerUserTweetForLocation()}
-                                        >
-                                            No longer use this tweet for location
-                                        </button>
-                                    </td>
-                                </tr>
-                        }
-                    </tbody>
-                </table>
-                {/* TODO: possibly restrict based on region of vendor */}
-                <Autocomplete
-                    style={{width: '30%'}}
-                    onPlaceSelected={(place:any) => {
-                        setSearchedLocation(place);
-                    }}
-                    types={['address']}
-                    componentRestrictions={{country: "us"}}
-                />
-                <div>
-                    <button
-                        disabled={!searchedLocation}
-                        onClick={saveSearchedLocation}
-                    >
-                        Update the location for this tweet
-                    </button>
-                </div>
-                <div>
-                    <button
-                        onClick={saveDatesOnly}
-                    >
-                        Update the start and end date only
-                    </button>
-                </div>
-                <div>
-                    <button
-                        onClick={goToAllTweets}
-                    >
-                        Return to all tweets
-                    </button>
-                </div>
-            </div>
-        ) :
-        (
-            <div>
-                <p>{contentText}</p>
-                { !isAuthenticated &&
-                    <button
-                        onClick={() => goToLoginPage()}
-                    >
-                        Login
-                    </button>
-                }
-            </div>
-        );
+    // TODO: fix to allow for multiple locations on each tweet
+    const content = 'blah';
+    // const content = tweet ?
+    //     (
+    //         <div>
+    //             <table>
+    //                 <tbody>
+    //                     <tr>
+    //                         <td>Date</td>
+    //                         <td>{moment(tweet.date).format('YYYY-MM-DD LT')}</td>
+    //                     </tr>
+    //                     <tr>
+    //                         <td>Text</td>
+    //                         <td>{tweet.text}</td>
+    //                     </tr>
+    //                     <tr>
+    //                         <td>Vendor</td>
+    //                         <td>{tweet.vendorID.name}</td>
+    //                     </tr>
+    //                     <tr>
+    //                         <td>UsedForLocation</td>
+    //                         <td>{tweet.usedForLocation ? 'Yes' : 'No'}</td>
+    //                     </tr>
+    //                     <tr>
+    //                         <td>Location</td>
+    //                         <td>{tweet.location ? tweet.location.address : 'N/A'}</td>
+    //                     </tr>
+    //                     <tr>
+    //                         <td>Start Date</td>
+    //                         <td>{tweet.location ? moment(tweet.location.startDate).format('YYYY-MM-DD LT') : 'N/A'}</td>
+    //                     </tr>
+    //                     <tr>
+    //                         <td>End Date</td>
+    //                         <td>{tweet.location ? moment(tweet.location.endDate).format('YYYY-MM-DD LT') : 'N/A'}</td>
+    //                     </tr>
+    //                     {
+    //                         usedForLocation &&
+    //                             <tr>
+    //                                 <td>
+    //                                     <button
+    //                                         onClick={() => noLongerUserTweetForLocation()}
+    //                                     >
+    //                                         No longer use this tweet for location
+    //                                     </button>
+    //                                 </td>
+    //                             </tr>
+    //                     }
+    //                 </tbody>
+    //             </table>
+    //             {/* TODO: possibly restrict based on region of vendor */}
+    //             <Autocomplete
+    //                 style={{width: '30%'}}
+    //                 onPlaceSelected={(place:any) => {
+    //                     setSearchedLocation(place);
+    //                 }}
+    //                 types={['address']}
+    //                 componentRestrictions={{country: "us"}}
+    //             />
+    //             <div>
+    //                 <button
+    //                     disabled={!searchedLocation}
+    //                     onClick={saveSearchedLocation}
+    //                 >
+    //                     Update the location for this tweet
+    //                 </button>
+    //             </div>
+    //             <div>
+    //                 <button
+    //                     onClick={saveDatesOnly}
+    //                 >
+    //                     Update the start and end date only
+    //                 </button>
+    //             </div>
+    //             <div>
+    //                 <button
+    //                     onClick={goToAllTweets}
+    //                 >
+    //                     Return to all tweets
+    //                 </button>
+    //             </div>
+    //         </div>
+    //     ) :
+    //     (
+    //         <div>
+    //             <p>{contentText}</p>
+    //             { !isAuthenticated &&
+    //                 <button
+    //                     onClick={() => goToLoginPage()}
+    //                 >
+    //                     Login
+    //                 </button>
+    //             }
+    //         </div>
+    //     );
 
 
     return (

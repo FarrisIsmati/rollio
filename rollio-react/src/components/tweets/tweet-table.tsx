@@ -90,7 +90,12 @@ const TweetTable = (props:any) => {
 
 
     const mapVendorsOntoTweets = (tweets:Tweet[]) => {
-        const tweetsWithVendorsMapped = tweets.map((tweet:Tweet) => ({...tweet, vendorName: vendorNameLookup[tweet.vendorID] || 'Unknown Vendor' }));
+        const tweetsWithVendorsMapped = tweets.reduce((acc:any, tweet:Tweet) => {
+            tweet.locations.forEach(location => {
+                acc.push({ ...tweet, vendorName: vendorNameLookup[tweet.vendorID] || 'Unknown Vendor', locations: undefined, location})
+            })
+            return acc;
+        }, []);
         setTweets(tweetsWithVendorsMapped);
         setTweetsLoaded(true);
     };
@@ -116,6 +121,11 @@ const TweetTable = (props:any) => {
         {
             Header: 'Text',
             accessor: 'text'
+        },
+        {
+            id: 'truckNum',
+            Header: 'Truck Number',
+            accessor: (d:any) => d.location ? d.location.truckNum : 'N/A'
         },
         {
             id: 'location',

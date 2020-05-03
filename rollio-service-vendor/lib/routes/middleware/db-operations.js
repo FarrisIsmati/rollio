@@ -32,7 +32,7 @@ const {
 const {
   getAllTweets,
   getVendorsForFiltering,
-  getTweetWithPopulatedVendorAndLocation,
+  getTweetWithPopulatedVendorAndLocations,
   deleteTweetLocation,
   createTweetLocation,
 } = require('../../db/mongo/operations/tweet-ops');
@@ -417,11 +417,11 @@ const tweetRouteOps = {
         res.status(401).send('Error fetching vendors');
       });
   },
-  getTweetWithPopulatedVendorAndLocation: async (req, res) => {
-    getTweetWithPopulatedVendorAndLocation(req.params.tweetId).then(tweet => res.status(200).json({ tweet }))
+  getTweetWithPopulatedVendorAndLocations: async (req, res) => {
+    getTweetWithPopulatedVendorAndLocations(req.params.tweetId).then(tweet => res.status(200).json({ tweet }))
       .catch(() => {
-        logger.error('Twitter: User not authenticated, getTweetWithPopulatedVendorAndLocation func()');
-        if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') { console.log('Twitter: Error fetching tweets, getTweetWithPopulatedVendorAndLocation func()'); }
+        logger.error('Twitter: User not authenticated, getTweetWithPopulatedVendorAndLocations func()');
+        if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') { console.log('Twitter: Error fetching tweets, getTweetWithPopulatedVendorAndLocations func()'); }
         res.status(401).send('Error fetching tweet');
       });
   },

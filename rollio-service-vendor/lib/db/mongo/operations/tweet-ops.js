@@ -12,25 +12,27 @@ const deleteTweetLocation = async (_id) => {
   // look up tweet
   const originalTweet = await Tweet.findById(_id).lean(true);
   // set previously used location to overridden
+  // TODO: update here
   await Location.updateOne({ _id: originalTweet.location }, { $set: { overridden: true } });
   await Vendor.updateOne({ _id: originalTweet.vendorID }, { $pull: { locationHistory: { _id: originalTweet.location } } });
   // delete the old location and set usedForLocation to false
-  return Tweet.findOneAndUpdate({ _id }, { $unset: { location: 1 }, $set: { usedForLocation: false } }, { new: true }).populate('vendorID').populate('location').lean(true);
+  return Tweet.findOneAndUpdate({ _id }, { $unset: { location: 1 }, $set: { usedForLocation: false } }, { new: true }).populate('vendorID').populate('locations').lean(true);
 };
 
 module.exports = {
   async getAllTweets(query = {}) {
     const { startDate, endDate, vendorID } = query;
     const vendorIDQuery = vendorID ? { vendorID } : {};
-    return Tweet.find({ date: { $gte: startDate, $lte: endDate }, ...vendorIDQuery }).sort([['date', -1]]).populate('location');
+    return Tweet.find({ date: { $gte: startDate, $lte: endDate }, ...vendorIDQuery }).sort([['date', -1]]).populate('locations');
   },
   async getVendorsForFiltering() {
     return Vendor.find({}).select('name _id').sort([['name', 1]]);
   },
-  async getTweetWithPopulatedVendorAndLocation(id) {
-    return Tweet.findById(id).populate('vendorID').populate('location');
+  async getTweetWithPopulatedVendorAndLocations(id) {
+    return Tweet.findById(id).populate('vendorID').populate('locations');
   },
   deleteTweetLocation,
+  // TODO: update all of this!
   async createTweetLocation(id, newLocationData) {
     let updatedTweet;
     try {
@@ -49,7 +51,8 @@ module.exports = {
           },
         },
       ).lean(true);
-      updatedTweet = await Tweet.findOneAndUpdate({ _id: id }, { $set: { location: newLocation._id, usedForLocation: true } }, { new: true }).populate('vendorID').populate('location');
+      // TODO: update here!  not correct!
+      updatedTweet = await Tweet.findOneAndUpdate({ _id: id }, { $set: { location: newLocation._id, usedForLocation: true } }, { new: true }).populate('vendorID').populate('locations');
       const { text, tweetID, date } = updatedTweet;
       const tweetPayloadLocationUpdate = {
         text,

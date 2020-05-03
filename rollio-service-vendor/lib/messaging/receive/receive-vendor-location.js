@@ -63,7 +63,7 @@ const receiveTweets = async () => {
     const vendorID = vendor._id;
 
     const {
-      tweet: text, tweetID, twitterID, date, location
+      tweet: text, tweetID, twitterID, date, match, newLocations: tweetLocations,
     } = message;
 
     const tweetPayload = {
@@ -73,30 +73,25 @@ const receiveTweets = async () => {
       date,
     };
 
-    let newLocation = null;
-    let locations = [];
+    let allLocations = [];
+    let newLocations = [];
 
-    if (message.match) {
-      newLocation = await vendorOps.createLocationAndCorrectConflicts({ ...location, tweetID, vendorID });
-      locations = await vendorOps.getVendorLocations(vendorID, newLocation.truckNum);
-      tweetPayload.location = newLocation._id;
-      await updateLocation(newLocation._id, region, vendor);
+    if (match) {
+      newLocations = await Promise.all(tweetLocations.map(location => vendorOps.createLocationAndCorrectConflicts({ ...location, tweetID, vendorID })));
+      await Promise.all(newLocations.map(newLocation => updateLocation(newLocation._id, region, vendor)));
+      allLocations = await vendorOps.getVendorLocations(vendorID);
     }
 
     try {
-      await updateTweet(tweetPayload, region, vendor);
+      await updateTweet({ ...tweetPayload, locations: newLocations.map(loc => loc._id), usedForLocation: !!newLocations.length }, region, vendor);
       if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') { console.log(tweetPayload); }
 
-      const tweetPayloadLocationUpdate = { ...tweetPayload };
-
-      // Change location from id to full location body
-      if (newLocation) {
-        tweetPayloadLocationUpdate.location = newLocation;
-      }
       // Send the tweetPayload to all subscribed instances
       const redisTwitterChannelMessage = {
         serverID: config.SERVER_ID,
-        tweetPayload: tweetPayloadLocationUpdate,
+        tweetPayload,
+        newLocations,
+        allLocations,
         vendorID,
         regionID: region._id,
       };
@@ -110,7 +105,7 @@ const receiveTweets = async () => {
       // eslint-disable-next-line max-len
       // Send tweet data, location data, only, everything else will be updated on a get req (comments, ratings, etc)
       io.sockets.emit('TWITTER_DATA', {
-        tweet: tweetPayloadLocationUpdate, locations, vendorID: vendor._id, regionID: region._id,
+        tweet: tweetPayload, newLocations, allLocations, vendorID: vendor._id, regionID: region._id,
       });
     } catch (err) {
       logger.error('Failed to emit socket: twitter payload');

@@ -70,7 +70,7 @@ const TweetSchema = new mongoose.Schema({
   tweetID: { type: String, required: true },
   date: { type: Date, required: true },
   text: { type: String, required: true },
-  location: { type: ObjectId, ref: 'Location', required: false },
+  locations: [{ type: ObjectId, ref: 'Location', required: false }],
   vendorID: { type: ObjectId, ref: 'Vendor', required: true },
   usedForLocation: { type: Boolean, default: false },
 });

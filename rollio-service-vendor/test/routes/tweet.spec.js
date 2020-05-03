@@ -34,7 +34,7 @@ describe('Tweet Routes', () => {
     seed.runSeed().then(async () => {
       vendors = await Vendor.find({}).select('_id name').sort([['name', 1]]);
       tweets = await Tweet.find({}).sort([['date', -1]]);
-      tweet = tweets.find(x => x.location);
+      tweet = tweets.find(x => x.locations.length);
       const allUsers = await User.find();
       customer = allUsers.find(user => user.type === 'customer');
       customerToken = jwt.sign({
