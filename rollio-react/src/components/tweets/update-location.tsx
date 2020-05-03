@@ -1,3 +1,4 @@
+// TODO: update to allow for multiple locations on one tweet!
 import useGetAppState from "../common/hooks/use-get-app-state";
 import React, { useEffect, useState } from "react";
 import { withRouter } from 'react-router';
