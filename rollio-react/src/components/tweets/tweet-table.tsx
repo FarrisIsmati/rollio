@@ -91,9 +91,14 @@ const TweetTable = (props:any) => {
 
     const mapVendorsOntoTweets = (tweets:Tweet[]) => {
         const tweetsWithVendorsMapped = tweets.reduce((acc:any, tweet:Tweet) => {
-            tweet.locations.forEach(location => {
-                acc.push({ ...tweet, vendorName: vendorNameLookup[tweet.vendorID] || 'Unknown Vendor', locations: undefined, location})
-            })
+            const baseTweetData = { ...tweet, vendorName: vendorNameLookup[tweet.vendorID] || 'Unknown Vendor', locations: undefined }
+            if (tweet.locations.length) {
+                tweet.locations.forEach(location => {
+                    acc.push({ ...baseTweetData, location})
+                })
+            } else {
+                acc.push({ ...baseTweetData, location: null})
+            }
             return acc;
         }, []);
         setTweets(tweetsWithVendorsMapped);
