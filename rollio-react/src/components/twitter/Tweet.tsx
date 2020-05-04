@@ -7,11 +7,12 @@ const Tweet = (props:any) => {
     const {
         twitterUserName,
         twitterHandle,
+        twitterProfileImage,
     } = props;
     const {
         date,
         tweetID,
-        text
+        text,
     } = props.tweetData;
     console.log(props)
     // Momentify Date and conver to MM DD
@@ -20,7 +21,9 @@ const Tweet = (props:any) => {
     return (     
         <div className='tweet__wrapper' onClick={() => window.open(`https://twitter.com/${twitterHandle}/status/${tweetID}`, "_blank") }>
             <div className='tweet__visual'>
-                <div className='tweet__visual_profileimage '></div>
+                <div className='tweet__visual_profileimage '>
+                    <img alt={`${twitterUserName} profile image`} src={twitterProfileImage}></img>
+                </div>
             </div>
             <div className='tweet__body' >
                 <div className='tweet__body_header'>

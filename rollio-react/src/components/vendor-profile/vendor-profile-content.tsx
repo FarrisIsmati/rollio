@@ -37,6 +37,7 @@ const VendorProfileContent = (props:VendorProfileContentProps) => {
     const tweets = state.data.selectedVendor.tweetHistory.map((tweetData:any) => <Tweet 
       twitterUserName={state.data.selectedVendor.twitterUserName} 
       twitterHandle={state.data.selectedVendor.twitterHandle} 
+      twitterProfileImage={state.data.selectedVendor.profileImageLink}
       tweetData={tweetData}
     />)
 
