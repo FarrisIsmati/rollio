@@ -14,10 +14,10 @@ const Tweet = (props:any) => {
         tweetID,
         text,
     } = props.tweetData;
-    console.log(props)
+
     // Momentify Date and conver to MM DD
     const dateFormatted = moment(date).format('MMM DD');
-    console.log(tweetID)
+
     return (     
         <div className='tweet__wrapper' onClick={() => window.open(`https://twitter.com/${twitterHandle}/status/${tweetID}`, "_blank") }>
             <div className='tweet__visual'>

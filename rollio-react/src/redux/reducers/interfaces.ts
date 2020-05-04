@@ -144,7 +144,8 @@ export interface LoadStateDefaultState {
     areVendorsLoaded: boolean,
     areRegionsLoaded: boolean,
     areMapPinsLoaded: boolean,
-    isUserLoaded: boolean
+    isUserLoaded: boolean,
+    isVendorLocationAccuracyUpdated: boolean,
 }
 
 // UI
@@ -152,5 +153,5 @@ export interface UiDefaultState {
     isMobileDashboardExpanded: boolean,
     isMainDropDownMenuExpanded: boolean,
     isVendorSelected: boolean,
-    dashboardVendorsDisplay: string
+    dashboardVendorsDisplay: string,
 }

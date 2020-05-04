@@ -8,7 +8,8 @@ import {
     SET_VENDORS_ALL,
     POST_VENDOR_COMMENT,
     UPDATE_VENDOR,
-    UPDATE_DAILY_ACTIVE_VENDORS
+    UPDATE_DAILY_ACTIVE_VENDORS,
+    RECIEVE_VENDOR_LOCATION_ACCURACY
 } from "../constants/constants"
 
 // INTERFACES
@@ -142,6 +143,17 @@ export function dataReducer(state = defaultState, action: any) {
                     action.payload,
                     ...state.selectedVendor.comments
                 ]
+            }
+        }
+    case RECIEVE_VENDOR_LOCATION_ACCURACY:
+        return {
+            ...state,
+            selectedVendor: {
+                ...state.selectedVendor,
+                location: {
+                    ...state.selectedVendor.location,
+                    accuracy: action.payload.locationAccuracy
+                }
             }
         }
     default:

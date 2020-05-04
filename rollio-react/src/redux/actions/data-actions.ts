@@ -29,6 +29,10 @@ import {
 
     UPDATE_VENDOR,
 
+    UPDATE_VENDOR_LOCATION_ACCURACY_START,
+    UPDATE_VENDOR_LOCATION_ACCURACY_SUCCESS,
+    RECIEVE_VENDOR_LOCATION_ACCURACY,
+
     UPDATE_DAILY_ACTIVE_VENDORS,
 
     POST_VENDOR_COMMENT,
@@ -45,7 +49,8 @@ import {
     UpdateVendorPayload,
     UpdateDailyActiveVendorsPayload,
     SelectVendorAsyncPayload,
-    SetVendorsAllPayload
+    SetVendorsAllPayload,
+    updateVendorLocationAccuracyPayload
 } from './interfaces';
 import {
     MapDefaultState
@@ -62,6 +67,7 @@ export function recieveVendorData(vendor:any) {
     if (vendor.dailyActive) {
         location = vendor.locationHistory[vendor.locationHistory.length - 1];
     }
+    console.log(vendor);
     // If an empty object is passed as an arg then reset all data
     const profile = {
         categories: vendor.categories ? vendor.categories : '',
@@ -270,6 +276,73 @@ export function deSelectVendor(vendorID:string, cb:()=>void = ()=>{}) {
 
         // Any additional code to execute after vendor is deselected
         cb();
+    }
+}
+
+// --------
+// LOCATION ACCURACY
+// --------
+
+export function recieveVendorLocationAccuracy(locationAccuracy:any) {
+    console.log(locationAccuracy)
+    return {
+        type: RECIEVE_VENDOR_LOCATION_ACCURACY,
+        payload: {
+            ...locationAccuracy
+        }
+    }
+}
+
+
+function updateVendorLocationAccuracySuccess() {
+    return {
+        type: UPDATE_VENDOR_LOCATION_ACCURACY_SUCCESS,
+        payload: {
+            isVendorLocationAccuracyUpdated: true
+        }
+    }
+}
+
+function updateVendorLocationAccuracyStart() {
+    return {
+        type: UPDATE_VENDOR_LOCATION_ACCURACY_START,
+        payload: {
+            isVendorLocationAccuracyUpdated: false
+        }
+    }
+}
+
+export function updateVendorLocationAccuracyAsync(payload:updateVendorLocationAccuracyPayload) {
+    const { amount, locationID, regionID, vendorID, cb, cbSuccess } = payload;
+
+    return (dispatch:any) => {
+        dispatch(updateVendorLocationAccuracyStart())
+
+        // Amount can only be 1 or -1
+        if (amount === 0 || amount > 1 || amount < -1) {
+            console.error('Update vendor location accuracy amount is not equal to 1 or -1')
+            return;
+        }
+        axios.put(`${VENDOR_API}/vendor/${regionID}/${vendorID}/locationaccuracy`, {
+            params: {
+              amount,
+              locationID
+            }
+          })
+            .then((res: AxiosResponse<any>) => {
+                dispatch(recieveVendorLocationAccuracy(res.data));
+                dispatch(updateVendorLocationAccuracySuccess());
+                // Any function you want to run after successful get of all data
+                if (cbSuccess) {
+                    cbSuccess();
+                }
+            })
+            .catch((err:any) => {
+                console.error(err);
+                if (cb) {
+                    cb();
+                }
+            })
     }
 }
 

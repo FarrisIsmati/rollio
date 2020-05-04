@@ -9,6 +9,7 @@ import Tweet from '../twitter/Tweet';
 
 // HOOKS
 import useToggleComponents from './hooks/use-toggle-components';
+import useUpdateVendorLocationAccuracy from './hooks/use-update-vendor-location-accuracy';
 
 interface VendorProfileContentProps  {
     isMobile: boolean,
@@ -28,11 +29,6 @@ const VendorProfileContent = (props:VendorProfileContentProps) => {
       Categories, 
       state,
     } = props;
-
-    const {components, toggleComponents} = useToggleComponents(vendor.id, {
-      ABOUT: false,
-      TWITTER: false,
-    });
     
     const tweets = state.data.selectedVendor.tweetHistory.map((tweetData:any) => <Tweet 
       twitterUserName={state.data.selectedVendor.twitterUserName} 
@@ -40,6 +36,17 @@ const VendorProfileContent = (props:VendorProfileContentProps) => {
       twitterProfileImage={state.data.selectedVendor.profileImageLink}
       tweetData={tweetData}
     />)
+
+    // HOOKS
+    const {components, toggleComponents} = useToggleComponents(vendor.id, {
+      ABOUT: false,
+      TWITTER: false,
+    });
+    const { updateVendorLocationAccuracy } = useUpdateVendorLocationAccuracy({
+      regionID: state.data.regionId,
+      vendorID: state.data.selectedVendor.id,
+      locationID: state.data.selectedVendor.location._id
+    });
 
     return (
         <React.Fragment>
@@ -59,6 +66,9 @@ const VendorProfileContent = (props:VendorProfileContentProps) => {
                 </div>
             </div>
           }
+
+          <div onClick={() => updateVendorLocationAccuracy(1)}>thumb up</div>
+          <div>thumb down</div>
 
           <div className='font__vendor_profile_title vendorprofile__title_wrapper'>
             <h2>{vendor.name}</h2>

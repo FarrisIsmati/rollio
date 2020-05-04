@@ -243,25 +243,28 @@ module.exports = {
       });
   },
   // Increments a vendors locationAccuracy by one given a regionID and vendorID
-  updateLocationAccuracy(params) {
+  async updateLocationAccuracy(params) {
     const {
-      regionID, vendorID, type, locationID, amount,
+      regionID, vendorID, locationID, amount,
     } = params;
-    if (!regionID || !vendorID || !type || !locationID || !amount) {
-      const err = new Error('Must include a regionID, vendorID, type, locationID, & amount properties in params argument');
+
+    if (!regionID || !vendorID || !locationID || !amount) {
+      const err = new Error('Must include a regionID, vendorID, locationID, & amount properties in params argument');
       logger.error(err);
       return err;
     }
     // Amount can only be 1 or -1
     if (amount === 1 || amount === -1) {
-      return Location.updateOne({
+      return Location.findOneAndUpdate({
         _id: locationID,
       }, {
         $inc: { accuracy: amount },
       })
         .then(async (res) => {
           await redisClient.hdelAsync('vendor', `q::method::GET::path::/${regionID}/${vendorID}`);
-          return res;
+          return {
+            locationAccuracy: res.accuracy,
+          };
         })
         .catch((err) => {
           const errMsg = new Error(err);

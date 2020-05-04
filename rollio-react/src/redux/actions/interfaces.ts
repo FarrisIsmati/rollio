@@ -90,3 +90,12 @@ export interface SetCurrentlySelectedRegionMapPayload {
   id: string,
   isSingle?: boolean | null
 }
+
+export interface updateVendorLocationAccuracyPayload {
+  amount: number,
+  locationID: string,
+  regionID: string,
+  vendorID: string,
+  cb?: () => void,
+  cbSuccess?: () => void
+}
