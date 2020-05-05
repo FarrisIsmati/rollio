@@ -76,7 +76,6 @@ export interface SetPreviouslySelectedVendorPayload {
 
 export interface SetRegionMapVendorPayload {
   id: string,
-  // TODO: confirm what this is used for!
   vendorID?: string,
   isSingle: boolean
   data: {

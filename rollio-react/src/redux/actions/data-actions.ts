@@ -66,23 +66,7 @@ export function receiveVendorData(vendor:any) {
         description: vendor.description || '',
         email: vendor.email || '',
         id: vendor._id || '',
-        // TODO: confirm if we really need to set this empty location object ?
-        locations: locations.length ? locations : [{
-            id: "",
-            coordinates: {
-                lat: null,
-                long: null
-            },
-            address: "",
-            neighborhood: "",
-            municipality: "",
-            matchMethod: "",
-            tweetID: null,
-            accuracy: 0,
-            startDate: null,
-            endDate: null,
-            overridden: true
-        }],
+        locations,
         name: vendor.name || '',
         phoneNumber: vendor.phonenumber || '',
         profileImageLink: vendor.profileImageLink || '',
@@ -230,7 +214,6 @@ export function selectVendorAsync(payload:SelectVendorAsyncPayload) {
                 previouslySelected.filter((x:any) => regionMapIDs.includes(x.id)).forEach((x:any) => {
                     // Set previous region map vendor to unselected
                     const {id, isSingle} = x;
-                    // TODO: confirm why vendorID would be needed here...it used to be passed in, but I stopped doing so
                     dispatch(setRegionMapVendor({id, isSingle, data: { selected: false }}));
                 })
             }

@@ -2,6 +2,7 @@
 // DEPENDENCIES
 const redis = require('redis');
 const bluebird = require('bluebird');
+const { omit } = require('lodash');
 const config = require('../../config');
 const util = require('../util/util');
 const logger = require('../log/index')('redis/index');
@@ -80,8 +81,7 @@ const redisConnect = {
       if (message.serverID !== SERVER_ID) {
         logger.info(`Redis Subscriber: Received message from server: ${SERVER_ID}`);
         logger.info(`Redis Subscriber: ${message}`);
-        // TODO: confirm with Farris, but shouldn't this just forward along the exact same message ?  or are the keys different ?
-        io.sockets.emit('TWITTER_DATA', message);
+        io.sockets.emit('TWITTER_DATA', omit(message, ['serverID']));
       }
     });
 

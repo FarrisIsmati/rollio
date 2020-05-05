@@ -55,7 +55,7 @@ export function mapReducer(state = defaultState, action: any) {
     } else {
       const group = { ...state.vendorsDisplayedGroup[action.payload.id] }
 
-      // Set sepcific vendor in group to selected
+      // Set specific vendor in group to selected
       if (action.payload.data.selected) {
         const vendorIndex = state.vendorsDisplayedGroup[action.payload.id].vendors.findIndex((vendor) => vendor.vendorId === action.payload.vendorID);
         group.vendors[vendorIndex].selected = true;

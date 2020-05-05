@@ -86,27 +86,20 @@ const receiveTweets = async () => {
       await updateTweet({ ...tweetPayload, locations: newLocations.map(loc => loc._id), usedForLocation: !!newLocations.length }, region, vendor);
       if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') { console.log(tweetPayload); }
 
-      // Send the tweetPayload to all subscribed instances
-      const redisTwitterChannelMessage = {
-        serverID: config.SERVER_ID,
-        tweetPayload,
-        newLocations,
-        allLocations,
-        vendorID,
-        regionID: region._id,
+      const twitterData = {
+        tweet: tweetPayload, newLocations, allLocations, vendorID, regionID: region._id,
       };
 
       try {
-        pub.publish(config.REDIS_TWITTER_CHANNEL, JSON.stringify(redisTwitterChannelMessage));
+        // Send the tweetPayload to all subscribed instances
+        pub.publish(config.REDIS_TWITTER_CHANNEL, JSON.stringify({ ...twitterData, serverID: config.SERVER_ID }));
       } catch (err) {
         logger.error(err);
       }
 
       // eslint-disable-next-line max-len
       // Send tweet data, location data, only, everything else will be updated on a get req (comments, ratings, etc)
-      io.sockets.emit('TWITTER_DATA', {
-        tweet: tweetPayload, newLocations, allLocations, vendorID: vendor._id, regionID: region._id,
-      });
+      io.sockets.emit('TWITTER_DATA', twitterData);
     } catch (err) {
       logger.error('Failed to emit socket: twitter payload');
     }

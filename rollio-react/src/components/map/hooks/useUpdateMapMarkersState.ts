@@ -48,7 +48,6 @@ const useUpdateMapMarkersState = (props: any) => {
             if (setPrevious) {
                 dispatch(setPreviouslySelectedRegionMap(state.regionMap.currentlySelected))
             }
-            // TODO: confirm how this is supposed to work - not sure I understand
             dispatch(setCurrentlySelectedRegionMap([{ id: curID, isSingle: curIsSingle }]))
         }
     }
