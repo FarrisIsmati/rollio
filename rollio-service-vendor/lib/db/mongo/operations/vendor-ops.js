@@ -45,8 +45,7 @@ module.exports = {
         return Location.findOneAndUpdate({ _id }, update);
       }));
     }
-    const [lat, long] = coordinates;
-    return Location.create({ ...locationData, coordinates: { lat, long } });
+    return Location.create({ ...locationData, coordinates: Array.isArray(coordinates) ? { lat: coordinates[0], long: coordinates[1] } : coordinates });
   },
   // Gets all locations for a particular vendor that are currently active or will be in the future
   async getVendorLocations(vendorID) {

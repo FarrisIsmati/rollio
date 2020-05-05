@@ -426,7 +426,7 @@ const tweetRouteOps = {
       });
   },
   deleteLocation: async (req, res) => {
-    deleteTweetLocation(req.params.tweetId).then(tweet => res.status(200).json({ tweet }))
+    deleteTweetLocation(req.params.tweetId, req.params.locationId).then(tweet => res.status(200).json({ tweet }))
       .catch(() => {
         logger.error('Twitter: User not authenticated, deleteTweetLocation func()');
         if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') { console.log('Twitter: Error fetching tweets, deleteTweetLocation func()'); }

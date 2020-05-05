@@ -6,17 +6,17 @@ const Location = mongoose.model('Location');
 const { pub } = require('./../../../redis');
 const { REDIS_TWITTER_CHANNEL, SERVER_ID } = require('../../../../config');
 const logger = require('../../../log/index')('db/mongo/operations/tweet-ops');
+const vendorOps = require('./vendor-ops');
 
-const deleteTweetLocation = async (_id) => {
+const deleteTweetLocation = async (tweetId, locationId) => {
   // TODO: figure out a way to publish that the old location was deleted
   // look up tweet
-  const originalTweet = await Tweet.findById(_id).lean(true);
+  const originalTweet = await Tweet.findById(tweetId).lean(true);
   // set previously used location to overridden
-  // TODO: update here
-  await Location.updateOne({ _id: originalTweet.location }, { $set: { overridden: true } });
-  await Vendor.updateOne({ _id: originalTweet.vendorID }, { $pull: { locationHistory: { _id: originalTweet.location } } });
+  await Location.updateOne({ _id: locationId }, { $set: { overridden: true } });
+  await Vendor.updateOne({ _id: originalTweet.vendorID }, { $pull: { locationHistory: locationId } });
   // delete the old location and set usedForLocation to false
-  return Tweet.findOneAndUpdate({ _id }, { $unset: { location: 1 }, $set: { usedForLocation: false } }, { new: true }).populate('vendorID').populate('locations').lean(true);
+  return Tweet.findOneAndUpdate({ _id: tweetId }, { $pull: { locations: locationId }, $set: { usedForLocation: originalTweet.locations.length > 1 } }, { new: true }).populate('vendorID').populate('locations').lean(true);
 };
 
 module.exports = {
@@ -32,17 +32,18 @@ module.exports = {
     return Tweet.findById(id).populate('vendorID').populate('locations');
   },
   deleteTweetLocation,
-  // TODO: update all of this!
-  async createTweetLocation(id, newLocationData) {
+  async createTweetLocation(id, data) {
     let updatedTweet;
+    const { locationToOverride, ...newLocationData } = data;
     try {
       const originalTweet = await Tweet.findById(id).lean(true);
-      if (originalTweet.location) {
-        await deleteTweetLocation(id);
+      const { vendorID } = originalTweet;
+      if (locationToOverride) {
+        await deleteTweetLocation(id, locationToOverride._id);
       }
-      const newLocation = await Location.create({ ...newLocationData, matchMethod: 'Manual from Tweet' });
-      const { _id: vendorID, regionID, twitterID } = await Vendor.findOneAndUpdate(
-        { _id: originalTweet.vendorID }, {
+      const newLocation = await vendorOps.createLocationAndCorrectConflicts({ ...newLocationData, vendorID, matchMethod: 'Manual from Tweet' })
+      const { regionID, twitterID } = await Vendor.findOneAndUpdate(
+        { _id: vendorID }, {
           $push: {
             locationHistory: {
               $each: [newLocation._id],
@@ -51,23 +52,23 @@ module.exports = {
           },
         },
       ).lean(true);
-      // TODO: update here!  not correct!
-      updatedTweet = await Tweet.findOneAndUpdate({ _id: id }, { $set: { location: newLocation._id, usedForLocation: true } }, { new: true }).populate('vendorID').populate('locations');
+      updatedTweet = await Tweet.findOneAndUpdate({ _id: id }, { $push: { locations: newLocation._id }, $set: { usedForLocation: true } }, { new: true }).populate('vendorID').populate('locations');
       const { text, tweetID, date } = updatedTweet;
-      const tweetPayloadLocationUpdate = {
+
+      const tweetPayload = {
         text,
         tweetID,
         twitterID,
         date,
-        location: newLocation,
       };
-      const redisTwitterChannelMessage = {
-        serverID: SERVER_ID,
-        tweetPayload: tweetPayloadLocationUpdate,
-        vendorID,
-        regionID,
+
+      const allLocations = await vendorOps.getVendorLocations(vendorID);
+
+      const twitterData = {
+        tweet: tweetPayload, newLocations: [newLocation], allLocations, vendorID, regionID,
       };
-      pub.publish(REDIS_TWITTER_CHANNEL, JSON.stringify(redisTwitterChannelMessage));
+
+      pub.publish(REDIS_TWITTER_CHANNEL, JSON.stringify({ ...twitterData, serverID: SERVER_ID }));
     } catch (err) {
       logger.error(err);
       throw err;
