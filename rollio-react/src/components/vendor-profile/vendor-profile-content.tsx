@@ -31,6 +31,7 @@ const VendorProfileContent = (props:VendorProfileContentProps) => {
     } = props;
     
     const tweets = state.data.selectedVendor.tweetHistory.map((tweetData:any) => <Tweet 
+      key={tweetData.tweetID}
       twitterUserName={state.data.selectedVendor.twitterUserName} 
       twitterHandle={state.data.selectedVendor.twitterHandle} 
       twitterProfileImage={state.data.selectedVendor.profileImageLink}
@@ -67,9 +68,6 @@ const VendorProfileContent = (props:VendorProfileContentProps) => {
             </div>
           }
 
-          <div onClick={() => updateVendorLocationAccuracy(1)}>thumb up</div>
-          <div>thumb down</div>
-
           <div className='font__vendor_profile_title vendorprofile__title_wrapper'>
             <h2>{vendor.name}</h2>
           </div>
@@ -80,16 +78,18 @@ const VendorProfileContent = (props:VendorProfileContentProps) => {
     
           <div className='vendorprofile__info_wrapper'>
 
+            {/* <i className="material-icons-outlined" onClick={() => updateVendorLocationAccuracy(1)}>thumb_up</i>
+            <i className="material-icons-outlined" onClick={() => updateVendorLocationAccuracy(-1)}>thumb_down</i> */}
+
             { vendor.isActive ? 
-              <div className='vendorprofile__info_row_clickable'>
-                <div className='vendorprofile__info_icon_wrapper'>
-                  <i className="material-icons-outlined">room</i> 
-                </div>
-                <div className='vendorprofile__info_text_wrapper font__vendor_profile_info flex__verticle_center'>
-                  <h2 onClick={ findOnMap }>FIND ON MAP</h2>
-                </div>
-              </div> :
-              null
+                <div className='vendorprofile__info_row_clickable'>
+                  <div className='vendorprofile__info_icon_wrapper'>
+                    <i className="material-icons-outlined">room</i> 
+                  </div>
+                  <div className='vendorprofile__info_text_wrapper font__vendor_profile_info flex__verticle_center'>
+                    <h2 onClick={ findOnMap }>{state.data.selectedVendor.location.address}</h2>
+                  </div>
+                </div> : null
             }
 
             { vendor.website ? 

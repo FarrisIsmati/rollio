@@ -259,6 +259,8 @@ module.exports = {
         _id: locationID,
       }, {
         $inc: { accuracy: amount },
+      }, {
+        new: true,
       })
         .then(async (res) => {
           await redisClient.hdelAsync('vendor', `q::method::GET::path::/${regionID}/${vendorID}`);

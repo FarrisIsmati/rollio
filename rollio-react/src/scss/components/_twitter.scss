@@ -3,8 +3,7 @@
         display: flex;
         height: 90px;
         width: 100%;
-        border-top: solid 1px $color-tweet-border;
-        border-bottom: solid 1px $color-tweet-border;
+        border-bottom: solid 3px $color-tweet-border;
         padding: 10px 0 10px 0;
         background-color: $color-tweet-background;
         transition: background-color 0.2s ease;
@@ -17,10 +16,15 @@
         
         &:first-child {
             border-top: none;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+            border-bottom: solid 3px $color-tweet-border;
         }
 
         &:last-child {
             border-bottom: none;
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
         }
 
     }

@@ -16,8 +16,8 @@ router.get('/:regionID/object', vendorRouteOps.getVendorsAsObject);
 router.get('/:regionID/:vendorID', vendorRouteOps.getVendorById);
 
 // PUT
-// Update a Vendor's locationAccuracy by amount (1 or -1)
-router.put('/:regionID/:vendorID/locationaccuracy', routeLimitVendor, vendorRouteOps.putRegionIdVendorIdLocationTypeLocationIDAccuracy);
+// Update a Vendor's locationAccuracy by amount (1 or -1)  routeLimitVendor,
+router.put('/:regionID/:vendorID/locationaccuracy', vendorRouteOps.putRegionIdVendorIdLocationTypeLocationIDAccuracy);
 // Update push a comment to a Vendor
 router.put('/:regionID/:vendorID/comments', vendorRouteOps.putRegionIdVendorIdComments);
 // Update a given vendor, authenticated route
