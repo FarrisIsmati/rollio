@@ -128,7 +128,7 @@ const VendorProfileContent = (props:VendorProfileContentProps) => {
               <div className='vendorprofile__info_icon_wrapper_alt'>
                 <i className="material-icons-outlined">credit_card</i> 
               </div>
-              <div className='font__vendor_profile_info_alt flex__verticle_center'>
+              <div className='vendorprofile__info_text_wrapper font__vendor_profile_info_alt flex__verticle_center'>
                 { vendor.creditCard === 'y' ? <h2>Accepts Credit Cards</h2> : <h2>Doesn't Accept Credit Card</h2>}
               </div>
             </div>

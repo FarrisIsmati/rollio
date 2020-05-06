@@ -41,6 +41,8 @@
             & input {
                 border-style: none;
                 width: 100%;
+                font-size: 14px;
+                line-height: 24px;
 
                 &:focus {
                     outline: none !important;
@@ -83,9 +85,15 @@
 
     &__button_holder {
         display: flex;
+        @extend .noselect;
 
         .button__comment_add {
             margin-right: 15px;
+        }
+
+        button {
+            font-size: 14px;
+            line-height: 24px;
         }
     }
 
@@ -99,11 +107,14 @@
 }
 
 #commentErrorMessage {
-    font-size: 12px;
+    font-size: 16px;
+    line-height: 24px;
 }
 
 #commentBodyTextArea {
     margin-bottom: 10px;
+    font-size: 16px;
+    line-height: 24px;
 }
 
 .commentposts {
@@ -124,6 +135,9 @@
 
 #commentShowMoreButton {
     margin-top: 8px;
+    font-size: 14px;
+    line-height: 24px;
+    @extend .noselect;  
 }
 
 .commentpost {
@@ -137,10 +151,20 @@
         box-sizing: border-box;
     }
 
+    &__content_wrapper p {
+        font-size: 16px;
+        line-height: 24px;
+    }
+
     &__header_wrapper {
         display: flex;
         justify-content: space-between;
         margin-bottom: 11px;
+
+        p { 
+            font-size: 16px;
+            line-height: 24px;
+        }
     }
 }
 

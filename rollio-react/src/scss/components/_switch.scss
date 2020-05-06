@@ -16,6 +16,11 @@
         border-color: $color-vendor-switch-active;
         transition: color .2s, border-color .2s;
 
+        h2 {
+            font-size: 20px;
+            line-height: 28px;
+        }
+
         &:hover {
             cursor:pointer;
         }
@@ -27,6 +32,11 @@
             border-bottom: 3px solid;
             border-color: $color-vendor-switch-inactive;;
             transition: color .2s, border-color .2s;
+
+            h2 {
+                font-size: 20px;
+                line-height: 28px;
+            }
 
             &:hover {
                 cursor:pointer;

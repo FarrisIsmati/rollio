@@ -33,15 +33,16 @@
         right: 0px;
         top: 0px;
         z-index: 1000;
-        margin: 12px;
-        padding: 12px;   
+        margin: 8px;
+        padding: 8px;   
         width: 20px;
         height: 20px;
         background-color: $color-vendor-profile-close-icon-background;
         transition: background-color 0.2s;
-        -moz-border-radius: 50px;
-        -webkit-border-radius: 50px;
-        border-radius: 50px;
+        -moz-border-radius: 40px;
+        -webkit-border-radius: 40px;
+        border-radius: 40px;
+        @extend .noselect;
 
         &:hover {
             background-color: $color-vendor-profile-close-icon-background-hover;
@@ -51,7 +52,7 @@
         i {
             color: $color-vendor-profile-close-icon;
             transition: color 0.2s;
-            font-size: 32px;
+            font-size: 24px;
 
             &:hover {
                 color: $color-vendor-profile-close-icon-hover;
@@ -67,8 +68,11 @@
     &__title_wrapper {
         font-size: 1.5em;
         margin: 14px 16px;
+        @extend .noselect;
 
         h2 {
+            font-size: 32px;
+            line-height: 36px;
             word-break: break-word;
         }
     }
@@ -142,6 +146,7 @@
         &_icon_wrapper {
             display: flex;
             align-items: center;
+            @extend .noselect;
 
             i {
                 color: $color-vendor-profile-info-icon;
@@ -157,9 +162,19 @@
 
         &_icon_wrapper_alt {
             @extend .vendorprofile__info_icon_wrapper;
-             
+            @extend .noselect;
+
             i {
                 color: $color-vendor-profile-info-icon-alt;
+            }
+        }
+
+        &_text_wrapper {
+            @extend .noselect;
+
+            h2 {
+                font-size: 14px;
+                line-height: 24px;
             }
         }
     }
@@ -167,6 +182,11 @@
     &__comments {
         &_wrapper {
             margin-top: 16px;
+            
+            h2 {
+                font-size: 20px;
+                line-height: 28px;
+            }
         }
 
         &_header {
