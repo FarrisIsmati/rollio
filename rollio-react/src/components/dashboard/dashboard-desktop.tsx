@@ -1,5 +1,5 @@
 // DEPENDENCIES
-import React from 'react';
+import React, { useRef } from 'react';
 import { useDispatch  } from 'react-redux';
 import { useCallbackRef } from 'use-callback-ref';
 
@@ -16,6 +16,7 @@ import { setDashboardVendorsDisplay } from '../../redux/actions/ui-actions';
 // HOOKS
 import windowSizeEffects from '../common/hooks/use-window-size';
 import useGetAppState from '../common/hooks/use-get-app-state';
+import useSetMainMenu from '../menu/hooks/use-set-main-menu';
 
 const DashboardDesktop = () => {
   // Hooks
@@ -24,6 +25,10 @@ const DashboardDesktop = () => {
 
   // Variables
   const showMenu = state.ui.isMainDropDownMenuExpanded
+
+  // Ref (For mobile code is used on region-home.tsx)
+  const menuRef = useRef();
+  useSetMainMenu({menuRef});
 
   // Refs (used to get size of elements to set scroll height)
   const navbarRef = useCallbackRef(null, () => {});
@@ -38,7 +43,7 @@ const DashboardDesktop = () => {
         <Navbar ref={navbarRef}/>
         { 
           showMenu ?
-            <Menu /> :
+            <Menu ref={menuRef} /> :
             null
         }
         <VendorProfile ref={navbarRef} />

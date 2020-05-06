@@ -1,5 +1,5 @@
 // DEPENDENCIES
-import React, { ReactComponentElement } from 'react';
+import React, { ReactComponentElement, useRef } from 'react';
 
 // COMPONENTS
 import Menu from '../menu/menu';
@@ -14,6 +14,7 @@ import useGetAppState from '../common/hooks/use-get-app-state';
 import useProcessMapPoints from './hooks/use-process-map-points';
 import useUpdateRegionVendorData from './hooks/use-update-region-vendor-data';
 import windowSizeEffects from '../common/hooks/use-window-size';
+import useSetMainMenu from '../menu/hooks/use-set-main-menu';
 
 const renderMap = (args:any) => {
   const {isRegionLoaded, areVendorsLoaded, state} = args;
@@ -38,6 +39,11 @@ const RegionHome = (props:any) => {
   const isMobile = windowSizeEffects.useIsMobile();
   const isRegionLoaded = state.loadState.isRegionLoaded;
   const areVendorsLoaded = state.loadState.areVendorsLoaded;
+
+  // Refs Used for Mobile
+  const menuRef = useRef();
+  useSetMainMenu({menuRef});
+    
   
   // Custom Map Components
   const Map:ReactComponentElement<any> = renderMap({isRegionLoaded, areVendorsLoaded, state});
@@ -50,7 +56,7 @@ const RegionHome = (props:any) => {
             <div className='region_mobile__map_wrapper'>
               { 
                 showMenu ?
-                  <Menu /> :
+                  <Menu ref={menuRef} /> :
                   null
               }
               { Map }

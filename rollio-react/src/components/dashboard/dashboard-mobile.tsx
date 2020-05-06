@@ -1,5 +1,5 @@
 // DEPENDENCIES
-import React, { FC } from 'react';
+import React, { FC,useRef } from 'react';
 import { useDispatch  } from 'react-redux';
 import { useCallbackRef } from 'use-callback-ref';
 
@@ -25,7 +25,7 @@ const DashboardMobile:FC = () => {
     // Hooks
     const state = useGetAppState();
     const dispatch = useDispatch();
-
+    
     // Refs
     const topRef = useCallbackRef(null, () => {});
     
