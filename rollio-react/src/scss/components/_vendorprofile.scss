@@ -49,15 +49,16 @@
             transition: background-color 0.2s;
         }
 
+        &:hover i {
+            color: $color-vendor-profile-close-icon-hover;
+            transition: color 0.2s ease;
+        }
+
+
         i {
             color: $color-vendor-profile-close-icon;
             transition: color 0.2s;
             font-size: 24px;
-
-            &:hover {
-                color: $color-vendor-profile-close-icon-hover;
-                transition: color 0.2s ease;
-            }
         }
 
         &:hover {
