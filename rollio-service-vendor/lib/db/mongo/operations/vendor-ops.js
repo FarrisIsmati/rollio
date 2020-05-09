@@ -61,7 +61,7 @@ module.exports = {
     }
 
     return Vendor.find({
-      regionID,
+      regionID, approved: true,
     }).populate('tweetHistory')
       .populate('locationHistory')
       .populate('userLocationHistory')
@@ -153,7 +153,7 @@ module.exports = {
     }
 
     // Params may contain a query property
-    return Vendor.find(params)
+    return Vendor.find({ ...params, approved: true })
       .populate('tweetHistory')
       .populate('locationHistory')
       .populate('userLocationHistory')
