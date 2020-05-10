@@ -363,7 +363,7 @@ export function receiveAllVendors(vendorLookUp: { [key: string]: VendorCard }) {
             ...Object.entries(vendorLookUp).reduce((acc, entry) => {
                 const [vendorId, vendorInfo] = entry;
                 const {locations} = vendorInfo;
-                const filteredLocations = locations.filter((location:any) => moment().isBefore(location.endDate) && !location.overridden);
+                const filteredLocations = locations.filter(isLocationActiveOrWillBeActive);
                 // @ts-ignore
                 acc[vendorId] = {...vendorInfo, locations: filteredLocations};
                 return acc;
