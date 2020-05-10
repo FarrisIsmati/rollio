@@ -570,7 +570,8 @@ const useUpdateMapMarkersState = (props: any) => {
     // Custom use effect which will only run the update marker coordinates code if it's necessary
     // For example if the coordinates of the current & previous iterations are the same it will not run, unless it's another vendor
     useEffectMarkerComparisonObject(() => {
-        if (vendorID && vendorTruckID) {
+        // TODO: allow for locations being deleted (i.e. 'location' is undefined)
+        if (vendorID && vendorTruckID && location) {
             const currentVendorData = state.data.vendorsAll[vendorID]
             const currentVendorCoords = location.coordinates;
 

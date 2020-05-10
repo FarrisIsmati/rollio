@@ -153,6 +153,11 @@ const TweetTable = (props:any) => {
             accessor: (d:any) => d.usedForLocation ? 'Yes' : 'No'
         },
         {
+            id: 'overridden',
+            Header: 'Overridden',
+            accessor: (d:any) => d.location ? (d.location.overridden ? 'Yes' : 'No') : 'N/A'
+        },
+        {
             id: 'actions',
             Header: 'Actions',
             accessor: (d:any) => ({...d}),

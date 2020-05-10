@@ -92,14 +92,14 @@ const receiveTweets = async () => {
 
       try {
         // Send the tweetPayload to all subscribed instances
-        pub.publish(config.REDIS_TWITTER_CHANNEL, JSON.stringify({ ...twitterData, serverID: config.SERVER_ID }));
+        pub.publish(config.REDIS_TWITTER_CHANNEL, JSON.stringify({ ...twitterData, messageType: 'NEW_LOCATIONS', serverID: config.SERVER_ID }));
       } catch (err) {
         logger.error(err);
       }
 
       // eslint-disable-next-line max-len
       // Send tweet data, location data, only, everything else will be updated on a get req (comments, ratings, etc)
-      io.sockets.emit('TWITTER_DATA', twitterData);
+      io.sockets.emit('NEW_LOCATIONS', twitterData);
     } catch (err) {
       logger.error('Failed to emit socket: twitter payload');
     }

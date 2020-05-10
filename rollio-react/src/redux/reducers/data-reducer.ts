@@ -76,10 +76,8 @@ export function dataReducer(state = defaultState, action: any) {
             ...action.payload
         }
     case RECEIVE_VENDOR_DATA:
-        const vendorsAllUpdate = isEmpty(state.vendorsAll) ? {} : { vendorsAll: {...state.vendorsAll, [action.payload.id]: action.payload } };
         return {
             ...state,
-            ...vendorsAllUpdate,
             selectedVendor: { ...state.selectedVendor, ...action.payload },
         }
     case RECEIVE_ALL_VENDORS:
@@ -119,20 +117,12 @@ export function dataReducer(state = defaultState, action: any) {
                 }
             }
         }
-    // case SET_PREVIOUSLY_SELECTED_VENDOR:
-    //     return {
-    //         ...state,
-    //         previouslySelected: {
-    //             ...state.previouslySelected,
-    //             id: action.payload.id
-    //         }
-    //     }
     case UPDATE_VENDOR:
         const vendorsAll = { ...state.vendorsAll }
-
+        const currentVendorData = vendorsAll[action.payload.vendorID] || {};
         return {
             ...state,
-            vendorsAll: { ...vendorsAll, [action.payload.vendorID]: { ...vendorsAll[action.payload.vendorID], locations: action.payload.locations } }
+            vendorsAll: { ...vendorsAll, [action.payload.vendorID]: { ...currentVendorData, ...action.payload } }
         }
     case POST_VENDOR_COMMENT:
         return {

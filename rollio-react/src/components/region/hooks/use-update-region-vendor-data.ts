@@ -25,12 +25,9 @@ const useUpdateRegionVendorData = () => {
     const [globalState, setGlobalState] = useGlobalState();
 
     useEffect(() => {
-      socket.on('TWITTER_DATA', (data: any) => {
-          // TODO: why do we sent regionID if we don't use it ?
-          const {
-              tweet, newLocations, allLocations, vendorID, regionID,
-          } = data;
-          if (newLocations.length) {
+        socket.on('NEW_LOCATIONS', (data: any) => {
+            // TODO: regionID and tweet also get send, but we don't seem to use those
+            const { newLocations, allLocations, vendorID } = data;
             const payload = {
                 locations: allLocations,
                 vendorID,
@@ -40,7 +37,9 @@ const useUpdateRegionVendorData = () => {
                 const truckNum = toNumber(location.truckNum);
                 setGlobalState({ vendorID, truckNum })
             });
-          }
+        })
+        socket.on('UPDATED_VENDOR', (vendor: any) => {
+            dispatch(updateVendor({...vendor, vendorID: vendor.id}));
         })
     }, [])
 }

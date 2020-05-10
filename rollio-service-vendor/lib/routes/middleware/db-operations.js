@@ -10,7 +10,10 @@ const config = require('../../../config');
 const sendVendorTwitterIDs = require('../../messaging/send/send-vendor-twitterid');
 
 const qs = new MongoQS(); // MongoQS takes req.query and converts it into MongoQuery
-const { client: redisClient } = require('../../redis/index');
+const { client: redisClient, pub } = require('../../redis/index');
+// SOCKET
+const { io } = require('../../sockets/index');
+
 
 // OPERATIONS
 const { getAllRegions, getRegion, getRegionByName } = require('../../db/mongo/operations/region-ops');
@@ -151,6 +154,18 @@ const vendorRouteOpsUtil = {
   },
 };
 
+const publishUpdatedVendor = (vendor) => {
+  const updatedVendor = vendorRouteOpsUtil.formatData(vendor);
+  const messageType = 'UPDATED_VENDOR';
+  try {
+    // Send the tweetPayload to all subscribed instances
+    pub.publish(config.REDIS_TWITTER_CHANNEL, JSON.stringify({ ...updatedVendor, messageType, serverID: config.SERVER_ID }));
+    io.sockets.emit(messageType, updatedVendor);
+  } catch (err) {
+    logger.error(err);
+  }
+};
+
 const vendorRouteOps = {
   updateVendor: async (req, res) => {
     const { type, twitterProvider = {} } = req.user;
@@ -162,7 +177,14 @@ const vendorRouteOps = {
       return updateVendorSet({
         regionID, vendorID, field, data,
       })
-        .then(vendor => res.status(200).json({ vendor }))
+        .then(async (vendor) => {
+          if (vendor.approved) {
+            // actually, maybe get rid of this...or just do it if req.body.data.approved
+            await sendVendorTwitterIDs();
+            publishUpdatedVendor(vendor);
+          }
+          res.status(200).json({ vendor });
+        })
         .catch((err) => {
           console.error(err);
           res.status(500).send(err);
@@ -179,8 +201,10 @@ const vendorRouteOps = {
       return createVendor(req.body, req.params.regionID, req.user)
         .then(async (vendor) => {
           // Need to tell twitter service to start listening for new vendors
-          await sendVendorTwitterIDs();
-
+          if (vendor.approved) {
+            await sendVendorTwitterIDs();
+            publishUpdatedVendor(vendor);
+          }
           return res.status(200).json({ vendor });
         })
         .catch((err) => {

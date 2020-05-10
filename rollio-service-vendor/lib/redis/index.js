@@ -81,7 +81,7 @@ const redisConnect = {
       if (message.serverID !== SERVER_ID) {
         logger.info(`Redis Subscriber: Received message from server: ${SERVER_ID}`);
         logger.info(`Redis Subscriber: ${message}`);
-        io.sockets.emit('TWITTER_DATA', omit(message, ['serverID']));
+        io.sockets.emit(message.type, omit(message, ['serverID']));
       }
     });
 
