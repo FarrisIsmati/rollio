@@ -153,7 +153,8 @@ module.exports = {
     }
 
     // Params may contain a query property
-    return Vendor.find({ ...params, approved: true })
+    // excludes approved by default, unless explicitly requested
+    return Vendor.find({ approved: true, ...params })
       .populate('tweetHistory')
       .populate('locationHistory')
       .populate('userLocationHistory')
@@ -189,6 +190,7 @@ module.exports = {
       $set: obj,
     }, { new: true }).populate('tweetHistory').populate('locationHistory').populate('userLocationHistory')
       .then(async (res) => {
+        // TODO: this busts the cache for the individual vendor, but what about getVendorsAsObject ?
         await redisClient.hdelAsync('vendor', `q::method::GET::path::/${regionID}/${vendorID}`);
         return res;
       })
