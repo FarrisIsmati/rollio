@@ -567,7 +567,7 @@ p, h1, h2, h3 {
     position: absolute;
     bottom: 0;
     margin-bottom: 80px;
-    z-index: 2;
+    z-index: 3;
     padding: 0 15px;
     box-sizing: border-box; }
   .map__infocard_image {

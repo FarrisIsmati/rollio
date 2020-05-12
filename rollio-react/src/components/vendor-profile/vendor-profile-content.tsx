@@ -3,9 +3,10 @@ import React, { ReactComponentElement } from 'react';
 
 // COMPONENTS
 import Comments from '../comments/comment-section';
-import VendorProfileToggleComponent from './vendor-profile-toggle-component';
-import { faTwitter } from "@fortawesome/free-brands-svg-icons"
+import VendorProfileContentItemToggle from './vendor-profile-content-item-toggle';
 import Tweet from '../twitter/Tweet';
+import { faTwitter } from "@fortawesome/free-brands-svg-icons"
+import VendorProfileCategories from './vendor-profile-categories';
 
 // HOOKS
 import useToggleComponents from './hooks/use-toggle-components';
@@ -16,7 +17,6 @@ interface VendorProfileContentProps  {
     closeVendor?: any,
     findOnMap: any,
     vendor: any,
-    Categories: ReactComponentElement<any>[],
     state: any
 }
 
@@ -26,7 +26,6 @@ const VendorProfileContent = (props:VendorProfileContentProps) => {
       closeVendor, 
       findOnMap, 
       vendor, 
-      Categories, 
       state,
     } = props;
     
@@ -73,7 +72,7 @@ const VendorProfileContent = (props:VendorProfileContentProps) => {
           </div>
     
           <div className='vendorprofile__categories_wrapper'>
-            { Categories }
+            < VendorProfileCategories vendor={vendor} />
           </div>
     
           <div className='vendorprofile__info_wrapper'>
@@ -116,13 +115,13 @@ const VendorProfileContent = (props:VendorProfileContentProps) => {
               null
             }
 
-            <VendorProfileToggleComponent iconFa={ faTwitter } components={components} toggleComponents={toggleComponents} componentName='twitter'>
+            <VendorProfileContentItemToggle iconFa={ faTwitter } components={components} toggleComponents={toggleComponents} componentName='twitter'>
               { tweets }
-            </VendorProfileToggleComponent>
+            </VendorProfileContentItemToggle>
 
-            <VendorProfileToggleComponent iconMa='local_shipping' components={components} toggleComponents={toggleComponents} componentName='about'>
+            <VendorProfileContentItemToggle iconMa='local_shipping' components={components} toggleComponents={toggleComponents} componentName='about'>
               <p>{vendor.description}</p>
-            </VendorProfileToggleComponent>
+            </VendorProfileContentItemToggle>
     
             <div className='vendorprofile__info_row'>
               <div className='vendorprofile__info_icon_wrapper_alt'>

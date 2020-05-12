@@ -1,10 +1,9 @@
 // DEPENDENCIES
-import React, { ReactComponentElement, useRef } from 'react';
+import React, { useRef } from 'react';
 import { useDispatch  } from 'react-redux';
 import { Scrollbars } from 'react-custom-scrollbars';
 
 // COMPONENTS
-import Chip from '../common/other/chip';
 import VendorProfileContent from './vendor-profile-content';
 
 // HOOKS
@@ -17,24 +16,6 @@ import useMap from '../map/hooks/useMap';
 // ACTIONS
 import { deSelectVendor } from '../../redux/actions/data-actions';
 import { toggleMobileDashboard } from '../../redux/actions/ui-actions';
-
-// Returns an array of categories
-const setCategoriesComponent = (args:any) => {
-  const {isLoaded, vendor} = args;
-
-  let Categories:ReactComponentElement<any>[] = [];
-
-  if (isLoaded) {
-    Categories = vendor.categories.map((category:string) => {
-      return <Chip key={category} text={category} />
-    })
-    if (vendor.price) {
-      Categories.unshift(<Chip key={vendor.price} text={vendor.price}/>)
-    }
-  }
-
-  return Categories;
-}
 
 const VendorProfile = React.forwardRef((props:any, navbarRef)=> {
   // Refs
@@ -63,9 +44,6 @@ const VendorProfile = React.forwardRef((props:any, navbarRef)=> {
   const isLoaded = state.loadState.isVendorLoaded;
   const vendor = state.data.selectedVendor;
 
-  // Custom Vendor Profile Components
-  const Categories:ReactComponentElement<any>[] = setCategoriesComponent({isLoaded, vendor});
-
   // Difference between the Desktop and Mobile version is how it scrolls the content
   return (
     <React.Fragment>
@@ -86,7 +64,6 @@ const VendorProfile = React.forwardRef((props:any, navbarRef)=> {
                 closeVendor={() => dispatch(deSelectVendor(vendor.id))}
                 findOnMap={() => { zoomToCurrentlySelectedVendor() }}
                 vendor={vendor}
-                Categories={Categories}
                 state={state} /> : 
               <p>loading...</p>}
           </Scrollbars> 
@@ -134,7 +111,6 @@ const VendorProfile = React.forwardRef((props:any, navbarRef)=> {
                   }
                 }
                 vendor={vendor} 
-                Categories={Categories} 
                 state={state} />
             </Scrollbars>
           </React.Fragment> : <p>loading...</p>

@@ -4,16 +4,11 @@ import React from 'react';
 // COMPONENTS
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-type VendorProfileToggleComponentProps = {
-  componentName: string,
-  components: any,
-  toggleComponents: any,
-  children: any,
-  iconMa?: string,
-  iconFa?: any,
-  } & ( { iconMa: string } | { iconFa: any } )
+// INTERFACES
+import { VendorProfileToggleComponentProps } from './interfaces'
 
-const VendorProfileToggleComponent = (props:VendorProfileToggleComponentProps) => {
+// Toggles open/close a dashboard menu item (ex twitter, about items)
+const VendorProfileContentItemToggle = (props:VendorProfileToggleComponentProps) => {
     const { 
       componentName,
       components,
@@ -40,4 +35,4 @@ const VendorProfileToggleComponent = (props:VendorProfileToggleComponentProps) =
     )
 };
 
-export default VendorProfileToggleComponent;
+export default VendorProfileContentItemToggle;
