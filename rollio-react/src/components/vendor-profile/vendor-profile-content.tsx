@@ -1,5 +1,5 @@
 // DEPENDENCIES
-import React, { ReactComponentElement } from 'react';
+import React from 'react';
 
 // COMPONENTS
 import Comments from '../comments/comment-section';
