@@ -28,7 +28,7 @@ export interface Location {
     endDate: Date | null,
     truckNum: number | null,
     vendorID: string,
-    overridden: Boolean | null
+    overridden: Boolean
 }
 
 // Full set of vendor data; also used in vendor-profile.tsx
