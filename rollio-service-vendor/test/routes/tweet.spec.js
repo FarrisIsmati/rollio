@@ -29,12 +29,14 @@ describe('Tweet Routes', () => {
   let adminToken;
   let tweet;
   let newLocationData;
+  let locationId;
 
   beforeEach((done) => {
     seed.runSeed().then(async () => {
       vendors = await Vendor.find({}).select('_id name').sort([['name', 1]]);
       tweets = await Tweet.find({}).sort([['date', -1]]);
-      tweet = tweets.find(x => x.location);
+      tweet = tweets.find(x => x.locations.length);
+      [locationId] = tweet.locations;
       const allUsers = await User.find();
       customer = allUsers.find(user => user.type === 'customer');
       customerToken = jwt.sign({
@@ -45,11 +47,15 @@ describe('Tweet Routes', () => {
         id: admin._id,
       }, JWT_SECRET, { expiresIn: 60 * 60 });
       newLocationData = {
+        vendorID: mongoose.Types.ObjectId(),
         locationDate: new Date(),
         tweetID: tweet._id,
         address: '123 street',
         city: 'washington, dc',
-        coordinates: [45, 45],
+        coordinates: {
+          long: 45,
+          lat: 45,
+        },
       };
       done();
     });
@@ -229,7 +235,7 @@ describe('Tweet Routes', () => {
       describe('/tweets/deletelocation/:tweetId without authorization', () => {
         it('expect error', (done) => {
           chai.request(server)
-            .patch(`/tweets/deletelocation/${tweet._id}`)
+            .patch(`/tweets/deletelocation/${tweet._id}/${locationId}`)
             .end((err, res) => {
               expect(res).to.have.status(403);
               done();
@@ -240,7 +246,7 @@ describe('Tweet Routes', () => {
       describe('/tweets/deletelocation/:tweetId as a customer only', () => {
         it('expect error', (done) => {
           chai.request(server)
-            .patch(`/tweets/deletelocation/${tweet._id}`)
+            .patch(`/tweets/deletelocation/${tweet._id}/${locationId}`)
             .set('Authorization', `Bearer ${customerToken}`)
             .end((err, res) => {
               expect(res).to.have.status(403);
@@ -252,7 +258,7 @@ describe('Tweet Routes', () => {
       describe('/tweets/deletelocation/:tweetId as an admin', () => {
         it('expect success', (done) => {
           chai.request(server)
-            .patch(`/tweets/deletelocation/${tweet._id}`)
+            .patch(`/tweets/deletelocation/${tweet._id}/${locationId}`)
             .set('Authorization', `Bearer ${adminToken}`)
             .end((err, res) => {
               expect(res).to.have.status(200);

@@ -1,5 +1,5 @@
 // INTERFACES
-import { 
+import {
   Pin,
   GroupPin,
   Comment,
@@ -35,14 +35,17 @@ export interface AllVendorsPayload {
   regionId: string
 }
 
-export interface UpdateVendorPayload {
-  location: { lat: number, long: number },
-  vendorID: string,
-  isActive: boolean
+// TODO!: Farris, what about all the other location keys ?
+interface LimitedLocation {
+  lat: number,
+  long: number,
+  startDate: Date | null,
+  endDate: Date | null
 }
 
-export interface UpdateDailyActiveVendorsPayload {
-  vendorID: string
+export interface UpdateVendorPayload {
+  locations: LimitedLocation[],
+  vendorID: string,
 }
 
 // Pin on map
@@ -64,7 +67,6 @@ export interface SetVendorsAllPayload {
   description?: string,
   location?: Location[] | Location | null,
   selected?: boolean,
-  isActive?: boolean,
   lastUpdated?: Date | null,
 }
 
@@ -74,7 +76,7 @@ export interface SetPreviouslySelectedVendorPayload {
 
 export interface SetRegionMapVendorPayload {
   id: string,
-  vendorID: string,
+  vendorID?: string,
   isSingle: boolean
   data: {
     selected?: boolean
@@ -82,11 +84,9 @@ export interface SetRegionMapVendorPayload {
 }
 
 export interface SetPreviouslySelectedRegionMapPayload {
-  id: string,
-  isSingle?: boolean | null
+  [index: number]: { id: string, isSingle?: boolean | null }
 }
 
 export interface SetCurrentlySelectedRegionMapPayload {
-  id: string,
-  isSingle?: boolean | null
+  [index: number]: { id: string, isSingle?: boolean | null }
 }

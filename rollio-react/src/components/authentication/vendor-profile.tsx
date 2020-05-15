@@ -3,7 +3,7 @@ import React, {useEffect, useState} from "react";
 import { withRouter } from 'react-router';
 import {receiveUser} from "../../redux/actions/user-actions";
 import {useDispatch} from "react-redux";
-import {recieveVendorData, fetchVendorDataAsync} from "../../redux/actions/data-actions";
+import {receiveVendorData, fetchVendorDataAsync} from "../../redux/actions/data-actions";
 import axios, {AxiosResponse} from "axios";
 import {VENDOR_API} from "../../config";
 import useGetRegions from './hooks/use-get-regions';
@@ -101,7 +101,7 @@ const UserProfile = (props:any) => {
     const creditCardOptions = [{text: 'Yes', value: 'y'}, {text: 'No', value: 'n'}, {text: 'Unsure', value: 'u'}];
 
     // do not enable 'submit' unless all the required fields are filled in, and if the vendor already exists, info has been updated
-    const requiredFields = ['name', 'type', 'description', 'creditCard'];
+    const requiredFields = ['name', 'type', 'description', 'creditCard', 'numTrucks'];
     const isANewVendor = !vendorId;
     const vendorDataHasBeenUpdated = dataForUpdatingVendor.field.length;
     // @ts-ignore
@@ -120,7 +120,7 @@ const UserProfile = (props:any) => {
         })
             .then((res: AxiosResponse<any>) => {
                 const vendorID = res.data.vendor._id;
-                recieveVendorData(res.data.vendor);
+                receiveVendorData(res.data.vendor);
                 if (type === 'vendor') {
                     receiveUser({ ...user, vendorID });
                 }
@@ -186,6 +186,16 @@ const UserProfile = (props:any) => {
                         type='text'
                         onChange={e=>{updateLocalVendor('phoneNumber', e.target.value)}}
                         value={localVendor.phoneNumber}
+                    />
+                </label>
+                <label>
+                    Number of trucks:
+                    <input
+                        type='number'
+                        onChange={e=>{updateLocalVendor('numTrucks', e.target.value)}}
+                        value={localVendor.numTrucks}
+                        min={1}
+                        max={5}
                     />
                 </label>
                 <label>

@@ -39,10 +39,9 @@ const TweetTable = (props:any) => {
     const [tweets, setTweets] = useState<Tweet[]>([]);
 
     const { user } = useGetAppState();
-    console.log(user);
     const { isAuthenticated } = user;
     const tweetUrl = `${VENDOR_API}/tweets`;
-    
+
     const fetchTweets = () => {
         setLoading(true);
         const query = { startDate, endDate, vendorID: vendorID === 'all' ? null : vendorID };
@@ -91,7 +90,17 @@ const TweetTable = (props:any) => {
 
 
     const mapVendorsOntoTweets = (tweets:Tweet[]) => {
-        const tweetsWithVendorsMapped = tweets.map((tweet:Tweet) => ({...tweet, vendorName: vendorNameLookup[tweet.vendorID] || 'Unknown Vendor' }));
+        const tweetsWithVendorsMapped = tweets.reduce((acc:any, tweet:Tweet) => {
+            const baseTweetData = { ...tweet, vendorName: vendorNameLookup[tweet.vendorID] || 'Unknown Vendor', locations: undefined }
+            if (tweet.locations.length) {
+                tweet.locations.forEach(location => {
+                    acc.push({ ...baseTweetData, location})
+                })
+            } else {
+                acc.push({ ...baseTweetData, location: null})
+            }
+            return acc;
+        }, []);
         setTweets(tweetsWithVendorsMapped);
         setTweetsLoaded(true);
     };
@@ -119,14 +128,34 @@ const TweetTable = (props:any) => {
             accessor: 'text'
         },
         {
+            id: 'truckNum',
+            Header: 'Truck Number',
+            accessor: (d:any) => d.location ? d.location.truckNum : 'N/A'
+        },
+        {
             id: 'location',
             Header: 'Location',
             accessor: (d:any) => d.location ? d.location.address : 'N/A'
         },
         {
+            id: 'startDate',
+            Header: 'Start Date',
+            accessor: (d:any) => d.location ? moment(d.location.startDate).format('YYYY-MM-DD LT') : 'N/A'
+        },
+        {
+            id: 'endDate',
+            Header: 'End Date',
+            accessor: (d:any) => d.location ? moment(d.location.endDate).format('YYYY-MM-DD LT') : 'N/A'
+        },
+        {
             id: 'usedForLocation',
             Header: 'Used For Location',
             accessor: (d:any) => d.usedForLocation ? 'Yes' : 'No'
+        },
+        {
+            id: 'overridden',
+            Header: 'Overridden',
+            accessor: (d:any) => d.location ? (d.location.overridden ? 'Yes' : 'No') : 'N/A'
         },
         {
             id: 'actions',

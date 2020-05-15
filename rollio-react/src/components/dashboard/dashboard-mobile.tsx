@@ -28,7 +28,7 @@ const DashboardMobile:FC = () => {
 
     // Refs
     const topRef = useCallbackRef(null, () => {});
-    
+
     // Effects
     useToggleVendorMenuOnScreenSwitch();
 
@@ -45,25 +45,25 @@ const DashboardMobile:FC = () => {
                     <div className="dashboard_mobile__topbar">
                         <div className="dashboard_mobile__topbar_text">
                             <h2 className="font__dashboard_topbar">Food Trucks</h2>
-                            { isDashboardExpanded ? 
-                                <i className="material-icons-outlined" onClick={()=>{dispatch(toggleMobileDashboard())}}>close</i> : 
+                            { isDashboardExpanded ?
+                                <i className="material-icons-outlined" onClick={()=>{dispatch(toggleMobileDashboard())}}>close</i> :
                                 <i className="material-icons-outlined" onClick={()=>{
                                     // If there is a currently selected vendor, deselect it then bring the vendor menu back
-                                    if (state.regionMap.currentlySelected.id) {
+                                    if (state.regionMap.currentlySelected.length) {
                                         dispatch(deSelectVendor(state.data.selectedVendor.id, () => dispatch(toggleMobileDashboard())));
                                     // Else just bring the vendor menu back
                                     } else {
                                         dispatch(toggleMobileDashboard());
                                     }
-                                }}>keyboard_arrow_up</i> 
+                                }}>keyboard_arrow_up</i>
                             }
                         </div>
                     </div>
                 </div>
-                <TwoOptionSwitch 
+                <TwoOptionSwitch
                     onClick={ (opt:string)=>{ dispatch(setDashboardVendorsDisplay(opt === 'a' ? 'active' : 'all')) } }
-                    vendorTypeName={ 'Trucks' } 
-                    isOptionA={ state.ui.dashboardVendorsDisplay === 'all' ? true : false } 
+                    vendorTypeName={ 'Trucks' }
+                    isOptionA={ state.ui.menuVendorsDisplay === 'all' ? true : false }
                     font='font__dashboard_switch'
                 />
                 <DashboardLinks { ...{vendorLinksHeight, refs: [topRef]} } />

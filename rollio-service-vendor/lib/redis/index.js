@@ -2,6 +2,7 @@
 // DEPENDENCIES
 const redis = require('redis');
 const bluebird = require('bluebird');
+const { omit } = require('lodash');
 const config = require('../../config');
 const util = require('../util/util');
 const logger = require('../log/index')('redis/index');
@@ -78,13 +79,9 @@ const redisConnect = {
     sub.on('message', (channel, msg) => {
       const message = JSON.parse(msg);
       if (message.serverID !== SERVER_ID) {
-        logger.info(`Redis Subscriber: Recieved message from server: ${SERVER_ID}`);
+        logger.info(`Redis Subscriber: Received message from server: ${SERVER_ID}`);
         logger.info(`Redis Subscriber: ${message}`);
-        io.sockets.emit('TWITTER_DATA', {
-          tweet: message.tweetPayload,
-          vendorID: message.vendorID,
-          regionID: message.regionID,
-        });
+        io.sockets.emit(message.type, omit(message, ['serverID']));
       }
     });
 

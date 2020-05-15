@@ -21,7 +21,7 @@ const sendVendorTwitterIDs = async () => {
       return err;
     });
   // Puts vendors list into a string separated by ','
-  const userIDs = vendors.map(vendor => vendor.twitterID).join(',');
+  const userIDs = vendors.filter(vendor => vendor.twitterID).map(vendor => vendor.twitterID).join(',');
   await mq.send(config.AWS_SQS_TWITTER_IDS, userIDs);
   logger.info('Sent Vendor TwitterIDs');
 };

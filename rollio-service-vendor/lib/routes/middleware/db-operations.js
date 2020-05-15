@@ -1,12 +1,19 @@
 /* eslint-disable no-shadow */
 /* eslint-disable no-console */
 // DEPENDENCIES
+const moment = require('moment');
 const MongoQS = require('mongo-querystring');
 const logger = require('../../log/index')('routes/middleware/db-operations');
 const config = require('../../../config');
 
+// MESSAGING
+const sendVendorTwitterIDs = require('../../messaging/send/send-vendor-twitterid');
+
 const qs = new MongoQS(); // MongoQS takes req.query and converts it into MongoQuery
-const { client: redisClient } = require('../../redis/index');
+const { client: redisClient, pub } = require('../../redis/index');
+// SOCKET
+const { io } = require('../../sockets/index');
+
 
 // OPERATIONS
 const { getAllRegions, getRegion, getRegionByName } = require('../../db/mongo/operations/region-ops');
@@ -28,7 +35,7 @@ const {
 const {
   getAllTweets,
   getVendorsForFiltering,
-  getTweetWithPopulatedVendorAndLocation,
+  getTweetWithPopulatedVendorAndLocations,
   deleteTweetLocation,
   createTweetLocation,
 } = require('../../db/mongo/operations/tweet-ops');
@@ -106,40 +113,58 @@ const vendorRouteOpsUtil = {
   // Returned a remapped vendor
   // Data is used to format the get all vendors calls
   formatData: (vendor) => {
-    let location = null;
+    const locations = vendor.locationHistory.reduce((acc, location) => {
+      const {
+        _id: id,
+        coordinates,
+        address,
+        neighborhood,
+        city,
+        accuracy,
+        matchMethod,
+        tweetId,
+        startDate,
+        endDate,
+        truckNum,
+        overridden,
+      } = location;
+      if (moment().isBefore(endDate)) {
+        acc.push({
+          // eslint-disable-next-line max-len
+          id, coordinates, address, neighborhood, city, accuracy, matchMethod, tweetId, startDate, endDate, truckNum, overridden,
+        });
+      }
+      return acc;
+    }, []);
 
-    // Check to see if the vendor was updated and has a location history
-    // If so set the location
-    if (vendor.dailyActive && vendor.locationHistory.length) {
-      const vendorLocation = vendor.locationHistory[vendor.locationHistory.length - 1];
-      location = {
-        id: vendorLocation._id,
-        coordinates: {
-          lat: vendorLocation.coordinates[0],
-          long: vendorLocation.coordinates[1],
-        },
-        address: vendorLocation.address,
-        neighborhood: vendorLocation.neighborhood,
-        municipality: vendorLocation.city,
-        accuracy: vendorLocation.accuracy,
-        matchMethod: vendorLocation.matchMethod,
-        tweetID: vendorLocation.tweetID,
-      };
-    }
-
+    const {
+      _id: id, name, description, categories, consecutiveDaysInactive, profileImageLink, updateDate: lastUpdated, approved,
+    } = vendor;
     return {
-      id: vendor._id,
-      name: vendor.name,
-      description: vendor.description,
-      categories: vendor.categories,
-      consecutiveDaysInactive: vendor.consecutiveDaysInactive,
-      profileImageLink: vendor.profileImageLink,
-      location,
+      id,
+      name,
+      description,
+      categories,
+      consecutiveDaysInactive,
+      profileImageLink,
+      locations,
       selected: false,
-      isActive: vendor.dailyActive,
-      lastUpdated: vendor.updateDate,
+      lastUpdated,
+      approved,
     };
   },
+};
+
+const publishUpdatedVendor = (vendor) => {
+  const updatedVendor = vendorRouteOpsUtil.formatData(vendor);
+  const messageType = 'UPDATED_VENDOR';
+  try {
+    // Send the tweetPayload to all subscribed instances
+    pub.publish(config.REDIS_TWITTER_CHANNEL, JSON.stringify({ ...updatedVendor, messageType, serverID: config.SERVER_ID }));
+    io.sockets.emit(messageType, updatedVendor);
+  } catch (err) {
+    logger.error(err);
+  }
 };
 
 const vendorRouteOps = {
@@ -153,7 +178,14 @@ const vendorRouteOps = {
       return updateVendorSet({
         regionID, vendorID, field, data,
       })
-        .then(vendor => res.status(200).json({ vendor }))
+        .then(async (vendor) => {
+          if (vendor.approved) {
+            // actually, maybe get rid of this...or just do it if req.body.data.approved
+            await sendVendorTwitterIDs();
+            publishUpdatedVendor(vendor);
+          }
+          res.status(200).json({ vendor });
+        })
         .catch((err) => {
           console.error(err);
           res.status(500).send(err);
@@ -165,10 +197,19 @@ const vendorRouteOps = {
     const { type } = req.user;
     const isAdmin = type === 'admin';
     const isVendor = type === 'vendor';
+
     if (isAdmin || isVendor) {
       return createVendor(req.body, req.params.regionID, req.user)
-        .then(vendor => res.status(200).json({ vendor }))
+        .then(async (vendor) => {
+          // Need to tell twitter service to start listening for new vendors
+          if (vendor.approved) {
+            await sendVendorTwitterIDs();
+            publishUpdatedVendor(vendor);
+          }
+          return res.status(200).json({ vendor });
+        })
         .catch((err) => {
+          console.log(err);
           console.error(err);
           res.status(500).send(err);
         });
@@ -401,16 +442,16 @@ const tweetRouteOps = {
         res.status(401).send('Error fetching vendors');
       });
   },
-  getTweetWithPopulatedVendorAndLocation: async (req, res) => {
-    getTweetWithPopulatedVendorAndLocation(req.params.tweetId).then(tweet => res.status(200).json({ tweet }))
+  getTweetWithPopulatedVendorAndLocations: async (req, res) => {
+    getTweetWithPopulatedVendorAndLocations(req.params.tweetId).then(tweet => res.status(200).json({ tweet }))
       .catch(() => {
-        logger.error('Twitter: User not authenticated, getTweetWithPopulatedVendorAndLocation func()');
-        if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') { console.log('Twitter: Error fetching tweets, getTweetWithPopulatedVendorAndLocation func()'); }
+        logger.error('Twitter: User not authenticated, getTweetWithPopulatedVendorAndLocations func()');
+        if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') { console.log('Twitter: Error fetching tweets, getTweetWithPopulatedVendorAndLocations func()'); }
         res.status(401).send('Error fetching tweet');
       });
   },
   deleteLocation: async (req, res) => {
-    deleteTweetLocation(req.params.tweetId).then(tweet => res.status(200).json({ tweet }))
+    deleteTweetLocation(req.params.tweetId, req.params.locationId).then(tweet => res.status(200).json({ tweet }))
       .catch(() => {
         logger.error('Twitter: User not authenticated, deleteTweetLocation func()');
         if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') { console.log('Twitter: Error fetching tweets, deleteTweetLocation func()'); }
@@ -418,9 +459,11 @@ const tweetRouteOps = {
       });
   },
   createNewLocation: async (req, res) => {
-    createTweetLocation(req.params.tweetId, req.body).then(tweet => res.status(200).json({ tweet }))
-      .catch(() => {
-        logger.error('Twitter: User not authenticated, createTweetLocation func()');
+    createTweetLocation(req.params.tweetId, req.body)
+      .then(tweet => res.status(200).json({ tweet }))
+      .catch((err) => {
+        logger.error(err);
+        console.error(err);
         if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') { console.log('Twitter: Error fetching tweets, createTweetLocation func()'); }
         res.status(401).send('Error creating new location');
       });

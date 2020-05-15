@@ -18,6 +18,9 @@ import useMap from '../map/hooks/useMap';
 import { deSelectVendor } from '../../redux/actions/data-actions';
 import { toggleMobileDashboard } from '../../redux/actions/ui-actions';
 
+// UTILS
+import {isActive} from "../../util";
+
 // Returns an array of categories
 const setCategoriesComponent = (args:any) => {
   const {isLoaded, vendor} = args;
@@ -52,7 +55,7 @@ const VendorProfile = React.forwardRef((props:any, navbarRef)=> {
   const vendorProfileContentHeight = useGetHeight(mobileHeaderRef) + 'px';
 
   const handleScroll = useScrollPosition({
-    isLoaded: state.loadState.isVendorLoaded, 
+    isLoaded: state.loadState.isVendorLoaded,
     cb: windowSizeEffects.useIsMobile() ? props.scrollPositionCb : ()=>{}
   });
 
@@ -69,27 +72,27 @@ const VendorProfile = React.forwardRef((props:any, navbarRef)=> {
   // Difference between the Desktop and Mobile version is how it scrolls the content
   return (
     <React.Fragment>
-      { !isMobile ? 
+      { !isMobile ?
         // Desktop version
         <div className={isVendorSelected ? 'vendorprofile__wrapper' : 'vendorprofile__wrapper_hidden'}>
-          <Scrollbars 
-            style={{ width: isMobile ? '100%': '432px', height: vendorProfileHeight }} 
+          <Scrollbars
+            style={{ width: isMobile ? '100%': '432px', height: vendorProfileHeight }}
             onScroll={handleScroll}
             // Hide scrollbar when vendor profile is being animated closed
-            renderThumbVertical={            
-              ({ style }:any) => <div style={{ ...style, borderRadius: 'inherit', backgroundColor: isVendorSelected ? 'rgba(0, 0, 0, 0.2)' : 'transparent' }} /> 
+            renderThumbVertical={
+              ({ style }:any) => <div style={{ ...style, borderRadius: 'inherit', backgroundColor: isVendorSelected ? 'rgba(0, 0, 0, 0.2)' : 'transparent' }} />
             }
           >
-            { isLoaded ? 
-              <VendorProfileContent 
-                isMobile={isMobile} 
+            { isLoaded ?
+              <VendorProfileContent
+                isMobile={isMobile}
                 closeVendor={() => dispatch(deSelectVendor(vendor.id))}
                 findOnMap={() => { zoomToCurrentlySelectedVendor() }}
                 vendor={vendor}
                 Categories={Categories}
-                state={state} /> : 
+                state={state} /> :
               <p>loading...</p>}
-          </Scrollbars> 
+          </Scrollbars>
         </div>
       :
       // Mobile version
@@ -104,37 +107,37 @@ const VendorProfile = React.forwardRef((props:any, navbarRef)=> {
                 <h2>{vendor.name}</h2>
               </div>
               <div className='flex__center'>
-                <i className="material-icons-outlined" 
-                  onClick={ () => { 
+                <i className="material-icons-outlined"
+                  onClick={ () => {
                     // If there is a currently selected vendor just toggle the menu
-                    if (vendor.isActive) {
+                    if (isActive(vendor)) {
                         dispatch(toggleMobileDashboard())
                     // Else deselect the non active vendor and toggle menu (Because this vendor doesn't need to still be selected once the menu is hidden)
                     } else {
                       dispatch(deSelectVendor(vendor.id, () => dispatch(toggleMobileDashboard())))
                     }
-                  } 
+                  }
                 } >close</i>
               </div>
             </div>
 
-            <Scrollbars 
-              style={{ width: isMobile ? '100%': '432px', height: vendorProfileContentHeight }} 
+            <Scrollbars
+              style={{ width: isMobile ? '100%': '432px', height: vendorProfileContentHeight }}
               onScroll={handleScroll}
               // Hide scrollbar when vendor profile is being animated closed
-              renderThumbVertical={            
-                ({ style }:any) => <div style={{ ...style, borderRadius: 'inherit', backgroundColor: isVendorSelected ? 'rgba(0, 0, 0, 0.2)' : 'transparent' }} /> 
+              renderThumbVertical={
+                ({ style }:any) => <div style={{ ...style, borderRadius: 'inherit', backgroundColor: isVendorSelected ? 'rgba(0, 0, 0, 0.2)' : 'transparent' }} />
               }
             >
-              <VendorProfileContent 
-                isMobile={isMobile} 
+              <VendorProfileContent
+                isMobile={isMobile}
                 findOnMap={() => {
                     dispatch(toggleMobileDashboard());
                     zoomToCurrentlySelectedVendor();
                   }
                 }
-                vendor={vendor} 
-                Categories={Categories} 
+                vendor={vendor}
+                Categories={Categories}
                 state={state} />
             </Scrollbars>
           </React.Fragment> : <p>loading...</p>

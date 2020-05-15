@@ -1,5 +1,6 @@
 const { ObjectId } = require('mongoose').Types;
 const faker = require('faker');
+const moment = require('moment');
 
 const tweet1Id = ObjectId();
 const tweet2Id = ObjectId();
@@ -9,6 +10,7 @@ const tweet5Id = ObjectId();
 const tweet6Id = ObjectId();
 const tweet7Id = ObjectId();
 const tweet8Id = ObjectId();
+const tweet9Id = ObjectId();
 const tweet1IdString = faker.random.word();
 const tweet2IdString = faker.random.word();
 const tweet3IdString = faker.random.word();
@@ -17,6 +19,7 @@ const tweet5IdString = faker.random.word();
 const tweet6IdString = faker.random.word();
 const tweet7IdString = faker.random.word();
 const tweet8IdString = faker.random.word();
+const tweet9IdString = faker.random.word();
 const location1Id = ObjectId();
 const location2Id = ObjectId();
 const location3Id = ObjectId();
@@ -26,6 +29,7 @@ const location6Id = ObjectId();
 const location7Id = ObjectId();
 const location8Id = ObjectId();
 const location9Id = ObjectId();
+const location10Id = ObjectId();
 const vendor1Id = ObjectId();
 const vendor2Id = ObjectId();
 const vendor3Id = ObjectId();
@@ -46,6 +50,8 @@ const secondVendorWithAVendorId = ObjectId();
 const getTwitterId = () => faker.random.number({ min: 100000000, max: 999999999 });
 const vendor1TwitterID = getTwitterId();
 const vendor2TwitterID = '2185580414';
+const startDate = moment();
+const endDate = moment(startDate).add(1, 'days');
 
 module.exports = {
   vendors: [
@@ -71,10 +77,10 @@ module.exports = {
       locationHistory: [location1Id],
       userLocationHistory: [location2Id],
       comments: [],
-      dailyActive: false,
       consecutiveDaysInactive: 4,
       categories: ['Luxury', 'Caviar', 'Lobster', 'Michelan Star'],
       approved: true,
+      numTrucks: 1,
     },
     {
       _id: vendor2Id,
@@ -95,10 +101,10 @@ module.exports = {
       tweetHistory: [tweet2Id],
       locationHistory: [location3Id],
       comments: [],
-      dailyActive: true,
       consecutiveDaysInactive: 4,
       categories: ['Balkan', 'Mediterranean', 'Hearty', 'Meat'],
       approved: true,
+      numTrucks: 1,
     },
     {
       _id: vendor3Id,
@@ -119,10 +125,10 @@ module.exports = {
       tweetHistory: [tweet3Id],
       locationHistory: [location4Id],
       comments: [],
-      dailyActive: true,
       consecutiveDaysInactive: 4,
       categories: ['Cheese', 'Comfort', 'Hearty', 'Bread'],
       approved: true,
+      numTrucks: 1,
     },
     {
       _id: vendor4Id,
@@ -144,10 +150,10 @@ module.exports = {
       locationHistory: [location5Id],
       userLocationHistory: [],
       comments: [],
-      dailyActive: true,
       consecutiveDaysInactive: -1,
       categories: ['Fast Food', 'American', 'Comfort Food', 'Meat', 'Chicken'],
       approved: true,
+      numTrucks: 1,
     },
     {
       _id: vendor5Id,
@@ -169,10 +175,10 @@ module.exports = {
       locationHistory: [location6Id],
       userLocationHistory: [],
       comments: [],
-      dailyActive: true,
       consecutiveDaysInactive: -1,
       categories: ['Hawaiian', 'Poke', 'Casual', 'Seafood'],
       approved: true,
+      numTrucks: 1,
     },
     {
       _id: vendor6Id,
@@ -194,10 +200,10 @@ module.exports = {
       locationHistory: [location7Id],
       userLocationHistory: [],
       comments: [],
-      dailyActive: true,
       consecutiveDaysInactive: -1,
       categories: ['South American', 'Venezuelan', 'Arepa', 'Comfort Food', 'Street Food'],
       approved: true,
+      numTrucks: 1,
     },
     {
       _id: vendor7Id,
@@ -219,10 +225,10 @@ module.exports = {
       locationHistory: [location8Id],
       userLocationHistory: [],
       comments: [],
-      dailyActive: true,
       consecutiveDaysInactive: -1,
       categories: ['American', 'Donuts', 'Fried Chicken', 'Comfort Food', 'Street Food'],
       approved: true,
+      numTrucks: 1,
     },
     {
       _id: vendor8Id,
@@ -241,13 +247,13 @@ module.exports = {
       yelpId: 'ball-or-nothing-washington',
       twitterID: '488727238',
       tweetHistory: [tweet8Id],
-      locationHistory: [location9Id],
+      locationHistory: [location9Id, location10Id],
       userLocationHistory: [],
       comments: [],
-      dailyActive: true,
       consecutiveDaysInactive: -1,
       categories: ['Italian', 'Fried Chicken', 'Pasta', 'Meat'],
       approved: true,
+      numTrucks: 2,
     },
     {
       regionID: region1Id,
@@ -270,10 +276,10 @@ module.exports = {
       locationHistory: [],
       userLocationHistory: [],
       comments: [],
-      dailyActive: false,
       consecutiveDaysInactive: 0,
       categories: ['Luxury', 'Caviar', 'Lobster', 'Michelan Star'],
       approved: true,
+      numTrucks: 1,
     },
     {
       regionID: region1Id,
@@ -294,10 +300,10 @@ module.exports = {
       locationHistory: [],
       userLocationHistory: [],
       comments: [],
-      dailyActive: false,
       consecutiveDaysInactive: -1,
       categories: ['Barbeque', 'American', 'Comfort Food', 'Meat'],
       approved: true,
+      numTrucks: 1,
     },
     {
       regionID: region1Id,
@@ -318,10 +324,41 @@ module.exports = {
       locationHistory: [],
       userLocationHistory: [],
       comments: [],
-      dailyActive: false,
       consecutiveDaysInactive: -1,
       categories: ['Fast Food', 'American', 'Comfort Food', 'Soul Food'],
       approved: true,
+      numTrucks: 1,
+    },
+    // sloan's test account
+    {
+      _id: ObjectId('5e9b6be2169b1f125fa0744b'),
+      numTrucks: 1,
+      tweetHistory: [
+
+      ],
+      locationHistory: [
+
+      ],
+      userLocationHistory: [
+
+      ],
+      categories: [
+        'Mexican',
+      ],
+      approved: true,
+      consecutiveDaysInactive: 0,
+      type: 'mobileTruck',
+      name: "sloan's truck",
+      description: 'asdf',
+      email: 'fake@fake.com',
+      website: 'sloan.com',
+      phoneNumber: '9178808790',
+      comments: [
+
+      ],
+      creditCard: 'y',
+      twitterID: '1249003826520166401',
+      regionID: region1Id,
     },
   ],
   regions: [
@@ -331,7 +368,8 @@ module.exports = {
       coordinates: {
         locationDate: new Date('2018-04-12T12:10:00Z'),
         address: 'Washington, D.C.',
-        coordinates: [38.9072, 77.0369],
+        coordinates: { lat: 38.9072, long: 77.0369 },
+        vendorID: ObjectId(),
       },
       location: 'Washington, D.C.',
       timezone: 'EST',
@@ -344,7 +382,7 @@ module.exports = {
       tweetID: tweet1IdString,
       date: new Date('2016-05-18T16:00:00Z'),
       text: 'We are at Farragut Square',
-      location: location1Id,
+      locations: [location1Id],
       usedForLocation: true,
     }, {
       _id: tweet2Id,
@@ -352,15 +390,15 @@ module.exports = {
       tweetID: tweet2IdString,
       date: new Date('2016-05-18T16:00:00Z'),
       text: 'We are in China Town',
-      location: location3Id,
-      usedForLocation: false,
+      locations: [location3Id],
+      usedForLocation: true,
     }, {
       _id: tweet3Id,
       vendorID: vendor3Id,
       tweetID: tweet3IdString,
       date: new Date('2016-05-18T16:00:00Z'),
-      text: 'We are in China Town',
-      location: location4Id,
+      text: 'We are in Rosslyn',
+      locations: [location4Id],
       usedForLocation: true,
     }, {
       _id: tweet4Id,
@@ -368,7 +406,7 @@ module.exports = {
       tweetID: tweet4IdString,
       date: new Date('2016-05-18T16:00:00Z'),
       text: 'We are in Noma',
-      location: location5Id,
+      locations: [location5Id],
       usedForLocation: true,
     }, {
       _id: tweet5Id,
@@ -376,7 +414,7 @@ module.exports = {
       tweetID: tweet5IdString,
       date: new Date('2018-04-12T12:10:00Z'),
       text: 'Farragut Wow Yes',
-      location: location6Id,
+      locations: [location6Id],
       usedForLocation: true,
     }, {
       _id: tweet6Id,
@@ -384,7 +422,7 @@ module.exports = {
       tweetID: tweet6IdString,
       date: new Date('2018-04-12T12:10:00Z'),
       text: 'Farragut Yes',
-      location: location7Id,
+      locations: [location7Id],
       usedForLocation: true,
     }, {
       _id: tweet7Id,
@@ -392,16 +430,25 @@ module.exports = {
       tweetID: tweet7IdString,
       date: new Date('2018-04-12T12:10:00Z'),
       text: 'Capital One Arena today',
-      location: location8Id,
+      locations: [location8Id],
       usedForLocation: true,
     }, {
       _id: tweet8Id,
       vendorID: vendor8Id,
       tweetID: tweet8IdString,
       date: new Date('2018-04-12T12:10:00Z'),
-      text: 'Capital One Arena today',
-      location: location9Id,
+      text: 'We are at 1. Capital One Arena today and 2. Rosslyn',
+      locations: [location9Id, location10Id],
       usedForLocation: true,
+    },
+    {
+      _id: tweet9Id,
+      vendorID: vendor8Id,
+      tweetID: tweet9IdString,
+      date: new Date('2016-05-18T16:00:00Z'),
+      text: 'Hows it going?!?!',
+      locations: [],
+      usedForLocation: false,
     },
   ],
   locations: [
@@ -414,7 +461,12 @@ module.exports = {
       neighborhood: 'Little Russia',
       matchMethod: 'Tweet location',
       tweetID: tweet1IdString,
-      coordinates: [39.2934, -77.1234],
+      coordinates: { lat: 39.2934, long: -77.1234 },
+      startDate,
+      endDate,
+      overridden: false,
+      truckNum: 1,
+      vendorID: vendor1Id,
     },
     {
       _id: location2Id,
@@ -425,7 +477,12 @@ module.exports = {
       neighborhood: 'farragut square',
       matchMethod: 'User Input',
       tweetID: null,
-      coordinates: [38.902033, -77.038995],
+      coordinates: { lat: 38.902033, long: -77.038995 },
+      startDate,
+      endDate,
+      overridden: false,
+      truckNum: 1,
+      vendorID: vendor1Id,
     },
     {
       _id: location3Id,
@@ -435,8 +492,13 @@ module.exports = {
       city: 'Washington, DC',
       neighborhood: 'Penn Quarter',
       matchMethod: 'Tweet location',
-      coordinates: [38.897182, -77.022013],
+      coordinates: { lat: 38.897182, long: -77.022013 },
       tweetID: tweet2IdString,
+      startDate,
+      endDate,
+      overridden: false,
+      truckNum: 1,
+      vendorID: vendor2Id,
     },
     {
       _id: location4Id,
@@ -447,7 +509,12 @@ module.exports = {
       neighborhood: 'rosslyn',
       matchMethod: 'Tweet location',
       tweetID: tweet3IdString,
-      coordinates: [38.897156, -77.07239],
+      coordinates: { lat: 38.897156, long: -77.07239 },
+      startDate,
+      endDate,
+      overridden: false,
+      truckNum: 1,
+      vendorID: vendor3Id,
     },
     {
       _id: location5Id,
@@ -458,7 +525,12 @@ module.exports = {
       neighborhood: 'chinatown',
       matchMethod: 'Tweet location',
       tweetID: tweet4IdString,
-      coordinates: [38.898482, -77.021965],
+      coordinates: { lat: 38.898482, long: -77.021965 },
+      startDate,
+      endDate,
+      overridden: false,
+      truckNum: 1,
+      vendorID: vendor4Id,
     },
     {
       _id: location6Id,
@@ -468,7 +540,12 @@ module.exports = {
       city: 'dc',
       neighborhood: 'farragut square',
       tweetID: tweet5IdString,
-      coordinates: [38.902033, -77.038995],
+      coordinates: { lat: 38.902033, long: -77.038995 },
+      startDate,
+      endDate,
+      overridden: false,
+      truckNum: 1,
+      vendorID: vendor5Id,
     },
     {
       _id: location7Id,
@@ -478,7 +555,12 @@ module.exports = {
       city: 'dc',
       neighborhood: 'farragut square',
       tweetID: tweet6IdString,
-      coordinates: [38.902033, -77.038995],
+      coordinates: { lat: 38.902033, long: -77.038995 },
+      startDate,
+      endDate,
+      overridden: false,
+      truckNum: 1,
+      vendorID: vendor6Id,
     },
     {
       _id: location8Id,
@@ -488,7 +570,12 @@ module.exports = {
       city: 'dc',
       neighborhood: 'chinatown',
       tweetID: tweet7IdString,
-      coordinates: [38.898482, -77.021965],
+      coordinates: { lat: 38.898482, long: -77.021965 },
+      startDate,
+      endDate,
+      overridden: false,
+      truckNum: 1,
+      vendorID: vendor7Id,
     },
     {
       _id: location9Id,
@@ -497,11 +584,48 @@ module.exports = {
       address: '700 G St NW, Washington, DC 20001',
       city: 'dc',
       neighborhood: 'chinatown',
-      coordinates: [38.898482, -77.021965],
+      coordinates: { lat: 38.898482, long: -77.021965 },
       tweetID: tweet8IdString,
+      startDate,
+      endDate,
+      overridden: false,
+      truckNum: 1,
+      vendorID: vendor8Id,
+    },
+    {
+      _id: location10Id,
+      locationDate: new Date('2018-04-12T12:10:00Z'),
+      accuracy: 0,
+      address: 'Rosslyn, Virginia 22209',
+      city: 'arlington',
+      neighborhood: 'rosslyn',
+      matchMethod: 'Tweet location',
+      tweetID: tweet8IdString,
+      coordinates: { lat: 38.897156, long: -77.07239 },
+      startDate,
+      endDate,
+      overridden: false,
+      truckNum: 2,
+      vendorID: vendor8Id,
     },
   ],
   users: [
+    // sloan's test account
+    {
+      _id: ObjectId('5e9b6bc6169b1f125fa0744a'),
+      type: 'vendor',
+      email: 'fake@fake.com',
+      twitterProvider: {
+        id: '1249003826520166401',
+        token: '1249003826520166401-3NpoC6U3gbskONAsE3etxK7nxZYrmZ',
+        tokenSecret: 'Hi4rLo274z0C7OicbT2ONSg3mFGItM4bxHDWHE03wAxtx',
+        username: 'fakeacc51947888',
+        displayName: 'fake account',
+      },
+      __v: 0,
+      regionID: region1Id,
+      vendorID: ObjectId('5e9b6be2169b1f125fa0744b'),
+    },
     {
       _id: customerId,
       type: 'customer',
@@ -511,7 +635,7 @@ module.exports = {
         token: faker.random.word(),
         tokenSecret: faker.random.word(),
         username: faker.random.word(),
-        displayName: faker.random.words(2)
+        displayName: faker.random.words(2),
       },
       regionID: region1Id,
     },
@@ -524,8 +648,8 @@ module.exports = {
         token: faker.random.word(),
         tokenSecret: faker.random.word(),
         username: faker.random.word(),
-        displayName: faker.random.words(2)
-      }
+        displayName: faker.random.words(2),
+      },
     },
     {
       _id: adminId,
@@ -536,7 +660,7 @@ module.exports = {
         token: faker.random.word(),
         tokenSecret: faker.random.word(),
         username: faker.random.word(),
-        displayName: faker.random.words(2)
+        displayName: faker.random.words(2),
       },
       regionID: region1Id,
     },
@@ -549,10 +673,10 @@ module.exports = {
         token: faker.random.word(),
         tokenSecret: faker.random.word(),
         username: faker.random.word(),
-        displayName: faker.random.words(2)
+        displayName: faker.random.words(2),
       },
       regionID: region1Id,
-      vendorID: vendor1Id
+      vendorID: vendor1Id,
     },
     {
       _id: secondVendorWithAVendorId,
@@ -563,10 +687,10 @@ module.exports = {
         token: faker.random.word(),
         tokenSecret: faker.random.word(),
         username: faker.random.word(),
-        displayName: faker.random.words(2)
+        displayName: faker.random.words(2),
       },
       regionID: region1Id,
-      vendorID: vendor2Id
+      vendorID: vendor2Id,
     },
     {
       _id: vendorWithoutAVendorId,
@@ -577,9 +701,9 @@ module.exports = {
         token: faker.random.word(),
         tokenSecret: faker.random.word(),
         username: faker.random.word(),
-        displayName: faker.random.words(2)
+        displayName: faker.random.words(2),
       },
       regionID: region1Id,
-    }
+    },
   ],
 };

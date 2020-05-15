@@ -7,7 +7,7 @@ export interface Tweet {
     tweetID: string,
     date: Date,
     text: string,
-    location: any,
+    locations: any[],
     vendorID: any,
     usedForLocation: boolean,
     vendorName?: string
@@ -17,7 +17,7 @@ export const TweetDefaultState = {
     tweetID: '',
     date: new Date(),
     text: '',
-    location: {},
+    locations: [],
     vendorID: {},
     usedForLocation: false
 };

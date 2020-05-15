@@ -3,6 +3,9 @@ const googlePlaces = require('../../bin/google-places');
 const knownLocationKeys = require('../data/known-location-keys');
 const nlp = require('../../bin/nlp');
 
+// TODO: add truckNum, startDate, and endDate, if information is available
+//  though, not required, as each have a default value)
+//  note: unfortunately, might need info on numTrucks back from the vendor service
 const tweetParser = {
   async scanAddress(payload) {
     let result = {

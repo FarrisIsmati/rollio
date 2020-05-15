@@ -2,11 +2,11 @@
 import socketIOClient from 'socket.io-client';
 import { useEffect } from 'react';
 import { useDispatch  } from 'react-redux';
+import { toNumber } from 'lodash';
 
 // ACTIONS
-import { 
+import {
   updateVendor,
-  updateDailyActiveVendors
 } from '../../../redux/actions/data-actions';
 
 // HOOKS
@@ -24,16 +24,22 @@ const useUpdateRegionVendorData = () => {
     // find a way to pass updated vendor id down to the map hook
     const [globalState, setGlobalState] = useGlobalState();
 
-    useEffect(() => {      
-      socket.on('TWITTER_DATA', (data: any) => {
-          // format vendorsAll then update that 
-          if (data.tweet.location) {
-            const location = data.tweet.location
-            location.coordinates = { lat: location.coordinates[0], long: location.coordinates[1] }
-            dispatch(updateVendor({ location, vendorID: data.vendorID, isActive: true }));
-            dispatch(updateDailyActiveVendors({ vendorID: data.vendorID }))
-            setGlobalState({ vendorID: data.vendorID });
-          }
+    useEffect(() => {
+        socket.on('NEW_LOCATIONS', (data: any) => {
+            // TODO: regionID and tweet also get send, but we don't seem to use those
+            const { newLocations, allLocations, vendorID } = data;
+            const payload = {
+                locations: allLocations,
+                vendorID,
+            };
+            dispatch(updateVendor(payload));
+              newLocations.forEach((location:any) => {
+                const truckNum = toNumber(location.truckNum);
+                setGlobalState({ vendorID, truckNum })
+            });
+        })
+        socket.on('UPDATED_VENDOR', (vendor: any) => {
+            dispatch(updateVendor({...vendor, vendorID: vendor.id}));
         })
     }, [])
 }

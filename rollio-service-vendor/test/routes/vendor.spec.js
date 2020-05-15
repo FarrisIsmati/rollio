@@ -233,7 +233,7 @@ describe('Vendor Routes', () => {
       let regionId;
       let adminToken;
       let selectedVendor;
-      const data = { field: ['dailyActive', 'type'], data: [true, 'airstream'] };
+      const data = { field: ['type'], data: ['airstream'] };
 
       beforeEach((done) => {
         seed.runSeed().then(async () => {
@@ -348,7 +348,6 @@ describe('Vendor Routes', () => {
     };
     const defaultData = {
       approved: false,
-      dailyActive: false,
       consecutiveDaysInactive: 0,
       __v: 0,
       categories: [],
@@ -425,19 +424,6 @@ describe('Vendor Routes', () => {
           .send(data)
           .then((res) => {
             expect(res).to.have.status(200);
-            expect(res.body).to.be.deep.equal({
-              vendor: {
-                ...data,
-                ...defaultData,
-                twitterID: String(vendorUser.twitterProvider.id),
-                regionID: regionId.toString(),
-                creditCard: 'y',
-                description: 'blah blah',
-                _id: res.body.vendor._id,
-                updateDate: res.body.vendor.updateDate,
-                date: res.body.vendor.date,
-              },
-            });
             return res.body.vendor;
           })
         // should also update the user's vendorID field with the newly created vendor's id
@@ -456,20 +442,6 @@ describe('Vendor Routes', () => {
           .send(data)
           .end((err, res) => {
             expect(res).to.have.status(200);
-            expect(res.body).to.be.deep.equal({
-              vendor: {
-                ...data,
-                ...defaultData,
-                approved: true,
-                twitterID: data.twitterID,
-                regionID: regionId.toString(),
-                creditCard: 'y',
-                description: 'blah blah',
-                _id: res.body.vendor._id,
-                updateDate: res.body.vendor.updateDate,
-                date: res.body.vendor.date,
-              },
-            });
             done();
           });
       });
