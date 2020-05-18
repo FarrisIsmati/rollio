@@ -28,7 +28,7 @@ const VendorProfileContent = (props:VendorProfileContentProps) => {
       vendor, 
       state,
     } = props;
-    
+
     const tweets = state.data.selectedVendor.tweetHistory.map((tweetData:any) => <Tweet 
       key={tweetData.tweetID}
       twitterUserName={state.data.selectedVendor.twitterUserName} 
@@ -42,11 +42,13 @@ const VendorProfileContent = (props:VendorProfileContentProps) => {
       ABOUT: false,
       TWITTER: false,
     });
-    const { updateVendorLocationAccuracy } = useUpdateVendorLocationAccuracy({
-      regionID: state.data.regionId,
-      vendorID: state.data.selectedVendor.id,
-      locationID: state.data.selectedVendor.location._id
-    });
+
+    // Needs to be configured to use multiple trucks
+    // const { updateVendorLocationAccuracy } = useUpdateVendorLocationAccuracy({
+    //   regionID: state.data.regionId,
+    //   vendorID: state.data.selectedVendor.id,
+    //   locationID: state.data.selectedVendor.location._id
+    // });
 
     return (
         <React.Fragment>

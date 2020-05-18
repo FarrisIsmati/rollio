@@ -65,7 +65,7 @@ import { isLocationActive, isLocationActiveOrWillBeActive } from "../../util";
 // Gets the detailed set of vendor profile data
 export function receiveVendorData(vendor:any) {
     const locations = vendor.locationHistory.filter(isLocationActiveOrWillBeActive);
-
+    console.log(vendor);
     // If an empty object is passed as an arg then reset all data
         const profile = {
         categories: vendor.categories || '',
@@ -82,7 +82,11 @@ export function receiveVendorData(vendor:any) {
         price: vendor.price || '',
         rating: vendor.rating || '',
         twitterID: vendor.twitterID || '',
+        twitterUserName: vendor.twitterUserName,
+        twitterHandle: vendor.twitterHandle,
+        tweetHistory: vendor.tweetHistory,
         website: vendor.website || '',
+        isActive: vendor.dailyActive ? vendor.dailyActive : false,
         lastUpdated: vendor.updateDate || null,
         approved: vendor.approved || false
     };
