@@ -21,7 +21,6 @@ const UpdateLocation = (props:any) => {
     const tweetUrl = `${VENDOR_API}/tweets`;
 
     const setTweetAndDates = (tweet: any) => {
-        setSearchedLocationLookUp({});
         const filteredLocations = tweet.locations.filter((location:any) => !location.overridden)
         const locationInfo = filteredLocations.reduce((acc:any, location:any) => {
             acc[location._id] = {startDate: moment(location.startDate).toDate(), endDate: moment(location.endDate).toDate()};
@@ -71,6 +70,11 @@ const UpdateLocation = (props:any) => {
 
     const enterNewLocation = () => {
         setSearchedLocationLookUp({...searchedLocationLookUp, newLocation: { startDate: moment(tweet.date).toDate(), endDate: moment(tweet.date).add(1, 'days').toDate(), truckNum: 1 }})
+    }
+
+    const dateValid = (id:string) => {
+        const {startDate, endDate} = searchedLocationLookUp[id];
+        return startDate < endDate;
     }
 
     const goToAllTweets = () => {
@@ -150,7 +154,6 @@ const UpdateLocation = (props:any) => {
                             showTimeSelect
                             dateFormat="MMM d, yyyy h:mm aa"
                             minDate={moment(tweet.date).toDate()}
-                            maxDate={searchedLocationLookUp[id].endDate}
                         />
                     </td>
                 </tr>
@@ -162,10 +165,11 @@ const UpdateLocation = (props:any) => {
                             onChange={endDate => setLocationInfoByID({endDate}, id)}
                             showTimeSelect
                             dateFormat="MMM d, yyyy h:mm aa"
-                            minDate={searchedLocationLookUp[id].startDate}
+                            minDate={moment(tweet.date).toDate()}
                         />
                     </td>
                 </tr>
+                {!dateValid(id) && <tr><td colSpan={2}><i>Problem! Start Date After End Date</i></td></tr>}
                 <tr>
                     <td colSpan={2}>
                         {/* TODO: possibly restrict based on region of vendor */}
@@ -183,7 +187,7 @@ const UpdateLocation = (props:any) => {
                 <tr>
                     <td colSpan={2}>
                         <button
-                            disabled={!get(searchedLocationLookUp, `${id}.formatted_address`)}
+                            disabled={!get(searchedLocationLookUp, `${id}.formatted_address`) && !dateValid(id)}
                             onClick={() => saveSearchedLocation(id, truckNum)}
                         >
                             { id === 'newLocation' ? 'Add' : 'Update'} the location and dates for Truck #{truckNum}
@@ -228,6 +232,7 @@ const UpdateLocation = (props:any) => {
                                         <tr>
                                             <td>
                                                 <button
+                                                    disabled={!dateValid(location._id)}
                                                     onClick={() => saveDatesOnly(location._id)}
                                                 >
                                                     Update the start and end date only for Truck #{location.truckNum}
