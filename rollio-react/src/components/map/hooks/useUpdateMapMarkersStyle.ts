@@ -4,31 +4,30 @@ import { useEffect } from 'react';
 // HOOKS
 import useGetAppState from '../../common/hooks/use-get-app-state';
 
-// 
+//
 const useUpdateMapMarkersStyle = (props: any) => {
-    const {         
+    const {
         singleVendorMarkers,
         groupVendorMarkers
     } = props;
     const state = useGetAppState();
 
-    const currentlySelected = state.regionMap.currentlySelected;
-    const previouslySelected = state.regionMap.previouslySelected;
+    const currentlySelectedIds = state.regionMap.currentlySelected.map((currentlySelected:any) => currentlySelected.id);
 
     useEffect(() => {
         // Removes selected class of a previously selected vendor if there's no currently selected ID
-        if (previouslySelected.isSingle !== null) {
-            if (previouslySelected.isSingle && singleVendorMarkers && singleVendorMarkers[previouslySelected.id] && previouslySelected.is !== currentlySelected.id) {
+        state.regionMap.previouslySelected.forEach((previouslySelected:any) => {
+            if (previouslySelected.isSingle && singleVendorMarkers && singleVendorMarkers[previouslySelected.id] && !currentlySelectedIds.includes(previouslySelected.id)) {
                 singleVendorMarkers[previouslySelected.id]._element.classList.remove('map__marker_selected');
                 singleVendorMarkers[previouslySelected.id]._element.classList.add('map__marker_default');
-            } else if (!previouslySelected.isSingle && groupVendorMarkers && groupVendorMarkers[previouslySelected.id] && previouslySelected.is !== currentlySelected.id) {
+            } else if (!previouslySelected.isSingle && groupVendorMarkers && groupVendorMarkers[previouslySelected.id] && !currentlySelectedIds.includes(previouslySelected.id)) {
                 groupVendorMarkers[previouslySelected.id]._element.classList.remove('map__marker_selected');
                 groupVendorMarkers[previouslySelected.id]._element.classList.add('map__marker_default');
             }
-        }
+        });
 
         // Adds selected class to a selected vendor if it exists
-        if (currentlySelected.isSingle !== null) {
+        state.regionMap.currentlySelected.forEach((currentlySelected:any) => {
             if (currentlySelected.isSingle && singleVendorMarkers && singleVendorMarkers[currentlySelected.id]) {
                 singleVendorMarkers[currentlySelected.id]._element.classList.remove('map__marker_default');
                 singleVendorMarkers[currentlySelected.id]._element.classList.add('map__marker_selected');
@@ -36,8 +35,8 @@ const useUpdateMapMarkersStyle = (props: any) => {
                 groupVendorMarkers[currentlySelected.id]._element.classList.remove('map__marker_default');
                 groupVendorMarkers[currentlySelected.id]._element.classList.add('map__marker_selected');
             }
+        });
 
-        }
     })
 }
 

@@ -1,14 +1,15 @@
+import { isEmpty } from 'lodash';
+
 // CONSTANTS
 import {
-    RECIEVE_REGION_DATA,
-    RECIEVE_VENDOR_DATA,
-    RECIEVE_ALL_VENDORS,
+    RECEIVE_REGION_DATA,
+    RECEIVE_VENDOR_DATA,
+    RECEIVE_ALL_VENDORS,
     CLEAR_SELECTED_VENDOR,
     RECEIVE_ALL_REGIONS,
     SET_VENDORS_ALL,
     POST_VENDOR_COMMENT,
     UPDATE_VENDOR,
-    UPDATE_DAILY_ACTIVE_VENDORS,
     RECIEVE_VENDOR_LOCATION_ACCURACY
 } from "../constants/constants"
 
@@ -18,7 +19,6 @@ import { DataDefaultState } from "./interfaces";
 const defaultState:DataDefaultState = {
     regionID: '',
     regionName: '',
-    dailyActiveVendors: new Set(),
     regionCoordinates: {
         lat: null,
         long: null
@@ -45,8 +45,11 @@ const defaultState:DataDefaultState = {
         tweetHistory: [],
         comments: [],
         creditCard: 'u',
-        location: {
+        numTrucks: 1,
+        locations: [
+            {
             id: '',
+            vendorID: '',
             coordinates: { lat: null, long: null },
             address: '',
             neighborhood: '',
@@ -54,8 +57,12 @@ const defaultState:DataDefaultState = {
             matchMethod: '',
             tweetID: null,
             accuracy: 0,
-        },
-        isActive: false,
+            startDate: null,
+            endDate: null,
+            truckNum: 1,
+            overridden: true
+        }
+        ],
         lastUpdated: null,
         approved: false
     },
@@ -67,17 +74,17 @@ const defaultState:DataDefaultState = {
 
 export function dataReducer(state = defaultState, action: any) {
     switch (action.type) {
-    case RECIEVE_REGION_DATA:
+    case RECEIVE_REGION_DATA:
         return {
             ...state,
             ...action.payload
         }
-    case RECIEVE_VENDOR_DATA:
+    case RECEIVE_VENDOR_DATA:
         return {
             ...state,
-            selectedVendor: { ...state.selectedVendor, ...action.payload }
+            selectedVendor: { ...state.selectedVendor, ...action.payload },
         }
-    case RECIEVE_ALL_VENDORS:
+    case RECEIVE_ALL_VENDORS:
         return {
             ...state,
             vendorsAll: { ...action.payload }
@@ -85,7 +92,7 @@ export function dataReducer(state = defaultState, action: any) {
     case CLEAR_SELECTED_VENDOR:
         return {
             ...state,
-            selectedVendor: { ...defaultState.selectedVendor, location: { ...defaultState.selectedVendor.location, coordinates: { lat: null, long: null } } }
+            selectedVendor: { ...defaultState.selectedVendor }
         }
     case RECEIVE_ALL_REGIONS:
         return {
@@ -114,25 +121,12 @@ export function dataReducer(state = defaultState, action: any) {
                 }
             }
         }
-    // case SET_PREVIOUSLY_SELECTED_VENDOR: 
-    //     return {
-    //         ...state,
-    //         previouslySelected: {
-    //             ...state.previouslySelected,
-    //             id: action.payload.id
-    //         }
-    //     }
     case UPDATE_VENDOR:
         const vendorsAll = { ...state.vendorsAll }
-
+        const currentVendorData = vendorsAll[action.payload.vendorID] || {};
         return {
             ...state,
-            vendorsAll: { ...vendorsAll, [action.payload.vendorID]: { ...vendorsAll[action.payload.vendorID], location: action.payload.location, isActive: action.payload.isActive } }
-        }
-    case UPDATE_DAILY_ACTIVE_VENDORS:
-        return {
-            ...state,
-            dailyActiveVendors: state.dailyActiveVendors.add(action.payload.vendorID)
+            vendorsAll: { ...vendorsAll, [action.payload.vendorID]: { ...currentVendorData, ...action.payload } }
         }
     case POST_VENDOR_COMMENT:
         return {
@@ -151,7 +145,7 @@ export function dataReducer(state = defaultState, action: any) {
             selectedVendor: {
                 ...state.selectedVendor,
                 location: {
-                    ...state.selectedVendor.location,
+                    ...state.selectedVendor.locations,
                     accuracy: action.payload.locationAccuracy
                 }
             }

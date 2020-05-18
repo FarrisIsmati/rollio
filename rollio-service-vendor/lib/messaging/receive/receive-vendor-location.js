@@ -11,10 +11,6 @@ const logger = require('../../log/index')('messaging/receive/receive-vendor-loca
 const { io } = require('../../sockets/index');
 
 const updateTweet = async (payload, region, vendor) => {
-  // Formating
-  const tweet = { ...payload };
-  delete tweet.twitterID;
-
   const params = {
     regionID: region._id, vendorID: vendor._id, field: 'tweetHistory', payload,
   };
@@ -56,78 +52,54 @@ const updateLocation = async (payload, region, vendor) => {
   }
 };
 
-const setVendorActive = async (region, vendor) => {
-  // Add vendorID to dailyActiveVendorIDs
-  try {
-    await regionOps.incrementRegionDailyActiveVendorIDs(
-      { regionID: region._id, vendorID: vendor._id },
-    );
-  } catch (err) {
-    logger.error(err);
-  }
-
-  // Set daily active of vendor to true AND reset consecutive days inactive of vendor
-  try {
-    await vendorOps.updateVendorSet({
-      regionID: region._id, vendorID: vendor._id, field: ['dailyActive', 'consecutiveDaysInactive'], data: [true, -1],
-    });
-  } catch (err) {
-    logger.error(err);
-  }
-};
-
 const receiveTweets = async () => {
   mq.receive(config.AWS_SQS_PARSED_TWEETS, async (msg) => {
     const message = JSON.parse(msg.content);
-    logger.info('Recieved tweet');
+    logger.info('Received tweet');
     logger.info(msg.content);
 
     const region = await regionOps.getRegionByName(config.REGION);
     const vendor = await vendorOps.getVendorByTwitterID(region._id, message.twitterID);
-    // Formating
+    const vendorID = vendor._id;
+
+    const {
+      tweet: text, tweetID, twitterID, date, match, newLocations: tweetLocations,
+    } = message;
+
     const tweetPayload = {
-      text: message.tweet,
-      tweetID: message.tweetID,
-      twitterID: message.twitterID,
-      date: message.date,
+      text,
+      tweetID,
+      twitterID,
+      date,
     };
 
-    let newLocation = null;
+    let allLocations = [];
+    let newLocations = [];
 
-    if (message.match) {
-      newLocation = await vendorOps.createLocation({ ...message.location, tweetID: message.tweetID });
-      tweetPayload.location = newLocation._id;
-      await updateLocation(newLocation._id, region, vendor);
-      await setVendorActive(region, vendor);
+    if (match) {
+      newLocations = await Promise.all(tweetLocations.map(location => vendorOps.createLocationAndCorrectConflicts({ ...location, tweetID, vendorID })));
+      await Promise.all(newLocations.map(newLocation => updateLocation(newLocation._id, region, vendor)));
+      allLocations = await vendorOps.getVendorLocations(vendorID);
     }
 
     try {
-      await updateTweet(tweetPayload, region, vendor);
+      await updateTweet({ ...tweetPayload, locations: newLocations.map(loc => loc._id), usedForLocation: !!newLocations.length }, region, vendor);
       if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') { console.log(tweetPayload); }
 
-      const tweetPayloadLocationUpdate = { ...tweetPayload };
-
-      // Change location from id to full location body
-      if (newLocation) {
-        tweetPayloadLocationUpdate.location = newLocation;
-      }
-      // Send the tweetPayload to all subscribed instances
-      const redisTwitterChannelMessage = {
-        serverID: config.SERVER_ID,
-        tweetPayload: tweetPayloadLocationUpdate,
-        vendorID: vendor._id,
-        regionID: region._id,
+      const twitterData = {
+        tweet: tweetPayload, newLocations, allLocations, vendorID, regionID: region._id,
       };
 
       try {
-        pub.publish(config.REDIS_TWITTER_CHANNEL, JSON.stringify(redisTwitterChannelMessage));
+        // Send the tweetPayload to all subscribed instances
+        pub.publish(config.REDIS_TWITTER_CHANNEL, JSON.stringify({ ...twitterData, messageType: 'NEW_LOCATIONS', serverID: config.SERVER_ID }));
       } catch (err) {
         logger.error(err);
       }
 
       // eslint-disable-next-line max-len
       // Send tweet data, location data, only, everything else will be updated on a get req (comments, ratings, etc)
-      io.sockets.emit('TWITTER_DATA', { tweet: tweetPayloadLocationUpdate, vendorID: vendor._id, regionID: region._id });
+      io.sockets.emit('NEW_LOCATIONS', twitterData);
     } catch (err) {
       logger.error('Failed to emit socket: twitter payload');
     }
@@ -143,6 +115,5 @@ const receiveTweets = async () => {
 
 module.exports = {
   receiveTweets,
-  setVendorActive,
   updateLocation,
 };

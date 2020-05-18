@@ -1,3 +1,6 @@
+import moment from "moment";
+import { get, toNumber } from "lodash";
+
 interface LocationProp {
     location: {
         pathname: string
@@ -11,4 +14,23 @@ export const getRouteIds = (props:LocationProp) => {
         regionName: route[1],
         vendorId: route[3]
     }
+}
+
+export const isLocationActive = (location:any) => {
+    return moment().isBefore(location.endDate) && moment().isAfter(location.startDate) && !location.overridden
+};
+
+export const isLocationActiveOrWillBeActive = (location:any) => {
+    return moment().isBefore(location.endDate) && !location.overridden
+};
+
+
+export const isActive = (vendor:any) => {
+    const { locations, approved } = vendor;
+    return approved && locations.some(isLocationActive)
+};
+
+export const getCurrentTruckLocation = (vendorID: string, truckNum: number, vendorsAll: any) => {
+    const locations = get(vendorsAll, `${vendorID}.locations`, []);
+    return locations.find((location:any) => toNumber(truckNum) === toNumber(location.truckNum) && isLocationActive(location))
 }

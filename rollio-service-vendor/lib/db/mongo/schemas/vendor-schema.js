@@ -1,6 +1,9 @@
 // DEPENDENCIES
+const moment = require('moment');
 const mongoose = require('../index');
 const mUtilities = require('./utils');
+
+const { ObjectId } = mongoose.Schema.Types;
 
 // MENU SCHEMA
 const MenuSchema = new mongoose.Schema({
@@ -19,6 +22,7 @@ const MenuSchema = new mongoose.Schema({
 
 // LOCATION SCHEMA
 const LocationSchema = new mongoose.Schema({
+  vendorID: { type: ObjectId, required: true },
   locationDate: { type: Date, default: Date.now, required: true },
   accuracy: { type: Number, default: 0, required: true },
   address: { type: String, required: true },
@@ -27,27 +31,38 @@ const LocationSchema = new mongoose.Schema({
   // possibly replace this with a reference to the tweet in the Tweet collection
   // possibly make required if matchMethod is Tweet Location or Manual from Tweet
   tweetID: { type: String, required: false },
+  startDate: { type: Date, default: Date.now },
+  endDate: {
+    type: Date,
+    default() { return moment(new Date()).endOf('day').toDate(); },
+  },
   matchMethod: {
     type: String, enum: ['Tweet location', 'User Input', 'Manual from Tweet'], default: 'Tweet location', required: false,
   },
-  overriden: { type: Boolean, default: false },
+  overridden: { type: Boolean, default: false },
   coordinates: {
-    type: [{ type: Number, required: true }],
-    validate: [
-      { validator: val => val.length === 2, msg: 'There should be exactly two coordinates (lat and long)' },
-      {
-        validator: (val) => {
-          const lat = val[0];
-          const long = val[1];
-          const latInCorrectRange = lat >= -90 && lat <= 90;
-          const longInCorrectRange = long >= -180 && long <= 180;
-          return latInCorrectRange && longInCorrectRange;
+    lat: {
+      type: Number,
+      required: true,
+      validate: [
+        {
+          validator: val => val >= -90 && val <= 90,
+          msg: 'Latitude is not in the correct range',
         },
-        msg: 'Latitude and longitude are not in the correct ranges',
-      },
-    ],
-    required: false,
+      ],
+    },
+    long: {
+      type: Number,
+      required: true,
+      validate: [
+        {
+          validator: val => val >= -180 && val <= 180,
+          msg: 'Longitude is not in the correct range',
+        },
+      ],
+    },
   },
+  truckNum: { type: Number, default: 1 },
 });
 
 // TWEET SCHEMA
@@ -55,8 +70,8 @@ const TweetSchema = new mongoose.Schema({
   tweetID: { type: String, required: true },
   date: { type: Date, required: true },
   text: { type: String, required: true },
-  location: { type: mongoose.Schema.Types.ObjectId, ref: 'Location', required: false },
-  vendorID: { type: mongoose.Schema.Types.ObjectId, ref: 'Vendor', required: true },
+  locations: [{ type: ObjectId, ref: 'Location', required: false }],
+  vendorID: { type: ObjectId, ref: 'Vendor', required: true },
   usedForLocation: { type: Boolean, default: false },
 });
 
@@ -81,6 +96,7 @@ const VendorSchema = new mongoose.Schema({
   creditCard: { type: String, required: true, enum: ['y', 'n', 'u'] },
   email: { type: String, required: false },
   website: { type: String, required: false },
+  numTrucks: { type: Number, default: 1 },
   phoneNumber: {
     type: String,
     validate: [number => mUtilities.phoneNumberValidate(number), 'Not a valid phone number.'],
@@ -104,21 +120,19 @@ const VendorSchema = new mongoose.Schema({
   yelpId: { type: String, required: false },
   yelpRating: { type: String, required: false },
   twitterID: { type: String, required: false },
-  twitterUserName: { type: String, required: false },
-  twitterHandle: { type: String, required: false },
-  tweetHistory: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tweet' }],
-  locationHistory: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Location' }],
-  userLocationHistory: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Location' }],
+  tweetHistory: [{ type: ObjectId, ref: 'Tweet' }],
+  locationHistory: [{ type: ObjectId, ref: 'Location' }],
+  userLocationHistory: [{ type: ObjectId, ref: 'Location' }],
   comments: {
     type: [CommentSchema],
     required: false,
   },
   // Means truck was active at some point in the current day
-  dailyActive: { type: Boolean, required: true },
+  // TODO: probably get rid of consecutiveDaysInactive, too
   consecutiveDaysInactive: { type: Number, required: true },
   // YOU NEED TO DEFINE HOW YOU DEFINE CATEGORIES
   categories: { type: [{ type: String, required: true }], required: true },
-  regionID: { type: mongoose.Schema.Types.ObjectId, required: true },
+  regionID: { type: ObjectId, required: true },
   date: { type: Date, default: Date.now },
   updateDate: { type: Date, default: Date.now },
   approved: { type: Boolean, default: false },

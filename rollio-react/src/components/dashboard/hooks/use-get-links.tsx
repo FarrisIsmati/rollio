@@ -7,6 +7,9 @@ import VendorSelectorLink from '../dashboard-link';
 // HOOKS
 import useGetAppState from '../../common/hooks/use-get-app-state';
 
+// UTILS
+import {isActive} from "../../../util";
+
 // Get data from redux state
 const useGetLinks = () => {
     const state = useGetAppState();
@@ -20,10 +23,10 @@ const useGetLinks = () => {
       // Links are dependent on menu state
       // May be changed if used else where than single menu
       if (dashboardVendorsDisplayState === 'active') {
-        list = allVendors.filter((vendor:any) => vendor.isActive);
+        list = allVendors.filter(isActive);
       } else if (dashboardVendorsDisplayState === 'all') {
-        list = allVendors;
-      } 
+        list = allVendors.filter((vendor:any) => vendor.approved);
+      }
       links = list.sort((a:any, b:any) => (a.name > b.name) ? 1 : -1).map((vendor:any) => {
         return <VendorSelectorLink name={vendor.name} id={vendor.id} img={vendor.profileImageLink} key={vendor.id}/>
       })

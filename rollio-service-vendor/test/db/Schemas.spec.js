@@ -1,5 +1,6 @@
 // DEPENDENCIES
 const chai = require('chai');
+const moment = require('moment');
 const { ObjectId } = require('mongoose').Types;
 const mongoose = require('../../lib/db/mongo/mongoose/index');
 
@@ -29,22 +30,44 @@ describe('Schemas', () => {
   describe('Location Schema', () => {
     it('expect to be invalid if there are more than three values in the coordinates field', (done) => {
       const coordinates = new Location({
-        coordinates: [3.42424, -42.1414, 3.4114],
+        coordinates: { lat: 3.42424 },
       });
       coordinates.validate((err) => {
-        expect(err.errors.coordinates).to.exist;
-        expect(err.errors.coordinates.message).to.equal('There should be exactly two coordinates (lat and long)');
+        expect(err.errors['coordinates.long']).to.exist;
+        expect(err.errors['coordinates.long'].message).to.equal('Path `coordinates.long` is required.');
         done();
       });
     });
 
     it('expect to be invalid if the coordinates are out of the lat long ranges', (done) => {
       const coordinates = new Location({
-        coordinates: [5000, 5000],
+        coordinates: { lat: 5000, long: 5000 },
       });
       coordinates.validate((err) => {
-        expect(err.errors.coordinates).to.exist;
-        expect(err.errors.coordinates.message).to.equal('Latitude and longitude are not in the correct ranges');
+        expect(err.errors['coordinates.long']).to.exist;
+        expect(err.errors['coordinates.long'].message).to.equal('Longitude is not in the correct range');
+        expect(err.errors['coordinates.lat']).to.exist;
+        expect(err.errors['coordinates.lat'].message).to.equal('Latitude is not in the correct range');
+        done();
+      });
+    });
+
+    it('expect default startDate, endDate, and locationDate to be set correctly', (done) => {
+      const newLocation = new Location({ vendorID: mongoose.Types.ObjectId(), address: '123 street', coordinates: { lat: 5, long: 5 } });
+
+      newLocation.save((err, location) => {
+        if (err) {
+          // Error won't show without this log
+          // eslint-disable-next-line no-console
+          console.log(err);
+        }
+
+        const { locationDate, startDate, endDate } = location;
+        const endOfTomorrow = moment(new Date()).endOf('day').toDate();
+        const currentDate = moment().format();
+        expect(endDate).to.be.eql(endOfTomorrow);
+        expect(moment(locationDate).format()).to.be.eql(currentDate);
+        expect(moment(startDate).format()).to.be.eql(currentDate);
         done();
       });
     });

@@ -43,30 +43,4 @@ module.exports = {
         return err;
       });
   },
-  incrementRegionDailyActiveVendorIDs(payload) {
-    const { regionID, regionName, vendorID } = payload;
-    if ((!regionID && !regionName) || !vendorID) {
-      const err = new Error('Must include a regionID or regionName & vendorID properties in params argument');
-      logger.error(err);
-      return err;
-    }
-
-    // If there is no id provided you can use a region name to find a region
-    let id = { _id: regionID };
-    if (!regionID) {
-      id = { name: regionName };
-    }
-    return Region.updateOne(id, {
-      $addToSet: { dailyActiveVendorIDs: vendorID },
-    })
-      .then(async (res) => {
-        await redisClient.hdelAsync('region', `q::method::GET::path::/${regionID}`);
-        return res;
-      })
-      .catch((err) => {
-        const errMsg = new Error(err);
-        logger.error(errMsg);
-        return err;
-      });
-  },
 };

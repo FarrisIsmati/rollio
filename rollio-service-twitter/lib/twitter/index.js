@@ -50,7 +50,9 @@ const twitter = {
       const parsedTweet = await tweetParser.scanAddress(formattedTweet);
       logger.info('Received Tweet');
       logger.info(parsedTweet);
-      await sendParsedTweet(parsedTweet);
+      // TODO: Fix later
+      //  this is a temporary hack until tweetParser can decipher multiple locations from one tweet
+      await sendParsedTweet({ ...parsedTweet, newLocations: [parsedTweet.location], location: undefined });
     });
 
     // Exponential backoff upon failure of stream up to 8 retries before shutting down

@@ -1,6 +1,7 @@
 // DEPENDENCIES
 import axios, { AxiosResponse, AxiosError } from 'axios';
 import moment from 'moment';
+import { isEqual } from 'lodash';
 
 // ENV
 import { VENDOR_API } from '../../config';
@@ -9,18 +10,18 @@ import { VENDOR_API } from '../../config';
 import {
     FETCH_VENDOR_DATA,
     FETCH_VENDOR_DATA_SUCCESS,
-    RECIEVE_VENDOR_DATA,
+    RECEIVE_VENDOR_DATA,
 
     FETCH_REGION_DATA,
     FETCH_REGION_DATA_SUCCESS,
-    RECIEVE_REGION_DATA,
+    RECEIVE_REGION_DATA,
 
     FETCH_ALL_VENDORS,
     FETCH_ALL_VENDORS_SUCCESS,
-    RECIEVE_ALL_VENDORS,
+    RECEIVE_ALL_VENDORS,
 
     CLEAR_SELECTED_VENDOR,
-    
+
     FETCH_ALL_REGIONS,
     FETCH_ALL_REGIONS_SUCCESS,
     RECEIVE_ALL_REGIONS,
@@ -47,65 +48,47 @@ import {
     VendorDataAsyncPayload,
     RegionDataAsyncPayload,
     UpdateVendorPayload,
-    UpdateDailyActiveVendorsPayload,
     SelectVendorAsyncPayload,
     SetVendorsAllPayload,
-    updateVendorLocationAccuracyPayload
+    UpdateVendorLocationAccuracyPayload,
+    UpdateDailyActiveVendorsPayload 
 } from './interfaces';
 import {
-    MapDefaultState
+    MapDefaultState, VendorCard
 } from '../reducers/interfaces'
+import { isLocationActive, isLocationActiveOrWillBeActive } from "../../util";
 
 // -------
 // VENDOR PROFILE
 // -------
 
 // Gets the detailed set of vendor profile data
-export function recieveVendorData(vendor:any) {
-    let location = null;
-    // If the vendor is active set its location
-    if (vendor.dailyActive) {
-        location = vendor.locationHistory[vendor.locationHistory.length - 1];
-    }
+export function receiveVendorData(vendor:any) {
+    const locations = vendor.locationHistory.filter(isLocationActiveOrWillBeActive);
 
     // If an empty object is passed as an arg then reset all data
-    const profile = {
-        categories: vendor.categories ? vendor.categories : '',
-        comments: vendor.comments ? vendor.comments : [],
-        creditCard: vendor.creditCard ? vendor.creditCard : '',
-        description: vendor.description ? vendor.description : '',
-        email: vendor.email ? vendor.email : '',
-        id: vendor._id ? vendor._id : '',
-        location: vendor.dailyActive ? location : {
-            id: "",
-            coordinates: {
-                lat: null,
-                long: null
-            },
-            address: "",
-            neighborhood: "",
-            municipality: "",
-            matchMethod: "",
-            tweetID: null,
-            accuracy: 0
-        },
-        name: vendor.name ?  vendor.name : '',
-        phoneNumber: vendor.phonenumber ? vendor.phonenumber : '',
-        profileImageLink: vendor.profileImageLink ? vendor.profileImageLink : '',
-        bannerImageLink: vendor.bannerImageLink ? vendor.bannerImageLink : '',
-        price: vendor.price ? vendor.price : '',
-        rating: vendor.rating ? vendor.rating : '',
-        twitterID: vendor.twitterID ? vendor.twitterID : '',
-        twitterUserName: vendor.twitterUserName,
-        twitterHandle: vendor.twitterHandle,
-        tweetHistory: vendor.tweetHistory,
-        website: vendor.website ? vendor.website : '',
-        isActive: vendor.dailyActive ? vendor.dailyActive : false,
-        lastUpdated: vendor.updateDate ? vendor.updateDate : null
-    }
+        const profile = {
+        categories: vendor.categories || '',
+        comments: vendor.comments || [],
+        creditCard: vendor.creditCard || '',
+        description: vendor.description || '',
+        email: vendor.email || '',
+        id: vendor._id || '',
+        locations,
+        name: vendor.name || '',
+        phoneNumber: vendor.phonenumber || '',
+        profileImageLink: vendor.profileImageLink || '',
+        bannerImageLink: vendor.bannerImageLink || '',
+        price: vendor.price || '',
+        rating: vendor.rating || '',
+        twitterID: vendor.twitterID || '',
+        website: vendor.website || '',
+        lastUpdated: vendor.updateDate || null,
+        approved: vendor.approved || false
+    };
 
     return {
-        type: RECIEVE_VENDOR_DATA,
+        type: RECEIVE_VENDOR_DATA,
         payload: {
             ...profile
         }
@@ -135,13 +118,9 @@ export function fetchVendorDataAsync(payload:VendorDataAsyncPayload) {
 
     return (dispatch:any) => {
         dispatch(fetchVendorDataStart())
-        axios.get(`${VENDOR_API}/vendor/${regionId}/${vendorId}`, {
-            params: {
-              tweetLimit: 3
-            }
-          })
+        axios.get(`${VENDOR_API}/vendor/${regionId}/${vendorId}`)
             .then((res: AxiosResponse<any>) => {
-                dispatch(recieveVendorData(res.data));
+                dispatch(receiveVendorData(res.data));
                 dispatch(fetchVendorDataSuccess());
                 // Any function you want to run after successful get of all data
                 if (cbSuccess) {
@@ -174,7 +153,10 @@ const getRegionMapVendorData = (args: {stateRegionMap:MapDefaultState , vendorID
     // Set vendor in region map to active
     let regionMapIDRes:string = regionMapID;
     let isSingle:boolean = true;
-    if (!stateRegionMap.vendorsDisplayedSingle[regionMapID]) {
+    if (stateRegionMap.vendorsDisplayedGroup[regionMapID]) {
+        regionMapIDRes = regionMapID;
+        isSingle = false;
+    } else if (!stateRegionMap.vendorsDisplayedSingle[regionMapID]) {
         const vendorsDisplayedGroup = stateRegionMap.vendorsDisplayedGroup;
         let groupId:string = '';
         // Label the loop to break out of the nested loop instead of writing a function for the loop
@@ -192,7 +174,6 @@ const getRegionMapVendorData = (args: {stateRegionMap:MapDefaultState , vendorID
         }
         regionMapIDRes = groupId;
     }
-
     return {
         regionMapID : regionMapIDRes,
         isSingle
@@ -211,36 +192,38 @@ export function selectVendorAsync(payload:SelectVendorAsyncPayload) {
                 const state = getState();
 
                 const stateRegionMap = state.regionMap;
-
-                const stateRegionMapPreviouslySelectedID = state.regionMap.previouslySelected.id;
-                const stateRegionMapPreviouslySelectedIsSingle = state.regionMap.previouslySelected.isSingle;
-
-                const stateRegionMapCurrentID = state.regionMap.currentlySelected.id;
-
+                const { previouslySelected, currentlySelected } = state.regionMap;
                 dispatch(setIsVendorSelected(true));
 
                 // Set current vendor to active
                 dispatch(setVendorsAll({id: payload.vendorId, selected: true}));
+                const activeTrucksNumbers = state.data.vendorsAll[payload.vendorId].locations.filter(isLocationActive).map((location:any) => location.truckNum);
+                const newSelectedVendorInfo = activeTrucksNumbers.map((truckNum:number) => {
+                    const vendorID = `${payload.vendorId}-${truckNum}`;
+                    // Get regionVendorMap data whether it's in a group or not and the ID of the vendor or the group
+                    const { isSingle, regionMapID } = getRegionMapVendorData({
+                        stateRegionMap,
+                        vendorID: vendorID,
+                        regionMapID: vendorID
+                    });
+                    return {vendorID, isSingle, regionMapID};
+                });
+                const regionMapIDs = newSelectedVendorInfo.map((x:any) => x.regionMapID);
+                const currentlySelectedMapIDs = currentlySelected.map((x:any) => x.id);
 
-                // Get regionVendorMap data whether it's in a group or not and the ID of the vendor or the group
-                const { isSingle, regionMapID } = getRegionMapVendorData({
-                    stateRegionMap, 
-                    vendorID: payload.vendorId, 
-                    regionMapID: payload.vendorId
-                })
-
-                if (stateRegionMapCurrentID !== regionMapID) {
-                    dispatch(setCurrentlySelectedRegionMap({ id: regionMapID, isSingle }));
+                if (!isEqual(regionMapIDs, currentlySelectedMapIDs)) {
+                    dispatch(setCurrentlySelectedRegionMap(newSelectedVendorInfo.map((x:any) => ({id: x.regionMapID, isSingle: x.isSingle}))));
                 }
-
-                // Set the new region map vendor/group status to selected
-                dispatch(setRegionMapVendor({id: regionMapID, vendorID: payload.vendorId, isSingle, data: { selected: true }}));
-
-                // If there is a stateRegionMapID and the same case as above
-                if (stateRegionMapPreviouslySelectedID && stateRegionMapPreviouslySelectedID !== regionMapID) {
+                previouslySelected.filter((x:any) => regionMapIDs.includes(x.id)).forEach((x:any) => {
                     // Set previous region map vendor to unselected
-                    dispatch(setRegionMapVendor({id: stateRegionMapPreviouslySelectedID, vendorID: payload.vendorId, isSingle: stateRegionMapPreviouslySelectedIsSingle, data: { selected: false }}));
-                }
+                    const {id, isSingle} = x;
+                    dispatch(setRegionMapVendor({id, isSingle, data: { selected: false }}));
+                })
+                newSelectedVendorInfo.forEach((marker:any) => {
+                    // Set the new region map vendor/group status to selected
+                    const {regionMapID, vendorID, isSingle} = marker;
+                    dispatch(setRegionMapVendor({id: regionMapID, vendorID, isSingle, data: { selected: true }}));
+                })
             }
         }))
     }
@@ -257,22 +240,27 @@ export function deSelectVendor(vendorID:string, cb:()=>void = ()=>{}) {
 
         dispatch(setIsVendorSelected(false));
 
-        if (stateRegionMapCurrentlySelectedID) {
+        if (state.regionMap.currentlySelected.length) {
             const { isSingle, regionMapID } = getRegionMapVendorData({
-                stateRegionMap, 
-                vendorID: vendorID, 
+                stateRegionMap,
+                vendorID,
                 regionMapID: stateRegionMapCurrentlySelectedID
             });
 
-            // Set the new region map vendor/group status to selected
-            dispatch(setRegionMapVendor({id: regionMapID, vendorID, isSingle, data: { selected: false }}));
-            
+            // Set the new region map vendor/group status to not selected
+            state.regionMap.currentlySelected.forEach((selected:any) => {
+                const {id, isSingle} = selected;
+                dispatch(setRegionMapVendor({id, vendorID, isSingle, data: { selected: false }}));
+            })
+
             // Set previously selected vendor
-            dispatch(setPreviouslySelectedRegionMap({ id: stateRegionMapCurrentlySelectedID, isSingle }));
+            dispatch(setPreviouslySelectedRegionMap(state.regionMap.currentlySelected));
 
             // Remove the currently selected vendor
-            dispatch(setCurrentlySelectedRegionMap({ id: '', isSingle: null }));
+            // dispatch(setCurrentlySelectedRegionMap([{ id: '', isSingle: null }]));
+            dispatch(setCurrentlySelectedRegionMap([]));
         }
+
 
         // Any additional code to execute after vendor is deselected
         cb();
@@ -312,7 +300,7 @@ function updateVendorLocationAccuracyStart() {
     }
 }
 
-export function updateVendorLocationAccuracyAsync(payload:updateVendorLocationAccuracyPayload) {
+export function updateVendorLocationAccuracyAsync(payload:UpdateVendorLocationAccuracyPayload) {
     const { amount, locationID, regionID, vendorID, cb, cbSuccess } = payload;
 
     return (dispatch:any) => {
@@ -380,21 +368,26 @@ export function requestPostVendorComment(payload:any) {
         })
 }
 
+// Add a vendorID to dailyActiveVendors
+export function updateDailyActiveVendors(payload: UpdateDailyActiveVendorsPayload) {
+    return {
+        type: UPDATE_DAILY_ACTIVE_VENDORS,
+        payload
+    }
+}
+
+
 // -----------
 // REGION DATA
 // -----------
 
-export function recieveRegionData(region:any) {
+export function receiveRegionData(region:any) {
     return {
-        type: RECIEVE_REGION_DATA,
+        type: RECEIVE_REGION_DATA,
         payload: {
             regionId: region._id,
             regionName: region.name,
-            dailyActiveVendors: new Set(region.dailyActiveVendorIDs),
-            regionCoordinates: {
-                lat: region.coordinates.coordinates[0],
-                long: region.coordinates.coordinates[1]
-            },
+            regionCoordinates: region.coordinates,
             regionTimezone: region.timezone
         }
     }
@@ -423,14 +416,13 @@ function fetchRegionDataStart() {
 export function fetchRegionDataAsync(payload:RegionDataAsyncPayload) {
     const { regionName, regionId, shouldFetchVendors, cb } = payload;
     // Set route based on payload params
-    const route = regionId === '' || regionId === undefined ? `${VENDOR_API}/region/name/${regionName}` : `${VENDOR_API}/region/${regionId}`
-
+    const route = regionId ? `${VENDOR_API}/region/${regionId}` : `${VENDOR_API}/region/name/${regionName}`;
     return (dispatch:any) => {
         // Set region load status to false when fetching a new region
         dispatch(fetchRegionDataStart());
         axios.get(route)
         .then((res: AxiosResponse<any>) => {
-            dispatch(recieveRegionData(res.data));
+            dispatch(receiveRegionData(res.data));
             dispatch(fetchRegionDataSuccess());
             if ( shouldFetchVendors ) {
                 dispatch(fetchAllVendorsAsync({regionId: res.data._id}))
@@ -448,11 +440,18 @@ export function fetchRegionDataAsync(payload:RegionDataAsyncPayload) {
 // VENDOR DATA
 // -----------
 
-export function recieveAllVendors(vendors:any) {
+export function receiveAllVendors(vendorLookUp: { [key: string]: VendorCard }) {
     return {
-        type: RECIEVE_ALL_VENDORS,
+        type: RECEIVE_ALL_VENDORS,
         payload: {
-            ...vendors
+            ...Object.entries(vendorLookUp).reduce((acc, entry) => {
+                const [vendorId, vendorInfo] = entry;
+                const {locations} = vendorInfo;
+                const filteredLocations = locations.filter(isLocationActiveOrWillBeActive);
+                // @ts-ignore
+                acc[vendorId] = {...vendorInfo, locations: filteredLocations};
+                return acc;
+            }, {})
         }
     }
 }
@@ -485,7 +484,7 @@ export function fetchAllVendorsAsync(payload: any) {
         dispatch(fetchAllVendorsStart());
         axios.get(`${VENDOR_API}/vendor/${regionId}/object`)
             .then((res: AxiosResponse<any>) => {
-                dispatch(recieveAllVendors(res.data));
+                dispatch(receiveAllVendors(res.data));
                 dispatch(fetchAllVendorsSuccess());
             })
             .catch((err:AxiosError) => {
@@ -502,14 +501,6 @@ export function updateVendor(payload: UpdateVendorPayload) {
     }
 }
 
-// Add a vendorID to dailyActiveVendors
-export function updateDailyActiveVendors(payload: UpdateDailyActiveVendorsPayload) {
-    return {
-        type: UPDATE_DAILY_ACTIVE_VENDORS,
-        payload
-    }
-}
-
 // -----------
 // REGIONS DATA
 // -----------
@@ -522,7 +513,6 @@ export function receiveAllRegions(regions:any) {
         ]
     }
 }
-
 
 function fetchAllRegionsSuccess() {
     return {

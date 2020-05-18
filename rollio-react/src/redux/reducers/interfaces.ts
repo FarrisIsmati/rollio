@@ -10,9 +10,8 @@ export interface VendorCard {
     description: string,
     categories: [],
     consecutiveDaysInactive: number,
-    location: Location[] | Location | null,
+    locations: Location[],
     selected: boolean,
-    isActive: boolean,
     lastUpdated: string,
 }
 
@@ -25,6 +24,11 @@ export interface Location {
     matchMethod: string,
     tweetID: string | null,
     id: string,
+    startDate: Date | null,
+    endDate: Date | null,
+    truckNum: number | null,
+    vendorID: string,
+    overridden: Boolean
 }
 
 // Tweet
@@ -61,10 +65,10 @@ export interface VendorFull {
     tweetHistory: Tweet[],
     comments: Comment[],
     creditCard: string,
-    location: Location[] | Location | null,
-    isActive: boolean,
+    locations: Location[],
     lastUpdated: Date | null,
-    approved: boolean
+    approved: boolean,
+    numTrucks: number
 }
 
 export interface Region {
@@ -100,7 +104,6 @@ export interface Filter {
 export interface DataDefaultState {
     regionID: string,
     regionName: string,
-    dailyActiveVendors: Set<string>,
     regionCoordinates: Coordinates,
     regionTimezone: string,
     vendorsAll: { [key: string]: VendorCard },
@@ -123,18 +126,17 @@ export interface UserDefaultState {
     hasAllRequiredFields: boolean
 }
 
+interface SelectedMarker {
+    id: string,
+    isSingle: boolean|null
+}
+
 export interface MapDefaultState {
     vendorsDisplayedSingle: { [key: string]: Pin },
     vendorsDisplayedGroup: { [key: string]: GroupPin },
     activeFilters: Filter[],
-    previouslySelected: {
-        id: string,
-        isSingle: boolean|null
-    },
-    currentlySelected: {
-        id: string,
-        isSingle: boolean|null
-    }
+    previouslySelected: SelectedMarker[],
+    currentlySelected: SelectedMarker[]
 }
 
 // Async

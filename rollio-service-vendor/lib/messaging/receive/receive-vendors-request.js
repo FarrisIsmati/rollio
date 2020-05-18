@@ -9,7 +9,7 @@ const sendVendorTwitterIDs = require('../send/send-vendor-twitterid');
 const receiveVendorsRequest = () => {
   mq.receive(config.AWS_SQS_REQUEST_VENDORS, async (msg) => {
     // eslint-disable-next-line no-console
-    logger.info(`Vendors list requrest recieved: ${JSON.stringify(msg.content)}`);
+    logger.info(`Vendors list request received: ${JSON.stringify(msg.content)}`);
     const twitterServiceRequest = msg.content;
 
     // Send updated vendors list
@@ -21,5 +21,5 @@ const receiveVendorsRequest = () => {
 };
 
 module.exports = {
-  recieveRequest: receiveVendorsRequest,
+  receiveRequest: receiveVendorsRequest,
 };
