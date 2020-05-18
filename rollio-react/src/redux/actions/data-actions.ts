@@ -206,15 +206,15 @@ export function selectVendorAsync(payload:SelectVendorAsyncPayload) {
                 if (!isEqual(regionMapIDs, currentlySelectedMapIDs)) {
                     dispatch(setCurrentlySelectedRegionMap(newSelectedVendorInfo.map((x:any) => ({id: x.regionMapID, isSingle: x.isSingle}))));
                 }
-                newSelectedVendorInfo.forEach((marker:any) => {
-                    // Set the new region map vendor/group status to selected
-                    const {regionMapID, vendorID, isSingle} = marker;
-                    dispatch(setRegionMapVendor({id: regionMapID, vendorID, isSingle, data: { selected: true }}));
-                })
                 previouslySelected.filter((x:any) => regionMapIDs.includes(x.id)).forEach((x:any) => {
                     // Set previous region map vendor to unselected
                     const {id, isSingle} = x;
                     dispatch(setRegionMapVendor({id, isSingle, data: { selected: false }}));
+                })
+                newSelectedVendorInfo.forEach((marker:any) => {
+                    // Set the new region map vendor/group status to selected
+                    const {regionMapID, vendorID, isSingle} = marker;
+                    dispatch(setRegionMapVendor({id: regionMapID, vendorID, isSingle, data: { selected: true }}));
                 })
             }
         }))
