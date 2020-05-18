@@ -1,4 +1,3 @@
-// TODO: update to allow for multiple locations on one tweet!
 import useGetAppState from "../common/hooks/use-get-app-state";
 import React, { useEffect, useState } from "react";
 import { withRouter } from 'react-router';
@@ -13,29 +12,27 @@ import useAuthentication from "../common/hooks/use-authentication";
 import {Tweet, TweetDefaultState } from "./interfaces";
 import { get } from "lodash";
 
-// TODO: allow adding a new location without deleting the old one
-// set up date and time
-
 const UpdateLocation = (props:any) => {
     const [loading, setLoading] = useState<boolean>(true);
     const [tweet, setTweet] = useState<Tweet>(TweetDefaultState);
-    const [numTrucks, setNumTrucks] = useState<number>(1);
     const [searchedLocationLookUp, setSearchedLocationLookUp] = useState<any>({});
     const { user } = useGetAppState();
     const { isAuthenticated, type } = user;
     const tweetUrl = `${VENDOR_API}/tweets`;
 
     const setTweetAndDates = (tweet: any) => {
+        setSearchedLocationLookUp({});
         const filteredLocations = tweet.locations.filter((location:any) => !location.overridden)
-        filteredLocations.forEach((location:any) => {
-            const {truckNum, startDate, endDate} = location;
-            setSearchedLocationByTruckNum({startDate: moment(startDate).toDate(), endDate: moment(endDate).toDate()}, truckNum)
-        })
+        const locationInfo = filteredLocations.reduce((acc:any, location:any) => {
+            acc[location._id] = {startDate: moment(location.startDate).toDate(), endDate: moment(location.endDate).toDate()};
+            return acc;
+        }, {});
+        setSearchedLocationLookUp(locationInfo);
         setTweet({...tweet, locations: filteredLocations})
     }
 
-    const setSearchedLocationByTruckNum = (locationInfo:any, truckNum:number) => {
-        setSearchedLocationLookUp({...searchedLocationLookUp, [truckNum]: {...(searchedLocationLookUp[truckNum] || {}), ...locationInfo}})
+    const setLocationInfoByID = (locationInfo:any, id: string) => {
+        setSearchedLocationLookUp({...searchedLocationLookUp, [id]: {...(searchedLocationLookUp[id] || {}), ...locationInfo}})
     }
 
     const fetchTweet = () => {
@@ -46,7 +43,6 @@ const UpdateLocation = (props:any) => {
             headers: {'Authorization': "Bearer " + localStorage.token}
         })
             .then((res: AxiosResponse<any>) => {
-                setNumTrucks(res.data.tweet.numTrucks);
                 setTweetAndDates(res.data.tweet);
                 setLoading(false);
             }).catch((err:any) => {
@@ -73,8 +69,8 @@ const UpdateLocation = (props:any) => {
         })
     };
 
-    const addLocation = () => {
-        // TODO: think this through (!!!)
+    const enterNewLocation = () => {
+        setSearchedLocationLookUp({...searchedLocationLookUp, newLocation: { startDate: moment(tweet.date).toDate(), endDate: moment(tweet.date).add(1, 'days').toDate(), truckNum: 1 }})
     }
 
     const goToAllTweets = () => {
@@ -85,35 +81,35 @@ const UpdateLocation = (props:any) => {
         props.history.push('/login');
     };
 
-    const saveSearchedLocation = (truckNum:number) => {
+    const saveSearchedLocation = (id:string, truckNum:number) => {
         setLoading(true);
         const { date, tweetID } = tweet;
-        const locationToOverride = tweet.locations.find(location => Number(location.truckNum) === Number(truckNum));
+        const locationToOverride = tweet.locations.find(location => location._id === id);
         const data = {
             locationToOverride,
             locationDate: date,
             tweetID,
             truckNum,
-            address: searchedLocationLookUp[truckNum].formatted_address,
-            city: searchedLocationLookUp[truckNum].address_components.find((component:any) => component.types.includes('locality')).long_name,
-            coordinates: {lat: searchedLocationLookUp[truckNum].geometry.location.lat(), long: searchedLocationLookUp[truckNum].geometry.location.lng()},
-            startDate: searchedLocationLookUp[truckNum].startDate,
-            endDate: searchedLocationLookUp[truckNum].endDate
+            address: searchedLocationLookUp[id].formatted_address,
+            city: searchedLocationLookUp[id].address_components.find((component:any) => component.types.includes('locality')).long_name,
+            coordinates: {lat: searchedLocationLookUp[id].geometry.location.lat(), long: searchedLocationLookUp[id].geometry.location.lng()},
+            startDate: searchedLocationLookUp[id].startDate,
+            endDate: searchedLocationLookUp[id].endDate
         };
         postLocationUpdate(data);
     };
 
     // in the future, we might want to create a custom route to just edit locations
     // but does not seem like a priority now.  Only downside is that the old location will be 'overriden', which seems a little aggressive
-    const saveDatesOnly = (truckNum:number) => {
+    const saveDatesOnly = (locationID:string) => {
         setLoading(true);
-        const locationToOverride = tweet.locations.find(location => Number(location.truckNum) === Number(truckNum));
+        const locationToOverride = tweet.locations.find(location => location._id === locationID);
         const data = {
             locationToOverride,
             ...locationToOverride,
             _id: undefined,
-            startDate: searchedLocationLookUp[truckNum].startDate,
-            endDate: searchedLocationLookUp[truckNum].endDate
+            startDate: searchedLocationLookUp[locationID].startDate,
+            endDate: searchedLocationLookUp[locationID].endDate
         };
         postLocationUpdate(data);
     };
@@ -142,16 +138,41 @@ const UpdateLocation = (props:any) => {
         }
     }, [isAuthenticated, type]);
 
-    const searchAndSaveButton = (truckNum:number) => {
+    const searchAndSaveButton = (id:string, truckNum:number) => {
         return (
             <React.Fragment key={truckNum}>
+                <tr>
+                    <td>Start Date - Truck #{truckNum}</td>
+                    <td>
+                        <DatePicker
+                            selected={searchedLocationLookUp[id].startDate}
+                            onChange={startDate => setLocationInfoByID({startDate}, id)}
+                            showTimeSelect
+                            dateFormat="MMM d, yyyy h:mm aa"
+                            minDate={moment(tweet.date).toDate()}
+                            maxDate={searchedLocationLookUp[id].endDate}
+                        />
+                    </td>
+                </tr>
+                <tr>
+                    <td>End Date - Truck #{truckNum}</td>
+                    <td>
+                        <DatePicker
+                            selected={searchedLocationLookUp[id].endDate}
+                            onChange={endDate => setLocationInfoByID({endDate}, id)}
+                            showTimeSelect
+                            dateFormat="MMM d, yyyy h:mm aa"
+                            minDate={searchedLocationLookUp[id].startDate}
+                        />
+                    </td>
+                </tr>
                 <tr>
                     <td colSpan={2}>
                         {/* TODO: possibly restrict based on region of vendor */}
                         <Autocomplete
                             style={{width: '100%'}}
                             onPlaceSelected={(place:any) => {
-                                setSearchedLocationByTruckNum(place, truckNum);
+                                setLocationInfoByID(place, id);
                             }}
                             types={['address']}
                             placeholder={`Search for a new location for Truck #${truckNum}`}
@@ -162,10 +183,10 @@ const UpdateLocation = (props:any) => {
                 <tr>
                     <td colSpan={2}>
                         <button
-                            disabled={!get(searchedLocationLookUp, `${truckNum}.formatted_address`)}
-                            onClick={() => saveSearchedLocation(truckNum)}
+                            disabled={!get(searchedLocationLookUp, `${id}.formatted_address`)}
+                            onClick={() => saveSearchedLocation(id, truckNum)}
                         >
-                            Update the location and dates for Truck #{truckNum}
+                            { id === 'newLocation' ? 'Add' : 'Update'} the location and dates for Truck #{truckNum}
                         </button>
                     </td>
                 </tr>
@@ -174,7 +195,7 @@ const UpdateLocation = (props:any) => {
     }
 
     const contentText = !(loading || tweet) && !isAuthenticated ? 'You must be logged in' : 'Loading...';
-    const content = tweet ?
+    const content = tweet && !loading ?
         (
             <div>
                 <table>
@@ -203,41 +224,16 @@ const UpdateLocation = (props:any) => {
                                             <td>Location - Truck #{location.truckNum}</td>
                                             <td>{location.address}</td>
                                         </tr>
-                                        <tr>
-                                            <td>Start Date - Truck #{location.truckNum}</td>
-                                            <td>
-                                                <DatePicker
-                                                    selected={searchedLocationLookUp[location.truckNum].startDate}
-                                                    onChange={startDate => setSearchedLocationByTruckNum({startDate}, location.truckNum)}
-                                                    showTimeSelect
-                                                    dateFormat="MMM d, yyyy h:mm aa"
-                                                    minDate={moment(tweet.date).toDate()}
-                                                    maxDate={searchedLocationLookUp[location.truckNum].endDate}
-                                                />
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>End Date - Truck #{location.truckNum}</td>
-                                            <td>
-                                                <DatePicker
-                                                    selected={searchedLocationLookUp[location.truckNum].endDate}
-                                                    onChange={endDate => setSearchedLocationByTruckNum({endDate}, location.truckNum)}
-                                                    showTimeSelect
-                                                    dateFormat="MMM d, yyyy h:mm aa"
-                                                    minDate={searchedLocationLookUp[location.truckNum].startDate}
-                                                />
-                                            </td>
-                                        </tr>
+                                        {searchAndSaveButton(location._id, location.truckNum)}
                                         <tr>
                                             <td>
                                                 <button
-                                                    onClick={() => saveDatesOnly(location.truckNum)}
+                                                    onClick={() => saveDatesOnly(location._id)}
                                                 >
                                                     Update the start and end date only for Truck #{location.truckNum}
                                                 </button>
                                             </td>
                                         </tr>
-                                        {searchAndSaveButton(location.truckNum)}
                                         <tr>
                                             <td>
                                                 <button
@@ -264,18 +260,40 @@ const UpdateLocation = (props:any) => {
                                         <td>End Date</td>
                                         <td>N/A</td>
                                     </tr>
-                                    {searchAndSaveButton(1)}
                                 </>
                             )
+                        }
+                        {
+                            searchedLocationLookUp.newLocation &&
+                                <>
+                                    <tr>
+                                        <td><b>ADD NEW LOCATION INFO BELOW</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Truck Number</td>
+                                        <td>
+                                            <input
+                                                type='number'
+                                                onChange={e=>{setLocationInfoByID({truckNum: e.target.value}, 'newLocation')}}
+                                                value={searchedLocationLookUp.newLocation.truckNum}
+                                                min={1}
+                                                max={tweet.vendorID.numTrucks}
+                                            />
+                                        </td>
+                                    </tr>
+                                    {searchAndSaveButton('newLocation', searchedLocationLookUp.newLocation.truckNum)}
+                                </>
                         }
                     </tbody>
                 </table>
                 <div>
                     <button
-                        onClick={addLocation}
+                        onClick={enterNewLocation}
                     >
-                        Add new location
+                        Enter a new location
                     </button>
+                </div>
+                <div>
                     <button
                         onClick={goToAllTweets}
                     >
