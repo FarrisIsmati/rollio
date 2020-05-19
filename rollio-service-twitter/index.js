@@ -40,16 +40,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
 
-// // FOR TESTING ~~~
-// // eslint-disable-next-line import/newline-after-import
-// const twitter = require('./lib/twitter/index');
-// twitter.test();
-// // FOR TESTING ~~~
-
 server.listen(app.get('port'), () => {
   logger.info(`Server on port ${app.get('port')}`);
   // Request new list of vendors for twitter to listen to
   sendVendorsRequest();
+  
   // Listen for vendors list message
   receiveVendorList();
 });

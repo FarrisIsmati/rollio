@@ -10,7 +10,8 @@ import {
     SET_VENDORS_ALL,
     POST_VENDOR_COMMENT,
     UPDATE_VENDOR,
-    RECIEVE_VENDOR_LOCATION_ACCURACY
+    RECIEVE_VENDOR_LOCATION_ACCURACY,
+    ADD_TWEET_TO_SELECTED_VENDOR_TWEET_HISTORY
 } from "../constants/constants"
 
 // INTERFACES
@@ -150,6 +151,25 @@ export function dataReducer(state = defaultState, action: any) {
                 }
             }
         }
+        case ADD_TWEET_TO_SELECTED_VENDOR_TWEET_HISTORY:
+            // Logic to check if vendorID in payload is same as the currently selected vendor
+            if (action.payload.vendorID === state.selectedVendor.id) {
+                return {
+                    ...state,
+                    selectedVendor: {
+                        ...state.selectedVendor,
+                        tweetHistory: [
+                            action.payload,
+                            ...state.selectedVendor.tweetHistory.slice(0, 2)
+                        ]
+                    }
+                    
+                }
+            }
+
+            return {
+                ...state
+            }
     default:
         return state
     }

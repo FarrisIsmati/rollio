@@ -2,7 +2,6 @@
 import { useDispatch  } from 'react-redux';
 import { useEffect } from 'react';
 import uuid from 'uuid/v1';
-import moment from 'moment';
 
 // ACTIONS
 import {
@@ -30,6 +29,7 @@ const stringifyCoordinates = (coordinates: {lat:number, long:number}) => {
 // Currently only groups points if they are at the same exact coordinate
 // Only setup for initial load, not accounting for changes to the map like FILTERS YET
 const useProcessMapPoints = (props:any) => {
+    // Hooks
     const dispatch = useDispatch();
     const state = useGetAppState();
 

@@ -136,7 +136,7 @@ module.exports = {
       });
   },
   // Gets a single vendor given a regionID and vendor twitterID
-  getVendorByTwitterID(regionID, twitterID) {
+  getVendorByTwitterID(regionID, twitterID, tweetLimit = 10) {
     if (arguments.length !== 2) {
       const err = new Error('Must include a regionID and twitterID as arguments');
       logger.error(err);
@@ -146,7 +146,15 @@ module.exports = {
     return Vendor.findOne({
       regionID,
       twitterID,
-    }).populate('tweetHistory')
+    }).populate({
+      path: 'tweetHistory',
+      options: {
+        limit: tweetLimit,
+        sort: {
+          date: -1,
+        },
+      },
+    })
       .populate('locationHistory')
       .populate('userLocationHistory')
       .catch((err) => {
@@ -167,7 +175,15 @@ module.exports = {
     // Params may contain a query property
     // excludes approved by default, unless explicitly requested
     return Vendor.find({ approved: true, ...params })
-      .populate('tweetHistory')
+      .populate({
+        path: 'tweetHistory',
+        options: {
+          limit: 10,
+          sort: {
+            date: -1,
+          },
+        },
+      })
       .populate('locationHistory')
       .populate('userLocationHistory')
       .catch((err) => {

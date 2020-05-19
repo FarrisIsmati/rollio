@@ -37,6 +37,8 @@ import {
     UPDATE_DAILY_ACTIVE_VENDORS,
 
     POST_VENDOR_COMMENT,
+
+    ADD_TWEET_TO_SELECTED_VENDOR_TWEET_HISTORY,
 } from '../constants/constants'
 
 // ACTIONS
@@ -51,7 +53,8 @@ import {
     SelectVendorAsyncPayload,
     SetVendorsAllPayload,
     UpdateVendorLocationAccuracyPayload,
-    UpdateDailyActiveVendorsPayload 
+    UpdateDailyActiveVendorsPayload,
+    TweetHistoryPayload,
 } from './interfaces';
 import {
     MapDefaultState, VendorCard
@@ -66,8 +69,9 @@ import { isLocationActive, isLocationActiveOrWillBeActive } from "../../util";
 export function receiveVendorData(vendor:any) {
     const locations = vendor.locationHistory.filter(isLocationActiveOrWillBeActive);
     console.log(vendor);
+
     // If an empty object is passed as an arg then reset all data
-        const profile = {
+    const profile = {
         categories: vendor.categories || '',
         comments: vendor.comments || [],
         creditCard: vendor.creditCard || '',
@@ -122,7 +126,11 @@ export function fetchVendorDataAsync(payload:VendorDataAsyncPayload) {
 
     return (dispatch:any) => {
         dispatch(fetchVendorDataStart())
-        axios.get(`${VENDOR_API}/vendor/${regionId}/${vendorId}`)
+        axios.get(`${VENDOR_API}/vendor/${regionId}/${vendorId}`, {
+            params: {
+              tweetLimit: 3
+            }
+          })
             .then((res: AxiosResponse<any>) => {
                 dispatch(receiveVendorData(res.data));
                 dispatch(fetchVendorDataSuccess());
@@ -265,11 +273,24 @@ export function deSelectVendor(vendorID:string, cb:()=>void = ()=>{}) {
             dispatch(setCurrentlySelectedRegionMap([]));
         }
 
-
         // Any additional code to execute after vendor is deselected
         cb();
     }
 }
+
+// -------
+// TWEETS
+// -------
+
+export function addTweetToSelectedVendorTweetHistory(tweet:TweetHistoryPayload) {
+    return {
+        type: ADD_TWEET_TO_SELECTED_VENDOR_TWEET_HISTORY,
+        payload: {
+            ...tweet,
+        }
+    }
+}
+
 
 // --------
 // LOCATION ACCURACY

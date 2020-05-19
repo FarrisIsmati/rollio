@@ -112,3 +112,12 @@ export interface UpdateVendorLocationAccuracyPayload {
 export interface UpdateDailyActiveVendorsPayload {
   vendorID: string
 }
+
+export interface TweetHistoryPayload {
+  date: string,
+  locations: [string],
+  text: string,
+  tweetID: string,
+  usedForLocation: boolean,
+  vendorID: string
+}

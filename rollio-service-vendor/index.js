@@ -11,9 +11,6 @@ const config = require('./config');
 const seed = require('./lib/db/mongo/seeds/dev-seed');
 const logger = require('./lib/log/index')('index');
 
-logger.info(`${JSON.stringify(config)}`);
-
-
 const server = http.createServer(app);
 socketIO.setIOServer(server);
 
