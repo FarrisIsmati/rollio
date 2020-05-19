@@ -11,6 +11,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import queryString from 'query-string';
 import useAuthentication from "../common/hooks/use-authentication";
 import { VendorNameAndId, Tweet } from "./interfaces";
+import { get } from "lodash";
 
 const getTweetTableDates = () => {
     // the dates below are just used for the date filtering functionality, where we only display tweets during a certain time period
@@ -37,6 +38,7 @@ const TweetTable = (props:any) => {
     const [startDate, setStartDate] = useState<Date | null>(initialStartDate);
     const [endDate, setEndDate] = useState<Date | null>(initialEndDate);
     const [tweets, setTweets] = useState<Tweet[]>([]);
+    const routeVendorID = get(props, 'match.params.vendorId', '');
 
     const { user } = useGetAppState();
     const { isAuthenticated } = user;
@@ -44,7 +46,7 @@ const TweetTable = (props:any) => {
 
     const fetchTweets = () => {
         setLoading(true);
-        const query = { startDate, endDate, vendorID: vendorID === 'all' ? null : vendorID };
+        const query = { startDate, endDate, vendorID: routeVendorID || vendorID === 'all' ? null : vendorID };
         axios({
             method: "GET",
             url: `${tweetUrl}/filter/?${queryString.stringify(query)}`,
@@ -62,9 +64,10 @@ const TweetTable = (props:any) => {
 
     const fetchVendors = () => {
         setLoading(true);
+        const query = routeVendorID ? { _id: routeVendorID } : {};
         axios({
             method: "GET",
-            url: `${tweetUrl}/vendors`,
+            url: `${tweetUrl}/vendors/?${queryString.stringify(query)}`,
             headers: {'Authorization': "Bearer " + localStorage.token}
         })
             .then((res: AxiosResponse<any>) => {
@@ -105,13 +108,18 @@ const TweetTable = (props:any) => {
         setTweetsLoaded(true);
     };
 
-    const goToTweetPage = (tweetID:string) => {
-        props.history.push(`tweets/${tweetID}`);
+    const goToTweetPage = (tweet:any) => {
+        const {_id: tweetID, vendorID} = tweet;
+        props.history.push(`/tweets/vendor/${vendorID}/tweet/${tweetID}`);
     };
 
     const goToLoginPage = () => {
         props.history.push('/login');
     };
+
+    const goToNewLocation = () => {
+        props.history.push('/newlocation')
+    }
 
     const columns = [
         {
@@ -164,7 +172,7 @@ const TweetTable = (props:any) => {
             Cell: (props:any) => (
                 <button
                 id={props.id}
-                onClick={() => goToTweetPage(props.value._id)}
+                onClick={() => goToTweetPage(props.value)}
                 >
                 Edit Tweet
             </button>
@@ -219,6 +227,13 @@ const TweetTable = (props:any) => {
                         columns={columns}
                         defaultPageSize={10}
                     />
+                </div>
+                <div>
+                    <button
+                        onClick={goToNewLocation}
+                    >
+                        Create Location From Scratch
+                    </button>
                 </div>
             </div>
         ) :

@@ -37,7 +37,7 @@ const LocationSchema = new mongoose.Schema({
     default() { return moment(new Date()).endOf('day').toDate(); },
   },
   matchMethod: {
-    type: String, enum: ['Tweet location', 'User Input', 'Manual from Tweet'], default: 'Tweet location', required: false,
+    type: String, enum: ['Tweet location', 'User Input', 'Vendor Input', 'Manual from Tweet'], default: 'Tweet location', required: false,
   },
   overridden: { type: Boolean, default: false },
   coordinates: {

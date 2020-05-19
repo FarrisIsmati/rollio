@@ -19,19 +19,23 @@ const clearVendorCache = async ({ regionID, vendorID }) => {
 };
 
 
-const publishTweetUpdate = async ({
+const publishLocationUpdate = async ({
   updatedTweet, newLocations, vendorID, twitterID, regionID,
 }) => {
-  const { text, tweetID, date } = updatedTweet;
-  const tweetPayload = {
-    text,
-    tweetID,
-    twitterID,
-    date,
-  };
+  let tweet = null;
+  if (updatedTweet) {
+    const { text, tweetID, date } = updatedTweet;
+    tweet = {
+      text,
+      tweetID,
+      twitterID,
+      date,
+    };
+  }
+
   const allLocations = await vendorOps.getVendorLocations(vendorID);
   const twitterData = {
-    tweet: tweetPayload, newLocations, allLocations, vendorID, regionID,
+    tweet, newLocations, allLocations, vendorID, regionID,
   };
   try {
     pub.publish(REDIS_TWITTER_CHANNEL, JSON.stringify({ ...twitterData, messageType: 'NEW_LOCATIONS', serverID: SERVER_ID }));
@@ -41,10 +45,10 @@ const publishTweetUpdate = async ({
   }
 };
 
-const publishTweetUpdateAndClearCache = async ({
+const publishLocationUpdateAndClearCache = async ({
   updatedTweet, newLocations, vendorID, twitterID, regionID,
 }) => {
-  await publishTweetUpdate({
+  await publishLocationUpdate({
     updatedTweet, newLocations, vendorID, twitterID, regionID,
   });
   return clearVendorCache({ regionID, vendorID });
@@ -60,7 +64,7 @@ const deleteTweetLocation = async (tweetId, locationId, publishData = true) => {
   // delete the old location and set usedForLocation to false
   const updatedTweet = await Tweet.findOneAndUpdate({ _id: tweetId }, { $pull: { locations: locationId }, $set: { usedForLocation: originalTweet.locations.length > 1 } }, { new: true }).populate('vendorID').populate('locations').lean(true);
   if (publishData) {
-    await publishTweetUpdateAndClearCache({
+    await publishLocationUpdateAndClearCache({
       updatedTweet, newLocations: [], vendorID, twitterID, regionID,
     });
   }
@@ -68,13 +72,18 @@ const deleteTweetLocation = async (tweetId, locationId, publishData = true) => {
 };
 
 module.exports = {
+  async getTweet(_id) {
+    return Tweet.findOne({ _id });
+  },
   async getAllTweets(query = {}) {
     const { startDate, endDate, vendorID } = query;
     const vendorIDQuery = vendorID ? { vendorID } : {};
     return Tweet.find({ date: { $gte: startDate, $lte: endDate }, ...vendorIDQuery }).sort([['date', -1]]).populate('locations');
   },
-  async getVendorsForFiltering() {
-    return Vendor.find({}).select('name _id').sort([['name', 1]]);
+  async getVendorsForFiltering(query = {}) {
+    const { vendorID } = query;
+    const finalQuery = vendorID ? { _id: vendorID } : { };
+    return Vendor.find(finalQuery).select('name _id').sort([['name', 1]]);
   },
   async getTweetWithPopulatedVendorAndLocations(id) {
     return Tweet.findById(id).populate('vendorID').populate('locations');
@@ -101,7 +110,7 @@ module.exports = {
         },
       ).lean(true);
       updatedTweet = await Tweet.findOneAndUpdate({ _id: id }, { $push: { locations: newLocation._id }, $set: { usedForLocation: true } }, { new: true }).populate('vendorID').populate('locations');
-      await publishTweetUpdateAndClearCache({
+      await publishLocationUpdateAndClearCache({
         updatedTweet, newLocations: [newLocation], vendorID, twitterID, regionID,
       });
     } catch (err) {
@@ -110,4 +119,5 @@ module.exports = {
     }
     return updatedTweet;
   },
+  publishLocationUpdateAndClearCache,
 };

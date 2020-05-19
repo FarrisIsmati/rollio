@@ -4,15 +4,15 @@ const { JWT_SECRET } = require('../../config');
 const { tweetRouteOps, userRouteOps } = require('./middleware/db-operations');
 
 // GET
-router.get('/filter', expressJwt({ secret: JWT_SECRET }), userRouteOps.send403IfNoToken, userRouteOps.passUserToNext, userRouteOps.restrictToAdmins, tweetRouteOps.tweetSearch);
-router.get('/usetweet/:tweetId', expressJwt({ secret: JWT_SECRET }), userRouteOps.send403IfNoToken, userRouteOps.passUserToNext, userRouteOps.restrictToAdmins, tweetRouteOps.getTweetWithPopulatedVendorAndLocations);
-router.get('/vendors', expressJwt({ secret: JWT_SECRET }), userRouteOps.send403IfNoToken, userRouteOps.passUserToNext, userRouteOps.restrictToAdmins, tweetRouteOps.vendorsForFiltering);
+router.get('/filter', expressJwt({ secret: JWT_SECRET }), userRouteOps.send403IfNoToken, userRouteOps.passUserToNext, userRouteOps.restrictToAdminOrVendor, tweetRouteOps.tweetSearch);
+router.get('/vendors', expressJwt({ secret: JWT_SECRET }), userRouteOps.send403IfNoToken, userRouteOps.passUserToNext, userRouteOps.restrictToAdminOrVendor, tweetRouteOps.vendorsForFiltering);
+router.get('/usetweet/:tweetId', expressJwt({ secret: JWT_SECRET }), userRouteOps.send403IfNoToken, userRouteOps.passUserToNext, userRouteOps.restrictToAdminOrVendor, tweetRouteOps.getTweetWithPopulatedVendorAndLocations);
 
 // PATCH
-router.patch('/deletelocation/:tweetId/:locationId', expressJwt({ secret: JWT_SECRET }), userRouteOps.send403IfNoToken, userRouteOps.passUserToNext, userRouteOps.restrictToAdmins, tweetRouteOps.deleteLocation);
+router.patch('/deletelocation/:tweetId/:locationId', expressJwt({ secret: JWT_SECRET }), userRouteOps.send403IfNoToken, userRouteOps.passUserToNext, userRouteOps.restrictToAdminOrVendor, tweetRouteOps.deleteLocation);
 
 // POST
-router.post('/createnewlocation/:tweetId', expressJwt({ secret: JWT_SECRET }), userRouteOps.send403IfNoToken, userRouteOps.passUserToNext, userRouteOps.restrictToAdmins, tweetRouteOps.createNewLocation);
+router.post('/createnewlocation/:tweetId', expressJwt({ secret: JWT_SECRET }), userRouteOps.send403IfNoToken, userRouteOps.passUserToNext, userRouteOps.restrictToAdminOrVendor, tweetRouteOps.createNewLocation);
 
 
 module.exports = router;

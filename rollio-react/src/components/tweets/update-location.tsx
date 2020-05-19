@@ -78,7 +78,8 @@ const UpdateLocation = (props:any) => {
     }
 
     const goToAllTweets = () => {
-        props.history.push(`/tweets`);
+        const vendorId = get(props, 'match.params.vendorId', '');
+        props.history.push(`/tweets/${vendorId}`);
     };
 
     const goToLoginPage = () => {
@@ -137,7 +138,7 @@ const UpdateLocation = (props:any) => {
 
     useAuthentication(props, true, true);
     useEffect(() => {
-        if (isAuthenticated && type === 'admin') {
+        if (isAuthenticated) {
             fetchTweet();
         }
     }, [isAuthenticated, type]);
