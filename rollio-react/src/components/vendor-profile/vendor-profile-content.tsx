@@ -1,5 +1,6 @@
 // DEPENDENCIES
 import React from 'react';
+import { isActive } from '../../util/index';
 
 // COMPONENTS
 import Comments from '../comments/comment-section';
@@ -50,6 +51,17 @@ const VendorProfileContent = (props:VendorProfileContentProps) => {
     //   locationID: state.data.selectedVendor.location._id
     // });
 
+    // Vendor Address Component
+    const isVendorActive = isActive(vendor);
+    const setVendorAddressComponent = () => {
+      if (vendor.locations.length > 1) {
+        return vendor.locations.map((location:any) => {
+          return <h2 key={location._id} onClick={ () => findOnMap(location) }>{location.address}</h2>
+        })
+      }
+      return <h2 onClick={ () => findOnMap(vendor.locations[0]) }>{state.data.selectedVendor.locations[0].address}</h2>
+    }
+
     return (
         <React.Fragment>
         {/* Show or don't show close out X in profile image depending on Mobile or Desktop */}
@@ -82,13 +94,13 @@ const VendorProfileContent = (props:VendorProfileContentProps) => {
             {/* <i className="material-icons-outlined" onClick={() => updateVendorLocationAccuracy(1)}>thumb_up</i>
             <i className="material-icons-outlined" onClick={() => updateVendorLocationAccuracy(-1)}>thumb_down</i> */}
 
-            { vendor.isActive ? 
+            { isActive(vendor) ? 
                 <div className='vendorprofile__info_row_clickable'>
                   <div className='vendorprofile__info_icon_wrapper'>
                     <i className="material-icons-outlined">room</i> 
                   </div>
-                  <div className='vendorprofile__info_text_wrapper font__vendor_profile_info flex__verticle_center'>
-                    <h2 onClick={ findOnMap }>{state.data.selectedVendor.location.address}</h2>
+                  <div className='vendorprofile__info_address vendorprofile__info_text_wrapper font__vendor_profile_info flex__verticle_center'>
+                    { setVendorAddressComponent() }
                   </div>
                 </div> : null
             }

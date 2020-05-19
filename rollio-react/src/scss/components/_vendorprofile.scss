@@ -118,6 +118,12 @@
             }
         }
 
+        &_address {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
         &_row {
             display: inline-grid;
             grid-template-columns: 14.58% auto;

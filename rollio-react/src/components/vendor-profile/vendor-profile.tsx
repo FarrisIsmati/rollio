@@ -27,7 +27,7 @@ const VendorProfile = React.forwardRef((props:any, navbarRef)=> {
   // Hooks
   const dispatch = useDispatch();
   const state = useGetAppState();
-  const { zoomToCurrentlySelectedVendor } = useMap();
+  const { zoomToLocation } = useMap();
 
   // Height of the entire vendor profile (window height - navbarRef height)
   const vendorProfileHeight = useGetHeight(navbarRef) + 'px';
@@ -65,7 +65,7 @@ const VendorProfile = React.forwardRef((props:any, navbarRef)=> {
               <VendorProfileContent
                 isMobile={isMobile}
                 closeVendor={() => dispatch(deSelectVendor(vendor.id))}
-                findOnMap={() => { zoomToCurrentlySelectedVendor() }}
+                findOnMap={(location:any) => { zoomToLocation(location) }}
                 vendor={vendor}
                 state={state} /> :
               <p>loading...</p>}
@@ -108,9 +108,9 @@ const VendorProfile = React.forwardRef((props:any, navbarRef)=> {
             >
               <VendorProfileContent
                 isMobile={isMobile}
-                findOnMap={() => {
+                findOnMap={(location:any) => {
                     dispatch(toggleMobileDashboard());
-                    zoomToCurrentlySelectedVendor();
+                    zoomToLocation(location);
                   }
                 }
                 vendor={vendor}
