@@ -42,6 +42,10 @@ const {
   getTweet,
 } = require('../../db/mongo/operations/tweet-ops');
 
+const {
+  getAllLocations,
+} = require('../../db/mongo/operations/location-ops');
+
 // Caching data happens on get requests in the middleware,
 // clearing the cache happens in the operations in mongo folder
 const checkCache = async (req, res, payload) => {
@@ -178,7 +182,7 @@ const vendorRouteOps = {
     if (isAdmin || (isVendor && String(vendorID) === routeVendorID)) {
       return createNonTweetLocation(vendorID, req.body);
     }
-    return res.status(403).send("You must be an admin or the vendor to create a new location");
+    return res.status(403).send('You must be an admin or the vendor to create a new location');
   },
   updateVendor: async (req, res) => {
     const { type, twitterProvider = {} } = req.user;
@@ -501,6 +505,18 @@ const tweetRouteOps = {
   },
 };
 
+const locationRouteOps = {
+  locationSearch: async (req, res) => {
+    getAllLocations(req.query).then(locations => res.status(200).json({ locations }))
+      .catch(() => {
+        logger.error('Authentication: User not authenticated, locationSearch func()');
+        if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') { console.log('Twitter: Error fetching locations, locationSearch func()'); }
+        res.status(401).send('Error fetching locations');
+      });
+  },
+};
+
+
 module.exports = {
-  checkCache, regionRouteOps, vendorRouteOps, userRouteOps, tweetRouteOps,
+  checkCache, regionRouteOps, vendorRouteOps, userRouteOps, tweetRouteOps, locationRouteOps,
 };

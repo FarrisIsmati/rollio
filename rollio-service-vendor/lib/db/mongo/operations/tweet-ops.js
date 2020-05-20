@@ -83,7 +83,7 @@ module.exports = {
   async getVendorsForFiltering(query = {}) {
     const { vendorID } = query;
     const finalQuery = vendorID ? { _id: vendorID } : { };
-    return Vendor.find(finalQuery).select('name _id').sort([['name', 1]]);
+    return Vendor.find(finalQuery).select('name _id tweetHistory').populate('tweetHistory').sort([['name', 1]]);
   },
   async getTweetWithPopulatedVendorAndLocations(id) {
     return Tweet.findById(id).populate('vendorID').populate('locations');

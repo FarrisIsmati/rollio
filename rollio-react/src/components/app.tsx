@@ -26,8 +26,9 @@ import LoginOut from './authentication/login-out';
 import UserProfileForm from './authentication/user-profile';
 import VendorProfileForm from './authentication/vendor-profile';
 import TweetTable from './tweets/tweet-table';
-import UpdateLocation from './tweets/update-location'
-import CreateLocation from './tweets/create-location'
+import LocationTable from './locations/location-table';
+import UpdateLocation from './tweets/update-tweet-location'
+import CreateLocation from './locations/create-location'
 
 const loggerMiddleware = createLogger();
 
@@ -61,6 +62,7 @@ const App:FC = () => {
             <Route exact path="/profile/region/:regionName/vendor/:vendorId?" component={ VendorProfileForm } />
             <Route exact path="/newlocation" component={ CreateLocation } />
             <Route exact path="/tweets/:vendorId?" component={ TweetTable } />
+            <Route exact path="/locations/:vendorId?" component={ LocationTable } />
             <Route exact path="/tweets/vendor/:vendorId/tweet/:tweetId" component={ UpdateLocation } />
             <Route exact path="/invalid" component={ PageInvalid } />
             <Route exact path="/permission-denied" component={ PermissionDenied } />
