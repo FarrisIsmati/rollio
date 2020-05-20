@@ -60,7 +60,7 @@ const VendorProfileContent = (props:VendorProfileContentProps) => {
             </div>
             <div className='vendorprofile__info_address vendorprofile__info_text_wrapper font__vendor_profile_info flex__verticle_center'>
               <h2 onClick={ () => findOnMap(vendor.locations[i !== null ? i : 0]) }>
-                { i !== null ? `Truck ${i + 1} - ${state.data.selectedVendor.locations[i].address}`: state.data.selectedVendor.locations[0].address }
+                { i !== null ? state.data.selectedVendor.locations[i].address : state.data.selectedVendor.locations[0].address }
               </h2>
             </div>
           </div>

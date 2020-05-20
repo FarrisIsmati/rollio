@@ -1,3 +1,5 @@
+// Hook sets up sockets for a region to handle all real time data changes per region
+
 // DEPENDENCIES
 import socketIOClient from 'socket.io-client';
 import { useEffect } from 'react';
@@ -6,8 +8,9 @@ import { toNumber } from 'lodash';
 
 // ACTIONS
 import {
-  updateVendor,
-  addTweetToSelectedVendorTweetHistory,
+    updateVendorsAll,
+    addTweetToSelectedVendorTweetHistory,
+    updateSelectedVendorLocations,
 } from '../../../redux/actions/data-actions';
 
 // HOOKS
@@ -25,31 +28,39 @@ const useUpdateRegionVendorData = () => {
     const state = useGetAppState();
     const dispatch = useDispatch();
 
-    
-    // Set current new location vendor to global state, so when map gets rerender it'll know what vendor to move
+    // Global State
     const [globalState, setGlobalState] = useGlobalState();
 
     useEffect(() => {
         // Anything that triggers location related CRUD Operations
         socket.on('NEW_LOCATIONS', (data: any) => {
             const { newLocations, allLocations, vendorID, tweet} = data;
-            
-            const payload = {
+
+            // Update data.vendorsAll field
+            dispatch(updateVendorsAll({
                 locations: allLocations,
                 vendorID,
-            };
-            dispatch(updateVendor(payload));
+            }));
+
+            // Set current new location vendor to global state, so when map gets rerender it will know what vendor to move
             newLocations.forEach((location:any) => {
                 const truckNum = toNumber(location.truckNum);
                 setGlobalState({ vendorID, truckNum })
             });
             
-            // The dispatch will only work if the currently selected vendor is the same as the vendor sending the tweet
-            dispatch(addTweetToSelectedVendorTweetHistory(tweet));
+            // Real time events if the vendor with the new location is the selected vendor
+            // 1. Update Selected Vendor Address (Updates the locations)
+            dispatch(updateSelectedVendorLocations(newLocations));
+            
+            // 2. Update Twitter Feed (Inserts new tweet if there is one)
+            if (tweet) {
+                dispatch(addTweetToSelectedVendorTweetHistory(tweet));
+            }
         })
+
         // When a vendor is created or updated
         socket.on('UPDATED_VENDOR', (vendor: any) => {
-            dispatch(updateVendor({...vendor, vendorID: vendor.id}));
+            dispatch(updateVendorsAll({...vendor, vendorID: vendor.id}));
         })
     }, [])
 }

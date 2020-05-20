@@ -39,6 +39,8 @@ import {
     POST_VENDOR_COMMENT,
 
     ADD_TWEET_TO_SELECTED_VENDOR_TWEET_HISTORY,
+
+    UPDATE_SELECTED_VENDOR_LOCATIONS,
 } from '../constants/constants'
 
 // ACTIONS
@@ -62,7 +64,7 @@ import {
 import { isLocationActive, isLocationActiveOrWillBeActive } from "../../util";
 
 // -------
-// VENDOR PROFILE
+// SELECTED VENDOR DATA
 // -------
 
 // Gets the detailed set of vendor profile data
@@ -279,7 +281,7 @@ export function deSelectVendor(vendorID:string, cb:()=>void = ()=>{}) {
 }
 
 // -------
-// TWEETS
+// SELECTED VENDOR TWEETS
 // -------
 
 export function addTweetToSelectedVendorTweetHistory(tweet:TweetHistoryPayload) {
@@ -291,9 +293,19 @@ export function addTweetToSelectedVendorTweetHistory(tweet:TweetHistoryPayload) 
     }
 }
 
+// ------
+// SELECTED VENDOR LOCATIONS
+// ------
+
+export function updateSelectedVendorLocations(locations:any) {
+    return {
+        type: UPDATE_SELECTED_VENDOR_LOCATIONS,
+        payload: locations
+    }
+}
 
 // --------
-// LOCATION ACCURACY
+// SELECTED VENDOR LOCATIONS ACCURACY
 // --------
 
 export function recieveVendorLocationAccuracy(locationAccuracy:any) {
@@ -360,7 +372,7 @@ export function updateVendorLocationAccuracyAsync(payload:UpdateVendorLocationAc
 }
 
 // --------
-// COMMENTS
+// SELECTED VENDOR COMMENTS
 // --------
 
 export function postVendorComment(commentBody:any) {
@@ -462,7 +474,7 @@ export function fetchRegionDataAsync(payload:RegionDataAsyncPayload) {
 }
 
 // -----------
-// VENDOR DATA
+// ALL VENDORS DATA
 // -----------
 
 export function receiveAllVendors(vendorLookUp: { [key: string]: VendorCard }) {
@@ -518,8 +530,8 @@ export function fetchAllVendorsAsync(payload: any) {
     }
 }
 
-// Update the vendorsAll data
-export function updateVendor(payload: UpdateVendorPayload) {
+// Update the vendorsAll array
+export function updateVendorsAll(payload: UpdateVendorPayload) {
     return {
         type: UPDATE_VENDOR,
         payload

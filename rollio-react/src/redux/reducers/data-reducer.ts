@@ -10,8 +10,9 @@ import {
     SET_VENDORS_ALL,
     POST_VENDOR_COMMENT,
     UPDATE_VENDOR,
-    RECIEVE_VENDOR_LOCATION_ACCURACY,
-    ADD_TWEET_TO_SELECTED_VENDOR_TWEET_HISTORY
+    RECIEVE_VENDOR_LOCATION_ACCURACY,// <--Issue
+    ADD_TWEET_TO_SELECTED_VENDOR_TWEET_HISTORY,
+    UPDATE_SELECTED_VENDOR_LOCATIONS,
 } from "../constants/constants"
 
 // INTERFACES
@@ -140,36 +141,46 @@ export function dataReducer(state = defaultState, action: any) {
                 ]
             }
         }
-    case RECIEVE_VENDOR_LOCATION_ACCURACY:
+    // case RECIEVE_VENDOR_LOCATION_ACCURACY:
+    //     return {
+    //         ...state,
+    //         selectedVendor: {
+    //             ...state.selectedVendor,
+    //             location: { // <--- ISSUE
+    //                 ...state.selectedVendor.locations,
+    //                 accuracy: action.payload.locationAccuracy
+    //             }
+    //         }
+    //     }
+    case ADD_TWEET_TO_SELECTED_VENDOR_TWEET_HISTORY:
+        // Logic to check if vendorID in payload is same as the currently selected vendor
+        if (action.payload.vendorID === state.selectedVendor.id) {
+            return {
+                ...state,
+                selectedVendor: {
+                    ...state.selectedVendor,
+                    tweetHistory: [
+                        action.payload,
+                        ...state.selectedVendor.tweetHistory.slice(0, 2)
+                    ]
+                }
+                
+            }
+        }
+
+        return {
+            ...state
+        }
+    case UPDATE_SELECTED_VENDOR_LOCATIONS:
         return {
             ...state,
             selectedVendor: {
                 ...state.selectedVendor,
-                location: {
-                    ...state.selectedVendor.locations,
-                    accuracy: action.payload.locationAccuracy
-                }
+                locations: [
+                    ...action.payload
+                ]
             }
         }
-        case ADD_TWEET_TO_SELECTED_VENDOR_TWEET_HISTORY:
-            // Logic to check if vendorID in payload is same as the currently selected vendor
-            if (action.payload.vendorID === state.selectedVendor.id) {
-                return {
-                    ...state,
-                    selectedVendor: {
-                        ...state.selectedVendor,
-                        tweetHistory: [
-                            action.payload,
-                            ...state.selectedVendor.tweetHistory.slice(0, 2)
-                        ]
-                    }
-                    
-                }
-            }
-
-            return {
-                ...state
-            }
     default:
         return state
     }
