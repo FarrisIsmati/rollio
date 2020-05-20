@@ -1,5 +1,5 @@
 // DEPENDENCIES
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { isActive } from '../../util/index';
 
 // COMPONENTS
@@ -52,14 +52,26 @@ const VendorProfileContent = (props:VendorProfileContentProps) => {
     // });
 
     // Vendor Address Component
-    const isVendorActive = isActive(vendor);
-    const setVendorAddressComponent = () => {
+    const vendorAddressComponent = () => {
+      const setAddress = (address:ReactElement, i:number|null = null) => (
+        <div className='vendorprofile__info_row_clickable'>
+            <div className='vendorprofile__info_icon_wrapper'>
+              <i className="material-icons-outlined">room</i> 
+            </div>
+            <div className='vendorprofile__info_address vendorprofile__info_text_wrapper font__vendor_profile_info flex__verticle_center'>
+              <h2 onClick={ () => findOnMap(vendor.locations[i !== null ? i : 0]) }>
+                { i !== null ? `Truck ${i + 1} - ${state.data.selectedVendor.locations[i].address}`: state.data.selectedVendor.locations[0].address }
+              </h2>
+            </div>
+          </div>
+      )
+
       if (vendor.locations.length > 1) {
-        return vendor.locations.map((location:any) => {
-          return <h2 key={location._id} onClick={ () => findOnMap(location) }>{location.address}</h2>
+        return vendor.locations.map((location:any, i:number) => {
+          return setAddress(<h2 key={location._id} onClick={ () => findOnMap(location) }>{location.address}</h2>, i);
         })
       }
-      return <h2 onClick={ () => findOnMap(vendor.locations[0]) }>{state.data.selectedVendor.locations[0].address}</h2>
+      return setAddress(<h2 onClick={ () => findOnMap(vendor.locations[0]) }>{state.data.selectedVendor.locations[0].address}</h2>)
     }
 
     return (
@@ -94,16 +106,7 @@ const VendorProfileContent = (props:VendorProfileContentProps) => {
             {/* <i className="material-icons-outlined" onClick={() => updateVendorLocationAccuracy(1)}>thumb_up</i>
             <i className="material-icons-outlined" onClick={() => updateVendorLocationAccuracy(-1)}>thumb_down</i> */}
 
-            { isActive(vendor) ? 
-                <div className='vendorprofile__info_row_clickable'>
-                  <div className='vendorprofile__info_icon_wrapper'>
-                    <i className="material-icons-outlined">room</i> 
-                  </div>
-                  <div className='vendorprofile__info_address vendorprofile__info_text_wrapper font__vendor_profile_info flex__verticle_center'>
-                    { setVendorAddressComponent() }
-                  </div>
-                </div> : null
-            }
+            { isActive(vendor) ? vendorAddressComponent() : null }
 
             { vendor.website ?
               <div className='vendorprofile__info_row_clickable'>
