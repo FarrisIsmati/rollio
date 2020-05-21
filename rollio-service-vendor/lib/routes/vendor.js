@@ -8,6 +8,8 @@ const { routeLimitVendor } = require('./middleware/rate-limit');
 const { JWT_SECRET } = require('../../config');
 
 // GET
+// All unapproved vendors
+router.get('/unapproved-vendors', expressJwt({ secret: JWT_SECRET }), userRouteOps.send403IfNoToken, userRouteOps.passUserToNext, userRouteOps.restrictToAdmins, vendorRouteOps.getUnapprovedVendors);
 // All vendors or all vendors by query string as an array
 router.get('/:regionID', vendorRouteOps.getVendors);
 // All vendors or all vendors by query string as an object

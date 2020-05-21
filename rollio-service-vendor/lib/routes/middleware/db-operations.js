@@ -26,6 +26,7 @@ const {
   updateVendorPushPosition,
   updateVendorSet,
   createNonTweetLocation,
+  getUnapprovedVendors,
 } = require('../../db/mongo/operations/vendor-ops');
 
 const {
@@ -174,6 +175,9 @@ const publishUpdatedVendor = (vendor) => {
 };
 
 const vendorRouteOps = {
+  getUnapprovedVendors: async (req, res) => {
+    return getUnapprovedVendors().then(vendors => res.status(200).json({vendors}))
+  },
   createLocation: async (req, res) => {
     const { type, vendorID } = req.user;
     const isAdmin = type === 'admin';

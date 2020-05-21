@@ -49,6 +49,20 @@ const createLocationAndCorrectConflicts = async (locationData) => {
 };
 
 module.exports = {
+  async getUnapprovedVendors() {
+    const unapprovedVendors = await Vendor.find({ approved: false });
+    if (!unapprovedVendors.length) {
+      return [];
+    }
+    const associatedUsers = await User.find({ vendorID: { $in: unapprovedVendors.map(vendor => vendor._id) } }).select('+twitterProvider');
+    const associatedUserLookUp = associatedUsers.reduce((acc, user) => {
+      const { twitterProvider = {}, vendorID } = user;
+      const { username, displayName } = twitterProvider;
+      acc[String(vendorID)] = { username, displayName };
+      return acc;
+    }, {});
+    return unapprovedVendors.map(vendor => ({ ...vendor.toObject(), twitterInfo: associatedUserLookUp[String(vendor._id)] }));
+  },
   createLocationAndCorrectConflicts,
   async createNonTweetLocation(vendorID, locationData) {
     try {

@@ -27,6 +27,7 @@ import UserProfileForm from './authentication/user-profile';
 import VendorProfileForm from './authentication/vendor-profile';
 import TweetTable from './tweets/tweet-table';
 import LocationTable from './locations/location-table';
+import UnapprovedVendorTable from "./admin/unapproved-vendor-table";
 import UpdateLocation from './tweets/update-tweet-location'
 import CreateLocation from './locations/create-location'
 
@@ -61,6 +62,7 @@ const App:FC = () => {
             <Route exact path="/profile/user" component={ UserProfileForm } />
             <Route exact path="/profile/region/:regionName/vendor/:vendorId?" component={ VendorProfileForm } />
             <Route exact path="/newlocation" component={ CreateLocation } />
+            <Route exact path="/unapproved-vendors" component={ UnapprovedVendorTable } />
             <Route exact path="/tweets/:vendorId?" component={ TweetTable } />
             <Route exact path="/locations/:vendorId?" component={ LocationTable } />
             <Route exact path="/tweets/vendor/:vendorId/tweet/:tweetId" component={ UpdateLocation } />
