@@ -302,6 +302,7 @@ module.exports = {
       regionID, vendorID, locationID, amount,
     } = params;
 
+    // ((!regionID || !vendorID || !locationID) && (parseInt(amount, 10) !== 1 || parseInt(amount, 10) !== -1)) // ERROR STARTS HERE
     if (!regionID || !vendorID || !locationID || !amount) {
       const err = new Error('Must include a regionID, vendorID, locationID, & amount properties in params argument');
       logger.error(err);
