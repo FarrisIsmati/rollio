@@ -45,16 +45,22 @@ const VendorProfileContent = (props:VendorProfileContentProps) => {
     });
 
     // Needs to be configured to use multiple trucks
-    // const { updateVendorLocationAccuracy } = useUpdateVendorLocationAccuracy({
-    //   regionID: state.data.regionId,
-    //   vendorID: state.data.selectedVendor.id,
-    //   locationID: state.data.selectedVendor.location._id
-    // });
+    const { updateVendorLocationAccuracy } = useUpdateVendorLocationAccuracy(state.data.regionId,state.data.selectedVendor.id);
+
+    const vendorAccuracyComponent = (locationID:string) => {
+      return (
+        <div className='vendorprofile__info_address_accuracy font__vendor_profile_info'>
+          <h2 className='vendorprofile__info_address_accuracy_number'>1</h2>
+          <i onClick={() => updateVendorLocationAccuracy(1, locationID)} className="material-icons-outlined vendorprofile__info_address_accuracy_plus">add</i>
+          <i onClick={() => updateVendorLocationAccuracy(-1, locationID)} className="material-icons-outlined vendorprofile__info_address_accuracy_minus">remove</i>
+        </div>
+      )
+    }
 
     // Vendor Address Component
     const vendorAddressComponent = () => {
-      const setAddress = (address:ReactElement, i:number|null = null) => (
-        <div className='vendorprofile__info_row_clickable'>
+      const setAddress = (address:ReactElement, locationID:string, i:number|null = null) => (
+        <div key={locationID} className='vendorprofile__info_row_clickable'>
             <div className='vendorprofile__info_icon_wrapper'>
               <i className="material-icons-outlined">room</i> 
             </div>
@@ -63,15 +69,18 @@ const VendorProfileContent = (props:VendorProfileContentProps) => {
                 { i !== null ? state.data.selectedVendor.locations[i].address : state.data.selectedVendor.locations[0].address }
               </h2>
             </div>
+            {/* Empty div to properly order row/columns */}
+            <div></div> 
+            { vendorAccuracyComponent(locationID) }
           </div>
       )
 
       if (vendor.locations.length > 1) {
         return vendor.locations.map((location:any, i:number) => {
-          return setAddress(<h2 key={location._id} onClick={ () => findOnMap(location) }>{location.address}</h2>, i);
+          return setAddress(<h2 key={location._id} onClick={ () => findOnMap(location) }>{location.address}</h2>, location._id, i);
         })
       }
-      return setAddress(<h2 onClick={ () => findOnMap(vendor.locations[0]) }>{state.data.selectedVendor.locations[0].address}</h2>)
+      return setAddress(<h2 onClick={ () => findOnMap(vendor.locations[0]) }>{state.data.selectedVendor.locations[0].address}</h2>, vendor.locations[0]._id)
     }
 
     return (
