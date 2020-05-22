@@ -141,17 +141,20 @@ export function dataReducer(state = defaultState, action: any) {
                 ]
             }
         }
-    // case RECIEVE_VENDOR_LOCATION_ACCURACY:
-    //     return {
-    //         ...state,
-    //         selectedVendor: {
-    //             ...state.selectedVendor,
-    //             location: { // <--- ISSUE
-    //                 ...state.selectedVendor.locations,
-    //                 accuracy: action.payload.locationAccuracy
-    //             }
-    //         }
-    //     }
+    case RECIEVE_VENDOR_LOCATION_ACCURACY:
+        const locationIndex = state.selectedVendor.locations.findIndex((location:any) => location._id === action.payload.locationID);
+        const updatedLocations = [...state.selectedVendor.locations];
+        updatedLocations[locationIndex].accuracy = action.payload.locationAccuracy;
+            
+        return {
+            ...state,
+            selectedVendor: {
+                ...state.selectedVendor,
+                locations: [
+                    ...updatedLocations
+                ]
+            }
+        }
     case ADD_TWEET_TO_SELECTED_VENDOR_TWEET_HISTORY:
         // Logic to check if vendorID in payload is same as the currently selected vendor
         if (action.payload.vendorID === state.selectedVendor.id) {

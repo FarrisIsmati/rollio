@@ -105,8 +105,8 @@ export interface UpdateVendorLocationAccuracyPayload {
   locationID: string,
   regionID: string,
   vendorID: string,
-  cb?: () => void,
-  cbSuccess?: () => void
+  cbError?:(res:any) => void,
+  cbSuccess?: (err:any) => void
 }
 
 export interface UpdateDailyActiveVendorsPayload {

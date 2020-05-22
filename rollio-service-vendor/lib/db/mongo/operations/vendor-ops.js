@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable no-console */
 // DEPENDENCIES
 const moment = require('moment');
@@ -302,12 +303,12 @@ module.exports = {
       regionID, vendorID, locationID, amount,
     } = params;
 
-    // ((!regionID || !vendorID || !locationID) && (parseInt(amount, 10) !== 1 || parseInt(amount, 10) !== -1)) // ERROR STARTS HERE
-    if (!regionID || !vendorID || !locationID || !amount) {
+    if ((!regionID || !vendorID || !locationID || !(parseInt(amount, 10) === 1 || parseInt(amount, 10) === -1))) {
       const err = new Error('Must include a regionID, vendorID, locationID, & amount properties in params argument');
       logger.error(err);
       return err;
     }
+
     // Amount can only be 1 or -1
     if (amount === 1 || amount === -1) {
       return Location.findOneAndUpdate({

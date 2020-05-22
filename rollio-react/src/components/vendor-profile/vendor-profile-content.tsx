@@ -1,5 +1,5 @@
 // DEPENDENCIES
-import React, { ReactElement } from 'react';
+import React from 'react';
 import { isActive } from '../../util/index';
 
 // COMPONENTS
@@ -8,10 +8,10 @@ import VendorProfileContentItemToggle from './vendor-profile-content-item-toggle
 import Tweet from '../twitter/Tweet';
 import { faTwitter } from "@fortawesome/free-brands-svg-icons"
 import VendorProfileCategories from './vendor-profile-categories';
+import VendorProfileContentAccuracy from './vendor-profile-content-accuracy';
 
 // HOOKS
 import useToggleComponents from './hooks/use-toggle-components';
-import useUpdateVendorLocationAccuracy from './hooks/use-update-vendor-location-accuracy';
 
 interface VendorProfileContentProps  {
     isMobile: boolean,
@@ -43,45 +43,6 @@ const VendorProfileContent = (props:VendorProfileContentProps) => {
       ABOUT: false,
       TWITTER: false,
     });
-
-    // Needs to be configured to use multiple trucks
-    const { updateVendorLocationAccuracy } = useUpdateVendorLocationAccuracy(state.data.regionId,state.data.selectedVendor.id);
-
-    const vendorAccuracyComponent = (locationID:string) => {
-      return (
-        <div className='vendorprofile__info_address_accuracy font__vendor_profile_info'>
-          <h2 className='vendorprofile__info_address_accuracy_number'>1</h2>
-          <i onClick={() => updateVendorLocationAccuracy(1, locationID)} className="material-icons-outlined vendorprofile__info_address_accuracy_plus">add</i>
-          <i onClick={() => updateVendorLocationAccuracy(-1, locationID)} className="material-icons-outlined vendorprofile__info_address_accuracy_minus">remove</i>
-        </div>
-      )
-    }
-
-    // Vendor Address Component
-    const vendorAddressComponent = () => {
-      const setAddress = (address:ReactElement, locationID:string, i:number|null = null) => (
-        <div key={locationID} className='vendorprofile__info_row_clickable'>
-            <div className='vendorprofile__info_icon_wrapper'>
-              <i className="material-icons-outlined">room</i> 
-            </div>
-            <div className='vendorprofile__info_address vendorprofile__info_text_wrapper font__vendor_profile_info flex__verticle_center'>
-              <h2 onClick={ () => findOnMap(vendor.locations[i !== null ? i : 0]) }>
-                { i !== null ? state.data.selectedVendor.locations[i].address : state.data.selectedVendor.locations[0].address }
-              </h2>
-            </div>
-            {/* Empty div to properly order row/columns */}
-            <div></div> 
-            { vendorAccuracyComponent(locationID) }
-          </div>
-      )
-
-      if (vendor.locations.length > 1) {
-        return vendor.locations.map((location:any, i:number) => {
-          return setAddress(<h2 key={location._id} onClick={ () => findOnMap(location) }>{location.address}</h2>, location._id, i);
-        })
-      }
-      return setAddress(<h2 onClick={ () => findOnMap(vendor.locations[0]) }>{state.data.selectedVendor.locations[0].address}</h2>, vendor.locations[0]._id)
-    }
 
     return (
         <React.Fragment>
@@ -115,7 +76,7 @@ const VendorProfileContent = (props:VendorProfileContentProps) => {
             {/* <i className="material-icons-outlined" onClick={() => updateVendorLocationAccuracy(1)}>thumb_up</i>
             <i className="material-icons-outlined" onClick={() => updateVendorLocationAccuracy(-1)}>thumb_down</i> */}
 
-            { isActive(vendor) ? vendorAddressComponent() : null }
+            { isActive(vendor) ? VendorProfileContentAccuracy({state, vendor, findOnMap}) : null }
 
             { vendor.website ?
               <div className='vendorprofile__info_row_clickable'>

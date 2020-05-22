@@ -308,16 +308,15 @@ export function updateSelectedVendorLocations(locations:any) {
 // SELECTED VENDOR LOCATIONS ACCURACY
 // --------
 
-export function recieveVendorLocationAccuracy(locationAccuracy:any) {
-    console.log(locationAccuracy)
+export function recieveVendorLocationAccuracy(locationAccuracy:number, locationID:string) {
     return {
         type: RECIEVE_VENDOR_LOCATION_ACCURACY,
         payload: {
-            ...locationAccuracy
+            locationID,
+            locationAccuracy
         }
     }
 }
-
 
 function updateVendorLocationAccuracySuccess() {
     return {
@@ -338,36 +337,50 @@ function updateVendorLocationAccuracyStart() {
 }
 
 export function updateVendorLocationAccuracyAsync(payload:UpdateVendorLocationAccuracyPayload) {
-    const { amount, locationID, regionID, vendorID, cb, cbSuccess } = payload;
+    const { amount, locationID, regionID, vendorID, cbError, cbSuccess } = payload;
 
     return (dispatch:any) => {
         dispatch(updateVendorLocationAccuracyStart())
 
         // Amount can only be 1 or -1
         if (amount === 0 || amount > 1 || amount < -1) {
-            console.error('Update vendor location accuracy amount is not equal to 1 or -1')
+            const amountErr = new Error('Update vendor location accuracy amount is not equal to 1 or -1')
+            console.error(amountErr);
+
+            if (cbError) {
+                cbError(amountErr);
+            }
             return;
         }
+
         axios.put(`${VENDOR_API}/vendor/${regionID}/${vendorID}/locationaccuracy`, {
             params: {
-              amount,
-              locationID
+                amount,
+                locationID
             }
-          })
-            .then((res: AxiosResponse<any>) => {
-                dispatch(recieveVendorLocationAccuracy(res.data));
-                dispatch(updateVendorLocationAccuracySuccess());
-                // Any function you want to run after successful get of all data
-                if (cbSuccess) {
-                    cbSuccess();
+        })
+        .then((res: AxiosResponse<any>) => {
+            if (res.data.level === 'error') {
+                if (cbError) {
+                    console.error(res.data);
+                    cbError(res.data);
                 }
-            })
-            .catch((err:any) => {
-                console.error(err);
-                if (cb) {
-                    cb();
-                }
-            })
+                return;
+            }
+            dispatch(recieveVendorLocationAccuracy(res.data.locationAccuracy, locationID));
+            dispatch(updateVendorLocationAccuracySuccess());
+
+            if (cbSuccess) {
+                cbSuccess(res);
+            }
+        })
+        .catch((err:any) => {
+            console.error(err);
+
+            if (cbError) {
+                cbError(err);
+            }
+        })
     }
 }
 
