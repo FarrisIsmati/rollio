@@ -182,7 +182,7 @@ const vendorRouteOps = {
     const isVendor = type === 'vendor';
     const { vendorID: routeVendorID } = req.params;
     if (isAdmin || (isVendor && String(vendorID) === routeVendorID)) {
-      return createNonTweetLocation(vendorID, req.body).then(location => {
+      return createNonTweetLocation(vendorID, req.body).then((location) => {
         res.status(200).json({ location });
       }).catch((err) => {
         console.error(err);
@@ -196,16 +196,19 @@ const vendorRouteOps = {
     const isAdmin = type === 'admin';
     const isVendor = type === 'vendor';
     const { regionID, vendorID } = req.params;
+
     if (isAdmin || (isVendor && String(twitterProvider.id) === String(req.vendor.twitterID))) {
       const { field, data } = req.body;
+      const vendorSetToApproved = Array.isArray(field) ? field.includes('approved') : field === 'approved';
       return updateVendorSet({
         regionID, vendorID, field, data,
       })
         .then(async (vendor) => {
           if (vendor.approved) {
-            // actually, maybe get rid of this...or just do it if req.body.data.approved
-            await sendVendorTwitterIDs();
             publishUpdatedVendor(vendor);
+            if (vendorSetToApproved) {
+              await sendVendorTwitterIDs();
+            }
           }
           res.status(200).json({ vendor });
         })
