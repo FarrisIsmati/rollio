@@ -87,7 +87,7 @@ const LocationTable = (props:any) => {
     const goToTweetPage = (location:any) => {
         const { tweetID, vendorID: locationVendorId } = location
         const tweet = vendorNameLookup[locationVendorId].tweetHistory.find((x:any) => x.tweetID === tweetID);
-        // TODO: WIRE THIS UP CORRECTLY - TWEETID IS NOT ACTUALLY THE REAL MONGO OBJECTID
+        // TODO: SET UP ROUTE FOR EDITING LOCATIONS THAT DO NOT HAVE A TWEET ASSOCIATED
         const route = tweetID && locationVendorId ? `/tweets/vendor/${locationVendorId}/tweet/${tweet._id}` : '';
         props.history.push(route);
     }
@@ -132,7 +132,6 @@ const LocationTable = (props:any) => {
             Header: 'Source',
             accessor: (d:any) => d.matchMethod
         },
-        // TODO: update to only link if there is a tweetID
         {
             id: 'actions',
             Header: 'Actions',

@@ -54,7 +54,7 @@ const CreateLocation = (props:any) => {
         })
             .then((res: AxiosResponse<any>) => {
                 setLoading(false);
-                // TODO: link to a different page (either list of locations OR vendor profile)
+                props.history.push(`/locations/${selectedVendor._id}`)
             }).catch((err:any) => {
             setLoading(false);
             console.error(err);
