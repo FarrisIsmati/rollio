@@ -11,7 +11,7 @@ const Location = mongoose.model('Location');
 
 
 // Gets all locations for a particular vendor that are currently active or will be in the future
-const getVendorLocations = async vendorID => Location.find({ vendorID, endDate: { $gte: new Date() } });
+const getVendorLocations = async vendorID => Location.find({ vendorID, endDate: { $gte: new Date() } }).sort([['startDate', -1]]);
 
 const updateConflictingLocationDates = async (existingLocation, startDate, endDate) => {
   const newStartDate = moment(startDate);
