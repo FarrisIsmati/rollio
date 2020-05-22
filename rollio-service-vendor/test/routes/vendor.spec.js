@@ -568,18 +568,18 @@ describe('Vendor Routes', () => {
 
     it('expect location to be created, if user is an admin', (done) => {
       chai.request(app)
-          .post(`/vendor/${vendorUser.vendorID}/newlocation`)
-          .set('Authorization', `Bearer ${adminToken}`)
-          .send(locationData)
-          .then((res) => {
-            expect(res).to.have.status(200);
-            expect(res.body.location.vendorID).to.equal(String(vendorUser.vendorID));
-            expect(res.body.location.coordinates).to.deep.equal({
-              lat: 0,
-              long: 1,
-            });
-            done();
+        .post(`/vendor/${vendorUser.vendorID}/newlocation`)
+        .set('Authorization', `Bearer ${adminToken}`)
+        .send(locationData)
+        .then((res) => {
+          expect(res).to.have.status(200);
+          expect(res.body.location.vendorID).to.equal(String(vendorUser.vendorID));
+          expect(res.body.location.coordinates).to.deep.equal({
+            lat: 0,
+            long: 1,
           });
+          done();
+        });
     });
   });
 
