@@ -467,7 +467,7 @@ describe('Vendor Routes', () => {
           return res.body.vendor;
         })
         // should also update the user's vendorID field with the newly created vendor's id
-        .then(newVendor => User.findOne({ _id: vendorUser._id, vendorID: newVendor._id }))
+        .then(newVendor => User.findOne({ _id: vendorUser._id, vendorID: newVendor._id }).lean())
         .then((updatedVendor) => {
           expect(!!updatedVendor).to.be.true;
           done();

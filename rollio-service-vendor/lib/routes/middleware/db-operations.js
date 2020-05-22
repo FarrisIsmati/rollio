@@ -182,7 +182,7 @@ const vendorRouteOps = {
     const isVendor = type === 'vendor';
     const { vendorID: routeVendorID } = req.params;
     if (isAdmin || (isVendor && String(vendorID) === routeVendorID)) {
-      return createNonTweetLocation(vendorID, req.body).then((location) => {
+      return createNonTweetLocation(routeVendorID, req.body).then((location) => {
         res.status(200).json({ location });
       }).catch((err) => {
         console.error(err);
