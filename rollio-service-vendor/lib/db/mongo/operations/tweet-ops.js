@@ -3,56 +3,9 @@ const mongoose = require('../mongoose/index');
 const Tweet = mongoose.model('Tweet');
 const Vendor = mongoose.model('Vendor');
 const Location = mongoose.model('Location');
-const { client: redisClient, pub } = require('./../../../redis');
-const { io } = require('../../../sockets/index');
-const { REDIS_TWITTER_CHANNEL, SERVER_ID } = require('../../../../config');
 const logger = require('../../../log/index')('db/mongo/operations/tweet-ops');
-const vendorOps = require('./vendor-ops');
-
-const clearVendorCache = async ({ regionID, vendorID }) => {
-  try {
-    await redisClient.hdelAsync('vendor', `q::method::GET::path::/${regionID}/object`);
-    await redisClient.hdelAsync('vendor', `q::method::GET::path::/${regionID}/${vendorID}`);
-  } catch (err) {
-    logger.error(err);
-  }
-};
-
-
-const publishLocationUpdate = async ({
-  updatedTweet, newLocations, vendorID, twitterID, regionID,
-}) => {
-  let tweet = null;
-  if (updatedTweet) {
-    const { text, tweetID, date } = updatedTweet;
-    tweet = {
-      text,
-      tweetID,
-      twitterID,
-      date,
-    };
-  }
-
-  const allLocations = await vendorOps.getVendorLocations(vendorID);
-  const twitterData = {
-    tweet, newLocations, allLocations, vendorID, regionID,
-  };
-  try {
-    pub.publish(REDIS_TWITTER_CHANNEL, JSON.stringify({ ...twitterData, messageType: 'NEW_LOCATIONS', serverID: SERVER_ID }));
-    io.sockets.emit('NEW_LOCATIONS', twitterData);
-  } catch (err) {
-    logger.error(err);
-  }
-};
-
-const publishLocationUpdateAndClearCache = async ({
-  updatedTweet, newLocations, vendorID, twitterID, regionID,
-}) => {
-  await publishLocationUpdate({
-    updatedTweet, newLocations, vendorID, twitterID, regionID,
-  });
-  return clearVendorCache({ regionID, vendorID });
-};
+const sharedOps = require('./shared-ops');
+const { publishLocationUpdateAndClearCache } = require('./shared-ops');
 
 
 const deleteTweetLocation = async (tweetId, locationId, publishData = true) => {
@@ -83,7 +36,8 @@ module.exports = {
   async getVendorsForFiltering(query = {}) {
     const { vendorID } = query;
     const finalQuery = vendorID ? { _id: vendorID } : { };
-    return Vendor.find(finalQuery).select('name _id tweetHistory').populate('tweetHistory').sort([['name', 1]]);
+    return Vendor.find(finalQuery).lean().select('name _id tweetHistory').populate('tweetHistory')
+      .sort([['name', 1]]);
   },
   async getTweetWithPopulatedVendorAndLocations(id) {
     return Tweet.findById(id).populate('vendorID').populate('locations');
@@ -98,7 +52,7 @@ module.exports = {
       if (locationToOverride) {
         await deleteTweetLocation(id, locationToOverride._id, false);
       }
-      const newLocation = await vendorOps.createLocationAndCorrectConflicts({ ...newLocationData, vendorID, matchMethod: 'Manual from Tweet' });
+      const newLocation = await sharedOps.createLocationAndCorrectConflicts({ ...newLocationData, vendorID, matchMethod: 'Manual from Tweet' });
       const { regionID, twitterID } = await Vendor.findOneAndUpdate(
         { _id: vendorID }, {
           $push: {

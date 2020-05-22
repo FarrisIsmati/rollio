@@ -36,11 +36,13 @@ describe('DB Operations', () => {
     describe('Get Vendor Operations', () => {
       let regionID;
       let vendor;
+      let user;
 
       before(async () => {
         await seed.runSeed().then(async () => {
           regionID = await Region.findOne().then(region => region._id);
-          vendor = await Vendor.findOne({ regionID: await regionID });
+          user = await User.findOne({ vendorID: { $exists: true } });
+          vendor = await Vendor.findOne({ regionID, _id: user.vendorID });
         });
       });
 
@@ -574,7 +576,7 @@ describe('DB Operations', () => {
         regionID = await Region.findOne().then(region => region._id);
         vendor = await Vendor.findOne({ regionID: await regionID });
         allTweets = await Tweet.find().sort([['date', 1]]);
-        allVendors = await Vendor.find();
+        allVendors = await Vendor.find().populate('tweetHistory').lean();
         [tweetID] = vendor.tweetHistory;
         tweet = await Tweet.findById(tweetID).populate('locations').populate('vendorID');
         // note: locationId should be equal to vendor.locationHistory[0]
@@ -622,12 +624,12 @@ describe('DB Operations', () => {
           .catch(err => console.error(err));
       });
 
-      it('expect getVendorsForFiltering to select name and id for all vendors and sort by name', (done) => {
+      it('expect getVendorsForFiltering to select name, id, and tweetHistory for all vendors and sort by name', (done) => {
         tweetOps.getVendorsForFiltering()
           .then((res) => {
             expect(res).to.be.array();
             expect(res.length).to.be.equal(allVendors.length);
-            expect(JSON.stringify(res)).to.be.equal(JSON.stringify(sortBy(allVendors.map(vendor => ({ _id: vendor._id, name: vendor.name })), 'name')));
+            expect(JSON.stringify(res)).to.be.equal(JSON.stringify(sortBy(allVendors.map(v => ({ _id: v._id, tweetHistory: v.tweetHistory, name: v.name })), 'name')));
             done();
           })
           .catch(err => console.error(err));

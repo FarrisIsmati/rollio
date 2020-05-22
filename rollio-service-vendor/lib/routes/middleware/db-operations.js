@@ -175,16 +175,19 @@ const publishUpdatedVendor = (vendor) => {
 };
 
 const vendorRouteOps = {
-  getUnapprovedVendors: async (req, res) => {
-    return getUnapprovedVendors().then(vendors => res.status(200).json({vendors}))
-  },
+  getUnapprovedVendors: async (req, res) => getUnapprovedVendors().then(vendors => res.status(200).json({ vendors })),
   createLocation: async (req, res) => {
     const { type, vendorID } = req.user;
     const isAdmin = type === 'admin';
     const isVendor = type === 'vendor';
     const { vendorID: routeVendorID } = req.params;
     if (isAdmin || (isVendor && String(vendorID) === routeVendorID)) {
-      return createNonTweetLocation(vendorID, req.body);
+      return createNonTweetLocation(vendorID, req.body).then(location => {
+        res.status(200).json({ location });
+      }).catch((err) => {
+        console.error(err);
+        res.status(500).send(err);
+      });
     }
     return res.status(403).send('You must be an admin or the vendor to create a new location');
   },
@@ -229,7 +232,6 @@ const vendorRouteOps = {
           return res.status(200).json({ vendor });
         })
         .catch((err) => {
-          console.log(err);
           console.error(err);
           res.status(500).send(err);
         });
