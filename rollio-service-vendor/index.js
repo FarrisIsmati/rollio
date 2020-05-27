@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 // DEPENDENCIES
+require('./lib/email/maildev');
 const app = require('express')();
 const bodyParser = require('body-parser');
 const morgan = require('morgan');

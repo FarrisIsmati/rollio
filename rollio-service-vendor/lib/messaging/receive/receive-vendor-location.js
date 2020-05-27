@@ -5,6 +5,7 @@ const mq = require('../index');
 const regionOps = require('../../db/mongo/operations/region-ops');
 const vendorOps = require('../../db/mongo/operations/vendor-ops');
 const sharedOps = require('../../db/mongo/operations/shared-ops');
+const mailerOps = require('../../db/mongo/operations/mailer-ops');
 const { client: redisClient, pub } = require('../../redis/index');
 const config = require('../../../config');
 const logger = require('../../log/index')('messaging/receive/receive-vendor-location');
@@ -17,7 +18,8 @@ const updateTweet = async (payload, region, vendor) => {
     regionID: region._id, vendorID: vendor._id, field: 'tweetHistory', payload,
   };
   try {
-    await vendorOps.updateVendorPush(params);
+    const updatedTweet = await vendorOps.updateVendorPush(params);
+    return updatedTweet;
   } catch (err) {
     logger.error(err);
   }
@@ -88,7 +90,9 @@ const receiveTweets = async () => {
     }
 
     try {
-      await updateTweet({ ...tweetPayload, locations: newLocations.map(loc => loc._id), usedForLocation: !!newLocations.length }, region, vendor);
+      const updatedVendor = await updateTweet({ ...tweetPayload, locations: newLocations.map(loc => loc._id), usedForLocation: !!newLocations.length }, region, vendor);
+      // actually, here is where we should send the email
+      mailerOps.sendEmail({to: 'sloan.holzman@gmail.com', subject: 'test subject', text: 'test message'});
       if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') { console.log(tweetPayload); }
 
       const twitterData = {

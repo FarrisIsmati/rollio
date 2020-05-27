@@ -204,6 +204,7 @@ describe('DB Operations', () => {
         const params = {
           regionID, vendorID: vendor._id, field: 'locationHistory', payload: newLocation._id,
         };
+        // here
         const updateCoordHistRes = await vendorOps.updateVendorPush(params)
           .then(res => res);
 
@@ -252,6 +253,7 @@ describe('DB Operations', () => {
         const params = {
           regionID, vendorID: vendor._id, field: 'tweetHistory', payload: tweetPayload,
         };
+        // here
         const updateDailyTweetsRes = await vendorOps.updateVendorPush(params)
           .then(res => res);
 
