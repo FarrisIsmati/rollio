@@ -9,6 +9,7 @@ import axios, {AxiosResponse} from "axios";
 import moment from 'moment';
 import Autocomplete from 'react-google-autocomplete';
 import useAuthentication from "../common/hooks/use-authentication";
+import { get } from "lodash";
 
 const CreateLocation = (props:any) => {
     const defaultLocation = {truckNum: 1, startDate: moment().toDate(), endDate: moment().add(1, 'days').toDate()};
@@ -30,6 +31,11 @@ const CreateLocation = (props:any) => {
 
     const goToLoginPage = () => {
         props.history.push('/login');
+    };
+
+    const goToAllLocations = () => {
+        const vendorId = get(user, 'vendorId', '');
+        props.history.push(`/locations/${vendorId}`);
     };
 
     const setLocationInformation = (data:any) => {
@@ -71,9 +77,7 @@ const CreateLocation = (props:any) => {
         })
             .then((res: AxiosResponse<any>) => {
                 setVendors(res.data.vendors);
-                if (res.data.vendors.length === 1) {
-                    setSelectedVendor(res.data.vendors[0]);
-                }
+                setSelectedVendor(res.data.vendors[0]);
                 setVendorsLoaded(true);
                 setLoading(false);
             }).catch((err:any) => {
@@ -168,6 +172,15 @@ const CreateLocation = (props:any) => {
                                 onClick={() => saveSearchedLocation()}
                             >
                                 Add the location and dates for Truck #{location.truckNum}
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colSpan={2}>
+                            <button
+                                onClick={() => goToAllLocations()}
+                            >
+                                Go back to all locations
                             </button>
                         </td>
                     </tr>

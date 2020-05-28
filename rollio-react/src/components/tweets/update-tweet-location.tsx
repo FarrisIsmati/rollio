@@ -82,6 +82,11 @@ const UpdateLocation = (props:any) => {
         props.history.push(`/tweets/${vendorId}`);
     };
 
+    const goToAllLocations = () => {
+        const vendorId = get(props, 'match.params.vendorId', '');
+        props.history.push(`/locations/${vendorId}`);
+    };
+
     const goToLoginPage = () => {
         props.history.push('/login');
     };
@@ -304,6 +309,13 @@ const UpdateLocation = (props:any) => {
                         onClick={goToAllTweets}
                     >
                         Return to all tweets
+                    </button>
+                </div>
+                <div>
+                    <button
+                        onClick={goToAllLocations}
+                    >
+                        Return to all locations
                     </button>
                 </div>
             </div>

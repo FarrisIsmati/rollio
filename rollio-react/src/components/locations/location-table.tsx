@@ -11,6 +11,7 @@ import queryString from 'query-string';
 import useAuthentication from "../common/hooks/use-authentication";
 import {VendorNameAndId} from "../tweets/interfaces";
 import { get } from "lodash";
+import {isLocationActive} from "../../util/index";
 
 const LocationTable = (props:any) => {
     // initial state
@@ -84,7 +85,7 @@ const LocationTable = (props:any) => {
         props.history.push('/newlocation')
     }
 
-    const goToTweetPage = (location:any) => {
+    const goToLocationPage = (location:any) => {
         const { tweetID, vendorID: locationVendorId } = location
         const tweet = vendorNameLookup[locationVendorId].tweetHistory.find((x:any) => x.tweetID === tweetID);
         // TODO: SET UP ROUTE FOR EDITING LOCATIONS THAT DO NOT HAVE A TWEET ASSOCIATED
@@ -133,15 +134,20 @@ const LocationTable = (props:any) => {
             accessor: (d:any) => d.matchMethod
         },
         {
+            id: 'isActive',
+            Header: 'Currently Active',
+            accessor: (d:any) => isLocationActive(d) ? 'Yes' : 'No'
+        },
+        {
             id: 'actions',
             Header: 'Actions',
             accessor: (d:any) => ({...d}),
             Cell: (props:any) => (
                 <button
                     id={props.id}
-                    onClick={() => goToTweetPage(props.value)}
+                    onClick={() => goToLocationPage(props.value)}
                 >
-                    Edit Tweet
+                    Edit Location
                 </button>
             )
         }
@@ -174,7 +180,7 @@ const LocationTable = (props:any) => {
                 </select>
                 <div className="table_spacing">
                     <ReactTable
-                        data={locations}
+                        data={locations.filter((location:any) => vendorID === 'all' ? location : location.vendorID === vendorID)}
                         columns={columns}
                         defaultPageSize={10}
                     />
