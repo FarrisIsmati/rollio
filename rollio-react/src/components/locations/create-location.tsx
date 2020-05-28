@@ -9,25 +9,22 @@ import axios, {AxiosResponse} from "axios";
 import moment from 'moment';
 import Autocomplete from 'react-google-autocomplete';
 import useAuthentication from "../common/hooks/use-authentication";
+import useFetchVendors from "../common/hooks/use-fetch-vendors";
 import { get } from "lodash";
 
 const CreateLocation = (props:any) => {
     const defaultLocation = {truckNum: 1, startDate: moment().toDate(), endDate: moment().add(1, 'days').toDate()};
     const [loading, setLoading] = useState<boolean>(true);
-    const [vendors, setVendors] = useState<any>([]);
-    const [vendorsLoaded, setVendorsLoaded] = useState<boolean>(false);
     const [selectedVendor, setSelectedVendor] = useState<any>({...defaultLocation});
     const [location, setLocation] = useState<any>({...defaultLocation});
     const { user } = useGetAppState();
     const { isAuthenticated } = user;
-    const tweetUrl = `${VENDOR_API}/tweets`;
     const vendorUrl = `${VENDOR_API}/vendor`;
 
     const dateValid = () => {
         const {startDate, endDate} = location;
         return startDate < endDate;
     }
-
 
     const goToLoginPage = () => {
         props.history.push('/login');
@@ -41,7 +38,6 @@ const CreateLocation = (props:any) => {
     const setLocationInformation = (data:any) => {
         setLocation({...location, ...data})
     }
-
     const saveSearchedLocation = () => {
         setLoading(true);
         const data = {
@@ -67,35 +63,17 @@ const CreateLocation = (props:any) => {
             throw err;
         })
     };
-
-    const fetchVendors = () => {
-        setLoading(true);
-        axios({
-            method: "GET",
-            url: `${tweetUrl}/vendors`,
-            headers: {'Authorization': "Bearer " + localStorage.token}
-        })
-            .then((res: AxiosResponse<any>) => {
-                setVendors(res.data.vendors);
-                setSelectedVendor(res.data.vendors[0]);
-                setVendorsLoaded(true);
-                setLoading(false);
-            }).catch((err:any) => {
-            console.error(err);
-            throw err;
-        })
-    };
-
     useAuthentication(props, true, false);
+    const { vendors, vendorsLoaded } = useFetchVendors(props);
     useEffect(() => {
-        if (isAuthenticated && !vendorsLoaded) {
-            fetchVendors();
+        if (vendorsLoaded) {
+            setSelectedVendor(vendors[0]);
+            setLoading(false);
         }
-    }, [isAuthenticated, vendorsLoaded]);
-
-
-    const contentText = !loading && !isAuthenticated ? 'You must be logged in' : 'Loading...';
-    const content = !loading ?
+    }, [vendorsLoaded]);
+    const anythingLoading = loading || !vendorsLoaded;
+    const contentText = !anythingLoading && !isAuthenticated ? 'You must be logged in' : 'Loading...';
+    const content = !anythingLoading ?
         (
             <div>
                 <table>
@@ -186,13 +164,6 @@ const CreateLocation = (props:any) => {
                     </tr>
                     </tbody>
                 </table>
-                {/*<div>*/}
-                {/*    <button*/}
-                {/*        onClick={goToAllTweets}*/}
-                {/*    >*/}
-                {/*        Go to */}
-                {/*    </button>*/}
-                {/*</div>*/}
             </div>
         ) :
         (

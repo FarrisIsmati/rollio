@@ -10,6 +10,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import queryString from 'query-string';
 import useAuthentication from "../common/hooks/use-authentication";
+import useFetchVendors from "../common/hooks/use-fetch-vendors";
 import { VendorNameAndId, Tweet } from "./interfaces";
 import { get } from "lodash";
 
@@ -32,9 +33,9 @@ const TweetTable = (props:any) => {
     // initial state
     const [loading, setLoading] = useState<boolean>(true);
     const [tweetsLoaded, setTweetsLoaded] = useState<boolean>(false);
-    const [vendorsLoaded, setVendorsLoaded] = useState<boolean>(false);
     const [vendorID, setVendorID] = useState<string>('all');
     const [vendorNameLookup, setVendorNameLookup] = useState<any>({});
+    const [vendorNameLookupLoaded, setVendorNameLookupLoaded] = useState<boolean>(false);
     const [startDate, setStartDate] = useState<Date | null>(initialStartDate);
     const [endDate, setEndDate] = useState<Date | null>(initialEndDate);
     const [tweets, setTweets] = useState<Tweet[]>([]);
@@ -62,26 +63,7 @@ const TweetTable = (props:any) => {
             })
     };
 
-    const fetchVendors = () => {
-        setLoading(true);
-        const query = routeVendorID ? { _id: routeVendorID } : {};
-        axios({
-            method: "GET",
-            url: `${tweetUrl}/vendors/?${queryString.stringify(query)}`,
-            headers: {'Authorization': "Bearer " + localStorage.token}
-        })
-            .then((res: AxiosResponse<any>) => {
-                const vendorNameLookup = res.data.vendors.reduce((acc:any, vendor:VendorNameAndId) => {
-                    acc[vendor._id] = vendor.name;
-                    return acc;
-                }, {});
-                setVendorNameLookup(vendorNameLookup);
-                setVendorsLoaded(true);
-            }).catch((err:any) => {
-            console.error(err);
-            throw err;
-        })
-    };
+    const { vendors, vendorsLoaded } = useFetchVendors(props);
 
     const selectDate = (date:Date | null, startOrEnd:string) => {
         if (startOrEnd === 'start') {
@@ -179,22 +161,26 @@ const TweetTable = (props:any) => {
             )
         }
     ];
-
     useAuthentication(props, true, true);
     useEffect(() => {
-        // first, get vendors if they haven't been loaded, yet
-        if (isAuthenticated && !vendorsLoaded) {
-            fetchVendors();
-            // then get the tweets, if they haven't been loaded yet or if startDate, endDate, or vendorID changes
-        } else if (isAuthenticated) {
-            fetchTweets();
+        if (isAuthenticated) {
+            if (vendorsLoaded && !vendorNameLookupLoaded) {
+                const vendorNameLookup = vendors.reduce((acc:any, vendor:VendorNameAndId) => {
+                    acc[vendor._id] = vendor.name;
+                    return acc;
+                }, {});
+                setVendorNameLookup(vendorNameLookup);
+                setVendorNameLookupLoaded(true);
+            } else if (vendorsLoaded && vendorNameLookupLoaded) {
+                fetchTweets();
+            }
         }
-    }, [isAuthenticated, vendorsLoaded, tweetsLoaded, startDate, endDate, vendorID]);
+    }, [isAuthenticated, vendorsLoaded, tweetsLoaded, vendorNameLookupLoaded, startDate, endDate, vendorID]);
 
 
 
 
-    const contentText = !(loading || tweetsLoaded) && !user.isAuthenticated ? 'You must be logged in' : 'Loading...';
+    const contentText = !(loading || tweetsLoaded) && !isAuthenticated ? 'You must be logged in' : 'Loading...';
     const content = tweetsLoaded ?
         (
             <div className="table_wrapper">
@@ -240,7 +226,7 @@ const TweetTable = (props:any) => {
         (
             <div>
                 <p>{contentText}</p>
-                { !user.isAuthenticated &&
+                { !isAuthenticated &&
                     <button
                         onClick={() => goToLoginPage()}
                     >
