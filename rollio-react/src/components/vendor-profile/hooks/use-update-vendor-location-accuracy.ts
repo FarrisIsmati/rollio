@@ -5,9 +5,17 @@ import { useDispatch } from 'react-redux';
 // REDUX
 import { updateVendorLocationAccuracyAsync } from '../../../redux/actions/data-actions';
 
+// INTERFACES
+import { AccuracyAsyncStatePayload, accuracyAsyncStateEnum } from './interfaces';
 
-const useUpdateVendorLocationAccuracy = (regionID:string, vendorID:string) => {
-    const [accuracyAsyncState, setAccuracyAsyncState] = useState<any>(); // Needs to be an object/array?
+const useUpdateVendorLocationAccuracy = (regionID:string, vendorID:string, locations: [any]) => {
+    // Setup accuracyAsyncState default obj
+    const accuracyAsyncStateDefaultObj:AccuracyAsyncStatePayload = {};
+    locations.forEach((location:any) => {
+        accuracyAsyncStateDefaultObj[location._id] = accuracyAsyncStateEnum.DEFAULT;
+    })
+
+    const [accuracyAsyncState, setAccuracyAsyncState] = useState<any>(accuracyAsyncStateDefaultObj);
 
     // Effects
     const dispatch = useDispatch();
@@ -18,11 +26,25 @@ const useUpdateVendorLocationAccuracy = (regionID:string, vendorID:string) => {
         regionID,
         vendorID,
         cbError: (err:any) => {
-            console.log('failure is not an option');
+            console.error(`Failed to vote on location accuracy ${err}`);
+
+            setAccuracyAsyncState({
+                ...accuracyAsyncState,
+                [locationID]: accuracyAsyncStateEnum.FAILED
+            })
+
+            // Timeout resets error message to default
+            setTimeout(() => {
+                setAccuracyAsyncState({
+                    ...accuracyAsyncState,
+                    [locationID]: accuracyAsyncStateEnum.DEFAULT
+                })
+            }, 3000); 
         }
     }));
 
-    return { 
+    return {
+        accuracyAsyncState,
         updateVendorLocationAccuracy
     }
 }

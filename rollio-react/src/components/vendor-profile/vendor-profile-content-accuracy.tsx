@@ -4,9 +4,15 @@ import React, { ReactElement } from 'react';
 // HOOKS
 import useUpdateVendorLocationAccuracy from './hooks/use-update-vendor-location-accuracy';
 
+// INTERFACES
+import { accuracyAsyncStateEnum } from './hooks/interfaces';
+
+
 const VendorProfileContentAccuracy = (props:any) => {
     const { state, vendor, findOnMap } = props;
-    const { updateVendorLocationAccuracy } = useUpdateVendorLocationAccuracy(state.data.regionId,state.data.selectedVendor.id);
+    const { updateVendorLocationAccuracy, accuracyAsyncState } = useUpdateVendorLocationAccuracy(state.data.regionId,state.data.selectedVendor.id, state.data.selectedVendor.locations);
+
+  console.log(accuracyAsyncState);
 
     const vendorAccuracyComponent = (locationID:string, accuracy:number) => {
       return (
@@ -14,6 +20,7 @@ const VendorProfileContentAccuracy = (props:any) => {
           <h2 className='vendorprofile__info_address_accuracy_number'>{accuracy}</h2>
           <i onClick={() => updateVendorLocationAccuracy(1, locationID)} className="material-icons-outlined vendorprofile__info_address_accuracy_plus">add</i>
           <i onClick={() => updateVendorLocationAccuracy(-1, locationID)} className="material-icons-outlined vendorprofile__info_address_accuracy_minus">remove</i>
+          { accuracyAsyncState[locationID] === accuracyAsyncStateEnum.FAILED ? <p>error</p> : null }
         </div>
       )
     }
