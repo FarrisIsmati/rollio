@@ -91,7 +91,7 @@ const LocationTable = (props:any) => {
         }
     ];
 
-    const { locationsLoaded, locations, vendorLookUp } = useFetchLocations(props);
+    const { locationsLoaded, locations, vendorLookUp } = useFetchLocations(props, vendorID);
     useAuthentication(props, true, true);
 
     const contentText = !isAuthenticated ? 'You must be logged in' : 'Loading...';
