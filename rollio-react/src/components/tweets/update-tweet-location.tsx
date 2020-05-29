@@ -193,7 +193,7 @@ const UpdateLocation = (props:any) => {
                 <tr>
                     <td colSpan={2}>
                         <button
-                            disabled={!get(searchedLocationLookUp, `${id}.formatted_address`) && !dateValid(id)}
+                            disabled={!get(searchedLocationLookUp, `${id}.formatted_address`) || !dateValid(id)}
                             onClick={() => saveSearchedLocation(id, truckNum)}
                         >
                             { id === 'newLocation' ? 'Add' : 'Update'} the location and dates for Truck #{truckNum}
