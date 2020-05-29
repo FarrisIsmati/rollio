@@ -118,6 +118,83 @@
             }
         }
 
+        &_row {
+            display: flex;
+            padding: 16px 0;
+
+            
+            &_clickable {
+                @extend .vendorprofile__info_row;
+                border-top: 1px solid $color-vendor-profile-info-row-border;
+                transition: color 0.25s ease;
+                justify-content: space-between;
+
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+
+            &_expanded {
+                margin-bottom: 15px;
+
+                &_hidden {
+                    display: none;
+                }
+            }
+        }
+
+        &_detail {
+            display: inline-grid;
+            grid-template-columns: 14.58% auto;
+            margin: 16px 0px;
+            width: 100%;
+
+            &_unavailable {
+                color: $color-vendor-profile-into-item-unavailable;
+            }
+        }
+
+        &_icon_wrapper {
+            display: flex;
+            align-items: center;
+            @extend .noselect;
+
+            i {
+                color: $color-vendor-profile-info-icon;
+            }
+
+            & svg {
+                height: 18px;
+                width: 18px !important;
+                padding-left: 2px;
+                color: $color-vendor-profile-info-icon;
+            }
+        }
+
+        &_icon_wrapper_alt {
+            @extend .vendorprofile__info_icon_wrapper;
+            @extend .noselect;
+            align-items: initial !important;
+
+            &_center {
+                @extend .vendorprofile__info_icon_wrapper_alt;
+                align-items: center !important;
+            }
+
+            i {
+                color: $color-vendor-profile-info-icon-alt;
+            }
+        }
+
+        &_text_wrapper {
+            @extend .noselect;
+
+            p {
+                font-size: 16px;
+                line-height: 24px;
+            }
+        }
+
         &_address {
             display: flex;
             align-items: center;
@@ -148,70 +225,6 @@
             &_arrows {
                 display: flex;
                 flex-direction: column;
-            }
-        }
-
-        &_row {
-            display: inline-grid;
-            grid-template-columns: 14.58% auto;
-            margin: 16px 0;
-
-            
-            &_clickable {
-                @extend .vendorprofile__info_row;
-                transition: color 0.25s ease;
-                &:hover h2 {
-                    cursor: pointer;
-                    color: $color-vendor-info-main-hover !important;
-                    transition: color 0.15s ease;
-                }
-
-                &:hover i {
-                    cursor: pointer;
-                    color: $color-vendor-info-main-hover !important;
-                    transition: color 0.15s ease;
-                }
-            }
-
-            &_expanded {
-                &_hidden {
-                    display: none;
-                }
-            }
-        }
-
-        &_icon_wrapper {
-            display: flex;
-            align-items: center;
-            @extend .noselect;
-
-            i {
-                color: $color-vendor-profile-info-icon;
-            }
-
-            & svg {
-                height: 18px;
-                width: 18px !important;
-                padding-left: 2px;
-                color: $color-vendor-profile-info-icon;
-            }
-        }
-
-        &_icon_wrapper_alt {
-            @extend .vendorprofile__info_icon_wrapper;
-            @extend .noselect;
-
-            i {
-                color: $color-vendor-profile-info-icon-alt;
-            }
-        }
-
-        &_text_wrapper {
-            @extend .noselect;
-
-            h2 {
-                font-size: 14px;
-                line-height: 24px;
             }
         }
     }
@@ -286,8 +299,8 @@
 }
 
 .font__vendor_profile_info {
-    @include font-bold;
-    color: $color-vendor-info-main;
+    @include font-reg;
+    color: $color-font-main;
 }
 
 .font__vendor_profile_info_alt {

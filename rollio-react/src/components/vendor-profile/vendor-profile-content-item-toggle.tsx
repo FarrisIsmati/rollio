@@ -1,8 +1,6 @@
 // DEPENDENCIES
 import React from 'react';
-
-// COMPONENTS
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { uppercaseFirstLetterEveryWord } from '../../util/index';
 
 // INTERFACES
 import { VendorProfileToggleComponentProps } from './interfaces'
@@ -14,20 +12,21 @@ const VendorProfileContentItemToggle = (props:VendorProfileToggleComponentProps)
       components,
       toggleComponents,
       children,
-      iconMa,
-      iconFa,
+      componentDisplayName,
     } = props;
-
+    console.log(components);
     return (   
         <React.Fragment>
             <div className='vendorprofile__info_row_clickable' onClick={() => toggleComponents(componentName.toUpperCase())}>
-              <div className='vendorprofile__info_icon_wrapper'>
-                { iconMa ? <i className="material-icons-outlined">{iconMa}</i> : <FontAwesomeIcon icon={iconFa} /> }
-              </div>
               <div className='vendorprofile__info_text_wrapper font__vendor_profile_info flex__verticle_center'>
-                <h2>{componentName.toUpperCase()}</h2>
+                <h2>{uppercaseFirstLetterEveryWord(componentDisplayName)}</h2>
+              </div>
+
+              <div className='vendorprofile__info_icon_wrapper'>
+                <i className="material-icons-outlined">{components[componentName.toUpperCase()] ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}</i> 
               </div>
             </div>
+
             <div className={`vendorprofile__info_row_expanded${components[componentName.toUpperCase()] ? '': '_hidden'} font__vendor_profile_info_desc`}>
               {children}
             </div>

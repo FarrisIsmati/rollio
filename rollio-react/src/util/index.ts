@@ -34,3 +34,12 @@ export const getCurrentTruckLocation = (vendorID: string, truckNum: number, vend
     const locations = get(vendorsAll, `${vendorID}.locations`, []);
     return locations.find((location:any) => toNumber(truckNum) === toNumber(location.truckNum) && isLocationActive(location))
 }
+
+// String utils
+export const uppercaseFirstLetterEveryWord = (str: string) => {
+    return str
+        .toLowerCase()
+        .split(' ')
+        .map((word:string) => word ? word[0].toUpperCase() + word.substr(1) : word)
+        .join(' ');
+}

@@ -3,6 +3,5 @@ export type VendorProfileToggleComponentProps = {
     components: any,
     toggleComponents: any,
     children: any,
-    iconMa?: string,
-    iconFa?: any,
-} & ( { iconMa: string } | { iconFa: any } )
+    componentDisplayName: string
+}
