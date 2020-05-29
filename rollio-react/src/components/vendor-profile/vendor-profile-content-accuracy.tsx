@@ -17,10 +17,23 @@ const VendorProfileContentAccuracy = (props:any) => {
     const vendorAccuracyComponent = (locationID:string, accuracy:number) => {
       return (
         <div className='vendorprofile__info_address_accuracy font__vendor_profile_info'>
-          <h2 className='vendorprofile__info_address_accuracy_number'>{accuracy}</h2>
-          <i onClick={() => updateVendorLocationAccuracy(1, locationID)} className="material-icons-outlined vendorprofile__info_address_accuracy_plus">add</i>
-          <i onClick={() => updateVendorLocationAccuracy(-1, locationID)} className="material-icons-outlined vendorprofile__info_address_accuracy_minus">remove</i>
-          { accuracyAsyncState[locationID] === accuracyAsyncStateEnum.FAILED ? <p>error</p> : null }
+          <p className='vendorprofile__info_address_accuracy_question'>Is this location accurate?</p>
+
+          <div className='vendorprofile__info_address_accuracy_voter'>
+            { accuracyAsyncState[locationID] === accuracyAsyncStateEnum.FAILED ?
+              <div className='flex'>
+                <i className='material-icons-outlined'>error_outline</i>
+                <p>Can't vote on a vendor more than once per day</p> 
+              </div>
+              :
+              <React.Fragment>
+                <i onClick={() => updateVendorLocationAccuracy(1, locationID)} className="material-icons-outlined vendorprofile__info_address_accuracy_plus">arrow_upward</i>
+                  <p>{accuracy}</p>
+                <i onClick={() => updateVendorLocationAccuracy(-1, locationID)} className="material-icons-outlined vendorprofile__info_address_accuracy_minus">arrow_downward</i>
+              </React.Fragment>
+            }
+
+          </div>
         </div>
       )
     }
@@ -28,15 +41,14 @@ const VendorProfileContentAccuracy = (props:any) => {
     // Vendor Address Component
     const vendorAddressComponent = () => {
       const setAddress = (address:ReactElement, location:any, i:number|null = null) => (
-        <div key={location._id} className='vendorprofile__info_row_clickable'>
-            <div className='vendorprofile__info_icon_wrapper'>
+        <div key={location._id} className='vendorprofile__info_detail'>
+            <div className='vendorprofile__info_icon_wrapper_alt_center'>
               <i className="material-icons-outlined">room</i> 
             </div>
-            <div className='vendorprofile__info_address vendorprofile__info_text_wrapper font__vendor_profile_info flex__verticle_center'>
-              <h2 onClick={ () => findOnMap(vendor.locations[i !== null ? i : 0]) }>
-                { i !== null ? state.data.selectedVendor.locations[i].address : state.data.selectedVendor.locations[0].address }
-              </h2>
-            </div>
+
+            <p className='flex__verticle_center' onClick={ () => findOnMap(vendor.locations[i !== null ? i : 0]) }>
+              { i !== null ? state.data.selectedVendor.locations[i].address : state.data.selectedVendor.locations[0].address }
+            </p>
             {/* Empty div to properly order row/columns */}
             <div></div> 
             { vendorAccuracyComponent(location._id, location.accuracy) }

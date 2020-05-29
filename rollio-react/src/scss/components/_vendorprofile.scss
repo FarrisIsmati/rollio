@@ -202,24 +202,44 @@
             &_accuracy {
                 align-items: center;
                 display: flex;
+                justify-content: space-between;
+                color: $color-vendor-profile-info-accuracy-voter;
 
-                h2 {
+                &_voter {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+
+                    p {
+                        font-size: 14px;
+                        color: $color-vendor-profile-info-accuracy-voter;
+                    }
+
+                    i {
+                        margin: 0px 5px;
+                        font-size: 20px;
+                        color: $color-vendor-profile-info-accuracy-voter; 
+
+                        &:hover {
+                            cursor: pointer;
+                        }
+                    }
+                    
+                    &_plus {
+                        margin-left: 5px;
+    
+                    }
+    
+                    &_minus {
+                        margin-left: 5px;
+                    }
+                }
+
+                &_question {
                     font-size: 14px;
+                    color: $color-vendor-profile-info-accuracy-voter;
                 }
 
-                i {
-                    font-size: 16px;
-                    color: $color-vendor-profile-accuracy-icon-enabled; 
-                }
-                
-                &_plus {
-                    margin-left: 5px;
-
-                }
-
-                &_minus {
-                    margin-left: 5px;
-                }
             }
 
             &_arrows {
