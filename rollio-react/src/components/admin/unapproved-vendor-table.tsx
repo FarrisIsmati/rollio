@@ -1,61 +1,19 @@
 import useGetAppState from "../common/hooks/use-get-app-state";
-import React, {useEffect, useState} from "react";
+import React from "react";
 import { withRouter } from 'react-router';
-import {VENDOR_API} from "../../config";
 import ReactTable from 'react-table';
 import 'react-table/react-table.css'
-import axios, {AxiosResponse} from "axios";
 import "react-datepicker/dist/react-datepicker.css";
 import useAuthentication from "../common/hooks/use-authentication";
+import useFetchUnapprovedVendors from "./hooks/useFetchUnapprovedVendors";
 
 const UnapprovedVendorTable = (props:any) => {
-    const [loading, setLoading] = useState<boolean>(true);
-    const [vendorsLoaded, setVendorsLoaded] = useState<boolean>(false);
-    const [vendors, setVendors] = useState<Location[]>([]);
-
     const { user } = useGetAppState();
-    const { isAuthenticated } = user;
-
-    const fetchVendors = () => {
-        setLoading(true);
-        axios({
-            method: "GET",
-            url: `${VENDOR_API}/vendor/unapproved-vendors`,
-            headers: {'Authorization': "Bearer " + localStorage.token}
-        })
-            .then((res: AxiosResponse<any>) => {
-                setVendors(res.data.vendors);
-                setVendorsLoaded(true);
-            }).catch((err:any) => {
-            console.error(err);
-            throw err;
-        })
-    };
-
-    const approve = (vendor:any) => {
-        setLoading(true);
-        const { regionID, _id: vendorID } = vendor;
-        axios({
-            method: "PUT",
-            data: {
-                regionID, vendorID, field: 'approved', data: true,
-            },
-            url: `${VENDOR_API}/vendor/${regionID}/${vendorID}/update`,
-            headers: {'Authorization': "Bearer " + localStorage.token}
-        })
-            .then(() => {
-                setVendors(vendors.filter((v:any) => v._id !== vendorID));
-                setVendorsLoaded(true);
-            }).catch((err:any) => {
-            console.error(err);
-            throw err;
-        })
-    };
-
     const goToLoginPage = () => {
         props.history.push('/login');
     };
-
+    useAuthentication(props, true, true);
+    const { vendors, vendorsLoaded, approveVendor } = useFetchUnapprovedVendors(props)
     const columns = [
         {
             id: 'name',
@@ -84,27 +42,14 @@ const UnapprovedVendorTable = (props:any) => {
             Cell: (props:any) => (
                 <button
                     id={props.id}
-                    onClick={() => approve(props.value)}
+                    onClick={() => approveVendor(props.value)}
                 >
                     Approve
                 </button>
             )
         }
     ];
-
-    useAuthentication(props, true, true);
-    useEffect(() => {
-        // first, get vendors if they haven't been loaded, yet
-        if (isAuthenticated && !vendorsLoaded) {
-            fetchVendors();
-            // then get the locations, if they haven't been loaded yet or if startDate, endDate, or vendorID changes
-        }
-    }, [isAuthenticated, vendorsLoaded]);
-
-
-
-
-    const contentText = !(loading || vendorsLoaded) && !user.isAuthenticated ? 'You must be logged in' : 'Loading...';
+    const contentText = !(vendorsLoaded) && !user.isAuthenticated ? 'You must be logged in' : 'Loading...';
     const content = vendorsLoaded ?
         (
             <div className="table_wrapper">
