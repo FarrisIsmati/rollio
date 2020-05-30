@@ -11,7 +11,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import queryString from 'query-string';
 import useAuthentication from "../common/hooks/use-authentication";
 import useFetchVendors from "../common/hooks/use-fetch-vendors";
-import { VendorNameAndId, Tweet } from "./interfaces";
+import { Tweet } from "./interfaces";
 import { get } from "lodash";
 
 const getTweetTableDates = () => {
@@ -31,11 +31,8 @@ const TweetTable = (props:any) => {
     const { minDate, initialStartDate, initialEndDate } = getTweetTableDates();
 
     // initial state
-    const [loading, setLoading] = useState<boolean>(true);
     const [tweetsLoaded, setTweetsLoaded] = useState<boolean>(false);
     const [vendorID, setVendorID] = useState<string>('all');
-    const [vendorNameLookup, setVendorNameLookup] = useState<any>({});
-    const [vendorNameLookupLoaded, setVendorNameLookupLoaded] = useState<boolean>(false);
     const [startDate, setStartDate] = useState<Date | null>(initialStartDate);
     const [endDate, setEndDate] = useState<Date | null>(initialEndDate);
     const [tweets, setTweets] = useState<Tweet[]>([]);
@@ -46,7 +43,7 @@ const TweetTable = (props:any) => {
     const tweetUrl = `${VENDOR_API}/tweets`;
 
     const fetchTweets = () => {
-        setLoading(true);
+        setTweetsLoaded(true);
         const query = { startDate, endDate, vendorID: routeVendorID || vendorID === 'all' ? null : vendorID };
         axios({
             method: "GET",
@@ -55,15 +52,15 @@ const TweetTable = (props:any) => {
         })
             .then((res: AxiosResponse<any>) => {
                 mapVendorsOntoTweets(res.data.tweets);
-                setLoading(false);
+                setTweetsLoaded(true);
             }).catch((err:any) => {
-                setLoading(false);
+                setTweetsLoaded(false);
                 console.error(err);
                 throw err;
             })
     };
 
-    const { vendors, vendorsLoaded } = useFetchVendors(props);
+    const { vendorLookupLoaded, vendorLookUp } = useFetchVendors(props);
 
     const selectDate = (date:Date | null, startOrEnd:string) => {
         if (startOrEnd === 'start') {
@@ -76,8 +73,9 @@ const TweetTable = (props:any) => {
 
     const mapVendorsOntoTweets = (tweets:Tweet[]) => {
         const tweetsWithVendorsMapped = tweets.reduce((acc:any, tweet:Tweet) => {
-            const baseTweetData = { ...tweet, vendorName: vendorNameLookup[tweet.vendorID] || 'Unknown Vendor', locations: undefined }
+            const baseTweetData = { ...tweet, vendorName: get(vendorLookUp, `${tweet.vendorID}.name`, 'Unknown Vendor'), locations: undefined }
             if (tweet.locations.length) {
+                // we break each location into its own line, so that it is easier to read
                 tweet.locations.forEach(location => {
                     acc.push({ ...baseTweetData, location})
                 })
@@ -163,31 +161,22 @@ const TweetTable = (props:any) => {
     ];
     useAuthentication(props, true, true);
     useEffect(() => {
-        if (isAuthenticated) {
-            if (vendorsLoaded && !vendorNameLookupLoaded) {
-                const vendorNameLookup = vendors.reduce((acc:any, vendor:VendorNameAndId) => {
-                    acc[vendor._id] = vendor.name;
-                    return acc;
-                }, {});
-                setVendorNameLookup(vendorNameLookup);
-                setVendorNameLookupLoaded(true);
-            } else if (vendorsLoaded && vendorNameLookupLoaded) {
+        if (isAuthenticated && vendorLookupLoaded) {
                 fetchTweets();
-            }
         }
-    }, [isAuthenticated, vendorsLoaded, tweetsLoaded, vendorNameLookupLoaded, startDate, endDate, vendorID]);
+    }, [isAuthenticated, vendorLookupLoaded, startDate, endDate, vendorID]);
 
 
 
 
-    const contentText = !(loading || tweetsLoaded) && !isAuthenticated ? 'You must be logged in' : 'Loading...';
+    const contentText = isAuthenticated ? 'Loading...' : 'You must be logged in';
     const content = tweetsLoaded ?
         (
             <div className="table_wrapper">
                 <select value={vendorID} onChange={e=>setVendorID(e.target.value)}>
                     <option value="all">All Vendors</option>
-                    {Object.entries(vendorNameLookup).map((entry:[any, any]) => {
-                        const [id, name] = entry;
+                    {Object.entries(vendorLookUp).map((entry:[any, any]) => {
+                        const [id, {name}] = entry;
                         return <option key={id} value={id}>{name}</option>
                     })}
                 </select>
