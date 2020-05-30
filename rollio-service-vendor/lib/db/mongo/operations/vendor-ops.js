@@ -24,6 +24,7 @@ module.exports = {
       acc[String(vendorID)] = { username, displayName };
       return acc;
     }, {});
+    // we look up and add on the twitter displayName so that we can look at their twitter account before approving
     return unapprovedVendors
       .map(vendor => ({ ...vendor.toObject(), twitterInfo: twitterLookUp[String(vendor._id)] }));
   },

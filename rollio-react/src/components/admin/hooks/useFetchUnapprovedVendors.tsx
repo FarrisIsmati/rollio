@@ -46,10 +46,8 @@ const useFetchUnapprovedVendors = (props:any) => {
         })
     };
     useEffect(() => {
-        // first, get vendors if they haven't been loaded, yet
         if (isAuthenticated && !vendorsLoaded) {
             fetchUnapprovedVendors();
-            // then get the locations, if they haven't been loaded yet or if startDate, endDate, or vendorID changes
         }
     }, [isAuthenticated, vendorsLoaded]);
     return { vendors, vendorsLoaded, approveVendor }
