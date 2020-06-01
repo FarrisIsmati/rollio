@@ -70,7 +70,6 @@ import { isLocationActive, isLocationActiveOrWillBeActive } from "../../util";
 // Gets the detailed set of vendor profile data
 export function receiveVendorData(vendor:any) {
     const locations = vendor.locationHistory.filter(isLocationActiveOrWillBeActive);
-    console.log(vendor);
 
     // If an empty object is passed as an arg then reset all data
     const profile = {

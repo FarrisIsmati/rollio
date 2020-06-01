@@ -2,9 +2,6 @@
 import React, { ChangeEvent, useState, useRef, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
-// UTILS
-import { getRouteIds } from '../../../util/index';
-
 // REDUX
 import { requestPostVendorComment } from '../../../redux/actions/data-actions';
 
@@ -12,16 +9,34 @@ import { requestPostVendorComment } from '../../../redux/actions/data-actions';
 import useGetAppState from '../../common/hooks/use-get-app-state';
 
 const useCommentAdd = (props:any) => {
+    // Hooks
     const state = useGetAppState();
 
+    // State
     const [commentActive, setCommentActive] = useState<boolean>(false);
     const [commentBody, setCommentBody] = useState<string>('');
     const [commentName, setCommentName] = useState<string>('');
     const [numberOfComments, setNumberOfComments] = useState<number>(5);
     const [commentErrorMessage, setCommentErrorMessage] = useState<string>('');
+
+    // Refs
     const commentBodyTextArea:any = useRef(null);
+    const currentSelectedVendorRef:any = useRef(state.data.selectedVendor.id);
+
+    const resetComment = () => {
+        setCommentErrorMessage(() => '');
+        setCommentBody(() => '');
+        setCommentName(() => '');
+        setCommentActive(false);
+    }
 
     useEffect(() => {
+        // Reset comments box when you deselect a vendor
+        if (currentSelectedVendorRef.current !== state.data.selectedVendor.id) {
+            currentSelectedVendorRef.current = state.data.selectedVendor.id;
+            resetComment();
+        }
+
         // Upon unmounting reset number of comments to 5
         return () => {
             setNumberOfComments(5);
@@ -29,7 +44,7 @@ const useCommentAdd = (props:any) => {
     })
 
     const getNamePlaceHolder = () => {
-        return commentActive === false ? 'Add Comment' : 'Name (Optional)';   
+        return commentActive === false ? 'Write a Comment' : 'Name';   
     }
 
     const getIsLocked = () => {
@@ -95,10 +110,8 @@ const useCommentAdd = (props:any) => {
                 resetCommentErrorMessage();
             } else if (httpStatus === 200) {
                 // Upon Successful message sent clean up add comment
-                setCommentErrorMessage(() => '');
-                setCommentBody(() => '');
-                setCommentName(() => '');
-                setCommentActive(false);
+                resetComment();
+                
             } else {
                 setCommentErrorMessage(() => 'Error: your comment could not be submitted');
                 resetCommentErrorMessage();
