@@ -68,7 +68,14 @@ const CommentAdd:FC = (props) => {
                         isLocked={getIsLocked}
                         handleClick={dispatchRequestPostVendorComment}
                     />
-                    <p id='commentErrorMessage' className='font__comment_add_error'>{commentErrorMessage}</p>
+                    { commentErrorMessage ? 
+                        <div className='flex commentadd__error'>
+                            <i className='material-icons-outlined'>error_outline</i>
+                            <p id='commentErrorMessage' className='font__comment_add_error'>{commentErrorMessage}</p>
+                        </div> :
+                        null
+                    }
+
                 </div>
             </div>
         </div>

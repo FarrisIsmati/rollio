@@ -14,7 +14,7 @@ const VendorProfileContentItemToggle = (props:VendorProfileToggleComponentProps)
       children,
       componentDisplayName,
     } = props;
-    console.log(components);
+
     return (   
         <React.Fragment>
             <div className='vendorprofile__info_row_clickable' onClick={() => toggleComponents(componentName.toUpperCase())}>

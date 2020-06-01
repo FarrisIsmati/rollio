@@ -152,6 +152,10 @@
             &_unavailable {
                 color: $color-vendor-profile-into-item-unavailable;
             }
+
+            &_address:hover {
+                cursor: pointer;
+            }
         }
 
         &_icon_wrapper {

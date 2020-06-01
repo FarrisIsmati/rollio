@@ -81,10 +81,13 @@
                 // Incase there needs to be styling
             }
         }
+
+
     }
 
     &__button_holder {
         display: flex;
+        justify-content: space-between;
         @extend .noselect;
 
         .button__comment_add {
@@ -104,11 +107,27 @@
             color: $color-comment-icon-text;
         }
     }
-}
 
-#commentErrorMessage {
-    font-size: 16px;
-    line-height: 24px;
+    &__error {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        p {
+            font-size: 14px;
+        }
+
+        i {
+            margin: 0px 5px;
+            font-size: 20px;
+            color: $color-vendor-profile-info-accuracy-voter; 
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
+
+    
 }
 
 #commentBodyTextArea {
@@ -189,7 +208,7 @@
 
     &_error {
         @include font-reg;
-        color: $color-font-error;
+        color: $color-comment-error;
     }
 }
 

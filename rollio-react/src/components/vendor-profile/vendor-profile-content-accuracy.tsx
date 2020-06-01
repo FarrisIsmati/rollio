@@ -12,8 +12,6 @@ const VendorProfileContentAccuracy = (props:any) => {
     const { state, vendor, findOnMap } = props;
     const { updateVendorLocationAccuracy, accuracyAsyncState } = useUpdateVendorLocationAccuracy(state.data.regionId,state.data.selectedVendor.id, state.data.selectedVendor.locations);
 
-  console.log(accuracyAsyncState);
-
     const vendorAccuracyComponent = (locationID:string, accuracy:number) => {
       return (
         <div className='vendorprofile__info_address_accuracy font__vendor_profile_info'>
@@ -46,7 +44,7 @@ const VendorProfileContentAccuracy = (props:any) => {
               <i className="material-icons-outlined">room</i> 
             </div>
 
-            <p className='flex__verticle_center' onClick={ () => findOnMap(vendor.locations[i !== null ? i : 0]) }>
+            <p className='vendorprofile__info_detail_address flex__verticle_center' onClick={ () => findOnMap(vendor.locations[i !== null ? i : 0]) }>
               { i !== null ? state.data.selectedVendor.locations[i].address : state.data.selectedVendor.locations[0].address }
             </p>
             {/* Empty div to properly order row/columns */}

@@ -79,11 +79,20 @@ const useCommentAdd = (props:any) => {
         const regionId = state.data.regionId;
         const vendorId = state.data.selectedVendor.id;
 
+        // Timeout resets error message to default
+        const resetCommentErrorMessage = () => {
+            // setTimeout(() => {
+            //     setCommentErrorMessage(() => '');
+            // }, 3000);
+        }
+
+
         try {
             const dispatchRes:any = await dispatch( requestPostVendorComment({ regionId, vendorId, name: commentName, text: commentBody }) )
             const httpStatus = dispatchRes.response ? dispatchRes.response.status : dispatchRes.status;
             if (httpStatus === 429) {
-                setCommentErrorMessage(() => 'You can only comment on this vendor once per day');
+                setCommentErrorMessage(() => 'Comment limit reached');
+                resetCommentErrorMessage();
             } else if (httpStatus === 200) {
                 // Upon Successful message sent clean up add comment
                 setCommentErrorMessage(() => '');
@@ -92,9 +101,11 @@ const useCommentAdd = (props:any) => {
                 setCommentActive(false);
             } else {
                 setCommentErrorMessage(() => 'Error: your comment could not be submitted');
+                resetCommentErrorMessage();
             }
         } catch (error) {
             setCommentErrorMessage(() => 'Error: your comment could not be submitted');
+            resetCommentErrorMessage();
         }
     }
 
