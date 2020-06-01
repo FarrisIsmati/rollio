@@ -81,9 +81,9 @@ const useCommentAdd = (props:any) => {
 
         // Timeout resets error message to default
         const resetCommentErrorMessage = () => {
-            // setTimeout(() => {
-            //     setCommentErrorMessage(() => '');
-            // }, 3000);
+            setTimeout(() => {
+                setCommentErrorMessage(() => '');
+            }, 3000);
         }
 
 
