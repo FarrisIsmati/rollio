@@ -25,6 +25,8 @@ const {
   updateLocationAccuracy,
   updateVendorPushPosition,
   updateVendorSet,
+  createNonTweetLocation,
+  getUnapprovedVendors,
 } = require('../../db/mongo/operations/vendor-ops');
 
 const {
@@ -38,7 +40,12 @@ const {
   getTweetWithPopulatedVendorAndLocations,
   deleteTweetLocation,
   createTweetLocation,
+  getTweet,
 } = require('../../db/mongo/operations/tweet-ops');
+
+const {
+  getAllLocations,
+} = require('../../db/mongo/operations/location-ops');
 
 // Caching data happens on get requests in the middleware,
 // clearing the cache happens in the operations in mongo folder
@@ -168,21 +175,40 @@ const publishUpdatedVendor = (vendor) => {
 };
 
 const vendorRouteOps = {
+  getUnapprovedVendors: async (req, res) => getUnapprovedVendors().then(vendors => res.status(200).json({ vendors })),
+  createLocation: async (req, res) => {
+    const { type, vendorID } = req.user;
+    const isAdmin = type === 'admin';
+    const isVendor = type === 'vendor';
+    const { vendorID: routeVendorID } = req.params;
+    if (isAdmin || (isVendor && String(vendorID) === routeVendorID)) {
+      return createNonTweetLocation(routeVendorID, req.body).then((location) => {
+        res.status(200).json({ location });
+      }).catch((err) => {
+        console.error(err);
+        res.status(500).send(err);
+      });
+    }
+    return res.status(403).send('You must be an admin or the vendor to create a new location');
+  },
   updateVendor: async (req, res) => {
     const { type, twitterProvider = {} } = req.user;
     const isAdmin = type === 'admin';
     const isVendor = type === 'vendor';
     const { regionID, vendorID } = req.params;
+
     if (isAdmin || (isVendor && String(twitterProvider.id) === String(req.vendor.twitterID))) {
       const { field, data } = req.body;
+      const vendorSetToApproved = Array.isArray(field) ? field.includes('approved') : field === 'approved';
       return updateVendorSet({
         regionID, vendorID, field, data,
       })
         .then(async (vendor) => {
           if (vendor.approved) {
-            // actually, maybe get rid of this...or just do it if req.body.data.approved
-            await sendVendorTwitterIDs();
             publishUpdatedVendor(vendor);
+            if (vendorSetToApproved) {
+              await sendVendorTwitterIDs();
+            }
           }
           res.status(200).json({ vendor });
         })
@@ -209,7 +235,6 @@ const vendorRouteOps = {
           return res.status(200).json({ vendor });
         })
         .catch((err) => {
-          console.log(err);
           console.error(err);
           res.status(500).send(err);
         });
@@ -353,6 +378,25 @@ const vendorRouteOps = {
 };
 
 const userRouteOps = {
+  restrictToAdminOrVendor: async (req, res, next) => {
+    const { type, vendorID } = req.user;
+    const { tweetId } = req.params;
+    if (type === 'admin') {
+      next();
+    } else if (!tweetId && type === 'vendor') {
+      req.query.vendorID = vendorID;
+      next();
+    } else if (tweetId && type === 'vendor') {
+      const tweet = await getTweet(tweetId);
+      if (String(tweet.vendorID) === String(vendorID)) {
+        next();
+      } else {
+        return res.status(403).send('You cannot access another vendors data');
+      }
+    } else {
+      return res.status(403).send('You do not have adequate permissions');
+    }
+  },
   restrictToAdmins: async (req, res, next) => {
     if (req.user.type !== 'admin') {
       return res.status(403).send('You must be an admin');
@@ -470,6 +514,18 @@ const tweetRouteOps = {
   },
 };
 
+const locationRouteOps = {
+  locationSearch: async (req, res) => {
+    getAllLocations(req.query).then(locations => res.status(200).json({ locations }))
+      .catch(() => {
+        logger.error('Authentication: User not authenticated, locationSearch func()');
+        if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') { console.log('Twitter: Error fetching locations, locationSearch func()'); }
+        res.status(401).send('Error fetching locations');
+      });
+  },
+};
+
+
 module.exports = {
-  checkCache, regionRouteOps, vendorRouteOps, userRouteOps, tweetRouteOps,
+  checkCache, regionRouteOps, vendorRouteOps, userRouteOps, tweetRouteOps, locationRouteOps,
 };

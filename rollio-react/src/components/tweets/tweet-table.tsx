@@ -10,7 +10,9 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import queryString from 'query-string';
 import useAuthentication from "../common/hooks/use-authentication";
-import { VendorNameAndId, Tweet } from "./interfaces";
+import useFetchVendors from "../common/hooks/use-fetch-vendors";
+import { Tweet } from "./interfaces";
+import { get } from "lodash";
 
 const getTweetTableDates = () => {
     // the dates below are just used for the date filtering functionality, where we only display tweets during a certain time period
@@ -29,22 +31,20 @@ const TweetTable = (props:any) => {
     const { minDate, initialStartDate, initialEndDate } = getTweetTableDates();
 
     // initial state
-    const [loading, setLoading] = useState<boolean>(true);
     const [tweetsLoaded, setTweetsLoaded] = useState<boolean>(false);
-    const [vendorsLoaded, setVendorsLoaded] = useState<boolean>(false);
     const [vendorID, setVendorID] = useState<string>('all');
-    const [vendorNameLookup, setVendorNameLookup] = useState<any>({});
     const [startDate, setStartDate] = useState<Date | null>(initialStartDate);
     const [endDate, setEndDate] = useState<Date | null>(initialEndDate);
     const [tweets, setTweets] = useState<Tweet[]>([]);
+    const routeVendorID = get(props, 'match.params.vendorId', '');
 
     const { user } = useGetAppState();
     const { isAuthenticated } = user;
     const tweetUrl = `${VENDOR_API}/tweets`;
 
     const fetchTweets = () => {
-        setLoading(true);
-        const query = { startDate, endDate, vendorID: vendorID === 'all' ? null : vendorID };
+        setTweetsLoaded(true);
+        const query = { startDate, endDate, vendorID: routeVendorID || vendorID === 'all' ? null : vendorID };
         axios({
             method: "GET",
             url: `${tweetUrl}/filter/?${queryString.stringify(query)}`,
@@ -52,33 +52,15 @@ const TweetTable = (props:any) => {
         })
             .then((res: AxiosResponse<any>) => {
                 mapVendorsOntoTweets(res.data.tweets);
-                setLoading(false);
+                setTweetsLoaded(true);
             }).catch((err:any) => {
-                setLoading(false);
+                setTweetsLoaded(false);
                 console.error(err);
                 throw err;
             })
     };
 
-    const fetchVendors = () => {
-        setLoading(true);
-        axios({
-            method: "GET",
-            url: `${tweetUrl}/vendors`,
-            headers: {'Authorization': "Bearer " + localStorage.token}
-        })
-            .then((res: AxiosResponse<any>) => {
-                const vendorNameLookup = res.data.vendors.reduce((acc:any, vendor:VendorNameAndId) => {
-                    acc[vendor._id] = vendor.name;
-                    return acc;
-                }, {});
-                setVendorNameLookup(vendorNameLookup);
-                setVendorsLoaded(true);
-            }).catch((err:any) => {
-            console.error(err);
-            throw err;
-        })
-    };
+    const { vendorLookupLoaded, vendorLookUp } = useFetchVendors(props);
 
     const selectDate = (date:Date | null, startOrEnd:string) => {
         if (startOrEnd === 'start') {
@@ -91,8 +73,9 @@ const TweetTable = (props:any) => {
 
     const mapVendorsOntoTweets = (tweets:Tweet[]) => {
         const tweetsWithVendorsMapped = tweets.reduce((acc:any, tweet:Tweet) => {
-            const baseTweetData = { ...tweet, vendorName: vendorNameLookup[tweet.vendorID] || 'Unknown Vendor', locations: undefined }
+            const baseTweetData = { ...tweet, vendorName: get(vendorLookUp, `${tweet.vendorID}.name`, 'Unknown Vendor'), locations: undefined }
             if (tweet.locations.length) {
+                // we break each location into its own line, so that it is easier to read
                 tweet.locations.forEach(location => {
                     acc.push({ ...baseTweetData, location})
                 })
@@ -105,13 +88,18 @@ const TweetTable = (props:any) => {
         setTweetsLoaded(true);
     };
 
-    const goToTweetPage = (tweetID:string) => {
-        props.history.push(`tweets/${tweetID}`);
+    const goToTweetPage = (tweet:any) => {
+        const {_id: tweetID, vendorID} = tweet;
+        props.history.push(`/tweets/vendor/${vendorID}/tweet/${tweetID}`);
     };
 
     const goToLoginPage = () => {
         props.history.push('/login');
     };
+
+    const goToNewLocation = () => {
+        props.history.push('/newlocation')
+    }
 
     const columns = [
         {
@@ -164,36 +152,31 @@ const TweetTable = (props:any) => {
             Cell: (props:any) => (
                 <button
                 id={props.id}
-                onClick={() => goToTweetPage(props.value._id)}
+                onClick={() => goToTweetPage(props.value)}
                 >
                 Edit Tweet
             </button>
             )
         }
     ];
-
     useAuthentication(props, true, true);
     useEffect(() => {
-        // first, get vendors if they haven't been loaded, yet
-        if (isAuthenticated && !vendorsLoaded) {
-            fetchVendors();
-            // then get the tweets, if they haven't been loaded yet or if startDate, endDate, or vendorID changes
-        } else if (isAuthenticated) {
-            fetchTweets();
+        if (isAuthenticated && vendorLookupLoaded) {
+                fetchTweets();
         }
-    }, [isAuthenticated, vendorsLoaded, tweetsLoaded, startDate, endDate, vendorID]);
+    }, [isAuthenticated, vendorLookupLoaded, startDate, endDate, vendorID]);
 
 
 
 
-    const contentText = !(loading || tweetsLoaded) && !user.isAuthenticated ? 'You must be logged in' : 'Loading...';
+    const contentText = isAuthenticated ? 'Loading...' : 'You must be logged in';
     const content = tweetsLoaded ?
         (
             <div className="table_wrapper">
                 <select value={vendorID} onChange={e=>setVendorID(e.target.value)}>
                     <option value="all">All Vendors</option>
-                    {Object.entries(vendorNameLookup).map((entry:[any, any]) => {
-                        const [id, name] = entry;
+                    {Object.entries(vendorLookUp).map((entry:[any, any]) => {
+                        const [id, {name}] = entry;
                         return <option key={id} value={id}>{name}</option>
                     })}
                 </select>
@@ -220,12 +203,19 @@ const TweetTable = (props:any) => {
                         defaultPageSize={10}
                     />
                 </div>
+                <div>
+                    <button
+                        onClick={goToNewLocation}
+                    >
+                        Create Location From Scratch
+                    </button>
+                </div>
             </div>
         ) :
         (
             <div>
                 <p>{contentText}</p>
-                { !user.isAuthenticated &&
+                { !isAuthenticated &&
                     <button
                         onClick={() => goToLoginPage()}
                     >

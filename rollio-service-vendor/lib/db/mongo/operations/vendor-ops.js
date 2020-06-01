@@ -1,9 +1,9 @@
 /* eslint-disable no-console */
 // DEPENDENCIES
-const moment = require('moment');
 const mongoose = require('../mongoose/index');
 const { client: redisClient } = require('../../../redis/index');
 const logger = require('../../../log/index')('mongo/operations/vendor-ops');
+const { publishLocationUpdateAndClearCache, createLocationAndCorrectConflicts } = require('./shared-ops');
 
 // SCHEMA
 const Vendor = mongoose.model('Vendor');
@@ -12,45 +12,43 @@ const Location = mongoose.model('Location');
 const User = mongoose.model('User');
 
 module.exports = {
-  // Creates a new location and ensures that each truck does not have two locations at once
-  async createLocationAndCorrectConflicts(locationData) {
-    const {
-      vendorID, startDate = new Date(), endDate = moment(new Date()).endOf('day').toDate(), truckNum = 1, coordinates,
-    } = locationData;
-    const newStartDate = moment(startDate);
-    const newEndDate = moment(endDate);
-    const conflictingTruckLocations = await Location.find({
-      vendorID, startDate: { $lte: endDate }, endDate: { $gte: startDate }, truckNum,
-    });
-    if (conflictingTruckLocations.length) {
-      await Promise.all(conflictingTruckLocations.map((existingLocation) => {
-        const { _id, startDate: existingStartDate, endDate: existingEndDate } = existingLocation;
-        const existingStartsBeforeNewStart = moment(existingStartDate).isSameOrBefore(newStartDate);
-        const existingEndsBeforeNewEnd = moment(existingEndDate).isSameOrBefore(newEndDate);
-        let update = {};
-        // 1. if loc E start date is before loc N start date and loc E end date is before loc N end date,
-        // set loc E end date to loc N start date
-        if (existingStartsBeforeNewStart && existingEndsBeforeNewEnd) {
-          update = { endDate: startDate };
-          // 2. if local E start date is before loc N end date and loc E end date is after loc N end date,
-          // set local E start date to loc N end date
-        }
-        if (!existingEndsBeforeNewEnd) {
-          update = { startDate: endDate };
-          // 3. if local E start date is after loc N's start date and local E end date is before loc N end date,
-          // then nullify it (overridden = true);
-        } else {
-          update = { overridden: true };
-        }
-        return Location.findOneAndUpdate({ _id }, update);
-      }));
+  async getUnapprovedVendors() {
+    const unapprovedVendors = await Vendor.find({ approved: false });
+    if (!unapprovedVendors.length) {
+      return [];
     }
-    return Location.create({ ...locationData, coordinates: Array.isArray(coordinates) ? { lat: coordinates[0], long: coordinates[1] } : coordinates });
+    const associatedUsers = await User.find({ vendorID: { $in: unapprovedVendors.map(vendor => vendor._id) } }).select('+twitterProvider');
+    const twitterLookUp = associatedUsers.reduce((acc, user) => {
+      const { twitterProvider = {}, vendorID } = user;
+      const { username, displayName } = twitterProvider;
+      acc[String(vendorID)] = { username, displayName };
+      return acc;
+    }, {});
+    // we look up and add on the twitter displayName so that we can look at their twitter account before approving
+    return unapprovedVendors
+      .map(vendor => ({ ...vendor.toObject(), twitterInfo: twitterLookUp[String(vendor._id)] }));
   },
-  // Gets all locations for a particular vendor that are currently active or will be in the future
-  async getVendorLocations(vendorID) {
-    const now = new Date();
-    return Location.find({ vendorID, endDate: { $gte: now } });
+  async createNonTweetLocation(vendorID, locationData) {
+    try {
+      const newLocation = await createLocationAndCorrectConflicts({ ...locationData, vendorID, matchMethod: 'Vendor Input' });
+      const { regionID, twitterID } = await Vendor.findOneAndUpdate(
+        { _id: vendorID }, {
+          $push: {
+            locationHistory: {
+              $each: [newLocation._id],
+              $position: 0,
+            },
+          },
+        },
+      ).lean(true);
+      await publishLocationUpdateAndClearCache({
+        newLocations: [newLocation], vendorID, twitterID, regionID,
+      });
+      return newLocation;
+    } catch (err) {
+      logger.error(err);
+      throw err;
+    }
   },
   // Gets all vendors given a regionID
   getVendors(regionID) {

@@ -1,6 +1,7 @@
 export interface VendorNameAndId {
     _id: string,
-    name: string
+    name: string,
+    tweetHistory: any[]
 };
 
 export interface Tweet {

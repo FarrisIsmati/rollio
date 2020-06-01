@@ -3,6 +3,7 @@
 const mq = require('../index');
 const regionOps = require('../../db/mongo/operations/region-ops');
 const vendorOps = require('../../db/mongo/operations/vendor-ops');
+const sharedOps = require('../../db/mongo/operations/shared-ops');
 const { client: redisClient, pub } = require('../../redis/index');
 const config = require('../../../config');
 const logger = require('../../log/index')('messaging/receive/receive-vendor-location');
@@ -77,9 +78,9 @@ const receiveTweets = async () => {
     let newLocations = [];
 
     if (match) {
-      newLocations = await Promise.all(tweetLocations.map(location => vendorOps.createLocationAndCorrectConflicts({ ...location, tweetID, vendorID })));
+      newLocations = await Promise.all(tweetLocations.map(location => sharedOps.createLocationAndCorrectConflicts({ ...location, tweetID, vendorID })));
       await Promise.all(newLocations.map(newLocation => updateLocation(newLocation._id, region, vendor)));
-      allLocations = await vendorOps.getVendorLocations(vendorID);
+      allLocations = await sharedOps.getVendorLocations(vendorID);
     }
 
     try {

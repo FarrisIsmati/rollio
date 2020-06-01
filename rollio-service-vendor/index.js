@@ -22,6 +22,8 @@ const region = require('./lib/routes/region');
 const vendor = require('./lib/routes/vendor');
 const login = require('./lib/routes/login');
 const tweets = require('./lib/routes/tweets');
+const locations = require('./lib/routes/locations');
+
 
 // MESSAGES
 const receiveVendorsRequest = require('./lib/messaging/receive/receive-vendors-request');
@@ -66,6 +68,7 @@ app.use('/region', region);
 app.use('/vendor', vendor);
 app.use('/api', login);
 app.use('/tweets', tweets);
+app.use('/locations', locations);
 
 server.listen(app.get('port'), async () => {
   // Seed the docker db (Only for docker testing purposes now, delete when proper db env setup)
