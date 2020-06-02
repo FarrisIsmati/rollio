@@ -61,7 +61,11 @@ const VendorProfileContentAccuracy = (props:any) => {
       return setAddress(<h2 onClick={ () => findOnMap(vendor.locations[0]) }>{state.data.selectedVendor.locations[0].address}</h2>, vendor.locations[0])
     }
 
-    return vendorAddressComponent()
+    return (
+      <React.Fragment>
+        { vendorAddressComponent() }
+      </React.Fragment>
+    )
     
 };
 

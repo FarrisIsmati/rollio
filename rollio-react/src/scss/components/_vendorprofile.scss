@@ -155,6 +155,7 @@
 
             &_address:hover {
                 cursor: pointer;
+                @extend .noselect;
             }
         }
 

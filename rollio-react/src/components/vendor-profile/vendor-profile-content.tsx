@@ -6,7 +6,6 @@ import { isActive } from '../../util/index';
 import Comments from '../comments/comment-section';
 import VendorProfileContentItemToggle from './vendor-profile-content-item-toggle';
 import Tweet from '../twitter/Tweet';
-import { faTwitter } from "@fortawesome/free-brands-svg-icons"
 import VendorProfileCategories from './vendor-profile-categories';
 import VendorProfileContentAccuracy from './vendor-profile-content-accuracy';
 
@@ -30,11 +29,11 @@ const VendorProfileContent = (props:VendorProfileContentProps) => {
       state,
     } = props;
 
-    const tweets = state.data.selectedVendor.tweetHistory.map((tweetData:any) => <Tweet 
+    const tweets = vendor.tweetHistory.map((tweetData:any) => <Tweet 
       key={tweetData.tweetID}
-      twitterUserName={state.data.selectedVendor.twitterUserName} 
-      twitterHandle={state.data.selectedVendor.twitterHandle} 
-      twitterProfileImage={state.data.selectedVendor.profileImageLink}
+      twitterUserName={vendor.twitterUserName} 
+      twitterHandle={vendor.twitterHandle} 
+      twitterProfileImage={vendor.profileImageLink}
       tweetData={tweetData}
     />)
 
@@ -75,14 +74,24 @@ const VendorProfileContent = (props:VendorProfileContentProps) => {
 
           <div className='vendorprofile__info_wrapper'>
             {/* Locations */}
-            <VendorProfileContentItemToggle components={components} toggleComponents={toggleComponents} componentName='LOCATIONS' componentDisplayName='Locations'>
-              { isActive(vendor) ? VendorProfileContentAccuracy({state, vendor, findOnMap}) : null }
-            </VendorProfileContentItemToggle>
+            { vendor.locations.length ?
+              <VendorProfileContentItemToggle components={components} toggleComponents={toggleComponents} componentName='LOCATIONS' componentDisplayName='Locations'>
+                { isActive(vendor) ?
+                  <VendorProfileContentAccuracy state={state} vendor={vendor} findOnMap={findOnMap}/>
+                  : 
+                  null 
+                }
+              </VendorProfileContentItemToggle> :
+              null
+            }
 
             {/* Tweets */}
-            <VendorProfileContentItemToggle components={components} toggleComponents={toggleComponents} componentName='TWITTER' componentDisplayName='twitter feed'>
-              { tweets }
-            </VendorProfileContentItemToggle>
+            { vendor.tweetHistory.length ? 
+              <VendorProfileContentItemToggle components={components} toggleComponents={toggleComponents} componentName='TWITTER' componentDisplayName='twitter feed'>
+                { tweets }
+              </VendorProfileContentItemToggle> :
+              null
+            }
 
             <VendorProfileContentItemToggle components={components} toggleComponents={toggleComponents} componentName='MOREINFO' componentDisplayName='more info'>
               {/* Description */}
@@ -124,7 +133,7 @@ const VendorProfileContent = (props:VendorProfileContentProps) => {
             {/* Comments */}
             <VendorProfileContentItemToggle components={components} toggleComponents={toggleComponents} componentName='COMMENTS' componentDisplayName='comments'>
               <div className='vendorprofile__comments_wrapper'>
-                <Comments comments={state.data.selectedVendor.comments}/>
+                <Comments comments={vendor.comments}/>
               </div>
             </VendorProfileContentItemToggle>
 
