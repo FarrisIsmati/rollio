@@ -33,7 +33,7 @@
         right: 0px;
         top: 0px;
         z-index: 1000;
-        margin: 8px;
+        margin: 8px 16px;
         padding: 8px;   
         width: 20px;
         height: 20px;
@@ -162,6 +162,7 @@
         &_icon_wrapper {
             display: flex;
             align-items: center;
+            margin-right: 6px;
             @extend .noselect;
 
             i {
@@ -214,6 +215,7 @@
                     display: flex;
                     justify-content: center;
                     align-items: center;
+                    margin-right: 4px;
 
                     p {
                         font-size: 14px;
