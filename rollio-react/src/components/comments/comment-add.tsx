@@ -9,10 +9,6 @@ import ButtonBare from '../common/buttons/button-bare';
 // HOOKS
 import useCommentAdd from './hooks/use-comment-add';
 
-// ICONS
-import { IconContext } from 'react-icons';
-import { MdInsertComment } from 'react-icons/md';
-
 const CommentAdd:FC = (props) => {
     const { 
         commentActive,

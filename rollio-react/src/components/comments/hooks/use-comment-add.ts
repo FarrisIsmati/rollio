@@ -63,9 +63,10 @@ const useCommentAdd = (props:any) => {
         if (!commentActive) {
             setCommentActive(true);
 
-            if (commentName === '') {
-                commentBodyTextArea.current.focus();
-            }
+            // Disabled due to designer decision (Keeping this incase she changes her mind -__- )
+            // if (commentName === '') {
+            //     // commentBodyTextArea.current.focus();
+            // }
         }
     }
 
