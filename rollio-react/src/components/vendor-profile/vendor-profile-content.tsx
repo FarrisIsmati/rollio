@@ -75,13 +75,17 @@ const VendorProfileContent = (props:VendorProfileContentProps) => {
           <div className='vendorprofile__info_wrapper'>
             {/* Locations */}
             { vendor.locations.length ?
-              <VendorProfileContentItemToggle components={components} toggleComponents={toggleComponents} componentName='LOCATIONS' componentDisplayName='Locations'>
-                { isActive(vendor) ?
+            <React.Fragment>
+              <div className='vendorprofile__info_row'>
+                <div className='vendorprofile__info_text_wrapper font__vendor_profile_info flex__verticle_center'>
+                  <h2>Locations</h2>
+                </div>
+              </div>
+
+              <div className={`vendorprofile__info_row_expanded font__vendor_profile_info_desc`}>
                   <VendorProfileContentAccuracy state={state} vendor={vendor} findOnMap={findOnMap}/>
-                  : 
-                  null 
-                }
-              </VendorProfileContentItemToggle> :
+              </div>
+            </React.Fragment> :
               null
             }
 

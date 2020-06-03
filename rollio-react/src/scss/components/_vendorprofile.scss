@@ -121,14 +121,14 @@
         &_row {
             display: flex;
             padding: 16px 0;
+            @extend .vendorprofile__info_row;
+            border-top: 1px solid $color-vendor-profile-info-row-border;
+            transition: color 0.25s ease;
+            justify-content: space-between;
 
             
             &_clickable {
                 @extend .vendorprofile__info_row;
-                border-top: 1px solid $color-vendor-profile-info-row-border;
-                transition: color 0.25s ease;
-                justify-content: space-between;
-
                 &:hover {
                     cursor: pointer;
                 }
