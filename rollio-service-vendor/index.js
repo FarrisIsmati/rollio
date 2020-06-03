@@ -19,6 +19,8 @@ const region = require('./lib/routes/region');
 const vendor = require('./lib/routes/vendor');
 const login = require('./lib/routes/login');
 const tweets = require('./lib/routes/tweets');
+const locations = require('./lib/routes/locations');
+
 
 // MESSAGES
 const receiveVendorsRequest = require('./lib/messaging/receive/receive-vendors-request');
@@ -48,7 +50,7 @@ if (config.NODE_ENV === 'PRODUCTION') { app.enable('trust proxy'); }// only if b
 // Fixed window rate limiting
 const generalRateLimit = rateLimit({
   windowMs: 30 * 1000, // 30 seconds
-  max: config.NODE_ENV === 'PRODUCTION' ? 15 : 50,
+  max: config.NODE_ENV === 'PRODUCTION' ? 15 : 100,
   handler(req, res) {
     res.status(429).send('You exceeded the rate limit');
   },
@@ -63,6 +65,7 @@ app.use('/region', region);
 app.use('/vendor', vendor);
 app.use('/api', login);
 app.use('/tweets', tweets);
+app.use('/locations', locations);
 
 server.listen(app.get('port'), async () => {
   // Seed the docker db (Only for docker testing purposes now, delete when proper db env setup)

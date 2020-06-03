@@ -124,11 +124,15 @@ export function dataReducer(state = defaultState, action: any) {
             }
         }
     case UPDATE_VENDOR:
-        const vendorsAll = { ...state.vendorsAll }
-        const currentVendorData = vendorsAll[action.payload.vendorID] || {};
+        const { vendorsAll, selectedVendor} = state;
+        const { payload } = action;
+        const { vendorID, locations } = payload;
+        const currentVendorData = vendorsAll[vendorID] || {};
+        const selectedVendorUpdate = selectedVendor.id === vendorID && locations ? { selectedVendor: {...selectedVendor, locations } } : {};
         return {
             ...state,
-            vendorsAll: { ...vendorsAll, [action.payload.vendorID]: { ...currentVendorData, ...action.payload } }
+            ...selectedVendorUpdate,
+            vendorsAll: { ...vendorsAll, [vendorID]: { ...currentVendorData, ...payload } }
         }
     case POST_VENDOR_COMMENT:
         return {

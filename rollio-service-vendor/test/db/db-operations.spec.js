@@ -3,6 +3,7 @@
 const faker = require('faker');
 const chai = require('chai');
 const chaid = require('chaid');
+const moment = require('moment');
 const { sortBy, omit } = require('lodash');
 const dateTime = require('chai-datetime');
 const assertArrays = require('chai-arrays');
@@ -16,6 +17,7 @@ const vendorOps = require('../../lib/db/mongo/operations/vendor-ops');
 const regionOps = require('../../lib/db/mongo/operations/region-ops');
 const tweetOps = require('../../lib/db/mongo/operations/tweet-ops');
 const userOps = require('../../lib/db/mongo/operations/user-ops');
+const sharedOps = require('../../lib/db/mongo/operations/shared-ops');
 
 // SCHEMAS
 const Vendor = mongoose.model('Vendor');
@@ -32,15 +34,79 @@ chai.use(assertArrays);
 chai.use(dateTime);
 
 describe('DB Operations', () => {
+  describe('Shared DB Operations', () => {
+    const state = {};
+    before(async () => {
+      await seed.runSeed();
+      await seed.emptyLocations();
+      state.vendor = await Vendor.findOne({});
+      state.otherVendor = await Vendor.findOne({ _id: { $ne: state.vendor._id } });
+      state.threeDaysAgo = moment().subtract(3, 'days').toDate();
+      state.twoDaysAgo = moment().subtract(2, 'days').toDate();
+      state.yesterday = moment().subtract(1, 'days').toDate();
+      state.today = moment().toDate();
+      state.tomorrow = moment().add(1, 'days').toDate();
+      state.twoDaysFromNow = moment().add(2, 'days').toDate();
+      state.threeDaysFromNow = moment().add(3, 'days').toDate();
+      state.fourDaysFromNow = moment().add(4, 'days').toDate();
+      state.newLocationData = {
+        vendorID: state.vendor._id,
+        address: '123 street',
+        matchMethod: 'Vendor Input',
+        truckNum: 1,
+        coordinates: { lat: 0, long: 0 },
+      };
+      state.nonOverlappingLocation = await Location.create({ ...state.newLocationData, startDate: state.threeDaysAgo, endDate: state.twoDaysAgo });
+      state.startsBeforeEndsBefore = await Location.create({ ...state.newLocationData, startDate: state.yesterday, endDate: state.tomorrow });
+      state.startsAfterEndsAfter = await Location.create({ ...state.newLocationData, startDate: state.tomorrow, endDate: state.fourDaysFromNow });
+      state.startsAfterEndsBefore = await Location.create({ ...state.newLocationData, startDate: state.tomorrow, endDate: state.twoDaysFromNow });
+      state.differentVendorLocation = await Location.create({ ...state.newLocationData, vendorID: state.otherVendor._id, startDate: state.tomorrow, endDate: state.twoDaysFromNow });
+    });
+
+    it('expect createLocationAndCorrectConflicts to ensure that one truck is not in two places at once', (done) => {
+      const startDate = state.today;
+      const endDate = state.threeDaysFromNow;
+      sharedOps.createLocationAndCorrectConflicts({ ...state.newLocationData, startDate, endDate }).then((newLocation) => {
+        expect(String(newLocation.startDate)).to.equal(String(startDate));
+        expect(String(newLocation.endDate)).to.equal(String(endDate));
+        return Promise.all([state.nonOverlappingLocation, state.startsBeforeEndsBefore, state.startsAfterEndsAfter, state.startsAfterEndsBefore, state.differentVendorLocation].map(location => Location.findOne({ _id: location._id })));
+      }).then((locations) => {
+        const [nonOverlappingLocation, startsBeforeEndsBefore, startsAfterEndsAfter, startsAfterEndsBefore, differentVendorLocation] = locations;
+        expect(String(nonOverlappingLocation.startDate)).to.equal(String(state.nonOverlappingLocation.startDate));
+        expect(String(nonOverlappingLocation.endDate)).to.equal(String(state.nonOverlappingLocation.endDate));
+        expect(String(startsBeforeEndsBefore.startDate)).to.equal(String(state.startsBeforeEndsBefore.startDate));
+        expect(String(startsBeforeEndsBefore.endDate)).to.equal(String(startDate));
+        expect(String(startsAfterEndsAfter.startDate)).to.equal(String(endDate));
+        expect(String(startsAfterEndsAfter.endDate)).to.equal(String(state.startsAfterEndsAfter.endDate));
+        expect(startsAfterEndsBefore.overridden).to.be.true;
+        expect(String(differentVendorLocation.startDate)).to.equal(String(state.differentVendorLocation.startDate));
+        expect(String(differentVendorLocation.endDate)).to.equal(String(state.differentVendorLocation.endDate));
+        expect(differentVendorLocation.overridden).to.be.false;
+        done();
+      });
+    });
+
+    it('expect getVendorLocations to get all locations for a given vendor where the endDate is after now', (done) => {
+      const vendorID = String(state.vendor._id);
+      sharedOps.getVendorLocations(vendorID).then((locations) => {
+        expect(!!locations.length).to.be.true;
+        expect(locations.every(location => String(location.vendorID) === vendorID && moment(location.endDate).isAfter(moment()))).to.be.true;
+        done();
+      });
+    });
+  });
+
   describe('Vendor DB Operations', () => {
     describe('Get Vendor Operations', () => {
       let regionID;
       let vendor;
+      let user;
 
       before(async () => {
         await seed.runSeed().then(async () => {
           regionID = await Region.findOne().then(region => region._id);
-          vendor = await Vendor.findOne({ regionID: await regionID });
+          user = await User.findOne({ vendorID: { $exists: true } });
+          vendor = await Vendor.findOne({ regionID, _id: user.vendorID });
         });
       });
 
@@ -108,7 +174,6 @@ describe('DB Operations', () => {
       });
     });
 
-    // TODO: add tests for createLocationAndCorrectConflicts
     // UPDATE VENDOR DB OPERATIONS
     describe('Update Vendor Operations', () => {
       let vendor;
@@ -319,6 +384,19 @@ describe('DB Operations', () => {
         expect(prevClosedDate).to.be.an('undefined');
         expect(updatedClosedDate).to.equalDate(date);
       });
+
+      it('expect new location to be added to Vendor locationHistory', async () => {
+        const locationData = {
+          address: '123 street',
+          matchMethod: 'Vendor Input',
+          coordinates: [0, 1],
+          truckNum: 1,
+        };
+        const newLocation = await vendorOps.createNonTweetLocation(vendor._id, locationData);
+        const updatedVendor = await Vendor.findOne({ _id: vendor._id });
+        expect(updatedVendor.locationHistory[0].toString()).to.equal(String(newLocation._id));
+      });
+
 
       afterEach((done) => {
         seed.emptyRegions()
@@ -571,7 +649,7 @@ describe('DB Operations', () => {
         regionID = await Region.findOne().then(region => region._id);
         vendor = await Vendor.findOne({ regionID: await regionID });
         allTweets = await Tweet.find().sort([['date', 1]]);
-        allVendors = await Vendor.find();
+        allVendors = await Vendor.find().populate('tweetHistory').lean();
         [tweetID] = vendor.tweetHistory;
         tweet = await Tweet.findById(tweetID).populate('locations').populate('vendorID');
         // note: locationId should be equal to vendor.locationHistory[0]
@@ -586,6 +664,16 @@ describe('DB Operations', () => {
     });
 
     describe('Get Tweet Operations', () => {
+      it('expect getTweet to return the tweet based on id', (done) => {
+        tweetOps.getTweet(tweet._id)
+          .then((res) => {
+            expect(res).to.be.an('object');
+            expect(String(res._id)).to.deep.equal(String(tweet._id));
+            done();
+          })
+          .catch(err => console.error(err));
+      });
+
       it('expect getAllTweets to return empty arary if no query passed', (done) => {
         tweetOps.getAllTweets()
           .then((res) => {
@@ -619,12 +707,12 @@ describe('DB Operations', () => {
           .catch(err => console.error(err));
       });
 
-      it('expect getVendorsForFiltering to select name and id for all vendors and sort by name', (done) => {
+      it('expect getVendorsForFiltering to select name, id, and tweetHistory for all vendors and sort by name', (done) => {
         tweetOps.getVendorsForFiltering()
           .then((res) => {
             expect(res).to.be.array();
             expect(res.length).to.be.equal(allVendors.length);
-            expect(JSON.stringify(res)).to.be.equal(JSON.stringify(sortBy(allVendors.map(vendor => ({ _id: vendor._id, name: vendor.name })), 'name')));
+            expect(JSON.stringify(res)).to.be.equal(JSON.stringify(sortBy(allVendors.map(v => ({ _id: v._id, tweetHistory: v.tweetHistory, name: v.name })), 'name')));
             done();
           })
           .catch(err => console.error(err));

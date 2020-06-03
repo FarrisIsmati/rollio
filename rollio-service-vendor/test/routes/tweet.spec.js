@@ -4,6 +4,7 @@ const chaiHttp = require('chai-http');
 const queryString = require('query-string');
 const jwt = require('jsonwebtoken');
 const moment = require('moment');
+const { sortBy } = require('lodash');
 const mongoose = require('../../lib/db/mongo/mongoose/index');
 const { app: server } = require('../../index');
 const { JWT_SECRET } = require('../../config');
@@ -27,17 +28,19 @@ describe('Tweet Routes', () => {
   let customerToken;
   let admin;
   let adminToken;
+  let vendor;
+  let vendorToken;
   let tweet;
   let newLocationData;
   let locationId;
 
   beforeEach((done) => {
     seed.runSeed().then(async () => {
-      vendors = await Vendor.find({}).select('_id name').sort([['name', 1]]);
-      tweets = await Tweet.find({}).sort([['date', -1]]);
-      tweet = tweets.find(x => x.locations.length);
+      const allUsers = await User.find().lean();
+      vendors = await Vendor.find().populate('tweetHistory').lean();
+      tweets = await Tweet.find({}).sort([['date', -1]]).lean();
+      tweet = tweets.find(x => x.locations.length && allUsers.find(user => String(user.vendorID) === String(x.vendorID)));
       [locationId] = tweet.locations;
-      const allUsers = await User.find();
       customer = allUsers.find(user => user.type === 'customer');
       customerToken = jwt.sign({
         id: customer._id,
@@ -45,6 +48,10 @@ describe('Tweet Routes', () => {
       admin = allUsers.find(user => user.type === 'admin');
       adminToken = jwt.sign({
         id: admin._id,
+      }, JWT_SECRET, { expiresIn: 60 * 60 });
+      vendor = allUsers.find(user => user.type === 'vendor' && String(user.vendorID) === String(tweet.vendorID));
+      vendorToken = jwt.sign({
+        id: vendor._id,
       }, JWT_SECRET, { expiresIn: 60 * 60 });
       newLocationData = {
         vendorID: mongoose.Types.ObjectId(),
@@ -86,6 +93,22 @@ describe('Tweet Routes', () => {
         });
       });
 
+      describe('/tweets/filter as a vendor only', () => {
+        it('expect to get only tweets for that vendor', (done) => {
+          const endDate = new Date();
+          const startDate = new Date(tweets[tweets.length - 1].date);
+          const query = queryString.stringify({ endDate, startDate });
+          chai.request(server)
+            .get(`/tweets/filter/?${query}`)
+            .set('Authorization', `Bearer ${vendorToken}`)
+            .end((err, res) => {
+              expect(res).to.have.status(200);
+              expect(res.body.tweets.map(t => String(t._id))).to.deep.equal(tweets.filter(t => String(t.vendorID) === String(vendor.vendorID)).map(t => String(t._id)));
+              done();
+            });
+        });
+      });
+
       describe('/tweets/filter if no dates specified', () => {
         it('expect to get empty array', (done) => {
           chai.request(server)
@@ -110,7 +133,7 @@ describe('Tweet Routes', () => {
             .end((err, res) => {
               expect(res).to.have.status(200);
               expect(res.body).to.be.an('object');
-              expect(res.body.tweets.map(tweet => String(tweet._id))).to.deep.equal(tweets.map(tweet => String(tweet._id)));
+              expect(res.body.tweets.map(t => String(t._id))).to.deep.equal(tweets.map(t => String(t._id)));
               done();
             });
         });
@@ -126,7 +149,7 @@ describe('Tweet Routes', () => {
             .end((err, res) => {
               expect(res).to.have.status(200);
               const momentifiedEarliestDate = moment(earliestDate);
-              expect(res.body.tweets.every(tweet => moment(tweet.date).isSame(momentifiedEarliestDate, 'day'))).to.be.true;
+              expect(res.body.tweets.every(t => moment(t.date).isSame(momentifiedEarliestDate, 'day'))).to.be.true;
               done();
             });
         });
@@ -135,9 +158,9 @@ describe('Tweet Routes', () => {
       describe('/tweets/filter with vendorId', () => {
         it('expect to get tweets from that vendor only', (done) => {
           const endDate = new Date();
-          const startDate = new Date(tweets[0].date);
+          const earliestDate = new Date(tweets[tweets.length - 1].date);
           const vendorID = vendors[0]._id;
-          const query = queryString.stringify({ endDate, startDate, vendorID });
+          const query = queryString.stringify({ endDate, startDate: earliestDate, vendorID });
           chai.request(server)
             .get(`/tweets/filter/?${query}`)
             .set('Authorization', `Bearer ${adminToken}`)
@@ -175,15 +198,29 @@ describe('Tweet Routes', () => {
         });
       });
 
+      describe('/tweets/vendors as vendor', () => {
+        it('expect to get back only the vendor him/herself', (done) => {
+          chai.request(server)
+            .get('/tweets/vendors')
+            .set('Authorization', `Bearer ${vendorToken}`)
+            .end((err, res) => {
+              expect(res).to.have.status(200);
+              expect(res.body).to.be.an('object');
+              expect(JSON.stringify(res.body.vendors)).to.be.equal(JSON.stringify(vendors.filter(v => String(v._id) === String(vendor.vendorID)).map(v => ({ _id: v._id, tweetHistory: v.tweetHistory, name: v.name }))));
+              done();
+            });
+        });
+      });
+
       describe('/tweets/vendors with authorization', () => {
-        it('expect to get back vendors in alphabetical order - but just id and name', (done) => {
+        it('expect to get back vendors in alphabetical order - but just id name and tweetHistory', (done) => {
           chai.request(server)
             .get('/tweets/vendors')
             .set('Authorization', `Bearer ${adminToken}`)
             .end((err, res) => {
               expect(res).to.have.status(200);
               expect(res.body).to.be.an('object');
-              expect(res.body).to.deep.equal({ vendors: vendors.map(vendor => ({ _id: String(vendor._id), name: vendor.name })) });
+              expect(JSON.stringify(res.body.vendors)).to.be.equal(JSON.stringify(sortBy(vendors.map(v => ({ _id: v._id, tweetHistory: v.tweetHistory, name: v.name })), 'name')));
               done();
             });
         });
@@ -209,6 +246,32 @@ describe('Tweet Routes', () => {
             .set('Authorization', `Bearer ${customerToken}`)
             .end((err, res) => {
               expect(res).to.have.status(403);
+              done();
+            });
+        });
+      });
+
+      describe('/tweets/usetweet/:tweetId as wrong vendor', () => {
+        it('expect error', (done) => {
+          chai.request(server)
+            .get(`/tweets/usetweet/${tweets.find(t => String(t.vendorID) !== String(vendor.vendorID))._id}`)
+            .set('Authorization', `Bearer ${vendorToken}`)
+            .end((err, res) => {
+              expect(res).to.have.status(403);
+              done();
+            });
+        });
+      });
+
+      describe('/tweets/usetweet/:tweetId as correct vendor', () => {
+        it('expect success if vendor is the same', (done) => {
+          chai.request(server)
+            .get(`/tweets/usetweet/${tweets.find(t => String(t.vendorID) === String(vendor.vendorID))._id}`)
+            .set('Authorization', `Bearer ${vendorToken}`)
+            .end((err, res) => {
+              expect(res).to.have.status(200);
+              // full funcationality for 'usetweet' tested in db-operations.js
+              expect(!!res.body.tweet).to.be.true;
               done();
             });
         });
