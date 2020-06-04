@@ -1,5 +1,6 @@
 // DEPENDENCIES
 import React, { ReactElement } from 'react';
+import { isLocationActive } from "../../util/index";
 
 // HOOKS
 import useUpdateVendorLocationAccuracy from './hooks/use-update-vendor-location-accuracy';
@@ -44,8 +45,8 @@ const VendorProfileContentAccuracy = (props:any) => {
               <i className="material-icons-outlined">room</i> 
             </div>
 
-            <p className='vendorprofile__info_detail_address flex__verticle_center' onClick={ () => findOnMap(vendor.locations[i !== null ? i : 0]) }>
-              { i !== null ? state.data.selectedVendor.locations[i].address : state.data.selectedVendor.locations[0].address }
+            <p className='vendorprofile__info_detail_address flex__verticle_center' onClick={ () => findOnMap(location) }>
+              { location.address }
             </p>
             {/* Empty div to properly order row/columns */}
             <div></div> 
@@ -53,12 +54,9 @@ const VendorProfileContentAccuracy = (props:any) => {
           </div>
       )
 
-      if (vendor.locations.length > 1) {
-        return vendor.locations.map((location:any, i:number) => {
-          return setAddress(<h2 key={location._id} onClick={ () => findOnMap(location) }>{location.address}</h2>, location, i);
-        })
-      }
-      return setAddress(<h2 onClick={ () => findOnMap(vendor.locations[0]) }>{state.data.selectedVendor.locations[0].address}</h2>, vendor.locations[0])
+      return vendor.locations.filter((location:any) => isLocationActive(location)).map((location:any, i:number) => {
+        return setAddress(<h2 key={location._id} onClick={ () => findOnMap(location) }>{location.address}</h2>, location, i);
+      })
     }
 
     return (

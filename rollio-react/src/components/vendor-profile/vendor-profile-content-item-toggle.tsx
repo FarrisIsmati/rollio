@@ -1,6 +1,6 @@
 // DEPENDENCIES
 import React from 'react';
-import { uppercaseFirstLetterEveryWord } from '../../util/index';
+import { startCase } from 'lodash';
 
 // INTERFACES
 import { VendorProfileToggleComponentProps } from './interfaces'
@@ -19,7 +19,7 @@ const VendorProfileContentItemToggle = (props:VendorProfileToggleComponentProps)
         <React.Fragment>
             <div className='vendorprofile__info_row_clickable' onClick={() => toggleComponents(componentName.toUpperCase())}>
               <div className='vendorprofile__info_text_wrapper font__vendor_profile_info flex__verticle_center'>
-                <h2>{uppercaseFirstLetterEveryWord(componentDisplayName)}</h2>
+                <h2>{startCase(componentDisplayName)}</h2>
               </div>
 
               <div className='vendorprofile__info_icon_wrapper'>

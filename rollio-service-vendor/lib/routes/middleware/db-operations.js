@@ -318,7 +318,7 @@ const vendorRouteOps = {
   },
   getVendorById: (req, res) => {
     // eslint-disable-next-line max-len
-    const getVendorByIdOp = async (req, res, cb = null) => getVendor(req.params.regionID, req.params.vendorID, req.query.tweetLimit ? parseInt(req.query.tweetLimit, 10) : 100)
+    const getVendorByIdOp = async (req, res, cb = null) => getVendor(req.params.regionID, req.params.vendorID, req.query.tweetLimit ? parseInt(req.query.tweetLimit, 10) : 10)
       .then(async (vendor) => {
         if (cb !== null) {
           await cb(vendor);

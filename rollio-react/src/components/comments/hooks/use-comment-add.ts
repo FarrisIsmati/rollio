@@ -24,9 +24,9 @@ const useCommentAdd = (props:any) => {
     const currentSelectedVendorRef:any = useRef(state.data.selectedVendor.id);
 
     const resetComment = () => {
-        setCommentErrorMessage(() => '');
-        setCommentBody(() => '');
-        setCommentName(() => '');
+        setCommentErrorMessage('');
+        setCommentBody('');
+        setCommentName('');
         setCommentActive(false);
     }
 
@@ -98,7 +98,7 @@ const useCommentAdd = (props:any) => {
         // Timeout resets error message to default
         const resetCommentErrorMessage = () => {
             setTimeout(() => {
-                setCommentErrorMessage(() => '');
+                setCommentErrorMessage('');
             }, 3000);
         }
 
@@ -107,18 +107,18 @@ const useCommentAdd = (props:any) => {
             const dispatchRes:any = await dispatch( requestPostVendorComment({ regionId, vendorId, name: commentName, text: commentBody }) )
             const httpStatus = dispatchRes.response ? dispatchRes.response.status : dispatchRes.status;
             if (httpStatus === 429) {
-                setCommentErrorMessage(() => 'Comment limit reached');
+                setCommentErrorMessage('Comment limit reached');
                 resetCommentErrorMessage();
             } else if (httpStatus === 200) {
                 // Upon Successful message sent clean up add comment
                 resetComment();
                 
             } else {
-                setCommentErrorMessage(() => 'Error: your comment could not be submitted');
+                setCommentErrorMessage('Error: your comment could not be submitted');
                 resetCommentErrorMessage();
             }
         } catch (error) {
-            setCommentErrorMessage(() => 'Error: your comment could not be submitted');
+            setCommentErrorMessage('Error: your comment could not be submitted');
             resetCommentErrorMessage();
         }
     }

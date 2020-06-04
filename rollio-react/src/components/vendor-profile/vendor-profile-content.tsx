@@ -1,6 +1,6 @@
 // DEPENDENCIES
 import React from 'react';
-import { isActive } from '../../util/index';
+import { isLocationActive } from '../../util/index';
 
 // COMPONENTS
 import Comments from '../comments/comment-section';
@@ -74,7 +74,7 @@ const VendorProfileContent = (props:VendorProfileContentProps) => {
 
           <div className='vendorprofile__info_wrapper'>
             {/* Locations */}
-            { vendor.locations.length ?
+            { vendor.locations.filter((location:any) => isLocationActive(location)).length ?
             <React.Fragment>
               <div className='vendorprofile__info_row'>
                 <div className='vendorprofile__info_text_wrapper font__vendor_profile_info flex__verticle_center'>

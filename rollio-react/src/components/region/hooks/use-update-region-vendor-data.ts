@@ -36,13 +36,11 @@ const useUpdateRegionVendorData = () => {
         socket.on('NEW_LOCATIONS', (data: any) => {
             const { newLocations, allLocations, vendorID, tweet} = data;
 
-            if (allLocations.length) {
-                // Update data.vendorsAll field
-                dispatch(updateVendorsAll({
-                    locations: allLocations,
-                    vendorID,
-                }));
-            }
+            // Update data.vendorsAll field
+            dispatch(updateVendorsAll({
+                locations: allLocations,
+                vendorID,
+            }));
 
             if (newLocations.length) {
                 // Set current new location vendor to global state, so when map gets rerender it will know what vendor to move
@@ -53,7 +51,7 @@ const useUpdateRegionVendorData = () => {
                 
                 // Real time events if the vendor with the new location is the selected vendor
                 // 1. Update Selected Vendor Address (Updates the locations)
-                dispatch(updateSelectedVendorLocations(newLocations));
+                dispatch(updateSelectedVendorLocations(allLocations));
             }
 
             // Update Twitter Feed (Inserts new tweet if there is one)
