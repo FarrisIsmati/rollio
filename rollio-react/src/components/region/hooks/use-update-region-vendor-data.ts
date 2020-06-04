@@ -53,7 +53,7 @@ const useUpdateRegionVendorData = () => {
                 
                 // Real time events if the vendor with the new location is the selected vendor
                 // 1. Update Selected Vendor Address (Updates the locations)
-                dispatch(updateSelectedVendorLocations(newLocations));
+                dispatch(updateSelectedVendorLocations(allLocations));
             }
 
             // Update Twitter Feed (Inserts new tweet if there is one)
