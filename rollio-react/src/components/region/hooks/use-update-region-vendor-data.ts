@@ -41,6 +41,10 @@ const useUpdateRegionVendorData = () => {
                 locations: allLocations,
                 vendorID,
             }));
+            
+            // Real time events if the vendor with the new location is the selected vendor
+            // 1. Update Selected Vendor Address (Updates the locations)
+            dispatch(updateSelectedVendorLocations(allLocations));
 
             if (newLocations.length) {
                 // Set current new location vendor to global state, so when map gets rerender it will know what vendor to move
@@ -48,10 +52,6 @@ const useUpdateRegionVendorData = () => {
                     const truckNum = toNumber(location.truckNum);
                     setGlobalState({ vendorID, truckNum })
                 });
-                
-                // Real time events if the vendor with the new location is the selected vendor
-                // 1. Update Selected Vendor Address (Updates the locations)
-                dispatch(updateSelectedVendorLocations(allLocations));
             }
 
             // Update Twitter Feed (Inserts new tweet if there is one)

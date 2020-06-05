@@ -39,7 +39,7 @@ const VendorProfileContentAccuracy = (props:any) => {
 
     // Vendor Address Component
     const vendorAddressComponent = () => {
-      const setAddress = (address:ReactElement, location:any, i:number|null = null) => (
+      const setAddress = (address:ReactElement, location:any) => (
         <div key={location._id} className='vendorprofile__info_detail'>
             <div className='vendorprofile__info_icon_wrapper_alt_center'>
               <i className="material-icons-outlined">room</i> 
@@ -55,7 +55,7 @@ const VendorProfileContentAccuracy = (props:any) => {
       )
 
       return vendor.locations.filter((location:any) => isLocationActive(location)).map((location:any, i:number) => {
-        return setAddress(<h2 key={location._id} onClick={ () => findOnMap(location) }>{location.address}</h2>, location, i);
+        return setAddress(<h2 key={location._id} onClick={ () => findOnMap(location) }>{location.address}</h2>, location);
       })
     }
 
