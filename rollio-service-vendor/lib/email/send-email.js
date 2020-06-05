@@ -47,6 +47,7 @@ const sendEmail = async (data) => {
   });
 };
 
+// TODO: fill in with real admin account email address once registered
 const sendEmailToAdminAccount = async data => sendEmail({ ...data, to: 'adminAccount@gmail.com' });
 
 module.exports = {

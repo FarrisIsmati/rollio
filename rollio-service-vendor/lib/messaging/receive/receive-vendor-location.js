@@ -93,8 +93,7 @@ const receiveTweets = async () => {
       const newTweetId = await updateTweet({ ...tweetPayload, locations: newLocations.map(loc => loc._id), usedForLocation: !!newLocations.length }, region, vendor);
       const link = `${config.CLIENT_DOMAIN}/tweets/vendor/${vendorID}/tweet/${newTweetId}`;
       sendEmailToAdminAccount({
-        to: 'sloan.holzman@gmail.com',
-        subject: 'Vendor sent a new tweet',
+        subject: `${vendor.name} sent a new tweet`,
         template: 'admin.new-location',
         context: {
           text, newLocations, link, vendor,
