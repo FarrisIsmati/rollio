@@ -74,7 +74,7 @@ const receiveTweets = async () => {
       locations: tweetLocations.map(location => location._id),
       text,
       tweetID,
-      usedForLocation: true,
+      usedForLocation: !!tweetLocations.length,
       vendorID,
     };
 
