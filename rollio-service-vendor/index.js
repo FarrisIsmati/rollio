@@ -11,9 +11,6 @@ const config = require('./config');
 const seed = require('./lib/db/mongo/seeds/dev-seed');
 const logger = require('./lib/log/index')('index');
 
-logger.info(`${JSON.stringify(config)}`);
-
-
 const server = http.createServer(app);
 socketIO.setIOServer(server);
 
@@ -62,7 +59,7 @@ const generalRateLimit = rateLimit({
 app.use(generalRateLimit);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(cors({exposedHeaders: ['x-auth-token']}));
+app.use(cors({ exposedHeaders: ['x-auth-token'] }));
 
 app.use('/region', region);
 app.use('/vendor', vendor);

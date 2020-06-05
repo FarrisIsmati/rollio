@@ -1,10 +1,7 @@
 .commentadd {
     &__wrapper {
-        // border-radius: 6px;
-        // box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
         background-color: $color-comment-background;
         padding: 22px 0px;
-        // padding: 22px 18px;
         font-size: 1.2em;
     }
 
@@ -12,7 +9,6 @@
         display: inline-grid;
         grid-template-columns: 14.58% auto;
         width: 100%;
-        border-bottom: 2px solid $color-comment-name-border;
         padding-bottom: 16px;
     }
 
@@ -41,6 +37,8 @@
             & input {
                 border-style: none;
                 width: 100%;
+                font-size: 16px;
+                line-height: 24px;
 
                 &:focus {
                     outline: none !important;
@@ -79,13 +77,22 @@
                 // Incase there needs to be styling
             }
         }
+
+
     }
 
     &__button_holder {
         display: flex;
+        justify-content: space-between;
+        @extend .noselect;
 
         .button__comment_add {
             margin-right: 15px;
+        }
+
+        button {
+            font-size: 16px;
+            line-height: 24px;
         }
     }
 
@@ -96,14 +103,33 @@
             color: $color-comment-icon-text;
         }
     }
-}
 
-#commentErrorMessage {
-    font-size: 12px;
+    &__error {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        p {
+            font-size: 14px;
+        }
+
+        i {
+            margin: 0px 5px;
+            font-size: 20px;
+            color: $color-vendor-profile-info-accuracy-voter; 
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
+
+    
 }
 
 #commentBodyTextArea {
     margin-bottom: 10px;
+    font-size: 16px;
+    line-height: 24px;
 }
 
 .commentposts {
@@ -124,6 +150,9 @@
 
 #commentShowMoreButton {
     margin-top: 8px;
+    font-size: 14px;
+    line-height: 24px;
+    @extend .noselect;  
 }
 
 .commentpost {
@@ -137,10 +166,20 @@
         box-sizing: border-box;
     }
 
+    &__content_wrapper p {
+        font-size: 16px;
+        line-height: 24px;
+    }
+
     &__header_wrapper {
         display: flex;
         justify-content: space-between;
         margin-bottom: 11px;
+
+        p { 
+            font-size: 16px;
+            line-height: 24px;
+        }
     }
 }
 
@@ -165,7 +204,7 @@
 
     &_error {
         @include font-reg;
-        color: $color-font-error;
+        color: $color-comment-error;
     }
 }
 

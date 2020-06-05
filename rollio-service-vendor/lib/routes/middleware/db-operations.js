@@ -318,7 +318,7 @@ const vendorRouteOps = {
   },
   getVendorById: (req, res) => {
     // eslint-disable-next-line max-len
-    const getVendorByIdOp = async (req, res, cb = null) => getVendor(req.params.regionID, req.params.vendorID)
+    const getVendorByIdOp = async (req, res, cb = null) => getVendor(req.params.regionID, req.params.vendorID, req.query.tweetLimit ? parseInt(req.query.tweetLimit, 10) : 10)
       .then(async (vendor) => {
         if (cb !== null) {
           await cb(vendor);
@@ -338,9 +338,8 @@ const vendorRouteOps = {
   putRegionIdVendorIdLocationTypeLocationIDAccuracy: async (req, res) => updateLocationAccuracy({
     regionID: req.params.regionID,
     vendorID: req.params.vendorID,
-    type: req.body.type,
-    locationID: req.body.locationID,
-    amount: req.body.amount,
+    locationID: req.body.params.locationID,
+    amount: req.body.params.amount,
   })
     .then(update => res.status(200).json(update))
     .catch(err => res.status(500).send(err)),

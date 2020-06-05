@@ -18,10 +18,10 @@ router.get('/:regionID/object', vendorRouteOps.getVendorsAsObject);
 router.get('/:regionID/:vendorID', vendorRouteOps.getVendorById);
 
 // PUT
-// Update a Vendor's locationAccuracy by amount (1 or -1)
+// Update a Vendor's locationAccuracy by amount (1 or -1)  routeLimitVendor,
 router.put('/:regionID/:vendorID/locationaccuracy', routeLimitVendor, vendorRouteOps.putRegionIdVendorIdLocationTypeLocationIDAccuracy);
 // Update push a comment to a Vendor
-router.put('/:regionID/:vendorID/comments', vendorRouteOps.putRegionIdVendorIdComments);
+router.put('/:regionID/:vendorID/comments', routeLimitVendor, vendorRouteOps.putRegionIdVendorIdComments);
 // Update a given vendor, authenticated route
 router.put('/:regionID/:vendorID/update', expressJwt({ secret: JWT_SECRET }), userRouteOps.send403IfNoToken, userRouteOps.passUserToNext, userRouteOps.passVendorToNext, vendorRouteOps.updateVendor);
 

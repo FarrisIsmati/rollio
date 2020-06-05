@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable no-console */
 // DEPENDENCIES
 const mongoose = require('../mongoose/index');
@@ -102,16 +103,28 @@ module.exports = {
     return newVendor;
   },
   // Gets a single vendor given a regionID and vendorID
-  getVendor(regionID, vendorID) {
-    if (arguments.length !== 2) {
+  // tweetLimit optional argument controls how many tweets are returned
+  // in the tweet history
+  getVendor(regionID, vendorID, tweetLimit = 10) {
+    if (arguments.length < 2) {
       const err = new Error('Must include a regionID and vendorID as arguments');
+      console.error(err);
       logger.error(err);
       return err;
     }
+
     return Vendor.findOne({
       regionID,
       _id: vendorID,
-    }).populate('tweetHistory')
+    }).populate({
+      path: 'tweetHistory',
+      options: {
+        limit: tweetLimit,
+        sort: {
+          date: -1,
+        },
+      },
+    })
       .populate('locationHistory')
       .populate('userLocationHistory')
       .then(res => res)
@@ -122,7 +135,7 @@ module.exports = {
       });
   },
   // Gets a single vendor given a regionID and vendor twitterID
-  getVendorByTwitterID(regionID, twitterID) {
+  getVendorByTwitterID(regionID, twitterID, tweetLimit = 10) {
     if (arguments.length !== 2) {
       const err = new Error('Must include a regionID and twitterID as arguments');
       logger.error(err);
@@ -132,7 +145,15 @@ module.exports = {
     return Vendor.findOne({
       regionID,
       twitterID,
-    }).populate('tweetHistory')
+    }).populate({
+      path: 'tweetHistory',
+      options: {
+        limit: tweetLimit,
+        sort: {
+          date: -1,
+        },
+      },
+    })
       .populate('locationHistory')
       .populate('userLocationHistory')
       .catch((err) => {
@@ -153,7 +174,15 @@ module.exports = {
     // Params may contain a query property
     // excludes approved by default, unless explicitly requested
     return Vendor.find({ approved: true, ...params })
-      .populate('tweetHistory')
+      .populate({
+        path: 'tweetHistory',
+        options: {
+          limit: 10,
+          sort: {
+            date: -1,
+          },
+        },
+      })
       .populate('locationHistory')
       .populate('userLocationHistory')
       .catch((err) => {
@@ -267,25 +296,31 @@ module.exports = {
       });
   },
   // Increments a vendors locationAccuracy by one given a regionID and vendorID
-  updateLocationAccuracy(params) {
+  async updateLocationAccuracy(params) {
     const {
-      regionID, vendorID, type, locationID, amount,
+      regionID, vendorID, locationID, amount,
     } = params;
-    if (!regionID || !vendorID || !type || !locationID || !amount) {
-      const err = new Error('Must include a regionID, vendorID, type, locationID, & amount properties in params argument');
+
+    if ((!regionID || !vendorID || !locationID || !(parseInt(amount, 10) === 1 || parseInt(amount, 10) === -1))) {
+      const err = new Error('Must include a regionID, vendorID, locationID, & amount properties in params argument');
       logger.error(err);
       return err;
     }
+
     // Amount can only be 1 or -1
     if (amount === 1 || amount === -1) {
-      return Location.updateOne({
+      return Location.findOneAndUpdate({
         _id: locationID,
       }, {
         $inc: { accuracy: amount },
+      }, {
+        new: true,
       })
         .then(async (res) => {
           await redisClient.hdelAsync('vendor', `q::method::GET::path::/${regionID}/${vendorID}`);
-          return res;
+          return {
+            locationAccuracy: res.accuracy,
+          };
         })
         .catch((err) => {
           const errMsg = new Error(err);

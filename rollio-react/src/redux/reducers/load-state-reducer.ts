@@ -8,7 +8,10 @@ import {
     SET_MAP_PIN_LOAD_STATE,
     FETCH_USER_SUCCESS,
     FETCH_USER,
-    LOG_OUT
+    LOG_OUT,
+
+    UPDATE_VENDOR_LOCATION_ACCURACY_START,
+    UPDATE_VENDOR_LOCATION_ACCURACY_SUCCESS,
 } from "../constants/constants"
 
 // INTERFACES
@@ -20,7 +23,8 @@ const defaultState: LoadStateDefaultState = {
     areVendorsLoaded: false,
     areMapPinsLoaded: false,
     areRegionsLoaded: false,
-    isUserLoaded: false
+    isUserLoaded: false,
+    isVendorLocationAccuracyUpdated: false,
 }
 
 export function loadStateReducer(state = defaultState, action: any) {
@@ -66,6 +70,16 @@ export function loadStateReducer(state = defaultState, action: any) {
             ...action.payload
         }
     case LOG_OUT:
+        return {
+            ...state,
+            ...action.payload
+        }
+    case UPDATE_VENDOR_LOCATION_ACCURACY_START:
+        return {
+            ...state,
+            ...action.payload
+        }
+    case UPDATE_VENDOR_LOCATION_ACCURACY_SUCCESS:
         return {
             ...state,
             ...action.payload

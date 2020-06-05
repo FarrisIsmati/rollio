@@ -4,7 +4,6 @@ import { useDispatch  } from 'react-redux';
 import { Scrollbars } from 'react-custom-scrollbars';
 
 // COMPONENTS
-import Chip from '../common/other/chip';
 import VendorProfileContent from './vendor-profile-content';
 
 // HOOKS
@@ -21,24 +20,6 @@ import { toggleMobileDashboard } from '../../redux/actions/ui-actions';
 // UTILS
 import {isActive} from "../../util";
 
-// Returns an array of categories
-const setCategoriesComponent = (args:any) => {
-  const {isLoaded, vendor} = args;
-
-  let Categories:ReactComponentElement<any>[] = [];
-
-  if (isLoaded) {
-    Categories = vendor.categories.map((category:string) => {
-      return <Chip key={category} text={category} />
-    })
-    if (vendor.price) {
-      Categories.unshift(<Chip key={vendor.price} text={vendor.price}/>)
-    }
-  }
-
-  return Categories;
-}
-
 const VendorProfile = React.forwardRef((props:any, navbarRef)=> {
   // Refs
   const mobileHeaderRef:any = useRef();
@@ -46,7 +27,7 @@ const VendorProfile = React.forwardRef((props:any, navbarRef)=> {
   // Hooks
   const dispatch = useDispatch();
   const state = useGetAppState();
-  const { zoomToCurrentlySelectedVendor } = useMap();
+  const { zoomToLocation } = useMap();
 
   // Height of the entire vendor profile (window height - navbarRef height)
   const vendorProfileHeight = useGetHeight(navbarRef) + 'px';
@@ -66,9 +47,6 @@ const VendorProfile = React.forwardRef((props:any, navbarRef)=> {
   const isLoaded = state.loadState.isVendorLoaded;
   const vendor = state.data.selectedVendor;
 
-  // Custom Vendor Profile Components
-  const Categories:ReactComponentElement<any>[] = setCategoriesComponent({isLoaded, vendor});
-
   // Difference between the Desktop and Mobile version is how it scrolls the content
   return (
     <React.Fragment>
@@ -87,9 +65,8 @@ const VendorProfile = React.forwardRef((props:any, navbarRef)=> {
               <VendorProfileContent
                 isMobile={isMobile}
                 closeVendor={() => dispatch(deSelectVendor(vendor.id))}
-                findOnMap={() => { zoomToCurrentlySelectedVendor() }}
+                findOnMap={(location:any) => { zoomToLocation(location) }}
                 vendor={vendor}
-                Categories={Categories}
                 state={state} /> :
               <p>loading...</p>}
           </Scrollbars>
@@ -131,13 +108,12 @@ const VendorProfile = React.forwardRef((props:any, navbarRef)=> {
             >
               <VendorProfileContent
                 isMobile={isMobile}
-                findOnMap={() => {
+                findOnMap={(location:any) => {
                     dispatch(toggleMobileDashboard());
-                    zoomToCurrentlySelectedVendor();
+                    zoomToLocation(location);
                   }
                 }
                 vendor={vendor}
-                Categories={Categories}
                 state={state} />
             </Scrollbars>
           </React.Fragment> : <p>loading...</p>

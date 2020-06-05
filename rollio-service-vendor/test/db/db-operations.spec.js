@@ -290,14 +290,13 @@ describe('DB Operations', () => {
         const prevLocationAccuracy = await Vendor.findOne({ _id: vendor._id }).populate('locationHistory')
           .then(vendorPrev => vendorPrev.locationHistory[0].accuracy);
 
-        const updateLocationAccuracy = await vendorOps.updateLocationAccuracy({
+        await vendorOps.updateLocationAccuracy({
           regionID, vendorID: vendor._id, type: 'locationHistory', locationID, amount: 1,
         });
 
         const updatedLocationAccuracy = await Vendor.findOne({ _id: vendor._id }).populate('locationHistory')
           .then(vendorUpdated => vendorUpdated.locationHistory[0].accuracy);
 
-        expect(updateLocationAccuracy.nModified).to.equal(1);
         expect(updatedLocationAccuracy).to.equal(prevLocationAccuracy + 1);
       });
 
@@ -305,14 +304,13 @@ describe('DB Operations', () => {
         const prevLocationAccuracy = await Vendor.findOne({ _id: vendor._id }).populate('locationHistory')
           .then(vendorPrev => vendorPrev.locationHistory[0].accuracy);
 
-        const updateLocationAccuracy = await vendorOps.updateLocationAccuracy({
+        vendorOps.updateLocationAccuracy({
           regionID, vendorID: vendor._id, type: 'locationHistory', locationID, amount: -1,
         });
 
         const updatedLocationAccuracy = await Vendor.findOne({ _id: vendor._id }).populate('locationHistory')
           .then(vendorUpdated => vendorUpdated.locationHistory[0].accuracy);
 
-        expect(updateLocationAccuracy.nModified).to.equal(1);
         expect(updatedLocationAccuracy).to.equal(prevLocationAccuracy - 1);
       });
 
@@ -320,14 +318,13 @@ describe('DB Operations', () => {
         const prevLocationAccuracy = await Vendor.findOne({ _id: vendor._id }).populate('userLocationHistory')
           .then(vendorPrev => vendorPrev.userLocationHistory[0].accuracy);
 
-        const updateLocationAccuracy = await vendorOps.updateLocationAccuracy({
+        await vendorOps.updateLocationAccuracy({
           regionID, vendorID: vendor._id, type: 'userLocationHistory', locationID: userLocationID, amount: 1,
         });
 
         const updatedLocationAccuracy = await Vendor.findOne({ _id: vendor._id }).populate('userLocationHistory')
           .then(vendorUpdated => vendorUpdated.userLocationHistory[0].accuracy);
 
-        expect(updateLocationAccuracy.nModified).to.equal(1);
         expect(updatedLocationAccuracy).to.equal(prevLocationAccuracy + 1);
       });
 

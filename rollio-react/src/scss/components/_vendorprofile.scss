@@ -33,30 +33,32 @@
         right: 0px;
         top: 0px;
         z-index: 1000;
-        margin: 12px;
-        padding: 12px;   
+        margin: 8px 16px;
+        padding: 8px;   
         width: 20px;
         height: 20px;
         background-color: $color-vendor-profile-close-icon-background;
         transition: background-color 0.2s;
-        -moz-border-radius: 50px;
-        -webkit-border-radius: 50px;
-        border-radius: 50px;
+        -moz-border-radius: 40px;
+        -webkit-border-radius: 40px;
+        border-radius: 40px;
+        @extend .noselect;
 
         &:hover {
             background-color: $color-vendor-profile-close-icon-background-hover;
             transition: background-color 0.2s;
         }
 
+        &:hover i {
+            color: $color-vendor-profile-close-icon-hover;
+            transition: color 0.2s ease;
+        }
+
+
         i {
             color: $color-vendor-profile-close-icon;
             transition: color 0.2s;
-            font-size: 32px;
-
-            &:hover {
-                color: $color-vendor-profile-close-icon-hover;
-                transition: color 0.2s ease;
-            }
+            font-size: 24px;
         }
 
         &:hover {
@@ -65,10 +67,14 @@
     }
 
     &__title_wrapper {
-        font-size: 1.5em;
+        font-size: 20px;
+        line-height: 28px;
         margin: 14px 16px;
+        @extend .noselect;
 
         h2 {
+            font-size: 32px;
+            line-height: 36px;
             word-break: break-word;
         }
     }
@@ -113,42 +119,139 @@
         }
 
         &_row {
-            display: inline-grid;
-            grid-template-columns: 14.58% auto;
-            margin: 16px 0;
+            display: flex;
+            padding: 16px 0;
+            @extend .vendorprofile__info_row;
+            border-top: 1px solid $color-vendor-profile-info-row-border;
+            transition: color 0.25s ease;
+            justify-content: space-between;
 
             
             &_clickable {
                 @extend .vendorprofile__info_row;
-                transition: color 0.25s ease;
-                &:hover h2 {
+                &:hover {
                     cursor: pointer;
-                    color: $color-vendor-info-main-hover !important;
-                    transition: color 0.15s ease;
                 }
+            }
 
-                &:hover i {
-                    cursor: pointer;
-                    color: $color-vendor-info-main-hover !important;
-                    transition: color 0.15s ease;
+            &_expanded {
+                margin-bottom: 15px;
+
+                &_hidden {
+                    display: none;
                 }
+            }
+        }
+
+        &_detail {
+            display: inline-grid;
+            grid-template-columns: 14.58% auto;
+            margin: 16px 0px;
+            width: 100%;
+
+            &_unavailable {
+                color: $color-vendor-profile-into-item-unavailable;
+            }
+
+            &_address:hover {
+                cursor: pointer;
+                @extend .noselect;
             }
         }
 
         &_icon_wrapper {
             display: flex;
             align-items: center;
+            margin-right: 6px;
+            @extend .noselect;
 
             i {
+                color: $color-vendor-profile-info-icon;
+            }
+
+            & svg {
+                height: 18px;
+                width: 18px !important;
+                padding-left: 2px;
                 color: $color-vendor-profile-info-icon;
             }
         }
 
         &_icon_wrapper_alt {
             @extend .vendorprofile__info_icon_wrapper;
-             
+            @extend .noselect;
+            align-items: initial !important;
+
+            &_center {
+                @extend .vendorprofile__info_icon_wrapper_alt;
+                align-items: center !important;
+            }
+
             i {
                 color: $color-vendor-profile-info-icon-alt;
+            }
+        }
+
+        &_text_wrapper {
+            @extend .noselect;
+
+            p {
+                font-size: 16px;
+                line-height: 24px;
+            }
+        }
+
+        &_address {
+            display: flex;
+            align-items: center;
+
+            &_accuracy {
+                align-items: center;
+                display: flex;
+                justify-content: space-between;
+                color: $color-vendor-profile-info-accuracy-voter;
+
+                &_voter {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    margin-right: 4px;
+
+                    p {
+                        font-size: 14px;
+                        color: $color-vendor-profile-info-accuracy-voter;
+                    }
+
+                    i {
+                        margin: 0px 5px;
+                        font-size: 20px;
+                        color: $color-vendor-profile-info-accuracy-voter; 
+
+                        &:hover {
+                            cursor: pointer;
+                        }
+                    }
+                    
+                    &_plus {
+                        margin-left: 5px;
+    
+                    }
+    
+                    &_minus {
+                        margin-left: 5px;
+                    }
+                }
+
+                &_question {
+                    font-size: 14px;
+                    color: $color-vendor-profile-info-accuracy-voter;
+                }
+
+            }
+
+            &_arrows {
+                display: flex;
+                flex-direction: column;
             }
         }
     }
@@ -156,6 +259,11 @@
     &__comments {
         &_wrapper {
             margin-top: 16px;
+            
+            h2 {
+                font-size: 20px;
+                line-height: 28px;
+            }
         }
 
         &_header {
@@ -218,12 +326,18 @@
 }
 
 .font__vendor_profile_info {
-    @include font-bold;
-    color: $color-vendor-info-main;
+    @include font-reg;
+    color: $color-font-main;
 }
 
 .font__vendor_profile_info_alt {
     @include font-light;
     color: $color-vendor-info-alt;
+}
+
+.font__vendor_profile_info_desc {
+    @include font-reg;
+    color: $color-font-main;
+    font-size: 14px;
 }
 

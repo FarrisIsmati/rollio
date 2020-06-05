@@ -90,3 +90,34 @@ export interface SetPreviouslySelectedRegionMapPayload {
 export interface SetCurrentlySelectedRegionMapPayload {
   [index: number]: { id: string, isSingle?: boolean | null }
 }
+
+export interface updateVendorLocationAccuracyPayload {
+  amount: number,
+  locationID: string,
+  regionID: string,
+  vendorID: string,
+  cb?: () => void,
+  cbSuccess?: () => void
+}
+
+export interface UpdateVendorLocationAccuracyPayload {
+  amount: number,
+  locationID: string,
+  regionID: string,
+  vendorID: string,
+  cbError?:(res:any) => void,
+  cbSuccess?: (err:any) => void
+}
+
+export interface UpdateDailyActiveVendorsPayload {
+  vendorID: string
+}
+
+export interface TweetHistoryPayload {
+  date: string,
+  locations: [string],
+  text: string,
+  tweetID: string,
+  usedForLocation: boolean,
+  vendorID: string
+}

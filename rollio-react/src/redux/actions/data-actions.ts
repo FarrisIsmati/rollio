@@ -30,7 +30,17 @@ import {
 
     UPDATE_VENDOR,
 
+    UPDATE_VENDOR_LOCATION_ACCURACY_START,
+    UPDATE_VENDOR_LOCATION_ACCURACY_SUCCESS,
+    RECIEVE_VENDOR_LOCATION_ACCURACY,
+
+    UPDATE_DAILY_ACTIVE_VENDORS,
+
     POST_VENDOR_COMMENT,
+
+    ADD_TWEET_TO_SELECTED_VENDOR_TWEET_HISTORY,
+
+    UPDATE_SELECTED_VENDOR_LOCATIONS,
 } from '../constants/constants'
 
 // ACTIONS
@@ -43,7 +53,10 @@ import {
     RegionDataAsyncPayload,
     UpdateVendorPayload,
     SelectVendorAsyncPayload,
-    SetVendorsAllPayload
+    SetVendorsAllPayload,
+    UpdateVendorLocationAccuracyPayload,
+    UpdateDailyActiveVendorsPayload,
+    TweetHistoryPayload,
 } from './interfaces';
 import {
     MapDefaultState, VendorCard
@@ -51,7 +64,7 @@ import {
 import { isLocationActive, isLocationActiveOrWillBeActive } from "../../util";
 
 // -------
-// VENDOR PROFILE
+// SELECTED VENDOR DATA
 // -------
 
 // Gets the detailed set of vendor profile data
@@ -59,7 +72,7 @@ export function receiveVendorData(vendor:any) {
     const locations = vendor.locationHistory.filter(isLocationActiveOrWillBeActive);
 
     // If an empty object is passed as an arg then reset all data
-        const profile = {
+    const profile = {
         categories: vendor.categories || '',
         comments: vendor.comments || [],
         creditCard: vendor.creditCard || '',
@@ -74,7 +87,11 @@ export function receiveVendorData(vendor:any) {
         price: vendor.price || '',
         rating: vendor.rating || '',
         twitterID: vendor.twitterID || '',
+        twitterUserName: vendor.twitterUserName,
+        twitterHandle: vendor.twitterHandle,
+        tweetHistory: vendor.tweetHistory,
         website: vendor.website || '',
+        isActive: vendor.dailyActive ? vendor.dailyActive : false,
         lastUpdated: vendor.updateDate || null,
         approved: vendor.approved || false
     };
@@ -110,7 +127,11 @@ export function fetchVendorDataAsync(payload:VendorDataAsyncPayload) {
 
     return (dispatch:any) => {
         dispatch(fetchVendorDataStart())
-        axios.get(`${VENDOR_API}/vendor/${regionId}/${vendorId}`)
+        axios.get(`${VENDOR_API}/vendor/${regionId}/${vendorId}`, {
+            params: {
+              tweetLimit: 3
+            }
+          })
             .then((res: AxiosResponse<any>) => {
                 dispatch(receiveVendorData(res.data));
                 dispatch(fetchVendorDataSuccess());
@@ -253,14 +274,117 @@ export function deSelectVendor(vendorID:string, cb:()=>void = ()=>{}) {
             dispatch(setCurrentlySelectedRegionMap([]));
         }
 
-
         // Any additional code to execute after vendor is deselected
         cb();
     }
 }
 
+// -------
+// SELECTED VENDOR TWEETS
+// -------
+
+export function addTweetToSelectedVendorTweetHistory(tweet:TweetHistoryPayload) {
+    return {
+        type: ADD_TWEET_TO_SELECTED_VENDOR_TWEET_HISTORY,
+        payload: {
+            ...tweet,
+        }
+    }
+}
+
+// ------
+// SELECTED VENDOR LOCATIONS
+// ------
+
+export function updateSelectedVendorLocations(locations:any) {
+    return {
+        type: UPDATE_SELECTED_VENDOR_LOCATIONS,
+        payload: locations
+    }
+}
+
 // --------
-// COMMENTS
+// SELECTED VENDOR LOCATIONS ACCURACY
+// --------
+
+export function recieveVendorLocationAccuracy(locationAccuracy:number, locationID:string) {
+    return {
+        type: RECIEVE_VENDOR_LOCATION_ACCURACY,
+        payload: {
+            locationID,
+            locationAccuracy
+        }
+    }
+}
+
+function updateVendorLocationAccuracySuccess() {
+    return {
+        type: UPDATE_VENDOR_LOCATION_ACCURACY_SUCCESS,
+        payload: {
+            isVendorLocationAccuracyUpdated: true
+        }
+    }
+}
+
+function updateVendorLocationAccuracyStart() {
+    return {
+        type: UPDATE_VENDOR_LOCATION_ACCURACY_START,
+        payload: {
+            isVendorLocationAccuracyUpdated: false
+        }
+    }
+}
+
+export function updateVendorLocationAccuracyAsync(payload:UpdateVendorLocationAccuracyPayload) {
+    const { amount, locationID, regionID, vendorID, cbError, cbSuccess } = payload;
+
+    return (dispatch:any) => {
+        dispatch(updateVendorLocationAccuracyStart())
+
+        // Amount can only be 1 or -1
+        if (amount === 0 || amount > 1 || amount < -1) {
+            const amountErr = new Error('Update vendor location accuracy amount is not equal to 1 or -1')
+            console.error(amountErr);
+
+            if (cbError) {
+                cbError(amountErr);
+            }
+            return;
+        }
+
+        axios.put(`${VENDOR_API}/vendor/${regionID}/${vendorID}/locationaccuracy`, {
+            params: {
+                amount,
+                locationID
+            }
+        })
+        .then((res: AxiosResponse<any>) => {
+            if (res.data.level === 'error') {
+                if (cbError) {
+                    console.error(res.data);
+                    cbError(res.data);
+                }
+                return;
+            }
+            dispatch(recieveVendorLocationAccuracy(res.data.locationAccuracy, locationID));
+            dispatch(updateVendorLocationAccuracySuccess());
+
+            if (cbSuccess) {
+                cbSuccess(res);
+            }
+        })
+        .catch((err:any) => {
+            console.error(err);
+
+            if (cbError) {
+                cbError(err);
+            }
+        })
+    }
+}
+
+// --------
+// SELECTED VENDOR COMMENTS
 // --------
 
 export function postVendorComment(commentBody:any) {
@@ -292,6 +416,15 @@ export function requestPostVendorComment(payload:any) {
             return err;
         })
 }
+
+// Add a vendorID to dailyActiveVendors
+export function updateDailyActiveVendors(payload: UpdateDailyActiveVendorsPayload) {
+    return {
+        type: UPDATE_DAILY_ACTIVE_VENDORS,
+        payload
+    }
+}
+
 
 // -----------
 // REGION DATA
@@ -353,7 +486,7 @@ export function fetchRegionDataAsync(payload:RegionDataAsyncPayload) {
 }
 
 // -----------
-// VENDOR DATA
+// ALL VENDORS DATA
 // -----------
 
 export function receiveAllVendors(vendorLookUp: { [key: string]: VendorCard }) {
@@ -409,8 +542,8 @@ export function fetchAllVendorsAsync(payload: any) {
     }
 }
 
-// Update the vendorsAll data
-export function updateVendor(payload: UpdateVendorPayload) {
+// Update the vendorsAll array
+export function updateVendorsAll(payload: UpdateVendorPayload) {
     return {
         type: UPDATE_VENDOR,
         payload

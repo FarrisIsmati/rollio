@@ -9,6 +9,7 @@ const receiveVendorList = () => {
   mq.receive(config.AWS_SQS_TWITTER_IDS, async (msg) => {
     const vendorList = msg.content;
     logger.info(`Received VendorIDs, length: ${vendorList.split(',').length}`);
+
     // Reset stream if received an updated vendors list
     if (!stream) {
       stream = twitter.streamClient(vendorList);

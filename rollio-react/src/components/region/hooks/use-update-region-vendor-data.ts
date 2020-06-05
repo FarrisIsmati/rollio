@@ -1,3 +1,5 @@
+// Hook sets up sockets for a region to handle all real time data changes per region
+
 // DEPENDENCIES
 import socketIOClient from 'socket.io-client';
 import { useEffect } from 'react';
@@ -6,11 +8,14 @@ import { toNumber } from 'lodash';
 
 // ACTIONS
 import {
-  updateVendor,
+    updateVendorsAll,
+    addTweetToSelectedVendorTweetHistory,
+    updateSelectedVendorLocations,
 } from '../../../redux/actions/data-actions';
 
 // HOOKS
 import useGlobalState from '../../common/hooks/use-global-state';
+import useGetAppState from '../../common/hooks/use-get-app-state';
 
 // CONFIG
 import { VENDOR_API } from '../../../config';
@@ -19,27 +24,45 @@ import { VENDOR_API } from '../../../config';
 const socket = socketIOClient(VENDOR_API);
 
 const useUpdateRegionVendorData = () => {
+    // Hooks
+    const state = useGetAppState();
     const dispatch = useDispatch();
 
-    // find a way to pass updated vendor id down to the map hook
+    // Global State
     const [globalState, setGlobalState] = useGlobalState();
 
     useEffect(() => {
+        // Anything that triggers location related CRUD Operations
         socket.on('NEW_LOCATIONS', (data: any) => {
-            // TODO: regionID and tweet also get send, but we don't seem to use those
-            const { newLocations, allLocations, vendorID } = data;
-            const payload = {
+            const { newLocations, allLocations, vendorID, tweet} = data;
+
+            // Update data.vendorsAll field
+            dispatch(updateVendorsAll({
                 locations: allLocations,
                 vendorID,
-            };
-            dispatch(updateVendor(payload));
-              newLocations.forEach((location:any) => {
-                const truckNum = toNumber(location.truckNum);
-                setGlobalState({ vendorID, truckNum })
-            });
+            }));
+            
+            // Real time events if the vendor with the new location is the selected vendor
+            // 1. Update Selected Vendor Address (Updates the locations)
+            dispatch(updateSelectedVendorLocations(allLocations));
+
+            if (newLocations.length) {
+                // Set current new location vendor to global state, so when map gets rerender it will know what vendor to move
+                newLocations.forEach((location:any) => {
+                    const truckNum = toNumber(location.truckNum);
+                    setGlobalState({ vendorID, truckNum })
+                });
+            }
+
+            // Update Twitter Feed (Inserts new tweet if there is one)
+            if (tweet) {
+                dispatch(addTweetToSelectedVendorTweetHistory(tweet));
+            }
         })
+
+        // When a vendor is created or updated
         socket.on('UPDATED_VENDOR', (vendor: any) => {
-            dispatch(updateVendor({...vendor, vendorID: vendor.id}));
+            dispatch(updateVendorsAll({...vendor, vendorID: vendor.id}));
         })
     }, [])
 }

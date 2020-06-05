@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable no-console */
 // DEPENDENCIES
 const mq = require('../index');
@@ -64,14 +65,17 @@ const receiveTweets = async () => {
     const vendorID = vendor._id;
 
     const {
-      tweet: text, tweetID, twitterID, date, match, newLocations: tweetLocations,
+      tweet: text, tweetID, date, match, newLocations: tweetLocations,
     } = message;
 
+    // Format tweet as it is stored in Tweet History in Redux
     const tweetPayload = {
+      date,
+      locations: tweetLocations.map(location => location._id),
       text,
       tweetID,
-      twitterID,
-      date,
+      usedForLocation: !!tweetLocations.length,
+      vendorID,
     };
 
     let allLocations = [];

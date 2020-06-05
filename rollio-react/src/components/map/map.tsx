@@ -65,4 +65,3 @@ const Map = (props: MapProps) => {
 }
 
 export default Map;
-

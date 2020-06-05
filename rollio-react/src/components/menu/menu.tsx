@@ -1,9 +1,9 @@
 // DEPENDENCIES
 import React from 'react';
 
-const Menu = () => {
+const Menu = React.forwardRef((props:any, ref:any) => {
   return (      
-    <div className='menu__wrapper'>
+    <div ref={ref} className='menu__wrapper'>
         <div className='menu__link font__menu_link'>
             <h1>SIGN IN</h1>
         </div>
@@ -15,6 +15,6 @@ const Menu = () => {
         </div>
     </div>
   );
-}
+});
 
 export default Menu;

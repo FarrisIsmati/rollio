@@ -1,30 +1,49 @@
 // DEPENDENCIES
-import React, { ReactComponentElement } from 'react';
+import React from 'react';
+import { isLocationActive } from '../../util/index';
 
 // COMPONENTS
 import Comments from '../comments/comment-section';
+import VendorProfileContentItemToggle from './vendor-profile-content-item-toggle';
+import Tweet from '../twitter/Tweet';
+import VendorProfileCategories from './vendor-profile-categories';
+import VendorProfileContentAccuracy from './vendor-profile-content-accuracy';
 
-// UTILS
-import {isActive} from "../../util";
+// HOOKS
+import useToggleComponents from './hooks/use-toggle-components';
 
 interface VendorProfileContentProps  {
     isMobile: boolean,
     closeVendor?: any,
     findOnMap: any,
     vendor: any,
-    Categories: ReactComponentElement<any>[],
     state: any
 }
 
 const VendorProfileContent = (props:VendorProfileContentProps) => {
-    const {
-      isMobile,
-      closeVendor,
-      findOnMap,
-      vendor,
-      Categories,
-      state
+    const { 
+      isMobile, 
+      closeVendor, 
+      findOnMap, 
+      vendor, 
+      state,
     } = props;
+
+    const tweets = vendor.tweetHistory.map((tweetData:any) => <Tweet 
+      key={tweetData.tweetID}
+      twitterUserName={vendor.twitterUserName} 
+      twitterHandle={vendor.twitterHandle} 
+      twitterProfileImage={vendor.profileImageLink}
+      tweetData={tweetData}
+    />)
+
+    // HOOKS
+    const {components, toggleComponents} = useToggleComponents(vendor.id, {
+      LOCATIONS: false,
+      MOREINFO: false,
+      TWITTER: false,
+      COMMENTS: false,
+    });
 
     return (
         <React.Fragment>
@@ -50,70 +69,79 @@ const VendorProfileContent = (props:VendorProfileContentProps) => {
           </div>
 
           <div className='vendorprofile__categories_wrapper'>
-            { Categories }
+            < VendorProfileCategories vendor={vendor} />
           </div>
 
           <div className='vendorprofile__info_wrapper'>
-
-            { isActive(vendor) ?
-              <div className='vendorprofile__info_row_clickable'>
-                <div className='vendorprofile__info_icon_wrapper'>
-                  <i className="material-icons-outlined">room</i>
-                </div>
+            {/* Locations */}
+            { vendor.locations.filter((location:any) => isLocationActive(location)).length ?
+            <React.Fragment>
+              <div className='vendorprofile__info_row'>
                 <div className='vendorprofile__info_text_wrapper font__vendor_profile_info flex__verticle_center'>
-                  {/* TODO: provide multiple links if there are multiple trucks, or some other approach  */}
-                  <h2 onClick={ findOnMap }>FIND ON MAP</h2>
+                  <h2>Locations</h2>
                 </div>
-              </div> :
+              </div>
+
+              <div className={`vendorprofile__info_row_expanded font__vendor_profile_info_desc`}>
+                  <VendorProfileContentAccuracy state={state} vendor={vendor} findOnMap={findOnMap}/>
+              </div>
+            </React.Fragment> :
               null
             }
 
-            { vendor.website ?
-              <div className='vendorprofile__info_row_clickable'>
-                <div className='vendorprofile__info_icon_wrapper'>
-                  <i className="material-icons-outlined">web</i>
-                </div>
-                <div className='vendorprofile__info_text_wrapper font__vendor_profile_info flex__verticle_center'>
-                  { vendor.website ? <h2><a target='_blank' href={vendor.website}>WEBSITE</a></h2> : <h2>WEBSITE UNAVAILABLE</h2> }
-                </div>
-              </div> :
+            {/* Tweets */}
+            { vendor.tweetHistory.length ? 
+              <VendorProfileContentItemToggle components={components} toggleComponents={toggleComponents} componentName='TWITTER' componentDisplayName='twitter feed'>
+                { tweets }
+              </VendorProfileContentItemToggle> :
               null
             }
 
-            { vendor.phoneNumber ?
-              <div className='vendorprofile__info_row_clickable'>
-                <div className='vendorprofile__info_icon_wrapper'>
+            <VendorProfileContentItemToggle components={components} toggleComponents={toggleComponents} componentName='MOREINFO' componentDisplayName='more info'>
+              {/* Description */}
+              <div className ='vendorprofile__info_detail'>
+                <div className='vendorprofile__info_icon_wrapper_alt'>
+                  <i className='material-icons-outlined'>local_shipping</i>
+                </div>
+                <p>{vendor.description}</p>
+              </div>
+
+              {/* Website */}
+              <div className ='vendorprofile__info_detail'>
+                <div className='vendorprofile__info_icon_wrapper_alt_center'>
+                  <i className="material-icons-outlined">web</i> 
+                </div>
+
+                { vendor.website ? <p className='flex__verticle_center'><a target='_blank' href={vendor.website}>Website</a></p> : <p className='vendorprofile__info_detail_unavailable flex__verticle_center'>Website Unavailable</p> }
+              </div>
+
+              {/* Phone Number */}
+              <div className ='vendorprofile__info_detail'>
+                <div className='vendorprofile__info_icon_wrapper_alt_center'>
                   <i className="material-icons-outlined">local_phone</i>
                 </div>
-                <div className='vendorprofile__info_text_wrapper font__vendor_profile_info flex__verticle_center'>
-                  { vendor.phoneNumber ? <h2><a href={`tel:${vendor.phoneNumber}`}>{vendor.phoneNumber}</a></h2> : <h2>PHONE UNAVAILABLE</h2> }
+
+                { vendor.phoneNumber ? <p className='flex__verticle_center'><a href={`tel:${vendor.phoneNumber}`}>{vendor.phoneNumber}</a></p> : <p className='vendorprofile__info_detail_unavailable flex__verticle_center'>Phone Unavailable</p> }
+              </div>
+
+              {/* Credit Card */}
+              <div className='vendorprofile__info_detail'>
+                <div className='vendorprofile__info_icon_wrapper_alt_center'>
+                  <i className="material-icons-outlined">credit_card</i>
                 </div>
-              </div> :
-              null
-            }
 
-            <div className='vendorprofile__info_row_clickable'>
-              <div className='vendorprofile__info_icon_wrapper'>
-                <i className="material-icons-outlined">local_shipping</i>
+                { vendor.creditCard === 'y' ? <p className='flex__verticle_center'>Accepts Credit Cards</p> : <p className='vendorprofile__info_detail_unavailable flex__verticle_center'>Doesn't Accept Credit Card</p>}
               </div>
-              <div className='vendorprofile__info_text_wrapper font__vendor_profile_info flex__verticle_center'>
-                <h2>ABOUT</h2>
-              </div>
-            </div>
+            </VendorProfileContentItemToggle>
 
-            <div className='vendorprofile__info_row'>
-              <div className='vendorprofile__info_icon_wrapper_alt'>
-                <i className="material-icons-outlined">credit_card</i>
+            {/* Comments */}
+            <VendorProfileContentItemToggle components={components} toggleComponents={toggleComponents} componentName='COMMENTS' componentDisplayName='comments'>
+              <div className='vendorprofile__comments_wrapper'>
+                <Comments comments={vendor.comments}/>
               </div>
-              <div className='font__vendor_profile_info_alt flex__verticle_center'>
-                { vendor.creditCard === 'y' ? <h2>Accepts Credit Cards</h2> : <h2>Doesn't Accept Credit Card</h2>}
-              </div>
-            </div>
+            </VendorProfileContentItemToggle>
 
-            <div className='vendorprofile__comments_wrapper'>
-              <h2 className='vendorprofile__comments_header font__vendor_profile_header_alt'>Comments</h2>
-              <Comments comments={state.data.selectedVendor.comments}/>
-            </div>
+
           </div>
         </React.Fragment>
     )

@@ -5,7 +5,7 @@ $rollioLighterGrey: #eeeeee;
 $rollioLightGrey: #757575;
 $rollioMedGrey: #4d4d4d;
 $rollioBlack: #212121;
-$rollioBlue: #0046c6;
+$rollioBlue: #1471EB;
 $rollioMagenta: #f74774;
 $rollioMagentaLight: #fa6e92;
 $rollioRed: #f54336;
@@ -29,44 +29,61 @@ $color-button-default-background: $rollioBlue;
 $color-button-default-background-locked: $rollioLighterGrey;
 $color-button-bare-font: $rollioBlue;
 $color-button-bare-alt-font: $rollioMagenta;
+
 // Comments
-$color-comment-icon: $rollioMagenta;
+$color-comment-icon: $rollioBlue;
 $color-comment-icon-text: $rollioMagenta;
-$color-comment-placeholder-text: $rollioMagenta;
+$color-comment-placeholder-text: $rollioBlue;
 $color-comment-background: $white;
-$color-comment-name-border: $rollioLighterGrey;
+$color-comment-error: $rollioLightGrey;
+
 // Dashboard
 $color-vendor-dashboard-link-background: $white;
 $color-vendor-dashboard-link-background-hover: $rollioLighterGrey;
+
 // Images
 $color-blank-image: $rollioLighterGrey;
+
 // Main
 $color-background-nav: $white;
 $color-background-main: $white;
+
 // Map
 $color-map-marker-default-main: $rollioBlue;
 $color-map-marker-selected-main: $rollioMagenta;
 $color-map-marker-default-second: $white;
 $color-map-infocard-font: $rollioMagenta;
 $color-map-overlay-active: rgba(0,0,0,.5);
+
 // Menu
 $color-menu-link: $white;
 $color-menu-link-background: $rollioMagenta;
 $color-menu-link-background-hover: $white;
 $color-menu-link-hover: $rollioMagenta;
+
 // Navbar
 $color-navbar-icon: $rollioMagenta;
 $color-navbar-icon-hover: $white;
 $color-navbar-icon-background: $white;
 $color-navbar-icon-background-hover: $rollioMagenta;
+
 // Other
 $color-chip-background: $rollioWhite;
+
 // Scrollbar
 $color-scrollbar-background: $rollioWhite;
 $color-scrollbar-thumb: $rollioLighterGrey;
+
 // Switch
 $color-vendor-switch-active: $rollioBlack;
 $color-vendor-switch-inactive: $rollioLighterGrey;
+
+// Twitter
+$color-tweet-background: $rollioWhite;
+$color-tweet-background-hover: $rollioLighterGrey;
+$color-tweet-border: $white;
+$color-tweet-light-font: $color-font-main-light2;
+
 // Vendor Profile
 $color-vendor-profile-background: $white;
 $color-vendor-profile-mobile-header: $rollioMagenta;
@@ -74,8 +91,12 @@ $color-vendor-profile-close-icon: $rollioMagenta;
 $color-vendor-profile-close-icon-hover: $white;
 $color-vendor-profile-close-icon-background: $white;
 $color-vendor-profile-close-icon-background-hover: $rollioMagenta;
-$color-vendor-profile-info-icon: $rollioMagenta;
-$color-vendor-profile-info-icon-alt: $rollioBlack;
+
+$color-vendor-profile-info-accuracy-voter: $rollioLightGrey;
+$color-vendor-profile-info-row-border: $rollioLighterGrey;
+$color-vendor-profile-info-icon: $rollioBlack;
+$color-vendor-profile-info-icon-alt: $rollioMagenta;
+$color-vendor-profile-into-item-unavailable: $rollioLighterGrey;
+
 $color-vendor-info-main: $rollioMagenta;
-$color-vendor-info-main-hover: $rollioMagentaLight;
 $color-vendor-info-alt: $rollioBlack;

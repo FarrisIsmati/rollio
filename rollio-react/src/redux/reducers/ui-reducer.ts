@@ -13,7 +13,7 @@ const defaultState:UiDefaultState = {
     isMobileDashboardExpanded: false,
     isMainDropDownMenuExpanded: false,
     isVendorSelected: false,
-    dashboardVendorsDisplay: 'active'
+    dashboardVendorsDisplay: 'active',
 }
 
 export function uiReducer(state = defaultState, action: any) {

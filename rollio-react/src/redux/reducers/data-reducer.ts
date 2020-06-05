@@ -10,6 +10,9 @@ import {
     SET_VENDORS_ALL,
     POST_VENDOR_COMMENT,
     UPDATE_VENDOR,
+    RECIEVE_VENDOR_LOCATION_ACCURACY,// <--Issue
+    ADD_TWEET_TO_SELECTED_VENDOR_TWEET_HISTORY,
+    UPDATE_SELECTED_VENDOR_LOCATIONS,
 } from "../constants/constants"
 
 // INTERFACES
@@ -39,6 +42,9 @@ const defaultState:DataDefaultState = {
         price: '',
         rating: null,
         twitterID: '',
+        twitterUserName: '',
+        twitterHandle: '',
+        tweetHistory: [],
         comments: [],
         creditCard: 'u',
         numTrucks: 1,
@@ -136,6 +142,49 @@ export function dataReducer(state = defaultState, action: any) {
                 comments: [
                     action.payload,
                     ...state.selectedVendor.comments
+                ]
+            }
+        }
+    case RECIEVE_VENDOR_LOCATION_ACCURACY:
+        const locationIndex = state.selectedVendor.locations.findIndex((location:any) => location._id === action.payload.locationID);
+        const updatedLocations = [...state.selectedVendor.locations];
+        updatedLocations[locationIndex].accuracy = action.payload.locationAccuracy;
+            
+        return {
+            ...state,
+            selectedVendor: {
+                ...state.selectedVendor,
+                locations: [
+                    ...updatedLocations
+                ]
+            }
+        }
+    case ADD_TWEET_TO_SELECTED_VENDOR_TWEET_HISTORY:
+        // Logic to check if vendorID in payload is same as the currently selected vendor
+        if (action.payload.vendorID === state.selectedVendor.id) {
+            return {
+                ...state,
+                selectedVendor: {
+                    ...state.selectedVendor,
+                    tweetHistory: [
+                        action.payload,
+                        ...state.selectedVendor.tweetHistory.slice(0, 2)
+                    ]
+                }
+                
+            }
+        }
+
+        return {
+            ...state
+        }
+    case UPDATE_SELECTED_VENDOR_LOCATIONS:
+        return {
+            ...state,
+            selectedVendor: {
+                ...state.selectedVendor,
+                locations: [
+                    ...action.payload
                 ]
             }
         }

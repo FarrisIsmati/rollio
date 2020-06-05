@@ -9,6 +9,11 @@
         color: $color-menu-link;
         background-color: $color-menu-link-background;
         padding: 10px 15px;
+        
+        & h1 {
+            font-size: 14px;
+            line-height: 24px;
+        }
 
         &:hover {
             cursor: pointer;
