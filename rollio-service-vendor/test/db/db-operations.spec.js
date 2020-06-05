@@ -253,16 +253,14 @@ describe('DB Operations', () => {
         const params = {
           regionID, vendorID: vendor._id, field: 'tweetHistory', payload: tweetPayload,
         };
-        const updateDailyTweetsRes = await vendorOps.updateVendorPush(params)
+        await vendorOps.updateVendorPush(params)
           .then(res => res);
 
         const updatedDailyTweets = await Vendor.findOne({ _id: vendor._id })
           .populate('tweetHistory')
           .then(vendorUpdated => vendorUpdated.tweetHistory);
 
-        const { locations: updatedTweetLocations, _id: tweetId } = updatedDailyTweets[updatedDailyTweets.length - 1];
-
-        expect(String(updateDailyTweetsRes.tweetHistory[updatedDailyTweets.length - 1])).to.equal(String(tweetId));
+        const { locations: updatedTweetLocations } = updatedDailyTweets[updatedDailyTweets.length - 1];
         expect(updatedDailyTweets[updatedDailyTweets.length - 1]
           .tweetID).to.equal(tweetPayload.tweetID);
         expect(updatedDailyTweets[updatedDailyTweets.length - 1].date)
