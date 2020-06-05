@@ -5,7 +5,7 @@ const mq = require('../index');
 const regionOps = require('../../db/mongo/operations/region-ops');
 const vendorOps = require('../../db/mongo/operations/vendor-ops');
 const sharedOps = require('../../db/mongo/operations/shared-ops');
-const mailerOps = require('../../db/mongo/operations/mailer-ops');
+const { sendEmailToAdminAccount } = require('../../email/send-email');
 const { client: redisClient, pub } = require('../../redis/index');
 const config = require('../../../config');
 const logger = require('../../log/index')('messaging/receive/receive-vendor-location');
@@ -18,8 +18,8 @@ const updateTweet = async (payload, region, vendor) => {
     regionID: region._id, vendorID: vendor._id, field: 'tweetHistory', payload,
   };
   try {
-    const updatedTweet = await vendorOps.updateVendorPush(params);
-    return updatedTweet;
+    const { tweetHistory } = await vendorOps.updateVendorPush(params);
+    return tweetHistory.pop();
   } catch (err) {
     logger.error(err);
   }
@@ -90,9 +90,16 @@ const receiveTweets = async () => {
     }
 
     try {
-      const updatedVendor = await updateTweet({ ...tweetPayload, locations: newLocations.map(loc => loc._id), usedForLocation: !!newLocations.length }, region, vendor);
-      // actually, here is where we should send the email
-      mailerOps.sendEmail({to: 'sloan.holzman@gmail.com', subject: 'test subject', text: 'test message'});
+      const newTweetId = await updateTweet({ ...tweetPayload, locations: newLocations.map(loc => loc._id), usedForLocation: !!newLocations.length }, region, vendor);
+      const link = `${config.CLIENT_DOMAIN}/tweets/vendor/${vendorID}/tweet/${newTweetId}`;
+      sendEmailToAdminAccount({
+        to: 'sloan.holzman@gmail.com',
+        subject: 'Vendor sent a new tweet',
+        template: 'admin.new-location',
+        context: {
+          text, newLocations, link, vendor,
+        },
+      });
       if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') { console.log(tweetPayload); }
 
       const twitterData = {

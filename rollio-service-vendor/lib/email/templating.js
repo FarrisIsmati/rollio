@@ -66,6 +66,9 @@ const mjmlWrapper = (emailBody, params) => `
         .outside-box-position {
           position: relative;
         }
+        .padding-bottom-10 {
+          padding: 0 0 10px 0;
+        }
       </mj-style>
     </mj-head>
     <mj-body width="800px">

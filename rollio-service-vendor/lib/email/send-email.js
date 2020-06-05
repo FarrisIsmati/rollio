@@ -22,7 +22,7 @@ Additionally cc and bcc fields can be specified, but are not required
 
 const fixAddresses = address => (Array.isArray(address) ? address.split.join(',') : address);
 
-module.exports = async (data) => {
+const sendEmail = async (data) => {
   const {
     to, subject, context, cc, bcc, from = 'Rollio <info@rollio.io>',
   } = data;
@@ -45,4 +45,11 @@ module.exports = async (data) => {
       logger.info(`Response: ${info}`);
     }
   });
+};
+
+const sendEmailToAdminAccount = async data => sendEmail({ ...data, to: 'adminAccount@gmail.com' });
+
+module.exports = {
+  sendEmail,
+  sendEmailToAdminAccount,
 };

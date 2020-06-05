@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
 // DEPENDENCIES
-require('./lib/email/maildev');
 const app = require('express')();
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
@@ -43,6 +42,12 @@ switch (config.NODE_ENV) {
     break;
   default:
     logger.info(`No enviroment set, running ${config.NODE_ENV}`);
+}
+
+if (config.NODE_ENV !== 'PRODUCTION') {
+  // only set up local maildev if not production
+  // eslint-disable-next-line global-require
+  require('./lib/email/maildev');
 }
 
 app.set('port', config.PORT || 3001);
