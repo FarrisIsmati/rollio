@@ -40,6 +40,7 @@ const correctLocationConflicts = async (locationData) => {
   const {
     vendorID, startDate = new Date(), endDate = moment().endOf('day').toDate(), truckNum = 1, _id,
   } = locationData;
+  // no need to correct the location itself
   const excludeCurrentLocation = _id ? { _id: { $ne: _id } } : {};
   const conflictingTruckLocations = await Location.find({
     ...excludeCurrentLocation, vendorID, startDate: { $lte: endDate }, endDate: { $gte: startDate }, truckNum, overridden: false,
@@ -51,9 +52,10 @@ const correctLocationConflicts = async (locationData) => {
 
 // Creates a new location and ensures that each truck does not have two locations at once
 const createLocationAndCorrectConflicts = async (locationData) => {
-  await correctLocationConflicts(locationData);
   const { coordinates } = locationData;
-  return Location.create({ ...locationData, coordinates: Array.isArray(coordinates) ? { lat: coordinates[0], long: coordinates[1] } : coordinates });
+  const newLocation = await Location.create({ ...locationData, coordinates: Array.isArray(coordinates) ? { lat: coordinates[0], long: coordinates[1] } : coordinates });
+  await correctLocationConflicts(newLocation);
+  return newLocation;
 };
 
 const clearVendorCache = async ({ regionID, vendorID }) => {
