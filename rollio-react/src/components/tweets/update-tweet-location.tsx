@@ -109,28 +109,21 @@ const UpdateLocation = (props:any) => {
         postLocationUpdate(data);
     };
 
-    // in the future, we might want to create a custom route to just edit locations
-    // but does not seem like a priority now.  Only downside is that the old location will be 'overriden', which seems a little aggressive
     const saveDatesOnly = (locationID:string) => {
         setLoading(true);
-        const locationToOverride = tweet.locations.find(location => location._id === locationID);
         const data = {
-            locationToOverride,
-            ...locationToOverride,
-            _id: undefined,
             startDate: searchedLocationLookUp[locationID].startDate,
             endDate: searchedLocationLookUp[locationID].endDate
         };
-        postLocationUpdate(data);
+        postLocationUpdate(data, locationID);
     };
 
-    const postLocationUpdate = (data:any) => {
-        axios({
-            method: "POST",
-            data,
-            url: `${tweetUrl}/createnewlocation/${props.match.params.tweetId}`,
-            headers: {'Authorization': "Bearer " + localStorage.token}
-        })
+    const postLocationUpdate = (data:any, locationID?:string) => {
+        const {method, url} = locationID ?
+            { method: "PATCH", url: `${tweetUrl}/editlocation/${props.match.params.tweetId}/${locationID}` } :
+            { method: "POST", url: `${tweetUrl}/createnewlocation/${props.match.params.tweetId}` }
+        // @ts-ignore
+        axios({ method, data, url, headers: {'Authorization': "Bearer " + localStorage.token} })
             .then((res: AxiosResponse<any>) => {
                 setTweetAndDates(res.data.tweet);
                 setLoading(false);

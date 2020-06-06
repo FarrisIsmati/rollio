@@ -21,7 +21,7 @@ const getTweetTableDates = () => {
     // initialStartDate is the default date/time of the earliest tweet to show (can be adjusted by user)
     // initialEndDate is the default date/time of the last tweet to show (can be adjusted by user)
     const initialEndDate = moment(now).add(remainder, "minutes").toDate();
-    const initialStartDate = moment(initialEndDate).subtract(1, 'days').toDate();
+    const initialStartDate = moment(initialEndDate).subtract(2, 'days').toDate();
     // minDate is as far back in the calendar as a user can go when filtering dates.  It's arbitrary
     const minDate = moment(initialEndDate).subtract(1000000, 'days').toDate();
     return { minDate, initialStartDate, initialEndDate };

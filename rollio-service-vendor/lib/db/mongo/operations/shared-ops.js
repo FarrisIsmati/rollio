@@ -36,17 +36,23 @@ const updateConflictingLocationDates = async (existingLocation, startDate, endDa
   return Location.findOneAndUpdate({ _id }, update);
 };
 
-// Creates a new location and ensures that each truck does not have two locations at once
-const createLocationAndCorrectConflicts = async (locationData) => {
+const correctLocationConflicts = async (locationData) => {
   const {
-    vendorID, startDate = new Date(), endDate = moment().endOf('day').toDate(), truckNum = 1, coordinates,
+    vendorID, startDate = new Date(), endDate = moment().endOf('day').toDate(), truckNum = 1, _id,
   } = locationData;
+  const excludeCurrentLocation = _id ? { _id: { $ne: _id } } : {};
   const conflictingTruckLocations = await Location.find({
-    vendorID, startDate: { $lte: endDate }, endDate: { $gte: startDate }, truckNum, overridden: false,
+    ...excludeCurrentLocation, vendorID, startDate: { $lte: endDate }, endDate: { $gte: startDate }, truckNum, overridden: false,
   });
   if (conflictingTruckLocations.length) {
     await Promise.all(conflictingTruckLocations.map(existingLocation => updateConflictingLocationDates(existingLocation, startDate, endDate)));
   }
+};
+
+// Creates a new location and ensures that each truck does not have two locations at once
+const createLocationAndCorrectConflicts = async (locationData) => {
+  await correctLocationConflicts(locationData);
+  const { coordinates } = locationData;
   return Location.create({ ...locationData, coordinates: Array.isArray(coordinates) ? { lat: coordinates[0], long: coordinates[1] } : coordinates });
 };
 
@@ -98,5 +104,6 @@ const publishLocationUpdateAndClearCache = async ({
 module.exports = {
   publishLocationUpdateAndClearCache,
   createLocationAndCorrectConflicts,
+  correctLocationConflicts,
   getVendorLocations,
 };

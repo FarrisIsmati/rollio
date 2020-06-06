@@ -39,6 +39,7 @@ const {
   getVendorsForFiltering,
   getTweetWithPopulatedVendorAndLocations,
   deleteTweetLocation,
+  editTweetLocation,
   createTweetLocation,
   getTweet,
 } = require('../../db/mongo/operations/tweet-ops');
@@ -492,6 +493,14 @@ const tweetRouteOps = {
         if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') { console.log('Twitter: Error fetching tweets, getTweetWithPopulatedVendorAndLocations func()'); }
         res.status(401).send('Error fetching tweet');
       });
+  },
+  editLocation: async (req, res) => {
+    editTweetLocation(req.params.tweetId, req.params.locationId, req.body).then(tweet => res.status(200).json({ tweet }))
+        .catch(() => {
+          logger.error('Twitter: User not authenticated, deleteTweetLocation func()');
+          if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') { console.log('Twitter: Error fetching tweets, deleteTweetLocation func()'); }
+          res.status(401).send('Error deleting location');
+        });
   },
   deleteLocation: async (req, res) => {
     deleteTweetLocation(req.params.tweetId, req.params.locationId).then(tweet => res.status(200).json({ tweet }))
