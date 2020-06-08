@@ -1,3 +1,4 @@
+// TODO: finish this - WIP
 import useGetAppState from "../common/hooks/use-get-app-state";
 import React, { useEffect, useState } from "react";
 import { withRouter } from 'react-router';
@@ -5,12 +6,12 @@ import { VENDOR_API } from "../../config";
 import 'react-table/react-table.css'
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
-import axios, {AxiosResponse} from "axios";
+import axios from "axios";
 import moment from 'moment';
 import Autocomplete from 'react-google-autocomplete';
 import useAuthentication from "../common/hooks/use-authentication";
 import useFetchVendors from "../common/hooks/use-fetch-vendors";
-import { get } from "lodash";
+import {get, pick} from "lodash";
 
 const CreateLocation = (props:any) => {
     const defaultLocation = {truckNum: 1, startDate: moment().toDate(), endDate: moment().add(1, 'days').toDate()};
@@ -20,6 +21,7 @@ const CreateLocation = (props:any) => {
     const { user } = useGetAppState();
     const { isAuthenticated } = user;
     const vendorUrl = `${VENDOR_API}/vendor`;
+    const routeLocationID = get(props, 'match.params.locationId', '');
 
     const dateValid = () => {
         const {startDate, endDate} = location;
@@ -35,26 +37,41 @@ const CreateLocation = (props:any) => {
         props.history.push(`/locations/${vendorId}`);
     };
 
-    const setLocationInformation = (data:any) => {
-        setLocation({...location, ...data})
+    const setLocationInformation = (data:any, isAddress?:boolean) => {
+        const locationUpdates = isAddress ? {
+            address: data.formatted_address,
+            city: data.address_components.find((component:any) => component.types.includes('locality')).long_name,
+            coordinates: { lat: data.geometry.location.lat(), long: data.geometry.location.lng() },
+        } : data;
+        setLocation({...location, ...locationUpdates})
     }
-    const saveSearchedLocation = () => {
+
+    const updateDateOnly = () => {
+        saveSearchedLocation({
+            data: { startDate: location.startDate, endDate: location.endDate },
+            method: "PATCH",
+            url: ''
+        })
+    }
+
+    const saveLocation = () => {
+        const data = pick(location, ['truckNum', 'address', 'city', 'coordinates', 'startDate', 'endDate']);
+        const {method, url} = routeLocationID ?
+            { method: "PATCH", url: `${vendorUrl}/${selectedVendor._id}/editlocation/${routeLocationID}` } :
+            { method: "POST", url: `${vendorUrl}/${selectedVendor._id}/newlocation` }
+        saveSearchedLocation({data, method, url});
+    };
+
+    const saveSearchedLocation = (x:any) => {
+        const {data, method, url} = x;
         setLoading(true);
-        const data = {
-            truckNum: location.truckNum,
-            address: location.formatted_address,
-            city: location.address_components.find((component:any) => component.types.includes('locality')).long_name,
-            coordinates: {lat: location.geometry.location.lat(), long: location.geometry.location.lng()},
-            startDate: location.startDate,
-            endDate: location.endDate
-        };
         axios({
-            method: "POST",
+            method,
             data,
-            url: `${vendorUrl}/${selectedVendor._id}/newlocation`,
+            url,
             headers: {'Authorization': "Bearer " + localStorage.token}
         })
-            .then((res: AxiosResponse<any>) => {
+            .then(() => {
                 setLoading(false);
                 props.history.push(`/locations/${selectedVendor._id}`)
             }).catch((err:any) => {
@@ -147,7 +164,7 @@ const CreateLocation = (props:any) => {
                         <td colSpan={2}>
                             <button
                                 disabled={!location.formatted_address || !dateValid()}
-                                onClick={() => saveSearchedLocation()}
+                                onClick={() => saveLocation()}
                             >
                                 Add the location and dates for Truck #{location.truckNum}
                             </button>
