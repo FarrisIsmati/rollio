@@ -120,7 +120,7 @@ const UpdateLocation = (props:any) => {
 
     const postLocationUpdate = (data:any, locationID?:string) => {
         const {method, url} = locationID ?
-            { method: "PATCH", url: `${tweetUrl}/editlocation/${props.match.params.tweetId}/${locationID}` } :
+            { method: "PATCH", url: `${tweetUrl}/editlocation/${props.match.params.tweetId}/location/${locationID}` } :
             { method: "POST", url: `${tweetUrl}/createnewlocation/${props.match.params.tweetId}` }
         // @ts-ignore
         axios({ method, data, url, headers: {'Authorization': "Bearer " + localStorage.token} })

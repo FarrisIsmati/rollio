@@ -58,6 +58,12 @@ const createLocationAndCorrectConflicts = async (locationData) => {
   return newLocation;
 };
 
+const editLocationAndCorrectConflicts = async (locationID, locationData) => {
+  const updatedLocation = await Location.findOneAndUpdate({ _id: locationID }, { $set: locationData }, { new: true }).lean();
+  await correctLocationConflicts(updatedLocation);
+  return updatedLocation;
+};
+
 const clearVendorCache = async ({ regionID, vendorID }) => {
   try {
     await redisClient.hdelAsync('vendor', `q::method::GET::path::/${regionID}/object`);
@@ -108,4 +114,5 @@ module.exports = {
   createLocationAndCorrectConflicts,
   correctLocationConflicts,
   getVendorLocations,
+  editLocationAndCorrectConflicts,
 };

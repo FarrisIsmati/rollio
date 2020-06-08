@@ -7,7 +7,7 @@ import moment from 'moment';
 import "react-datepicker/dist/react-datepicker.css";
 import useAuthentication from "../common/hooks/use-authentication";
 import {isLocationActive} from "../../util/index";
-import useFetchLocations from "./hooks/use-fetch-locations";
+import useFetchLocationsAndVendors from "./hooks/use-fetch-locations-and-vendors";
 
 const LocationTable = (props:any) => {
     // initial state
@@ -24,10 +24,9 @@ const LocationTable = (props:any) => {
     }
 
     const goToLocationPage = (location:any) => {
-        const { tweetID, vendorID: locationVendorId } = location
+        const { tweetID, vendorID: locationVendorId, _id: locationId } = location
         const tweet = vendorLookUp[locationVendorId].tweetHistory.find((x:any) => x.tweetID === tweetID);
-        // TODO: SET UP ROUTE FOR EDITING LOCATIONS THAT DO NOT HAVE A TWEET ASSOCIATED
-        const route = tweetID && locationVendorId ? `/tweets/vendor/${locationVendorId}/tweet/${tweet._id}` : '';
+        const route = tweetID && locationVendorId ? `/tweets/vendor/${locationVendorId}/tweet/${tweet._id}` : `/newlocation/${locationVendorId}/${locationId}`;
         props.history.push(route);
     }
 
@@ -91,7 +90,7 @@ const LocationTable = (props:any) => {
         }
     ];
 
-    const { locationsLoaded, locations, vendorLookUp } = useFetchLocations(props, vendorID);
+    const { locationsLoaded, locations, vendorLookUp } = useFetchLocationsAndVendors(props, vendorID);
     useAuthentication(props, true, true);
 
     const contentText = !isAuthenticated ? 'You must be logged in' : 'Loading...';
