@@ -17,12 +17,15 @@ const updateTweet = async (payload, region, vendor) => {
   const params = {
     regionID: region._id, vendorID: vendor._id, field: 'tweetHistory', payload,
   };
+
   try {
     const { tweetHistory } = await vendorOps.updateVendorPush(params);
     return tweetHistory.pop();
   } catch (err) {
     logger.error(err);
   }
+
+  return null;
 };
 
 // Update the locationHistory property
