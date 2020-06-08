@@ -61,7 +61,7 @@ const App:FC = () => {
             <Route exact path="/signup" component={ () => <LoginOut isLogin={false}/> } />
             <Route exact path="/profile/user" component={ UserProfileForm } />
             <Route exact path="/profile/region/:regionName/vendor/:vendorId?" component={ VendorProfileForm } />
-            <Route exact path="/newlocation" component={ CreateLocation } />
+            <Route exact path="/newlocation/:vendorID?/:locationId?" component={ CreateLocation } />
             <Route exact path="/unapproved-vendors" component={ UnapprovedVendorTable } />
             <Route exact path="/tweets/:vendorId?" component={ TweetTable } />
             <Route exact path="/locations/:vendorId?" component={ LocationTable } />
