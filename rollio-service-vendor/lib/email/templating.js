@@ -95,29 +95,41 @@ const mjmlWrapper = (emailBody, params) => `
 const templates = {};
 const basePath = join(__dirname, './templates');
 const paths = glob.sync(join(basePath, '*/*.mjml.js'));
+
 paths.forEach((filePath) => {
-  const objectPath = filePath.replace(basePath, '').replace('.mjml.js', '').replace(/^\//, '').replace('/', '.');
-  // eslint-disable-next-line global-require,import/no-dynamic-require
-  const template = require(filePath);
-  const compiledTemplate = (context) => {
-    try {
-      const mjmlTemplate = mjmlWrapper(template(context), context);
-      const { html } = mjml2html(mjmlTemplate, {
-        filePath,
-        validationLevel: 'strict',
-      });
-      return html;
-    } catch (err) {
-      logger.error('failed to compile template', err);
-      throw err;
-    }
-  };
-  set(templates, objectPath, compiledTemplate);
+  // Use regex to find template parent name and template name within file path
+  const re = /(?<=\/templates\/)(.*)(?=.mjml.js)/;
+  const regexMatch = filePath.match(re);
+
+  if (regexMatch) {
+    // Replace / with periods
+    const path = regexMatch[1].replace('/', '.');
+
+    // eslint-disable-next-line global-require,import/no-dynamic-require
+    const template = require(filePath);
+    const compiledTemplate = (context) => {
+      try {
+        const mjmlTemplate = mjmlWrapper(template(context), context);
+        const { html } = mjml2html(mjmlTemplate, {
+          filePath,
+          validationLevel: 'strict',
+        });
+        return html;
+      } catch (err) {
+        logger.error('failed to compile template', err);
+        throw err;
+      }
+    };
+
+    // Set sipmlified file path equal to a configured compliedTemplate functino
+    templates[path] = compiledTemplate;
+  }
 });
 
-module.exports = async function (data) {
+module.exports = async (data) => {
   const { context, template, subject } = data;
-  const templateFn = get(templates, template);
+  const templateFn = templates[template];
+
   if (!templateFn) {
     throw new Error(`${template} does not exist`);
   }
