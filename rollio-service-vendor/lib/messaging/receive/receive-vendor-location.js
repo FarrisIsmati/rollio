@@ -73,16 +73,6 @@ const receiveTweets = async () => {
       tweet: text, tweetID, date, match, newLocations: tweetLocations,
     } = message;
 
-    // Format tweet as it is stored in Tweet History in Redux
-    const tweetPayload = {
-      date,
-      locations: tweetLocations.map(location => location._id),
-      text,
-      tweetID,
-      usedForLocation: !!tweetLocations.length,
-      vendorID,
-    };
-
     let allLocations = [];
     let newLocations = [];
 
@@ -91,6 +81,16 @@ const receiveTweets = async () => {
       await Promise.all(newLocations.map(newLocation => updateLocation(newLocation._id, region, vendor)));
       allLocations = await sharedOps.getVendorLocations(vendorID);
     }
+
+    // Format tweet as it is stored in Tweet History in Redux
+    const tweetPayload = {
+      date,
+      locations: newLocations.map(location => location._id),
+      text,
+      tweetID,
+      usedForLocation: !!tweetLocations.length,
+      vendorID,
+    };
 
     try {
       const newTweetId = await updateTweet({ ...tweetPayload, locations: newLocations.map(loc => loc._id), usedForLocation: !!newLocations.length }, region, vendor);
