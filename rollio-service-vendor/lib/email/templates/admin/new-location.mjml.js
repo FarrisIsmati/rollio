@@ -1,3 +1,4 @@
+// DEPENDENCIES
 const moment = require('moment');
 const { flatten } = require('lodash');
 

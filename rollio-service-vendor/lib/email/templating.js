@@ -1,5 +1,6 @@
+
+// DEPENDENCIES
 const { join } = require('path');
-const { set, get } = require('lodash');
 const glob = require('glob');
 const mjml2html = require('mjml');
 const logger = require('../log')('templating');
