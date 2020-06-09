@@ -54,7 +54,6 @@
     "express-rate-limit": "^3.5.1",
     "faker": "^4.1.0",
     "glob": "^7.1.6",
-    "handlebars": "^4.7.6",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.15",
     "maildev": "^1.1.0",

@@ -1,9 +1,7 @@
-const fs = require('fs');
 const { join } = require('path');
 const { set, get } = require('lodash');
 const glob = require('glob');
 const mjml2html = require('mjml');
-const Handlebars = require('handlebars');
 const logger = require('../log')('templating');
 
 const mjmlWrapper = (emailBody, params) => `
@@ -89,26 +87,22 @@ const mjmlWrapper = (emailBody, params) => `
 `;
 
 /**
- * Precompiles Handlebars templates
+ * Precompiles mjmls templates
  * @return {function} hook function
  */
 module.exports = function () {
-  Handlebars.registerPartial(
-    'layout',
-    fs.readFileSync(join(__dirname, './templates/layout/base.handlebars'), 'utf-8'),
-  );
-
   /**
      * Create an object that matches the email-templates directory with precompiled templates
      *
-     * So for instance, email-templates/auth/invite.handlebars would be accessible
-     * via 'auth.invite'.
+     * So for instance, templates/admin/new-location would be accessible
+     * via 'admin.new-location'.
      */
   const templates = {};
   const basePath = join(__dirname, './templates');
-  const paths = glob.sync(join(basePath, '!(layout)/*.mjml.js'));
+  const paths = glob.sync(join(basePath, '*/*.mjml.js'));
   paths.forEach((filePath) => {
     const objectPath = filePath.replace(basePath, '').replace('.mjml.js', '').replace(/^\//, '').replace('/', '.');
+    // eslint-disable-next-line global-require,import/no-dynamic-require
     const template = require(filePath);
     const compiledTemplate = (context) => {
       try {
@@ -125,13 +119,6 @@ module.exports = function () {
     };
     set(templates, objectPath, compiledTemplate);
   });
-
-  const handlebarPaths = glob.sync(join(basePath, '!(layout)/*.handlebars'));
-  handlebarPaths.forEach((filePath) => {
-    const objectPath = filePath.replace(basePath, '').replace('.handlebars', '').replace(/^\//, '').replace('/', '.');
-    const compiledTemplate = Handlebars.compile(fs.readFileSync(filePath, 'utf-8'));
-    set(templates, objectPath, compiledTemplate);
-  });
   return async function (data) {
     const { context, template, subject } = data;
     const templateFn = get(templates, template);
@@ -139,7 +126,6 @@ module.exports = function () {
       throw new Error(`${template} does not exist`);
     }
     context.title = context.title || subject;
-    // context.server = context.server || wwConfig.customer.serverUrl;
     return templateFn(context);
   };
 };
