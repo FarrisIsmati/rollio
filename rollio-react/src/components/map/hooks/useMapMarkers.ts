@@ -7,7 +7,7 @@ import mapboxgl from 'mapbox-gl';
 import useGetAppState from '../../common/hooks/use-get-app-state';
 import useUpdateMapMarkersState from './useUpdateMapMarkersState';
 import useUpdateMapMarkersStyle from './useUpdateMapMarkersStyle';
-import {getCurrentTruckLocation} from "../../../util";
+import {getCurrentTruckLocation, isLocationActive} from "../../../util";
 
 // Create Marker Style
 const createMapMarker = (props: { numberOfGroupedVendors?: boolean | number, selected: boolean }) => {
@@ -85,9 +85,10 @@ const useMapMarkers = (props: any) => {
                 const singleVendorMarkersTemp = Object.keys(vendorsDisplayedSingle).reduce((acc: { [key: string]: any }, key: string) => {
                     const vendor = vendorsData[key.split('-')[0]];
                     const {selected, locations} = vendor;
-                    // NOTE: might have to filter locations by date
                     locations.forEach((location:any, index:number) => {
-                        acc[key] = addSingleVendorToMap({ map, selected, location });
+                        if (isLocationActive(location)) {
+                            acc[key] = addSingleVendorToMap({ map, selected, location });
+                        }
                     });
                     return acc;
                 }, {});
