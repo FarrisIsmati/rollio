@@ -121,7 +121,7 @@ paths.forEach((filePath) => {
       }
     };
 
-    // Set sipmlified file path equal to a configured compliedTemplate functino
+    // Set sipmlified file path equal to a configured compliedTemplate function
     templates[path] = compiledTemplate;
   }
 });

@@ -21,10 +21,16 @@ const login = require('./lib/routes/login');
 const tweets = require('./lib/routes/tweets');
 const locations = require('./lib/routes/locations');
 
-
 // MESSAGES
 const receiveVendorsRequest = require('./lib/messaging/receive/receive-vendors-request');
 const receiveVendorLocation = require('./lib/messaging/receive/receive-vendor-location');
+
+// MAIL
+if (config.NODE_ENV !== 'PRODUCTION') {
+  // only set up local maildev if not production
+  // eslint-disable-next-line global-require
+  require('./lib/email/maildev');
+}
 
 switch (config.NODE_ENV) {
   case 'DEVELOPMENT_DOCKER':
@@ -42,12 +48,6 @@ switch (config.NODE_ENV) {
     break;
   default:
     logger.info(`No enviroment set, running ${config.NODE_ENV}`);
-}
-
-if (config.NODE_ENV !== 'PRODUCTION') {
-  // only set up local maildev if not production
-  // eslint-disable-next-line global-require
-  require('./lib/email/maildev');
 }
 
 app.set('port', config.PORT || 3001);

@@ -1,3 +1,4 @@
+// DEPENDENCIES
 const MailDev = require('maildev');
 
 const maildev = new MailDev({
