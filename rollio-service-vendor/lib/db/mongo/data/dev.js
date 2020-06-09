@@ -76,7 +76,7 @@ module.exports = {
       twitterUserName: 'dcfoodtrucks',
       twitterHandle: 'dcfoodtrucks1',
       tweetHistory: [],
-      locationHistory: [],
+      locationHistory: [location1Id],
       userLocationHistory: [],
       comments: [],
       consecutiveDaysInactive: 4,
