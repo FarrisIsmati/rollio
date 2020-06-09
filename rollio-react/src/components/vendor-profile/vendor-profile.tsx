@@ -37,7 +37,7 @@ const VendorProfile = React.forwardRef((props:any, navbarRef)=> {
 
   const handleScroll = useScrollPosition({
     isLoaded: state.loadState.isVendorLoaded,
-    cb: windowSizeEffects.useIsMobile() ? props.scrollPositionCb : ()=>{}
+    cb: () => {}
   });
 
   // Variables

@@ -24,28 +24,7 @@ const useSetMobileDashboardHeightOnScroll = (props:UseToggleVendorDashboardOnScr
     // UI Effects
     const [isScrollDivExpanded, setIsScrollDivExpanded] = useState(false);
     const [scrollHeight, setScrollHeight] = useState(defaultScrollHeight);
-
-    // Callback function sets the height of the scroll div pending scroll up or down
-    const scrollPositionCb = (params:{scrollDir:string, distanceToTop:number, distanceToBottom:number, scrollTimeStampDelta:number}) => {
-        const { scrollDir, distanceToTop, distanceToBottom, scrollTimeStampDelta } = params;
-
-        if (scrollDir === 'up') {
-            // If both are 0 then the height has no overflow
-            if (distanceToTop === 0 && distanceToBottom > 0) {
-                setScrollHeight(defaultScrollHeight);
-                setIsScrollDivExpanded(false);
-            }
-        } else if (scrollDir === 'down') {
-            setIsScrollDivExpanded(true);
-
-            if (topRef.current !== null) {
-                //@ts-ignore
-                const maxScrollHeight = windowHeight - topRef.current.offsetHeight;
-                setScrollHeight(maxScrollHeight);
-            }
-        }
-    }
-
+    
     // Unclick selected vendor, if scroll div takes max height reset it to default height
     if (!isVendorSelected && scrollHeight !== defaultScrollHeight) {
         setScrollHeight(defaultScrollHeight);
@@ -57,7 +36,6 @@ const useSetMobileDashboardHeightOnScroll = (props:UseToggleVendorDashboardOnScr
 
     return {
         properHeight,
-        scrollPositionCb,
         vendorLinksHeight
     }
 }
