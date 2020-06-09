@@ -206,8 +206,7 @@ describe('DB Operations', () => {
         const params = {
           regionID, vendorID: vendor._id, field: 'locationHistory', payload: newLocation._id,
         };
-        await vendorOps.updateVendorPush(params)
-          .then(res => res);
+        await vendorOps.updateVendorPush(params);
 
         const updatedCoordHist = await Vendor.findOne({ _id: vendor._id }).populate('locationHistory')
           .then(vendorUpdated => vendorUpdated.locationHistory);
@@ -253,8 +252,7 @@ describe('DB Operations', () => {
         const params = {
           regionID, vendorID: vendor._id, field: 'tweetHistory', payload: tweetPayload,
         };
-        await vendorOps.updateVendorPush(params)
-          .then(res => res);
+        await vendorOps.updateVendorPush(params);
 
         const updatedDailyTweets = await Vendor.findOne({ _id: vendor._id })
           .populate('tweetHistory')
@@ -332,7 +330,7 @@ describe('DB Operations', () => {
           .then(vendorPrev => vendorPrev.consecutiveDaysInactive);
 
         const updateConsecutiveDaysInactiveRes = await vendorOps
-          .incrementVendorConsecutiveDaysInactive(regionID, vendor._id).then(res => res);
+          .incrementVendorConsecutiveDaysInactive(regionID, vendor._id);
 
         const updatedConsecutiveDaysInactive = await Vendor.findOne({ _id: vendor._id })
           .then(vendorUpdated => vendorUpdated.consecutiveDaysInactive);
