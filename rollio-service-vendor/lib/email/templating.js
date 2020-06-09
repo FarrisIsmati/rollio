@@ -87,45 +87,40 @@ const mjmlWrapper = (emailBody, params) => `
 `;
 
 /**
- * Precompiles mjmls templates
- * @return {function} hook function
+ * Create an object that matches the email-templates directory with precompiled templates
+ *
+ * So for instance, templates/admin/new-location would be accessible
+ * via 'admin.new-location'.
  */
-module.exports = function () {
-  /**
-     * Create an object that matches the email-templates directory with precompiled templates
-     *
-     * So for instance, templates/admin/new-location would be accessible
-     * via 'admin.new-location'.
-     */
-  const templates = {};
-  const basePath = join(__dirname, './templates');
-  const paths = glob.sync(join(basePath, '*/*.mjml.js'));
-  paths.forEach((filePath) => {
-    const objectPath = filePath.replace(basePath, '').replace('.mjml.js', '').replace(/^\//, '').replace('/', '.');
-    // eslint-disable-next-line global-require,import/no-dynamic-require
-    const template = require(filePath);
-    const compiledTemplate = (context) => {
-      try {
-        const mjmlTemplate = mjmlWrapper(template(context), context);
-        const { html } = mjml2html(mjmlTemplate, {
-          filePath,
-          validationLevel: 'strict',
-        });
-        return html;
-      } catch (err) {
-        logger.error('failed to compile template', err);
-        throw err;
-      }
-    };
-    set(templates, objectPath, compiledTemplate);
-  });
-  return async function (data) {
-    const { context, template, subject } = data;
-    const templateFn = get(templates, template);
-    if (!templateFn) {
-      throw new Error(`${template} does not exist`);
+const templates = {};
+const basePath = join(__dirname, './templates');
+const paths = glob.sync(join(basePath, '*/*.mjml.js'));
+paths.forEach((filePath) => {
+  const objectPath = filePath.replace(basePath, '').replace('.mjml.js', '').replace(/^\//, '').replace('/', '.');
+  // eslint-disable-next-line global-require,import/no-dynamic-require
+  const template = require(filePath);
+  const compiledTemplate = (context) => {
+    try {
+      const mjmlTemplate = mjmlWrapper(template(context), context);
+      const { html } = mjml2html(mjmlTemplate, {
+        filePath,
+        validationLevel: 'strict',
+      });
+      return html;
+    } catch (err) {
+      logger.error('failed to compile template', err);
+      throw err;
     }
-    context.title = context.title || subject;
-    return templateFn(context);
   };
+  set(templates, objectPath, compiledTemplate);
+});
+
+module.exports = async function (data) {
+  const { context, template, subject } = data;
+  const templateFn = get(templates, template);
+  if (!templateFn) {
+    throw new Error(`${template} does not exist`);
+  }
+  context.title = context.title || subject;
+  return templateFn(context);
 };
