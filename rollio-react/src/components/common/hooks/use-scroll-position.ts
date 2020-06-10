@@ -34,8 +34,9 @@ const useScrollPosition = (args:{ scrollRef?:any, isLoaded:boolean, cb?:any }) =
         // In Seconds
         const scrollTimeStampDelta = Math.round( e.timeStamp - prevScrollTimeStamp.current ) / 1000;
 
-        cb({scrollDir, distanceToTop, distanceToBottom, scrollTimeStampDelta});
-
+        if (cb) {
+          cb({scrollDir, distanceToTop, distanceToBottom, scrollTimeStampDelta});
+        }
 
         // Distance to bottom scrollPos - clientHeight
         prevScrollTimeStamp.current = e.timeStamp;
