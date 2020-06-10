@@ -11,7 +11,7 @@ import queryString from "query-string";
 
 const useFetchLocationsAndVendors = (props:any, vendorID?:string) => {
     const [locationsLoaded, setLocationsLoaded] = useState<boolean>(false);
-    const [locations, setLocations] = useState<Location[]>([]);
+    const [locations, setLocations] = useState<any[]>([]);
     const routeVendorID = get(props, 'match.params.vendorId', '');
     const routeLocationID = get(props, 'match.params.locationId', '');
 

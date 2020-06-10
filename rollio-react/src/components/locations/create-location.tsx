@@ -10,7 +10,7 @@ import axios from "axios";
 import moment from 'moment';
 import Autocomplete from 'react-google-autocomplete';
 import useAuthentication from "../common/hooks/use-authentication";
-import useFetchVendors from "../common/hooks/use-fetch-vendors";
+import useFetchLocationsAndVendors from "./hooks/use-fetch-locations-and-vendors";
 import {get, pick} from "lodash";
 
 const CreateLocation = (props:any) => {
@@ -22,6 +22,8 @@ const CreateLocation = (props:any) => {
     const { isAuthenticated } = user;
     const vendorUrl = `${VENDOR_API}/vendor`;
     const routeLocationID = get(props, 'match.params.locationId', '');
+    const editUrl = `${vendorUrl}/${selectedVendor._id}/editlocation/location/${routeLocationID}`;
+    const newUrl = `${vendorUrl}/${selectedVendor._id}/newlocation`;
 
     const dateValid = () => {
         const {startDate, endDate} = location;
@@ -33,7 +35,7 @@ const CreateLocation = (props:any) => {
     };
 
     const goToAllLocations = () => {
-        const vendorId = get(user, 'vendorId', '');
+        const vendorId = get(user, 'vendorID', '');
         props.history.push(`/locations/${vendorId}`);
     };
 
@@ -50,15 +52,15 @@ const CreateLocation = (props:any) => {
         saveSearchedLocation({
             data: { startDate: location.startDate, endDate: location.endDate },
             method: "PATCH",
-            url: ''
+            url: editUrl
         })
     }
 
     const saveLocation = () => {
         const data = pick(location, ['truckNum', 'address', 'city', 'coordinates', 'startDate', 'endDate']);
         const {method, url} = routeLocationID ?
-            { method: "PATCH", url: `${vendorUrl}/${selectedVendor._id}/editlocation/${routeLocationID}` } :
-            { method: "POST", url: `${vendorUrl}/${selectedVendor._id}/newlocation` }
+            { method: "PATCH", url: editUrl } :
+            { method: "POST", url: newUrl }
         saveSearchedLocation({data, method, url});
     };
 
@@ -81,13 +83,18 @@ const CreateLocation = (props:any) => {
         })
     };
     useAuthentication(props, true, false);
-    const { vendors, vendorsLoaded } = useFetchVendors(props);
+    const { locationsLoaded, locations, vendors, vendorsLoaded } = useFetchLocationsAndVendors(props);
     useEffect(() => {
         if (vendorsLoaded) {
             setSelectedVendor(vendors[0]);
+        }
+        if ((!routeLocationID || locationsLoaded) && vendorsLoaded) {
+            const [existingLocation] = locations;
+            const { startDate, endDate } = existingLocation;
+            setLocation({ ...existingLocation, startDate: moment(startDate).toDate(), endDate: moment(endDate).toDate() })
             setLoading(false);
         }
-    }, [vendorsLoaded]);
+    }, [vendorsLoaded, locationsLoaded]);
     const anythingLoading = loading || !vendorsLoaded;
     const contentText = !anythingLoading && !isAuthenticated ? 'You must be logged in' : 'Loading...';
     const content = !anythingLoading ?
@@ -146,13 +153,20 @@ const CreateLocation = (props:any) => {
                         </td>
                     </tr>
                     {!dateValid() && <tr><td colSpan={2}><i>Problem! Start Date After End Date</i></td></tr>}
+                    {
+                        routeLocationID &&
+                        <tr>
+                            <td>Address</td>
+                            <td>{location.address}</td>
+                        </tr>
+                    }
                     <tr>
                         <td colSpan={2}>
                             {/* TODO: possibly restrict based on region of vendor */}
                             <Autocomplete
                                 style={{width: '100%'}}
                                 onPlaceSelected={(place:any) => {
-                                    setLocationInformation(place);
+                                    setLocationInformation(place, true);
                                 }}
                                 types={['address']}
                                 placeholder={`Search for a new location for Truck #${location.truckNum}`}
@@ -160,10 +174,23 @@ const CreateLocation = (props:any) => {
                             />
                         </td>
                     </tr>
+                    {
+                        routeLocationID &&
+                        <tr>
+                            <td colSpan={2}>
+                                <button
+                                    disabled={!dateValid()}
+                                    onClick={() => updateDateOnly()}
+                                >
+                                    Update date only for Truck #{location.truckNum}
+                                </button>
+                            </td>
+                        </tr>
+                    }
                     <tr>
                         <td colSpan={2}>
                             <button
-                                disabled={!location.formatted_address || !dateValid()}
+                                disabled={!location.address || !dateValid()}
                                 onClick={() => saveLocation()}
                             >
                                 Add the location and dates for Truck #{location.truckNum}

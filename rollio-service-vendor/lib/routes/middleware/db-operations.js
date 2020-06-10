@@ -182,7 +182,7 @@ const vendorRouteOps = {
     const { type, vendorID } = req.user;
     const isAdmin = type === 'admin';
     const isVendor = type === 'vendor';
-    const { vendorID: routeVendorID , locationID} = req.params;
+    const { vendorID: routeVendorID, locationID } = req.params;
     if (isAdmin || (isVendor && String(vendorID) === routeVendorID)) {
       return editNonTweetLocation(locationID, routeVendorID, req.body).then((location) => {
         res.status(200).json({ location });
@@ -512,11 +512,11 @@ const tweetRouteOps = {
   },
   editLocation: async (req, res) => {
     editTweetLocation(req.params.tweetId, req.params.locationId, req.body).then(tweet => res.status(200).json({ tweet }))
-        .catch(() => {
-          logger.error('Twitter: User not authenticated, deleteTweetLocation func()');
-          if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') { console.log('Twitter: Error fetching tweets, deleteTweetLocation func()'); }
-          res.status(401).send('Error deleting location');
-        });
+      .catch(() => {
+        logger.error('Twitter: User not authenticated, editTweetLocation func()');
+        if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') { console.log('Twitter: Error fetching tweets, deleteTweetLocation func()'); }
+        res.status(401).send('Error deleting location');
+      });
   },
   deleteLocation: async (req, res) => {
     deleteTweetLocation(req.params.tweetId, req.params.locationId).then(tweet => res.status(200).json({ tweet }))
