@@ -34,12 +34,12 @@ const DashboardMobile:FC = () => {
 
     const { isDashboardExpanded, expandedDashboardStyle, contractedDashboardStyle} = useSetDashboardMenuStyle();
     // Does vendor profile height size animation based on scroll position
-    const { vendorLinksHeight, scrollPositionCb, properHeight } = useSetMobileMenuHeightOnScroll({topRef, expandedDashboardStyle})
+    const { vendorLinksHeight, properHeight } = useSetMobileMenuHeightOnScroll({topRef, expandedDashboardStyle})
 
     return (
         // Mobile resize this flex centers
         <div className="dashboard_mobile__wrapper" style={isDashboardExpanded ? {...expandedDashboardStyle, height: properHeight} : contractedDashboardStyle} >
-            <VendorProfile scrollPositionCb={scrollPositionCb} ref={topRef}/>
+            <VendorProfile ref={topRef}/>
             <div className="dashboard_mobile__content_wrapper">
                 <div ref={topRef} className="dashboard_mobile__topbar_wrapper">
                     <div className="dashboard_mobile__topbar">
