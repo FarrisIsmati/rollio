@@ -8,10 +8,11 @@ import useGetAppState from '../../common/hooks/use-get-app-state';
 import useUpdateMapMarkersState from './useUpdateMapMarkersState';
 import useUpdateMapMarkersStyle from './useUpdateMapMarkersStyle';
 import {getCurrentTruckLocation, isLocationActive} from "../../../util";
+import useSelectVendorProfile from '../../vendor-profile/hooks/use-select-vendor-profile';
 
 // Create Marker Style
-const createMapMarker = (props: { numberOfGroupedVendors?: boolean | number, selected: boolean }) => {
-    const { numberOfGroupedVendors, selected } = props;
+const createMapMarker = (props: { vendor?: any, vendors?: [any], numberOfGroupedVendors?: boolean | number, selected: boolean, location: any, selectedVendorID: string, onClick?: any }) => {
+    const { vendor, vendors, numberOfGroupedVendors, selected, selectedVendorID, onClick } = props;
 
     const mapMarkerEl = document.createElement('div');
 
@@ -26,17 +27,26 @@ const createMapMarker = (props: { numberOfGroupedVendors?: boolean | number, sel
         mapMarkerEl.appendChild(textnode);
     }
 
+    // Perform vendor selection action when click on element
+    if (onClick) {
+        mapMarkerEl.onclick = () => {
+            if (vendor) {
+                onClick(vendor.id, selectedVendorID);
+            }
+        }
+    }
+
     return mapMarkerEl
 }
 
 // Adds a single pin marker to map
-const addSingleVendorToMap = (props: { map:any, selected: boolean, location:any }) => {
-    const { map, selected, location } = props;
+const addSingleVendorToMap = (props: { vendor: any, map:any, selected: boolean, location:any, selectedVendorID: string, selectVendorProfile: any }) => {
+    const { vendor, map, selected, location, selectedVendorID, selectVendorProfile } = props;
     // Current vendor [lng,lat]
     const coordinates:[number, number] = [location.coordinates.long, location.coordinates.lat];
 
     // // Add marker to map
-    const marker = new mapboxgl.Marker(createMapMarker({selected}))
+    const marker = new mapboxgl.Marker(createMapMarker({vendor, selected, location, selectedVendorID, onClick: selectVendorProfile }))
         .setLngLat(coordinates)
         .addTo(map)
 
@@ -44,12 +54,12 @@ const addSingleVendorToMap = (props: { map:any, selected: boolean, location:any 
 }
 
 // Adds a grouped pin marker to map
-const addGroupedVendorsToMap = (props: { vendors:any, map:any, selected: boolean, location: any }) => {
-    const {vendors, location, map, selected} = props;
+const addGroupedVendorsToMap = (props: { vendors:any, map:any, selected: boolean, location: any, selectedVendorID: string, selectVendorProfile: any }) => {
+    const {vendors, location, map, selected, selectedVendorID, selectVendorProfile} = props;
     // [lng,lat]
     const coordinates:[number, number] = [location.coordinates.long, location.coordinates.lat];
     // Add marker to map
-    const marker = new mapboxgl.Marker(createMapMarker({ numberOfGroupedVendors: vendors.length, selected }))
+    const marker = new mapboxgl.Marker(createMapMarker({ numberOfGroupedVendors: vendors.length, selected, location, selectedVendorID }))
         .setLngLat(coordinates)
         .addTo(map);
 
@@ -64,14 +74,20 @@ const useMapMarkers = (props: any) => {
     // Initial Map Markers Loaded State
     const [areMarkersLoaded, setAreMarkersLoaded] = useState(false);
 
-    // Markers State
-    // Keeps track of all markers (Marker data isn't stored on map object)
-    // Reference these markers when updating/removing markers via webhooks
+    /*  
+    Markers State
+    Keeps track of all markers (Marker data isn't stored on map object)
+    Reference these markers when updating/removing markers via webhooks
+    */ 
     const [singleVendorMarkers, setSingleVendorMarkers] = useState<any>(null);
     const [groupVendorMarkers, setGroupVendorMarkers] = useState<any>(null);
 
     // General variables
     const vendorsData = state.data.vendorsAll;
+    const selectedVendorID = state.data.selectedVendor.id ? state.data.selectedVendor.id : null;
+
+    // Hook function to pass into all createMapMarker functions that require vendors to be selected
+   const selectVendorProfile = useSelectVendorProfile();
 
     // Initilization of all markers
     useEffect(() => {
@@ -87,7 +103,7 @@ const useMapMarkers = (props: any) => {
                     const {selected, locations} = vendor;
                     locations.forEach((location:any, index:number) => {
                         if (isLocationActive(location)) {
-                            acc[key] = addSingleVendorToMap({ map, selected, location });
+                            acc[key] = addSingleVendorToMap({ map, selected, location, vendor, selectedVendorID, selectVendorProfile });
                         }
                     });
                     return acc;
@@ -102,7 +118,7 @@ const useMapMarkers = (props: any) => {
                     const [firstVendorId, truckNum] = vendorsGroup.vendors[0].vendorId.split('-');
                     const {vendors, selected} = vendorsGroup;
                     const location = getCurrentTruckLocation(firstVendorId, toNumber(truckNum), vendorsData);
-                    acc[key] = addGroupedVendorsToMap({vendors, location, map, selected });
+                    acc[key] = addGroupedVendorsToMap({vendors, location, map, selected, selectedVendorID, selectVendorProfile });
                     return acc;
                 }, {});
                 setGroupVendorMarkers(groupVendorMarkersTemp)
