@@ -13,7 +13,7 @@ import useAuthentication from "../common/hooks/use-authentication";
 import useFetchLocationsAndVendors from "./hooks/use-fetch-locations-and-vendors";
 import {get, pick} from "lodash";
 
-const CreateLocation = (props:any) => {
+const LocationEditor = (props:any) => {
     const defaultLocation = {truckNum: 1, startDate: moment().toDate(), endDate: moment().add(1, 'days').toDate()};
     const [loading, setLoading] = useState<boolean>(true);
     const [selectedVendor, setSelectedVendor] = useState<any>({...defaultLocation});
@@ -231,4 +231,4 @@ const CreateLocation = (props:any) => {
     );
 }
 
-export default withRouter(CreateLocation);
+export default withRouter(LocationEditor);
