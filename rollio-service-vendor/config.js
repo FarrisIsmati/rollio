@@ -12,6 +12,9 @@ const {
   AWS_SQS_REQUEST_VENDORS,
   AWS_SQS_PARSED_TWEETS,
   AWS_SQS_TWITTER_IDS,
+  MAILGUN_API_KEY,
+  MAILGUN_DOMAIN,
+  SMTP_PORT,
 } = process.env;
 
 let MONGO_CONNECT;
@@ -21,6 +24,7 @@ let REDIS_TWITTER_CHANNEL;
 let TWITTER_CONFIG;
 let JWT_SECRET;
 let AWS_ENV = false;
+let CLIENT_DOMAIN;
 
 switch (NODE_ENV) {
   case 'PRODUCTION':
@@ -35,6 +39,7 @@ switch (NODE_ENV) {
     };
     JWT_SECRET = process.env.SECRET_PROD;
     AWS_ENV = true;
+    CLIENT_DOMAIN = process.env.CLIENT_DOMAIN_PRODUCTION;
     break;
   case 'DEVELOPMENT_LOCAL':
     MONGO_CONNECT = process.env.MONGO_DEV_LOCAL;
@@ -47,6 +52,7 @@ switch (NODE_ENV) {
       callbackURL: process.env.OAUTH_CALLBACK_LOCAL,
     };
     JWT_SECRET = process.env.SECRET_LOCAL;
+    CLIENT_DOMAIN = process.env.CLIENT_DOMAIN_LOCAL;
     break;
   case 'TEST_LOCAL':
     MONGO_CONNECT = process.env.MONGO_TEST_LOCAL;
@@ -59,6 +65,7 @@ switch (NODE_ENV) {
       callbackURL: process.env.OAUTH_CALLBACK_LOCAL,
     };
     JWT_SECRET = process.env.SECRET_LOCAL;
+    CLIENT_DOMAIN = process.env.CLIENT_DOMAIN_LOCAL;
     break;
   case 'DEVELOPMENT_DOCKER':
     MONGO_CONNECT = process.env.MONGO_DEV_DOCKER;
@@ -71,6 +78,7 @@ switch (NODE_ENV) {
       callbackURL: process.env.OAUTH_CALLBACK_LOCAL,
     };
     JWT_SECRET = process.env.SECRET_LOCAL;
+    CLIENT_DOMAIN = process.env.CLIENT_DOMAIN_LOCAL;
     AWS_ENV = true;
     break;
   case 'TEST_DOCKER':
@@ -84,6 +92,7 @@ switch (NODE_ENV) {
       callbackURL: process.env.OAUTH_CALLBACK_LOCAL,
     };
     JWT_SECRET = process.env.SECRET_LOCAL;
+    CLIENT_DOMAIN = process.env.CLIENT_DOMAIN_LOCAL;
     AWS_ENV = true;
     break;
   default:
@@ -116,4 +125,8 @@ module.exports = {
   AWS_SQS_REQUEST_VENDORS,
   AWS_SQS_PARSED_TWEETS,
   AWS_SQS_TWITTER_IDS,
+  MAILGUN_API_KEY,
+  MAILGUN_DOMAIN,
+  SMTP_PORT,
+  CLIENT_DOMAIN,
 };

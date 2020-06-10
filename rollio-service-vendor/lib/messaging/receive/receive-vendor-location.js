@@ -5,6 +5,7 @@ const mq = require('../index');
 const regionOps = require('../../db/mongo/operations/region-ops');
 const vendorOps = require('../../db/mongo/operations/vendor-ops');
 const sharedOps = require('../../db/mongo/operations/shared-ops');
+const { sendEmailToAdminAccount } = require('../../email/send-email');
 const { client: redisClient, pub } = require('../../redis/index');
 const config = require('../../../config');
 const logger = require('../../log/index')('messaging/receive/receive-vendor-location');
@@ -16,11 +17,15 @@ const updateTweet = async (payload, region, vendor) => {
   const params = {
     regionID: region._id, vendorID: vendor._id, field: 'tweetHistory', payload,
   };
+
   try {
-    await vendorOps.updateVendorPush(params);
+    const { tweetHistory } = await vendorOps.updateVendorPush(params);
+    return tweetHistory.pop();
   } catch (err) {
     logger.error(err);
   }
+
+  return null;
 };
 
 // Update the locationHistory property
@@ -68,16 +73,6 @@ const receiveTweets = async () => {
       tweet: text, tweetID, date, match, newLocations: tweetLocations,
     } = message;
 
-    // Format tweet as it is stored in Tweet History in Redux
-    const tweetPayload = {
-      date,
-      locations: tweetLocations.map(location => location._id),
-      text,
-      tweetID,
-      usedForLocation: !!tweetLocations.length,
-      vendorID,
-    };
-
     let allLocations = [];
     let newLocations = [];
 
@@ -87,8 +82,26 @@ const receiveTweets = async () => {
       allLocations = await sharedOps.getVendorLocations(vendorID);
     }
 
+    // Format tweet as it is stored in Tweet History in Redux
+    const tweetPayload = {
+      date,
+      locations: newLocations.map(location => location._id),
+      text,
+      tweetID,
+      usedForLocation: !!tweetLocations.length,
+      vendorID,
+    };
+
     try {
-      await updateTweet({ ...tweetPayload, locations: newLocations.map(loc => loc._id), usedForLocation: !!newLocations.length }, region, vendor);
+      const newTweetId = await updateTweet({ ...tweetPayload, locations: newLocations.map(loc => loc._id), usedForLocation: !!newLocations.length }, region, vendor);
+      const link = `${config.CLIENT_DOMAIN}/tweets/vendor/${vendorID}/tweet/${newTweetId}`;
+      sendEmailToAdminAccount({
+        subject: `${vendor.name} sent a new tweet`,
+        template: 'admin.new-location',
+        context: {
+          text, newLocations, link, vendor,
+        },
+      });
       if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') { console.log(tweetPayload); }
 
       const twitterData = {

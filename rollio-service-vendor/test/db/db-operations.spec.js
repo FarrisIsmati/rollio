@@ -60,7 +60,9 @@ describe('DB Operations', () => {
       state.startsBeforeEndsBefore = await Location.create({ ...state.newLocationData, startDate: state.yesterday, endDate: state.tomorrow });
       state.startsAfterEndsAfter = await Location.create({ ...state.newLocationData, startDate: state.tomorrow, endDate: state.fourDaysFromNow });
       state.startsAfterEndsBefore = await Location.create({ ...state.newLocationData, startDate: state.tomorrow, endDate: state.twoDaysFromNow });
-      state.differentVendorLocation = await Location.create({ ...state.newLocationData, vendorID: state.otherVendor._id, startDate: state.tomorrow, endDate: state.twoDaysFromNow });
+      state.differentVendorLocation = await Location.create({
+        ...state.newLocationData, vendorID: state.otherVendor._id, startDate: state.tomorrow, endDate: state.twoDaysFromNow,
+      });
     });
 
     it('expect createLocationAndCorrectConflicts to ensure that one truck is not in two places at once', (done) => {
@@ -204,13 +206,11 @@ describe('DB Operations', () => {
         const params = {
           regionID, vendorID: vendor._id, field: 'locationHistory', payload: newLocation._id,
         };
-        const updateCoordHistRes = await vendorOps.updateVendorPush(params)
-          .then(res => res);
+        await vendorOps.updateVendorPush(params);
 
         const updatedCoordHist = await Vendor.findOne({ _id: vendor._id }).populate('locationHistory')
           .then(vendorUpdated => vendorUpdated.locationHistory);
 
-        expect(updateCoordHistRes.nModified).to.equal(1);
         expect(updatedCoordHist[updatedCoordHist.length - 1].locationDate)
           .to.equalDate(coordinatesPayload.locationDate);
         expect(updatedCoordHist[updatedCoordHist.length - 1].address)
@@ -252,16 +252,13 @@ describe('DB Operations', () => {
         const params = {
           regionID, vendorID: vendor._id, field: 'tweetHistory', payload: tweetPayload,
         };
-        const updateDailyTweetsRes = await vendorOps.updateVendorPush(params)
-          .then(res => res);
+        await vendorOps.updateVendorPush(params);
 
         const updatedDailyTweets = await Vendor.findOne({ _id: vendor._id })
           .populate('tweetHistory')
           .then(vendorUpdated => vendorUpdated.tweetHistory);
 
-        const updatedTweetLocations = updatedDailyTweets[updatedDailyTweets.length - 1].locations;
-
-        expect(updateDailyTweetsRes.nModified).to.equal(1);
+        const { locations: updatedTweetLocations } = updatedDailyTweets[updatedDailyTweets.length - 1];
         expect(updatedDailyTweets[updatedDailyTweets.length - 1]
           .tweetID).to.equal(tweetPayload.tweetID);
         expect(updatedDailyTweets[updatedDailyTweets.length - 1].date)
@@ -333,7 +330,7 @@ describe('DB Operations', () => {
           .then(vendorPrev => vendorPrev.consecutiveDaysInactive);
 
         const updateConsecutiveDaysInactiveRes = await vendorOps
-          .incrementVendorConsecutiveDaysInactive(regionID, vendor._id).then(res => res);
+          .incrementVendorConsecutiveDaysInactive(regionID, vendor._id);
 
         const updatedConsecutiveDaysInactive = await Vendor.findOne({ _id: vendor._id })
           .then(vendorUpdated => vendorUpdated.consecutiveDaysInactive);

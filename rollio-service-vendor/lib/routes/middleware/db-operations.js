@@ -338,8 +338,8 @@ const vendorRouteOps = {
   putRegionIdVendorIdLocationTypeLocationIDAccuracy: async (req, res) => updateLocationAccuracy({
     regionID: req.params.regionID,
     vendorID: req.params.vendorID,
-    locationID: req.body.params.locationID,
-    amount: req.body.params.amount,
+    locationID: req.body.locationID,
+    amount: req.body.amount,
   })
     .then(update => res.status(200).json(update))
     .catch(err => res.status(500).send(err)),
