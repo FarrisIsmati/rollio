@@ -36,8 +36,7 @@ const VendorProfile = React.forwardRef((props:any, navbarRef)=> {
   const vendorProfileContentHeight = useGetHeight(mobileHeaderRef) + 'px';
 
   const handleScroll = useScrollPosition({
-    isLoaded: state.loadState.isVendorLoaded,
-    cb: () => {}
+    isLoaded: state.loadState.isVendorLoaded
   });
 
   // Variables

@@ -1,7 +1,7 @@
 // DEPENDENCIES
 import { useRef, useLayoutEffect } from 'react';
 
-const useScrollPosition = (args:{ scrollRef?:any, isLoaded:boolean, cb:any }) => {
+const useScrollPosition = (args:{ scrollRef?:any, isLoaded:boolean, cb?:any }) => {
     // Use scrollref only for traditional scrolling
     const { scrollRef, isLoaded, cb } = args;
 
