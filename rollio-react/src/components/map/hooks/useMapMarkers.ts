@@ -10,9 +10,16 @@ import useUpdateMapMarkersStyle from './useUpdateMapMarkersStyle';
 import {getCurrentTruckLocation, isLocationActive} from "../../../util";
 import useSelectVendorProfile from '../../vendor-profile/hooks/use-select-vendor-profile';
 
+// INTERFACES
+import { 
+    CreateMapMarkerProps, 
+    AddSingleVendorToMapProps, 
+    AddGroupedVendorsToMapProps 
+} from './interfaces';
+
 // Create Marker Style
-const createMapMarker = (props: { vendor?: any, vendors?: [any], numberOfGroupedVendors?: boolean | number, selected: boolean, location: any, selectedVendorID: string, onClick?: any }) => {
-    const { vendor, vendors, numberOfGroupedVendors, selected, selectedVendorID, onClick } = props;
+const createMapMarker = (props: CreateMapMarkerProps) => {
+    const { vendor, vendors, selected, selectedVendorID, onClick } = props;
 
     const mapMarkerEl = document.createElement('div');
 
@@ -22,14 +29,16 @@ const createMapMarker = (props: { vendor?: any, vendors?: [any], numberOfGrouped
         mapMarkerEl.className = 'map__marker_selected font__map_marker_font';
     }
 
-    if (numberOfGroupedVendors) {
-        const textnode = document.createTextNode(numberOfGroupedVendors.toString());
+    // If multiple vendors/grouped vendor (add number to marker)
+    if (vendors) {
+        const textnode = document.createTextNode(vendors.length.toString());
         mapMarkerEl.appendChild(textnode);
     }
 
     // Perform vendor selection action when click on element
     if (onClick) {
         mapMarkerEl.onclick = () => {
+            // ACTION CURRENTLY ONLY WORKS FOR SINGLE VENDORS
             if (vendor) {
                 onClick(vendor.id, selectedVendorID);
             }
@@ -40,7 +49,7 @@ const createMapMarker = (props: { vendor?: any, vendors?: [any], numberOfGrouped
 }
 
 // Adds a single pin marker to map
-const addSingleVendorToMap = (props: { vendor: any, map:any, selected: boolean, location:any, selectedVendorID: string, selectVendorProfile: any }) => {
+const addSingleVendorToMap = (props: AddSingleVendorToMapProps) => {
     const { vendor, map, selected, location, selectedVendorID, selectVendorProfile } = props;
     // Current vendor [lng,lat]
     const coordinates:[number, number] = [location.coordinates.long, location.coordinates.lat];
@@ -54,12 +63,12 @@ const addSingleVendorToMap = (props: { vendor: any, map:any, selected: boolean, 
 }
 
 // Adds a grouped pin marker to map
-const addGroupedVendorsToMap = (props: { vendors:any, map:any, selected: boolean, location: any, selectedVendorID: string, selectVendorProfile: any }) => {
-    const {vendors, location, map, selected, selectedVendorID, selectVendorProfile} = props;
+const addGroupedVendorsToMap = (props: AddGroupedVendorsToMapProps) => {
+    const {vendors, location, map, selected, selectedVendorID} = props;
     // [lng,lat]
     const coordinates:[number, number] = [location.coordinates.long, location.coordinates.lat];
     // Add marker to map
-    const marker = new mapboxgl.Marker(createMapMarker({ numberOfGroupedVendors: vendors.length, selected, location, selectedVendorID }))
+    const marker = new mapboxgl.Marker(createMapMarker({ vendors, selected, location, selectedVendorID }))
         .setLngLat(coordinates)
         .addTo(map);
 
