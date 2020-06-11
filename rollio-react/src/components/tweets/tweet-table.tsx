@@ -173,13 +173,15 @@ const TweetTable = (props:any) => {
     const content = tweetsLoaded ?
         (
             <div className="table_wrapper">
-                <select value={vendorID} onChange={e=>setVendorID(e.target.value)}>
-                    <option value="all">All Vendors</option>
-                    {Object.entries(vendorLookUp).map((entry:[any, any]) => {
-                        const [id, {name}] = entry;
-                        return <option key={id} value={id}>{name}</option>
-                    })}
-                </select>
+                { Object.entries(vendorLookUp).length > 1 &&
+                    <select value={vendorID} onChange={e=>setVendorID(e.target.value)}>
+                        <option value="all">All Vendors</option>
+                        {Object.entries(vendorLookUp).map((entry:[any, any]) => {
+                            const [id, {name}] = entry;
+                            return <option key={id} value={id}>{name}</option>
+                        })}
+                    </select>
+                }
                 <DatePicker
                     selected={startDate}
                     onChange={date=>selectDate(date, 'start')}

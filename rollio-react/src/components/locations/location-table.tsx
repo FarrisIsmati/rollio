@@ -119,13 +119,16 @@ const LocationTable = (props:any) => {
     const content = locationsLoaded ?
         (
             <div className="table_wrapper">
-                <select value={vendorID} onChange={e=>setVendorID(e.target.value)}>
-                    <option value="all">All Vendors</option>
-                    {Object.entries(vendorLookUp).map((entry:[any, any]) => {
-                        const [id, {name}] = entry;
-                        return <option key={id} value={id}>{name}</option>
-                    })}
-                </select>
+                {
+                    Object.entries(vendorLookUp).length > 1 &&
+                    <select value={vendorID} onChange={e => setVendorID(e.target.value)}>
+                        <option value="all">All Vendors</option>
+                        {Object.entries(vendorLookUp).map((entry: [any, any]) => {
+                            const [id, {name}] = entry;
+                            return <option key={id} value={id}>{name}</option>
+                        })}
+                    </select>
+                }
                 <div className="table_spacing">
                     <ReactTable
                         data={locations.filter((location:any) => vendorID === 'all' ? location : location.vendorID === vendorID)}

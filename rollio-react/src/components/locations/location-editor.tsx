@@ -58,6 +58,14 @@ const LocationEditor = (props:any) => {
         })
     }
 
+    const updateOverridden = (overridden:boolean) => {
+        saveSearchedLocation({
+            data: { overridden },
+            method: "PATCH",
+            url: editUrl
+        })
+    }
+
     const leaveNow = () => {
         saveSearchedLocation({
             data: { endDate: new Date() },
@@ -204,6 +212,18 @@ const LocationEditor = (props:any) => {
                                     onClick={() => updateDateOnly()}
                                 >
                                     Update date only for Truck #{location.truckNum}
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                    {
+                        routeLocationID &&
+                        <tr>
+                            <td colSpan={2}>
+                                <button
+                                    onClick={() => updateOverridden(!existingLocation.overridden)}
+                                >
+                                    {existingLocation.overridden ? 'Re-active' : 'Delete'} location for Truck #{location.truckNum}
                                 </button>
                             </td>
                         </tr>
