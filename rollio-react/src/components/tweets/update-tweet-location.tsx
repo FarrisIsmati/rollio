@@ -11,6 +11,7 @@ import Autocomplete from 'react-google-autocomplete';
 import useAuthentication from "../common/hooks/use-authentication";
 import {Tweet, TweetDefaultState } from "./interfaces";
 import { get } from "lodash";
+import { isLocationActive } from "../../util";
 
 const UpdateLocation = (props:any) => {
     const [loading, setLoading] = useState<boolean>(true);
@@ -109,6 +110,14 @@ const UpdateLocation = (props:any) => {
         postLocationUpdate(data);
     };
 
+    const leaveNow = (locationID:string) => {
+        setLoading(true);
+        const data = {
+            endDate: new Date()
+        };
+        postLocationUpdate(data, locationID);
+    }
+
     const saveDatesOnly = (locationID:string) => {
         setLoading(true);
         const data = {
@@ -120,7 +129,7 @@ const UpdateLocation = (props:any) => {
 
     const postLocationUpdate = (data:any, locationID?:string) => {
         const {method, url} = locationID ?
-            { method: "PATCH", url: `${tweetUrl}/editlocation/${props.match.params.tweetId}/location/${locationID}` } :
+            { method: "PATCH", url: `${tweetUrl}/editlocation/${props.match.params.tweetId}/${locationID}` } :
             { method: "POST", url: `${tweetUrl}/createnewlocation/${props.match.params.tweetId}` }
         // @ts-ignore
         axios({ method, data, url, headers: {'Authorization': "Bearer " + localStorage.token} })
@@ -228,6 +237,17 @@ const UpdateLocation = (props:any) => {
                                             <td>{location.address}</td>
                                         </tr>
                                         {searchAndSaveButton(location._id, location.truckNum)}
+                                        { isLocationActive(location) &&
+                                            <tr>
+                                                <td>
+                                                    <button
+                                                        onClick={() => leaveNow(location._id)}
+                                                    >
+                                                        LEAVE LOCATION NOW Truck #{location.truckNum}
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        }
                                         <tr>
                                             <td>
                                                 <button

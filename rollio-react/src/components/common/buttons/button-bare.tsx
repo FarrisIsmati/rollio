@@ -10,7 +10,7 @@ export interface ButtonProps {
     handleClick: () => any
 }
 
-const ButtonBare = (props: ButtonProps) => { 
+const ButtonBare = (props: ButtonProps) => {
     let optionalProps = { className: '', overrideClassName: '', isLocked: () => false };
 
     if (props.className) {
@@ -23,22 +23,25 @@ const ButtonBare = (props: ButtonProps) => {
         optionalProps.isLocked = props.isLocked;
     }
 
-    let lockedStatusClass = optionalProps.isLocked() ? 'button__bare_locked' : '';
+    let disabled = optionalProps.isLocked();
+
+    let lockedStatusClass = disabled ? 'button__bare_locked' : '';
 
     const defaultClassName = optionalProps.overrideClassName ? ` ${optionalProps.overrideClassName} ` : ' button__bare ';
 
     return (
-        <button 
-            id={props.id} 
+        <button
+            id={props.id}
             className={optionalProps.className + defaultClassName + lockedStatusClass}
             tabIndex={0}
             onClick={props.handleClick}
+            disabled={disabled}
         >
             {props.text}
         </button>
     );
 }
 
-// ADD OPTION FOR BUTTON LOCK STATE 
+// ADD OPTION FOR BUTTON LOCK STATE
 
 export default ButtonBare;

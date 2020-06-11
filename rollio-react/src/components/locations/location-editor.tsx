@@ -1,4 +1,3 @@
-// TODO: finish this - WIP
 import useGetAppState from "../common/hooks/use-get-app-state";
 import React, { useEffect, useState } from "react";
 import { withRouter } from 'react-router';
@@ -12,12 +11,15 @@ import Autocomplete from 'react-google-autocomplete';
 import useAuthentication from "../common/hooks/use-authentication";
 import useFetchLocationsAndVendors from "./hooks/use-fetch-locations-and-vendors";
 import {get, pick} from "lodash";
+import { isLocationActive } from "../../util";
+import ButtonBare from "../common/buttons/button-bare";
 
 const LocationEditor = (props:any) => {
     const defaultLocation = {truckNum: 1, startDate: moment().toDate(), endDate: moment().add(1, 'days').toDate()};
     const [loading, setLoading] = useState<boolean>(true);
     const [selectedVendor, setSelectedVendor] = useState<any>({...defaultLocation});
     const [location, setLocation] = useState<any>({...defaultLocation});
+    const [existingLocation, setExistingLocation] = useState<any>({});
     const { user } = useGetAppState();
     const { isAuthenticated } = user;
     const vendorUrl = `${VENDOR_API}/vendor`;
@@ -56,6 +58,14 @@ const LocationEditor = (props:any) => {
         })
     }
 
+    const leaveNow = () => {
+        saveSearchedLocation({
+            data: { endDate: new Date() },
+            method: "PATCH",
+            url: editUrl
+        })
+    }
+
     const saveLocation = () => {
         const data = pick(location, ['truckNum', 'address', 'city', 'coordinates', 'startDate', 'endDate']);
         const {method, url} = routeLocationID ?
@@ -89,9 +99,13 @@ const LocationEditor = (props:any) => {
             setSelectedVendor(vendors[0]);
         }
         if ((!routeLocationID || locationsLoaded) && vendorsLoaded) {
-            const [existingLocation] = locations;
-            const { startDate, endDate } = existingLocation;
-            setLocation({ ...existingLocation, startDate: moment(startDate).toDate(), endDate: moment(endDate).toDate() })
+            if (routeLocationID && locationsLoaded) {
+                const [queriedLocation] = locations;
+                const { startDate, endDate } = queriedLocation;
+                const queriedLocationWithDates = { ...queriedLocation, startDate: moment(startDate).toDate(), endDate: moment(endDate).toDate() };
+                setLocation(queriedLocationWithDates);
+                setExistingLocation(queriedLocationWithDates);
+            }
             setLoading(false);
         }
     }, [vendorsLoaded, locationsLoaded]);
@@ -156,6 +170,13 @@ const LocationEditor = (props:any) => {
                     {
                         routeLocationID &&
                         <tr>
+                            <td>Overridden</td>
+                            <td>{location.overridden ? 'Yes' : 'No'}</td>
+                        </tr>
+                    }
+                    {
+                        routeLocationID &&
+                        <tr>
                             <td>Address</td>
                             <td>{location.address}</td>
                         </tr>
@@ -187,13 +208,21 @@ const LocationEditor = (props:any) => {
                             </td>
                         </tr>
                     }
+                    {
+                        routeLocationID && isLocationActive(existingLocation) &&
+                        <tr>
+                            <td colSpan={2}>
+                                <ButtonBare handleClick={leaveNow} text={'LEAVE LOCATION NOW'} id={existingLocation._id}/>
+                            </td>
+                        </tr>
+                    }
                     <tr>
                         <td colSpan={2}>
                             <button
                                 disabled={!location.address || !dateValid()}
                                 onClick={() => saveLocation()}
                             >
-                                Add the location and dates for Truck #{location.truckNum}
+                                {routeLocationID ? 'Edit' : 'Add'} the location and dates for Truck #{location.truckNum}
                             </button>
                         </td>
                     </tr>

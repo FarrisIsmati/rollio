@@ -38,8 +38,17 @@ const updateConflictingLocationDates = async (existingLocation, startDate, endDa
 
 const correctLocationConflicts = async (locationData) => {
   const {
-    vendorID, startDate = new Date(), endDate = moment().endOf('day').toDate(), truckNum = 1, _id,
+    vendorID,
+    startDate = new Date(),
+    endDate = moment().endOf('day').toDate(),
+    truckNum = 1,
+    _id,
+    overridden = false,
   } = locationData;
+  // we do not have to worry about conflicts for overridden tweets
+  if (overridden) {
+    return [];
+  }
   // no need to correct the location itself
   const excludeCurrentLocation = _id ? { _id: { $ne: _id } } : {};
   const conflictingTruckLocations = await Location.find({

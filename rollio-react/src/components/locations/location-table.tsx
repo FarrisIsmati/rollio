@@ -8,6 +8,10 @@ import "react-datepicker/dist/react-datepicker.css";
 import useAuthentication from "../common/hooks/use-authentication";
 import {isLocationActive} from "../../util/index";
 import useFetchLocationsAndVendors from "./hooks/use-fetch-locations-and-vendors";
+import ButtonBare from "../common/buttons/button-bare";
+import { VENDOR_API } from "../../config";
+import axios from "axios";
+import {get} from "lodash";
 
 const LocationTable = (props:any) => {
     // initial state
@@ -28,6 +32,21 @@ const LocationTable = (props:any) => {
         const tweet = vendorLookUp[locationVendorId].tweetHistory.find((x:any) => x.tweetID === tweetID);
         const route = tweetID && locationVendorId ? `/tweets/vendor/${locationVendorId}/tweet/${tweet._id}` : `/newlocation/${locationVendorId}/${locationId}`;
         props.history.push(route);
+    }
+
+    const leaveNow = async (location:any) => {
+        axios({
+            method: "PATCH",
+            data: {endDate: new Date()},
+            url: `${VENDOR_API}/vendor/${location.vendorID}/editlocation/location/${location._id}`,
+            headers: {'Authorization': "Bearer " + localStorage.token}
+        }).then(() => {
+            const routeVendorID = get(props, 'match.params.vendorId', '');
+            props.history.push(`/locations/${routeVendorID}`);
+        }).catch(err => {
+            console.error(err);
+            throw err;
+        })
     }
 
     const columns = [
@@ -73,19 +92,22 @@ const LocationTable = (props:any) => {
         {
             id: 'isActive',
             Header: 'Currently Active',
-            accessor: (d:any) => isLocationActive(d) ? 'Yes' : 'No'
+            accessor: (d:any) => ({...d}),
+            Cell: (props:any) => {
+                return isLocationActive(props.value) ? <ButtonBare id={props.value._id} text={'LEAVE LOCATION NOW'} handleClick={() => leaveNow(props.value)}/> : <p>No</p>
+            }
         },
         {
             id: 'actions',
             Header: 'Actions',
             accessor: (d:any) => ({...d}),
-            Cell: (props:any) => (
-                <button
-                    id={props.id}
-                    onClick={() => goToLocationPage(props.value)}
-                >
-                    Edit Location
-                </button>
+            Cell: (props:any) => ( props.value.overridden ? 'N/A' :
+                    <button
+                        id={props.id}
+                        onClick={() => goToLocationPage(props.value)}
+                    >
+                        Edit Location
+                    </button>
             )
         }
     ];
