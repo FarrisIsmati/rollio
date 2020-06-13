@@ -1,5 +1,5 @@
 import useGetAppState from "../common/hooks/use-get-app-state";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { withRouter } from 'react-router';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css'
@@ -16,6 +16,7 @@ import {get} from "lodash";
 const LocationTable = (props:any) => {
     // initial state
     const [vendorID, setVendorID] = useState<string>('all');
+    const [tableLocations, setTableLocations] = useState<any[]>([]);
     const { user } = useGetAppState();
     const { isAuthenticated } = user;
 
@@ -40,7 +41,11 @@ const LocationTable = (props:any) => {
             data: {endDate: new Date()},
             url: `${VENDOR_API}/vendor/${location.vendorID}/editlocation/location/${location._id}`,
             headers: {'Authorization': "Bearer " + localStorage.token}
-        }).then(() => {
+        }).then((res:any) => {
+            const {_id, endDate} = res.data.location;
+            setTableLocations(tableLocations.map(location => {
+                return location._id === _id ? {...location, endDate} : location;
+            }));
             const routeVendorID = get(props, 'match.params.vendorId', '');
             props.history.push(`/locations/${routeVendorID}`);
         }).catch(err => {
@@ -114,6 +119,11 @@ const LocationTable = (props:any) => {
 
     const { locationsLoaded, locations, vendorLookUp } = useFetchLocationsAndVendors(props, vendorID);
     useAuthentication(props, true, true);
+    useEffect(() => {
+        if (locationsLoaded) {
+            setTableLocations(locations)
+        }
+    }, [locationsLoaded]);
 
     const contentText = !isAuthenticated ? 'You must be logged in' : 'Loading...';
     const content = locationsLoaded ?
@@ -131,7 +141,7 @@ const LocationTable = (props:any) => {
                 }
                 <div className="table_spacing">
                     <ReactTable
-                        data={locations.filter((location:any) => vendorID === 'all' ? location : location.vendorID === vendorID)}
+                        data={tableLocations.filter((location:any) => vendorID === 'all' ? location : location.vendorID === vendorID)}
                         columns={columns}
                         defaultPageSize={10}
                     />
