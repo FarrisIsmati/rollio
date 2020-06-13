@@ -541,8 +541,8 @@ const tweetRouteOps = {
 const locationRouteOps = {
   locationSearch: async (req, res) => {
     getAllLocations(req.query).then(locations => res.status(200).json({ locations }))
-      .catch(() => {
-        logger.error('Authentication: User not authenticated, locationSearch func()');
+      .catch((err) => {
+        logger.error(err);
         if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') { console.log('Twitter: Error fetching locations, locationSearch func()'); }
         res.status(401).send('Error fetching locations');
       });

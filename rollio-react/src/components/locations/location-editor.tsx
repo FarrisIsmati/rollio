@@ -17,7 +17,7 @@ import ButtonBare from "../common/buttons/button-bare";
 const LocationEditor = (props:any) => {
     const defaultLocation = {truckNum: 1, startDate: moment().toDate(), endDate: moment().add(1, 'days').toDate()};
     const [loading, setLoading] = useState<boolean>(true);
-    const [selectedVendor, setSelectedVendor] = useState<any>({...defaultLocation});
+    const [selectedVendor, setSelectedVendor] = useState<any>({});
     const [location, setLocation] = useState<any>({...defaultLocation});
     const [existingLocation, setExistingLocation] = useState<any>({});
     const { user } = useGetAppState();
@@ -26,6 +26,11 @@ const LocationEditor = (props:any) => {
     const routeLocationID = get(props, 'match.params.locationId', '');
     const editUrl = `${vendorUrl}/${selectedVendor._id}/editlocation/location/${routeLocationID}`;
     const newUrl = `${vendorUrl}/${selectedVendor._id}/newlocation`;
+
+
+    const pickVendor = (vendor:string) => {
+        setSelectedVendor(JSON.parse(vendor));
+    }
 
     const dateValid = () => {
         const {startDate, endDate} = location;
@@ -129,9 +134,9 @@ const LocationEditor = (props:any) => {
                             Vendor:
                         </td>
                         <td>
-                            <select value={selectedVendor} onChange={e=>setSelectedVendor(e.target.value)}>
+                            <select onChange={e=>pickVendor(e.target.value)}>
                                 {vendors.map((vendor:any) => {
-                                    return <option key={vendor._id} value={vendor}>{vendor.name}</option>
+                                    return <option key={vendor._id} value={JSON.stringify(vendor)}>{vendor.name}</option>
                                 })}
                             </select>
                         </td>

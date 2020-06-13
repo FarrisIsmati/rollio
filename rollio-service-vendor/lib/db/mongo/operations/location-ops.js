@@ -4,6 +4,9 @@ const Location = mongoose.model('Location');
 
 module.exports = {
   async getAllLocations(query = {}) {
-    return Location.find(query).sort([['startDate', -1]]);
+    const { vendorID, ...rest } = query;
+    // vendorID sometimes come back as just an empty string, which we should ignore
+    const vendorIDQuery = vendorID ? { vendorID } : {};
+    return Location.find({ ...rest, ...vendorIDQuery }).sort([['startDate', -1]]);
   },
 };
