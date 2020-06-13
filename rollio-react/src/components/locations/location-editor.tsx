@@ -24,6 +24,7 @@ const LocationEditor = (props:any) => {
     const { isAuthenticated } = user;
     const vendorUrl = `${VENDOR_API}/vendor`;
     const routeLocationID = get(props, 'match.params.locationId', '');
+    const routeVendorID = get(props, 'match.params.vendorID', '');
     const editUrl = `${vendorUrl}/${selectedVendor._id}/editlocation/location/${routeLocationID}`;
     const newUrl = `${vendorUrl}/${selectedVendor._id}/newlocation`;
 
@@ -108,17 +109,17 @@ const LocationEditor = (props:any) => {
     useAuthentication(props, true, false);
     const { locationsLoaded, locations, vendors, vendorsLoaded } = useFetchLocationsAndVendors(props);
     useEffect(() => {
-        if (vendorsLoaded) {
-            setSelectedVendor(vendors[0]);
-        }
         if ((!routeLocationID || locationsLoaded) && vendorsLoaded) {
             if (routeLocationID && locationsLoaded) {
                 const [queriedLocation] = locations;
                 const { startDate, endDate } = queriedLocation;
                 const queriedLocationWithDates = { ...queriedLocation, startDate: moment(startDate).toDate(), endDate: moment(endDate).toDate() };
+                setSelectedVendor(vendors.find((vendor) => vendor._id === queriedLocation.vendorID))
                 setLocation(queriedLocationWithDates);
                 setExistingLocation(queriedLocationWithDates);
             }
+            const vendor = routeVendorID ? vendors.find(v => v._id === routeVendorID) : vendors[0];
+            setSelectedVendor(vendor);
             setLoading(false);
         }
     }, [vendorsLoaded, locationsLoaded]);
@@ -135,7 +136,7 @@ const LocationEditor = (props:any) => {
                         </td>
                         <td>
                             <select onChange={e=>pickVendor(e.target.value)}>
-                                {vendors.map((vendor:any) => {
+                                {vendors.filter((v:any) => !routeVendorID || v._id === routeVendorID).map((vendor:any) => {
                                     return <option key={vendor._id} value={JSON.stringify(vendor)}>{vendor.name}</option>
                                 })}
                             </select>

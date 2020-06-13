@@ -83,10 +83,13 @@ const useMapMarkers = (props: any) => {
                 const {vendorsDisplayedSingle, vendorsDisplayedGroup} = mapData;
                 // add single pins to map
                 const singleVendorMarkersTemp = Object.keys(vendorsDisplayedSingle).reduce((acc: { [key: string]: any }, key: string) => {
-                    const vendor = vendorsData[key.split('-')[0]];
+                    // each key is a 'vendorID-truckNum'...if there are multiple trucks for a vendor, there will be multiple keys for a vendor
+                    const [vendorID, truckNum] = key.split('-');
+                    const vendor = vendorsData[vendorID];
                     const {selected, locations} = vendor;
-                    locations.forEach((location:any, index:number) => {
-                        if (isLocationActive(location)) {
+                    locations.forEach((location:any) => {
+                        // so we only want to add the locations associated with the specific truck number, or else we will end up adding each location multiple times
+                        if (isLocationActive(location) && location.truckNum === toNumber(truckNum)) {
                             acc[key] = addSingleVendorToMap({ map, selected, location });
                         }
                     });
