@@ -394,6 +394,19 @@ describe('DB Operations', () => {
         expect(updatedVendor.locationHistory[0].toString()).to.equal(String(newLocation._id));
       });
 
+      it('expect edit location to be change Vendor location', async () => {
+        const locationData = {
+          address: '123 street',
+          matchMethod: 'Vendor Input',
+          coordinates: [0, 1],
+          truckNum: 1,
+        };
+        const editedLocation = await vendorOps.editNonTweetLocation(locationID, vendor._id, locationData);
+        const updatedVendor = await Vendor.findOne({ _id: vendor._id });
+        expect(editedLocation.overridden).to.be.false;
+        expect(updatedVendor.locationHistory[0].toString()).to.equal(String(editedLocation._id));
+      });
+
 
       afterEach((done) => {
         seed.emptyRegions()
@@ -785,6 +798,18 @@ describe('DB Operations', () => {
             done();
           })
           .catch(err => console.error(err));
+      });
+
+      it('expect editTweetLocation to edit tweet, and update as appropriate', (done) => {
+        const editedData = { address: '1600 penn ave nw' };
+        tweetOps.editTweetLocation(tweetID, locationID, editedData)
+          .then(async (res) => {
+            // populates vendorID in the response
+            expect(res.vendorID.name).to.be.equal(vendor.name);
+            expect(res.locations[0].address).to.be.equal(editedData.address);
+            expect(res.usedForLocation).to.be.true;
+            done();
+          });
       });
     });
   });

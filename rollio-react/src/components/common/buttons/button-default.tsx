@@ -9,7 +9,7 @@ export interface ButtonProps {
     handleClick: () => any
 }
 
-const ButtonDefault = (props: ButtonProps) => { 
+const ButtonDefault = (props: ButtonProps) => {
     let optionalProps = { className: '', isLocked: () => false };
 
     if (props.className) {
@@ -19,20 +19,23 @@ const ButtonDefault = (props: ButtonProps) => {
         optionalProps.isLocked = props.isLocked;
     }
 
-    let lockedStatusClass = optionalProps.isLocked() ? 'button__default_locked' : '';
+    let disabled = optionalProps.isLocked()
+
+    let lockedStatusClass = disabled ? 'button__default_locked' : '';
 
     return (
-        <button 
-            id={props.id} 
+        <button
+            id={props.id}
             className={optionalProps.className + ' button__default ' + lockedStatusClass}
             tabIndex={0}
             onClick={props.handleClick}
+            disabled={disabled}
         >
             {props.text}
         </button>
     );
 }
 
-// ADD OPTION FOR BUTTON LOCK STATE 
+// ADD OPTION FOR BUTTON LOCK STATE
 
 export default ButtonDefault;

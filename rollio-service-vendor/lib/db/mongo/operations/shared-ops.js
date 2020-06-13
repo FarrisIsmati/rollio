@@ -36,18 +36,41 @@ const updateConflictingLocationDates = async (existingLocation, startDate, endDa
   return Location.findOneAndUpdate({ _id }, update);
 };
 
-// Creates a new location and ensures that each truck does not have two locations at once
-const createLocationAndCorrectConflicts = async (locationData) => {
+const correctLocationConflicts = async (locationData) => {
   const {
-    vendorID, startDate = new Date(), endDate = moment().endOf('day').toDate(), truckNum = 1, coordinates,
+    vendorID,
+    startDate = new Date(),
+    endDate = moment().endOf('day').toDate(),
+    truckNum = 1,
+    _id,
+    overridden = false,
   } = locationData;
+  // we do not have to worry about conflicts for overridden tweets
+  if (overridden) {
+    return [];
+  }
+  // no need to correct the location itself
+  const excludeCurrentLocation = _id ? { _id: { $ne: _id } } : {};
   const conflictingTruckLocations = await Location.find({
-    vendorID, startDate: { $lte: endDate }, endDate: { $gte: startDate }, truckNum, overridden: false,
+    ...excludeCurrentLocation, vendorID, startDate: { $lte: endDate }, endDate: { $gte: startDate }, truckNum, overridden: false,
   });
   if (conflictingTruckLocations.length) {
     await Promise.all(conflictingTruckLocations.map(existingLocation => updateConflictingLocationDates(existingLocation, startDate, endDate)));
   }
-  return Location.create({ ...locationData, coordinates: Array.isArray(coordinates) ? { lat: coordinates[0], long: coordinates[1] } : coordinates });
+};
+
+// Creates a new location and ensures that each truck does not have two locations at once
+const createLocationAndCorrectConflicts = async (locationData) => {
+  const { coordinates } = locationData;
+  const newLocation = await Location.create({ ...locationData, coordinates: Array.isArray(coordinates) ? { lat: coordinates[0], long: coordinates[1] } : coordinates });
+  await correctLocationConflicts(newLocation);
+  return newLocation;
+};
+
+const editLocationAndCorrectConflicts = async (locationID, locationData) => {
+  const updatedLocation = await Location.findOneAndUpdate({ _id: locationID }, { $set: locationData }, { new: true }).lean();
+  await correctLocationConflicts(updatedLocation);
+  return updatedLocation;
 };
 
 const clearVendorCache = async ({ regionID, vendorID }) => {
@@ -98,5 +121,7 @@ const publishLocationUpdateAndClearCache = async ({
 module.exports = {
   publishLocationUpdateAndClearCache,
   createLocationAndCorrectConflicts,
+  correctLocationConflicts,
   getVendorLocations,
+  editLocationAndCorrectConflicts,
 };

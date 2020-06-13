@@ -24,6 +24,8 @@ router.put('/:regionID/:vendorID/locationaccuracy', routeLimitVendor, vendorRout
 router.put('/:regionID/:vendorID/comments', routeLimitVendor, vendorRouteOps.putRegionIdVendorIdComments);
 // Update a given vendor, authenticated route
 router.put('/:regionID/:vendorID/update', expressJwt({ secret: JWT_SECRET }), userRouteOps.send403IfNoToken, userRouteOps.passUserToNext, userRouteOps.passVendorToNext, vendorRouteOps.updateVendor);
+router.patch('/:vendorID/editlocation/location/:locationID', expressJwt({ secret: JWT_SECRET }), userRouteOps.send403IfNoToken, userRouteOps.passUserToNext, vendorRouteOps.editLocation);
+
 
 // POST
 // Create a new vendor, authenticated route

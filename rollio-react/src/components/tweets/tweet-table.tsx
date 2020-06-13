@@ -21,7 +21,7 @@ const getTweetTableDates = () => {
     // initialStartDate is the default date/time of the earliest tweet to show (can be adjusted by user)
     // initialEndDate is the default date/time of the last tweet to show (can be adjusted by user)
     const initialEndDate = moment(now).add(remainder, "minutes").toDate();
-    const initialStartDate = moment(initialEndDate).subtract(1, 'days').toDate();
+    const initialStartDate = moment(initialEndDate).subtract(2, 'days').toDate();
     // minDate is as far back in the calendar as a user can go when filtering dates.  It's arbitrary
     const minDate = moment(initialEndDate).subtract(1000000, 'days').toDate();
     return { minDate, initialStartDate, initialEndDate };
@@ -173,13 +173,15 @@ const TweetTable = (props:any) => {
     const content = tweetsLoaded ?
         (
             <div className="table_wrapper">
-                <select value={vendorID} onChange={e=>setVendorID(e.target.value)}>
-                    <option value="all">All Vendors</option>
-                    {Object.entries(vendorLookUp).map((entry:[any, any]) => {
-                        const [id, {name}] = entry;
-                        return <option key={id} value={id}>{name}</option>
-                    })}
-                </select>
+                { Object.entries(vendorLookUp).length > 1 &&
+                    <select value={vendorID} onChange={e=>setVendorID(e.target.value)}>
+                        <option value="all">All Vendors</option>
+                        {Object.entries(vendorLookUp).map((entry:[any, any]) => {
+                            const [id, {name}] = entry;
+                            return <option key={id} value={id}>{name}</option>
+                        })}
+                    </select>
+                }
                 <DatePicker
                     selected={startDate}
                     onChange={date=>selectDate(date, 'start')}

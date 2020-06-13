@@ -1,4 +1,4 @@
-import { isEmpty } from 'lodash';
+import { uniqBy } from 'lodash';
 
 // CONSTANTS
 import {
@@ -166,12 +166,13 @@ export function dataReducer(state = defaultState, action: any) {
                 ...state,
                 selectedVendor: {
                     ...state.selectedVendor,
-                    tweetHistory: [
+                    // the tweet might already have been in the array, just updated
+                    tweetHistory: uniqBy([
                         action.payload,
                         ...state.selectedVendor.tweetHistory.slice(0, 2)
-                    ]
+                    ], (tweetA:any, tweetB:any) => tweetA._id === tweetB._id).slice(0,3)
                 }
-                
+
             }
         }
 
