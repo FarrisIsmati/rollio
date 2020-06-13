@@ -10,6 +10,7 @@ router.get('/usetweet/:tweetId', expressJwt({ secret: JWT_SECRET }), userRouteOp
 
 // PATCH
 router.patch('/deletelocation/:tweetId/:locationId', expressJwt({ secret: JWT_SECRET }), userRouteOps.send403IfNoToken, userRouteOps.passUserToNext, userRouteOps.restrictToAdminOrVendor, tweetRouteOps.deleteLocation);
+router.patch('/editlocation/:tweetId/:locationId', expressJwt({ secret: JWT_SECRET }), userRouteOps.send403IfNoToken, userRouteOps.passUserToNext, userRouteOps.restrictToAdminOrVendor, tweetRouteOps.editLocation);
 
 // POST
 router.post('/createnewlocation/:tweetId', expressJwt({ secret: JWT_SECRET }), userRouteOps.send403IfNoToken, userRouteOps.passUserToNext, userRouteOps.restrictToAdminOrVendor, tweetRouteOps.createNewLocation);

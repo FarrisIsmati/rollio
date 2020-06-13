@@ -43,6 +43,16 @@ module.exports = {
     return Tweet.findById(id).populate('vendorID').populate('locations');
   },
   deleteTweetLocation,
+  async editTweetLocation(tweetId, locationId, data) {
+    const updatedLocation = await Location.findOneAndUpdate({ _id: locationId }, { $set: data }, { new: true }).lean(true);
+    await sharedOps.correctLocationConflicts(updatedLocation);
+    const updatedTweet = await Tweet.findOne({ _id: tweetId }).populate('vendorID').populate('locations').lean();
+    const { regionID, twitterID } = updatedTweet.vendorID;
+    await publishLocationUpdateAndClearCache({
+      updatedTweet, newLocations: [updatedLocation], vendorID: updatedTweet, twitterID, regionID,
+    });
+    return updatedTweet;
+  },
   async createTweetLocation(id, data) {
     let updatedTweet;
     const { locationToOverride, ...newLocationData } = data;

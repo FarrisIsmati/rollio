@@ -1,5 +1,5 @@
 import useGetAppState from "../common/hooks/use-get-app-state";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { withRouter } from 'react-router';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css'
@@ -7,11 +7,16 @@ import moment from 'moment';
 import "react-datepicker/dist/react-datepicker.css";
 import useAuthentication from "../common/hooks/use-authentication";
 import {isLocationActive} from "../../util/index";
-import useFetchLocations from "./hooks/use-fetch-locations";
+import useFetchLocationsAndVendors from "./hooks/use-fetch-locations-and-vendors";
+import ButtonBare from "../common/buttons/button-bare";
+import { VENDOR_API } from "../../config";
+import axios from "axios";
+import {get} from "lodash";
 
 const LocationTable = (props:any) => {
     // initial state
     const [vendorID, setVendorID] = useState<string>('all');
+    const [tableLocations, setTableLocations] = useState<any[]>([]);
     const { user } = useGetAppState();
     const { isAuthenticated } = user;
 
@@ -24,11 +29,29 @@ const LocationTable = (props:any) => {
     }
 
     const goToLocationPage = (location:any) => {
-        const { tweetID, vendorID: locationVendorId } = location
+        const { tweetID, vendorID: locationVendorId, _id: locationId } = location
         const tweet = vendorLookUp[locationVendorId].tweetHistory.find((x:any) => x.tweetID === tweetID);
-        // TODO: SET UP ROUTE FOR EDITING LOCATIONS THAT DO NOT HAVE A TWEET ASSOCIATED
-        const route = tweetID && locationVendorId ? `/tweets/vendor/${locationVendorId}/tweet/${tweet._id}` : '';
+        const route = tweetID && locationVendorId ? `/tweets/vendor/${locationVendorId}/tweet/${tweet._id}` : `/newlocation/${locationVendorId}/${locationId}`;
         props.history.push(route);
+    }
+
+    const leaveNow = async (location:any) => {
+        axios({
+            method: "PATCH",
+            data: {endDate: new Date()},
+            url: `${VENDOR_API}/vendor/${location.vendorID}/editlocation/location/${location._id}`,
+            headers: {'Authorization': "Bearer " + localStorage.token}
+        }).then((res:any) => {
+            const {_id, endDate} = res.data.location;
+            setTableLocations(tableLocations.map(location => {
+                return location._id === _id ? {...location, endDate} : location;
+            }));
+            const routeVendorID = get(props, 'match.params.vendorId', '');
+            props.history.push(`/locations/${routeVendorID}`);
+        }).catch(err => {
+            console.error(err);
+            throw err;
+        })
     }
 
     const columns = [
@@ -74,40 +97,51 @@ const LocationTable = (props:any) => {
         {
             id: 'isActive',
             Header: 'Currently Active',
-            accessor: (d:any) => isLocationActive(d) ? 'Yes' : 'No'
+            accessor: (d:any) => ({...d}),
+            Cell: (props:any) => {
+                return isLocationActive(props.value) ? <ButtonBare id={props.value._id} text={'LEAVE LOCATION NOW'} handleClick={() => leaveNow(props.value)}/> : <p>No</p>
+            }
         },
         {
             id: 'actions',
             Header: 'Actions',
             accessor: (d:any) => ({...d}),
-            Cell: (props:any) => (
-                <button
-                    id={props.id}
-                    onClick={() => goToLocationPage(props.value)}
-                >
-                    Edit Location
-                </button>
+            Cell: (props:any) => ( props.value.overridden ? 'N/A' :
+                    <button
+                        id={props.id}
+                        onClick={() => goToLocationPage(props.value)}
+                    >
+                        Edit Location
+                    </button>
             )
         }
     ];
 
-    const { locationsLoaded, locations, vendorLookUp } = useFetchLocations(props, vendorID);
+    const { locationsLoaded, locations, vendorLookUp } = useFetchLocationsAndVendors(props, vendorID);
     useAuthentication(props, true, true);
+    useEffect(() => {
+        if (locationsLoaded) {
+            setTableLocations(locations)
+        }
+    }, [locationsLoaded]);
 
     const contentText = !isAuthenticated ? 'You must be logged in' : 'Loading...';
     const content = locationsLoaded ?
         (
             <div className="table_wrapper">
-                <select value={vendorID} onChange={e=>setVendorID(e.target.value)}>
-                    <option value="all">All Vendors</option>
-                    {Object.entries(vendorLookUp).map((entry:[any, any]) => {
-                        const [id, {name}] = entry;
-                        return <option key={id} value={id}>{name}</option>
-                    })}
-                </select>
+                {
+                    Object.entries(vendorLookUp).length > 1 &&
+                    <select value={vendorID} onChange={e => setVendorID(e.target.value)}>
+                        <option value="all">All Vendors</option>
+                        {Object.entries(vendorLookUp).map((entry: [any, any]) => {
+                            const [id, {name}] = entry;
+                            return <option key={id} value={id}>{name}</option>
+                        })}
+                    </select>
+                }
                 <div className="table_spacing">
                     <ReactTable
-                        data={locations.filter((location:any) => vendorID === 'all' ? location : location.vendorID === vendorID)}
+                        data={tableLocations.filter((location:any) => vendorID === 'all' ? location : location.vendorID === vendorID)}
                         columns={columns}
                         defaultPageSize={10}
                     />

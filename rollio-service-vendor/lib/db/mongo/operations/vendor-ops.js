@@ -4,7 +4,7 @@
 const mongoose = require('../mongoose/index');
 const { client: redisClient } = require('../../../redis/index');
 const logger = require('../../../log/index')('mongo/operations/vendor-ops');
-const { publishLocationUpdateAndClearCache, createLocationAndCorrectConflicts } = require('./shared-ops');
+const { publishLocationUpdateAndClearCache, createLocationAndCorrectConflicts, editLocationAndCorrectConflicts } = require('./shared-ops');
 
 // SCHEMA
 const Vendor = mongoose.model('Vendor');
@@ -28,6 +28,19 @@ module.exports = {
     // we look up and add on the twitter displayName so that we can look at their twitter account before approving
     return unapprovedVendors
       .map(vendor => ({ ...vendor.toObject(), twitterInfo: twitterLookUp[String(vendor._id)] }));
+  },
+  async editNonTweetLocation(locationID, vendorID, locationData) {
+    try {
+      const updatedLocation = await editLocationAndCorrectConflicts(locationID, locationData);
+      const { regionID, twitterID } = await Vendor.findOne({ _id: vendorID }).lean(true);
+      await publishLocationUpdateAndClearCache({
+        newLocations: [updatedLocation], vendorID, twitterID, regionID,
+      });
+      return updatedLocation;
+    } catch (err) {
+      logger.error(err);
+      throw err;
+    }
   },
   async createNonTweetLocation(vendorID, locationData) {
     try {

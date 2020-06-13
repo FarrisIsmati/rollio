@@ -26,6 +26,7 @@ const {
   updateVendorPushPosition,
   updateVendorSet,
   createNonTweetLocation,
+  editNonTweetLocation,
   getUnapprovedVendors,
 } = require('../../db/mongo/operations/vendor-ops');
 
@@ -39,6 +40,7 @@ const {
   getVendorsForFiltering,
   getTweetWithPopulatedVendorAndLocations,
   deleteTweetLocation,
+  editTweetLocation,
   createTweetLocation,
   getTweet,
 } = require('../../db/mongo/operations/tweet-ops');
@@ -176,6 +178,21 @@ const publishUpdatedVendor = (vendor) => {
 
 const vendorRouteOps = {
   getUnapprovedVendors: async (req, res) => getUnapprovedVendors().then(vendors => res.status(200).json({ vendors })),
+  editLocation: async (req, res) => {
+    const { type, vendorID } = req.user;
+    const isAdmin = type === 'admin';
+    const isVendor = type === 'vendor';
+    const { vendorID: routeVendorID, locationID } = req.params;
+    if (isAdmin || (isVendor && String(vendorID) === routeVendorID)) {
+      return editNonTweetLocation(locationID, routeVendorID, req.body).then((location) => {
+        res.status(200).json({ location });
+      }).catch((err) => {
+        console.error(err);
+        res.status(500).send(err);
+      });
+    }
+    return res.status(403).send('You must be an admin or the vendor to create a new location');
+  },
   createLocation: async (req, res) => {
     const { type, vendorID } = req.user;
     const isAdmin = type === 'admin';
@@ -493,6 +510,14 @@ const tweetRouteOps = {
         res.status(401).send('Error fetching tweet');
       });
   },
+  editLocation: async (req, res) => {
+    editTweetLocation(req.params.tweetId, req.params.locationId, req.body).then(tweet => res.status(200).json({ tweet }))
+      .catch(() => {
+        logger.error('Twitter: User not authenticated, editTweetLocation func()');
+        if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') { console.log('Twitter: Error fetching tweets, deleteTweetLocation func()'); }
+        res.status(401).send('Error deleting location');
+      });
+  },
   deleteLocation: async (req, res) => {
     deleteTweetLocation(req.params.tweetId, req.params.locationId).then(tweet => res.status(200).json({ tweet }))
       .catch(() => {
@@ -516,8 +541,8 @@ const tweetRouteOps = {
 const locationRouteOps = {
   locationSearch: async (req, res) => {
     getAllLocations(req.query).then(locations => res.status(200).json({ locations }))
-      .catch(() => {
-        logger.error('Authentication: User not authenticated, locationSearch func()');
+      .catch((err) => {
+        logger.error(err);
         if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') { console.log('Twitter: Error fetching locations, locationSearch func()'); }
         res.status(401).send('Error fetching locations');
       });
