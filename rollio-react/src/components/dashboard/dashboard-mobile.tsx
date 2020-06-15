@@ -50,7 +50,7 @@ const DashboardMobile:FC = () => {
                                 <i className="material-icons-outlined" onClick={()=>{
                                     // If there is a currently selected vendor, deselect it then bring the vendor menu back
                                     if (state.regionMap.currentlySelected.id) {
-                                        dispatch(deSelectVendor(state.data.selectedVendor.id, () => dispatch(toggleMobileDashboard())));
+                                        dispatch(deSelectVendor(() => dispatch(toggleMobileDashboard())));
                                     // Else just bring the vendor menu back
                                     } else {
                                         dispatch(toggleMobileDashboard());

@@ -63,7 +63,7 @@ const VendorProfile = React.forwardRef((props:any, navbarRef)=> {
             { isLoaded ?
               <VendorProfileContent
                 isMobile={isMobile}
-                closeVendor={() => dispatch(deSelectVendor(vendor.id))}
+                closeVendor={() => dispatch(deSelectVendor())}
                 findOnMap={(location:any) => { zoomToLocation(location) }}
                 vendor={vendor}
                 state={state} /> :
@@ -77,7 +77,7 @@ const VendorProfile = React.forwardRef((props:any, navbarRef)=> {
           <React.Fragment>
             <div ref={mobileHeaderRef} className='font__vendor_profile_header vendorprofile_mobile__header_wrapper'>
               <div className='flex__center'>
-                <i className="material-icons-outlined" onClick={()=>{ dispatch(deSelectVendor(vendor.id)) }}>arrow_back</i>
+                <i className="material-icons-outlined" onClick={()=>{ dispatch(deSelectVendor()) }}>arrow_back</i>
               </div>
               <div className="vendorprofile_mobile_header">
                 <h2>{vendor.name}</h2>
@@ -90,7 +90,7 @@ const VendorProfile = React.forwardRef((props:any, navbarRef)=> {
                         dispatch(toggleMobileDashboard())
                     // Else deselect the non active vendor and toggle menu (Because this vendor doesn't need to still be selected once the menu is hidden)
                     } else {
-                      dispatch(deSelectVendor(vendor.id, () => dispatch(toggleMobileDashboard())))
+                      dispatch(deSelectVendor(() => dispatch(toggleMobileDashboard())))
                     }
                   }
                 } >close</i>

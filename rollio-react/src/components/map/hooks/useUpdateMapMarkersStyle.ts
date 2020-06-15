@@ -4,7 +4,6 @@ import { useEffect } from 'react';
 // HOOKS
 import useGetAppState from '../../common/hooks/use-get-app-state';
 
-//
 const useUpdateMapMarkersStyle = (props: any) => {
     const {
         singleVendorMarkers,
