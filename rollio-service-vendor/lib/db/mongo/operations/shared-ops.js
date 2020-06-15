@@ -124,4 +124,5 @@ module.exports = {
   correctLocationConflicts,
   getVendorLocations,
   editLocationAndCorrectConflicts,
+  clearVendorCache,
 };
