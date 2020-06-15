@@ -2,6 +2,7 @@
 // DEPENDENCIES
 const chai = require('chai');
 chai.use(require('chai-datetime'));
+const { ObjectId } = require('mongoose').Types;
 
 const mongoose = require('../../lib/db/mongo/mongoose/index');
 
@@ -36,28 +37,19 @@ describe('Message Receive Vendor Location', () => {
       });
     });
 
-    it('expect updateLocation to update a vendors location and its updateDate properties', async () => {
+    it('expect addLocationToVendorLocationHistory to update a vendors location and its updateDate properties', async () => {
       const vendorBefore = await vendorOps.getVendor(region._id, vendor._id);
-
-      const updateLocationPayload = {
-        accuracy: 3,
-        coordinates: [72, 35],
-        locationDate: '2018-11-01T12:00:00.000Z',
-        address: '123 Fake Street',
-        city: 'Springfield',
-        neighborhood: 'Little Russia',
-        matchMethod: 'Tweet location',
-        tweetID: 'test123',
-      };
-
-      await receiveVendorLocation.updateLocation(updateLocationPayload, region, vendor);
-
-      const vendorAfter = await vendorOps.getVendor(region._id, vendor._id);
+      const locationId = new ObjectId();
+      const actual = await receiveVendorLocation.addLocationToVendorLocationHistory(locationId, region._id, vendor._id);
+      const expected = String(locationId);
+      const vendorAfter = await Vendor.findOne({ _id: vendor._id });
 
       const oldDate = new Date(vendorBefore.updateDate);
       const newDate = new Date(vendorAfter.updateDate);
 
       expect(oldDate).to.be.beforeTime(newDate);
+      expect(String(vendorAfter.locationHistory.pop())).to.equal(expected);
+      expect(String(actual)).to.equal(expected);
     });
   });
 });

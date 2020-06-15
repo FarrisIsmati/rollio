@@ -261,7 +261,8 @@ module.exports = {
       _id: vendorID,
     }, {
       $push: { [field]: payload },
-    })
+      $set: { updateDate: Date.now() },
+    }, { new: true })
       .then(async (res) => {
         await redisClient.hdelAsync('vendor', `q::method::GET::path::/${regionID}/${vendorID}`);
         return res;
