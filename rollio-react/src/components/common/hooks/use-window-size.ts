@@ -1,5 +1,5 @@
 // DEPENDENCIES
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 const effects = {
     useWindowWidth() {
@@ -20,9 +20,11 @@ const effects = {
 
         useEffect(() => {
             const handleResize = () => setHeight(window.innerHeight);
+
             window.addEventListener('resize', handleResize);
             return () => {
                 window.removeEventListener('resize', handleResize);
+                window.removeEventListener('fullscreenchange', handleResize);
             };
         });
 

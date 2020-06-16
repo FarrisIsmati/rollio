@@ -2,9 +2,9 @@
 import { useLayoutEffect, useRef } from 'react';
 
 // HOOKS
-import windowSizeEffects from '../../common/hooks/use-window-size';
+import windowSizeEffects from './use-window-size';
 
-const useGetVendorProfileContentHeight = (...args:any[]) => {
+const useGetScreenHeightRefDifferenc = (...args:any[]) => {
     const height = useRef(0);
     const prevHeight = useRef(0);
     const windowHeight = windowSizeEffects.useWindowHeight();
@@ -33,4 +33,4 @@ const useGetVendorProfileContentHeight = (...args:any[]) => {
     return height.current;
 }
 
-export default useGetVendorProfileContentHeight;
+export default useGetScreenHeightRefDifferenc;

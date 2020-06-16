@@ -7,7 +7,6 @@ import { useCallbackRef } from 'use-callback-ref';
 import Menu from '../menu/menu';
 import DashboardLinks from './dashboard-links';
 import VendorProfile from '../vendor-profile/vendor-profile'
-import Navbar from '../navbar/region-navbar';
 import TwoOptionSwitch from '../common/other/two-option-switch';
 
 // ACTIONS
@@ -37,28 +36,7 @@ const DashboardDesktop = () => {
   const vendorLinksHeight = windowSizeEffects.useWindowHeight() - 26
 
   return (      
-    <div className='region__vendor_dashboard_wrapper'>
-      <div className='dashboard__top'>
-        {/* Navbar takes navbarRef and sets it the other elements just use it */}
-        <Navbar ref={navbarRef}/>
-        { 
-          showMenu ?
-            <Menu ref={menuRef} /> :
-            null
-        }
-        <VendorProfile ref={navbarRef} />
-      </div>
-      <div className="dashboard__wrapper">
-        <TwoOptionSwitch 
-          onClick={ (opt:string)=>{ dispatch(setDashboardVendorsDisplay(opt === 'a' ? 'active' : 'all')) } }
-          vendorTypeName={ 'Trucks' } 
-          isOptionA={ state.ui.dashboardVendorsDisplay === 'all' } 
-          ref={ menuActiveSwtichRef } 
-          font='font__dashboard_switch' 
-        />
-        <DashboardLinks {...{ vendorLinksHeight, refs: [navbarRef, menuActiveSwtichRef] }}/>
-      </div>
-
+    <div className='dashboard__wrapper'>
     </div>
   );
 }

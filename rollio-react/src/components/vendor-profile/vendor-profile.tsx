@@ -10,7 +10,7 @@ import VendorProfileContent from './vendor-profile-content';
 import useGetAppState from '../common/hooks/use-get-app-state';
 import windowSizeEffects from '../common/hooks/use-window-size';
 import useScrollPosition from '../common/hooks/use-scroll-position';
-import useGetHeight from './hooks/use-get-vendor-profile-height';
+import useGetScreenHeightRefDifferenc from '../common/hooks/use-get-screen-height-ref-difference';
 import useMap from '../map/hooks/useMap';
 
 // ACTIONS
@@ -30,10 +30,10 @@ const VendorProfile = React.forwardRef((props:any, navbarRef)=> {
   const { zoomToLocation } = useMap();
 
   // Height of the entire vendor profile (window height - navbarRef height)
-  const vendorProfileHeight = useGetHeight(navbarRef) + 'px';
+  const vendorProfileHeight = useGetScreenHeightRefDifferenc(navbarRef) + 'px';
 
   // Height of the content minus ()
-  const vendorProfileContentHeight = useGetHeight(mobileHeaderRef) + 'px';
+  const vendorProfileContentHeight = useGetScreenHeightRefDifferenc(mobileHeaderRef) + 'px';
 
   const handleScroll = useScrollPosition({
     isLoaded: state.loadState.isVendorLoaded

@@ -1,7 +1,11 @@
 .dashboard {
     &__wrapper {
-        margin-top: 16px;
         width: $vendor-dashboard-width;
+    }
+
+    &__filterbar {
+        height: 56px;
+        width: 100%;;
     }
 
     &__title_wrapper {

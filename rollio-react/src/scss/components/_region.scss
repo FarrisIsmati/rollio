@@ -1,6 +1,11 @@
 .region {
     &__wrapper {
         display: flex;
+        flex-direction: column;
+    }
+
+    &__content_wrapper {
+        display: flex;
         height: 100%;
     }
 
