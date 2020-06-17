@@ -1,11 +1,13 @@
 .dashboard {
     &__wrapper {
-        width: $vendor-dashboard-width;
+        min-width: $vendor-dashboard-width;
     }
 
     &__filterbar {
+        box-sizing: border-box;
         height: 56px;
-        width: 100%;;
+        width: 100%;
+        padding: 0px 20px;
     }
 
     &__title_wrapper {

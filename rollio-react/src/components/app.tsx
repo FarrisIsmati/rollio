@@ -19,7 +19,8 @@ import rootReducer from '../redux/reducers/root-reducer';
 import {fetchUserAsync} from "../redux/actions/user-actions";
 
 // COMPONENTS
-import RegionHome from './region/region-home';
+import RegionDesktop from './region/region-desktop';
+import RegionMobile from './region/region-mobile';
 import PageInvalid from './error/page-invalid';
 import PermissionDenied from './error/permission-denied';
 import LoginOut from './authentication/login-out';
@@ -31,9 +32,13 @@ import UnapprovedVendorTable from "./admin/unapproved-vendor-table";
 import UpdateLocation from './tweets/update-tweet-location'
 import LocationEditor from './locations/location-editor'
 
+// HOOKS
+import useWindowEffects from './common/hooks/use-window-size';
+
 const loggerMiddleware = createLogger();
 
 const App:FC = () => {
+  // Redux
   const store = createStore(
       rootReducer,
       applyMiddleware(
@@ -43,19 +48,26 @@ const App:FC = () => {
   );
   const { dispatch } = store;
   const { user } = store.getState();
-
+  
+  // Hooks
   useEffect(() => {
     if (localStorage.token && !user.isAuthenticated) {
       fetchUserAsync()(dispatch);
     }
   }, [user]);
 
+  // Is View Mobile
+  const isMobile = useWindowEffects.useIsMobile();
+
   return (
     <Provider store={store}>
       <BrowserRouter>
         <div className="App">
           <Switch>
-            <Route exact path="/region/:regionName" component={ RegionHome } />
+            { !isMobile ? 
+              <Route exact path="/region/:regionName" component={ RegionDesktop } /> :
+              <Route exact path="/region/:regionName" component={ RegionMobile } />
+            }
             {/* <Route exact path="/region/:regionId/vendor/:vendorId" component={ VendorProfile } /> */}
             <Route exact path="/login" component={ () => <LoginOut isLogin={true}/> } />
             <Route exact path="/signup" component={ () => <LoginOut isLogin={false}/> } />
