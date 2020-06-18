@@ -865,7 +865,7 @@ p, h1, h2, h3 {
       transition: color .2s, border-color .2s; }
 
 .dashboard__wrapper {
-  min-width: 788px; }
+  max-width: 788px; }
 
 .dashboard__filterbar {
   box-sizing: border-box;

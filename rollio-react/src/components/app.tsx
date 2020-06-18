@@ -19,8 +19,7 @@ import rootReducer from '../redux/reducers/root-reducer';
 import {fetchUserAsync} from "../redux/actions/user-actions";
 
 // COMPONENTS
-import RegionDesktop from './region/region-desktop';
-import RegionMobile from './region/region-mobile';
+import Region from './region/region';
 import PageInvalid from './error/page-invalid';
 import PermissionDenied from './error/permission-denied';
 import LoginOut from './authentication/login-out';
@@ -32,8 +31,6 @@ import UnapprovedVendorTable from "./admin/unapproved-vendor-table";
 import UpdateLocation from './tweets/update-tweet-location'
 import LocationEditor from './locations/location-editor'
 
-// HOOKS
-import useWindowEffects from './common/hooks/use-window-size';
 
 const loggerMiddleware = createLogger();
 
@@ -56,18 +53,12 @@ const App:FC = () => {
     }
   }, [user]);
 
-  // Is View Mobile
-  const isMobile = useWindowEffects.useIsMobile();
-
   return (
     <Provider store={store}>
       <BrowserRouter>
         <div className="App">
           <Switch>
-            { !isMobile ? 
-              <Route exact path="/region/:regionName" component={ RegionDesktop } /> :
-              <Route exact path="/region/:regionName" component={ RegionMobile } />
-            }
+            <Route exact path="/region/:regionName" component={ Region } /> :
             {/* <Route exact path="/region/:regionId/vendor/:vendorId" component={ VendorProfile } /> */}
             <Route exact path="/login" component={ () => <LoginOut isLogin={true}/> } />
             <Route exact path="/signup" component={ () => <LoginOut isLogin={false}/> } />

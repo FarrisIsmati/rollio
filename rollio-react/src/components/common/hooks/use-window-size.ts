@@ -20,11 +20,9 @@ const effects = {
 
         useEffect(() => {
             const handleResize = () => setHeight(window.innerHeight);
-
             window.addEventListener('resize', handleResize);
             return () => {
                 window.removeEventListener('resize', handleResize);
-                window.removeEventListener('fullscreenchange', handleResize);
             };
         });
 
