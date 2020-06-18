@@ -1,6 +1,6 @@
 .dashboard {
-    &__wrapper {
-        min-width: 788px;
+    &_desktop {
+        width: 54.7%;
     }
 
     &__filterbar {
@@ -68,14 +68,12 @@
 
     // MOBILE
     &_mobile {
-        &__wrapper {
-            height: 56px;
-            width: 100%;
-            background-color: white;
-            position: fixed;
-            z-index: 4;
-            bottom: 0;
-        }
+        height: 56px;
+        width: 100%;
+        background-color: white;
+        position: fixed;
+        z-index: 4;
+        bottom: 0;
 
         &__content_wrapper {
             display: flex;

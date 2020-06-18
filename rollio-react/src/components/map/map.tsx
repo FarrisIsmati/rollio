@@ -27,7 +27,7 @@ const Map = (props: MapProps) => {
   const mapContainer = useRef<any>(null);
   const showInfoCard = useShowInfoCard();
   const infoCardData = useGetInfoCardData();
-
+  
   useEffect(() => {
     //@ts-ignore
     mapboxgl.accessToken = MAPBOX_API_KEY;
@@ -54,13 +54,13 @@ const Map = (props: MapProps) => {
   useMapMarkers({...props, map: globalState.map, mapMarkerElement})
 
   return (
-    <React.Fragment>
+    <div className='map'>
       {/* Map Overlay only for mobile */}
       <MapOverlay />
       {/*  Show if currentlySelected && !isMobileDashboardExpanded */}
       { showInfoCard ? <MapInfoCard name={ infoCardData.name } profileImageLink={ infoCardData.profileImageLink } onClick={ infoCardData.onClick } /> : null }
       <div ref={el => (mapContainer.current = el)}></div>
-    </React.Fragment>
+    </div>
   );
 }
 

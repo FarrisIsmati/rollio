@@ -1,5 +1,5 @@
 // DEPENDENCIES
-import React, { FC,useRef } from 'react';
+import React, { FC } from 'react';
 import { useDispatch  } from 'react-redux';
 import { useCallbackRef } from 'use-callback-ref';
 
@@ -38,7 +38,7 @@ const DashboardMobile:FC = () => {
 
     return (
         // Mobile resize this flex centers
-        <div className="dashboard_mobile__wrapper" style={isDashboardExpanded ? {...expandedDashboardStyle, height: properHeight} : contractedDashboardStyle} >
+        <div className="dashboard_mobile" style={isDashboardExpanded ? {...expandedDashboardStyle, height: properHeight} : contractedDashboardStyle} >
             <VendorProfile ref={topRef}/>
             <div className="dashboard_mobile__content_wrapper">
                 <div ref={topRef} className="dashboard_mobile__topbar_wrapper">
