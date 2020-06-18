@@ -3,20 +3,23 @@ import React, { ReactComponentElement, useRef } from 'react';
 
 // COMPONENTS
 import Map from '../map/map';
-import Dashboard from '../dashboard/dashboard-desktop';
+import DashboardDesktop from '../dashboard/dashboard-desktop';
 import Navbar from '../navbar/navbar-desktop';
 import DashboardFilterBar from '../dashboard/dashboard-filterbar';
+import useWindowEffects from '../common/hooks/use-window-size';
 
 // HOOKS
 import useGetAppState from '../common/hooks/use-get-app-state';
 import useGetScreenHeightRefDifferenc from '../common/hooks/use-get-screen-height-ref-difference';
 
 const renderMap = (args:any) => {
-  const {isRegionLoaded, areVendorsLoaded, state} = args;
+  const {isRegionLoaded, areVendorsLoaded, mapWidth, state} = args;
 
   // Map gets fed data as props instead of reading from redux store so there can be multiple maps rendered at once
   const map = isRegionLoaded && areVendorsLoaded ? 
-    <Map mapType='region' mapData={ state.regionMap }/> : 
+    <div className='map__wrapper' style={{ width: mapWidth }}>
+      <Map mapType='region' mapData={ state.regionMap }/>
+    </div> : 
     <p>loading</p> 
 
   return map
@@ -25,6 +28,8 @@ const renderMap = (args:any) => {
 const RegionDesktop = (props:any) => {
   // Effects
   const state = useGetAppState();
+  const isMobile = useWindowEffects.useIsMobile();
+  const windowWidth = useWindowEffects.useWindowWidth();
 
   // Variables
   const isRegionLoaded = state.loadState.isRegionLoaded;
@@ -34,8 +39,12 @@ const RegionDesktop = (props:any) => {
   const navbarDesktopRef = useRef();
   const dashboardFilterBarRef = useRef();
 
+  // Desktop Map Width
+  // Screen width minus the fixed dashboard width
+  const mapWidth = windowWidth - 788 + 'px';
+
   // Custom Map Components
-  const Map:ReactComponentElement<any> = renderMap({isRegionLoaded, areVendorsLoaded, state});
+  const Map:ReactComponentElement<any> = renderMap({isRegionLoaded, areVendorsLoaded, state, mapWidth});
 
   // On Render height sizing
   // Gets height of content area minus ref heights
@@ -47,7 +56,7 @@ const RegionDesktop = (props:any) => {
         <DashboardFilterBar ref={dashboardFilterBarRef}/>
 
         <div className='region__content' style={{ height: regionContentHeight }}>
-            <Dashboard/>
+            <DashboardDesktop/>
             { Map }
         </div>
     </div>

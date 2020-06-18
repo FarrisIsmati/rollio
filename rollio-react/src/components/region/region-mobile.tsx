@@ -4,7 +4,7 @@ import React, { ReactComponentElement, useRef } from 'react';
 // COMPONENTS
 import Menu from '../menu/menu';
 import Map from '../map/map';
-import Dashboard from '../dashboard/dashboard-mobile';
+import DashboardMobile from '../dashboard/dashboard-mobile';
 import Navbar from '../navbar/navbar-mobile';
 
 // HOOKS
@@ -17,7 +17,9 @@ const renderMap = (args:any) => {
 
   // Map gets fed data as props instead of reading from redux store so there can be multiple maps rendered at once
   const map = isRegionLoaded && areVendorsLoaded ? 
-    <Map mapType='region' mapData={ state.regionMap }/> : 
+    <div className='map__wrapper'>
+      <Map mapType='region' mapData={ state.regionMap }/>
+    </div> : 
     <p>loading</p> 
 
   return map
@@ -56,7 +58,7 @@ const RegionMobile = (props:any) => {
               }
               { Map }
             </div>
-          <Dashboard />
+          <DashboardMobile />
         </React.Fragment> 
     </div>
   );

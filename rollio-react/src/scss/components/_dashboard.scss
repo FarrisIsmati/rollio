@@ -1,6 +1,6 @@
 .dashboard {
     &__wrapper {
-        max-width: $vendor-dashboard-width;
+        min-width: 788px;
     }
 
     &__filterbar {
