@@ -2,7 +2,7 @@
 import React, { useRef } from 'react';
 
 // COMPONENTS
-import Map from '../map/map';
+// import Map from '../map/map';
 import DashboardDesktop from '../dashboard/dashboard-desktop';
 import Navbar from '../navbar/navbar-desktop';
 import DashboardFilterBar from '../dashboard/dashboard-filterbar';
@@ -34,11 +34,11 @@ const RegionDesktop = (props:any) => {
 
         <div className='region__content' style={{ height: regionContentHeight }}>
           <DashboardDesktop/>
-          {
+          {/* {
             isRegionLoaded && areVendorsLoaded ? 
               <Map mapType='region' mapData={ state.regionMap } /> : 
               <p>loading</p> 
-          }
+          } */}
         </div>
     </div>
   );

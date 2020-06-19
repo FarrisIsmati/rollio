@@ -22,6 +22,7 @@ import { MapProps } from './interfaces';
 const mapMarkerElement:any = (<div></div>)
 
 const Map = (props: MapProps) => {
+
   // Effects
   const [globalState, setGlobalState] = useGlobalState();
   const mapContainer = useRef<any>(null);
@@ -41,13 +42,19 @@ const Map = (props: MapProps) => {
       });
 
       map.on("load", () => {
+        console.log('LOAD IT HAPPEND')
         setGlobalState({ map });
         map.resize();
       });
-    };
 
+      map.on('resize', function() {
+        // console.log(mapContainer);
+      });
+
+    };
+    
     // If that map has not been rendered, render it
-    if (!globalState.map) initializeMap({ mapContainer });
+    if (!mapContainer.current.classList.contains('mapboxgl-map')) initializeMap({ mapContainer });
   }, [globalState.map])
 
   // Should reupdate everytime the map updates
@@ -57,8 +64,10 @@ const Map = (props: MapProps) => {
     <div className='map'>
       {/* Map Overlay only for mobile */}
       <MapOverlay />
-      {/*  Show if currentlySelected && !isMobileDashboardExpanded */}
+
+      {/* Show Info Card only for mobile */}
       { showInfoCard ? <MapInfoCard name={ infoCardData.name } profileImageLink={ infoCardData.profileImageLink } onClick={ infoCardData.onClick } /> : null }
+
       <div ref={el => (mapContainer.current = el)}></div>
     </div>
   );
