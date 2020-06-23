@@ -3,7 +3,6 @@ import React, { ReactComponentElement, useRef } from 'react';
 
 // COMPONENTS
 import Menu from '../menu/menu';
-// import Map from '../map/map';
 import DashboardMobile from '../dashboard/dashboard-mobile';
 import Navbar from '../navbar/navbar-mobile';
 
@@ -17,9 +16,8 @@ const RegionMobile = (props:any) => {
   const state = useGetAppState();
 
   // Variables
+  const { map } = props;
   const showMenu = state.ui.isMainDropDownMenuExpanded
-  // const isRegionLoaded = state.loadState.isRegionLoaded;
-  // const areVendorsLoaded = state.loadState.areVendorsLoaded;
 
   // Refs
   const navbarRef = useRef();
@@ -40,12 +38,7 @@ const RegionMobile = (props:any) => {
                   <Menu ref={menuRef} /> :
                   null
               }
-              {/* { isRegionLoaded && areVendorsLoaded ? 
-                <div className='map__wrapper'>
-                  <Map mapType='region' mapData={ state.regionMap }/>
-                </div> : 
-                <p>loading</p> 
-              } */}
+              { map }
             </div>
           <DashboardMobile />
         </React.Fragment> 

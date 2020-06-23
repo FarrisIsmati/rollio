@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 
 let listeners:any = [];
-let state = { vendorID: null, truckNum: null };
+let state = { vendorID: null, truckNum: null, map: null };
 
 const setState:any = (newState:any) => {
   state = { ...state, ...newState };

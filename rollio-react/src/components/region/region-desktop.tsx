@@ -16,6 +16,7 @@ const RegionDesktop = (props:any) => {
   const state = useGetAppState();
 
   // Variables
+  const { map } = props;
   const isRegionLoaded = state.loadState.isRegionLoaded;
   const areVendorsLoaded = state.loadState.areVendorsLoaded;
 
@@ -34,11 +35,7 @@ const RegionDesktop = (props:any) => {
 
         <div className='region__content' style={{ height: regionContentHeight }}>
           <DashboardDesktop/>
-          {/* {
-            isRegionLoaded && areVendorsLoaded ? 
-              <Map mapType='region' mapData={ state.regionMap } /> : 
-              <p>loading</p> 
-          } */}
+          { map }
         </div>
     </div>
   );

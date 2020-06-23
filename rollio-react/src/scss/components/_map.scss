@@ -1,5 +1,12 @@
 .map {
-    width: 45.3%;
+    &_desktop {
+        width: 45.3%;
+    }
+
+    &_mobile {
+        width: 100%;
+        height: 100%;
+    }
 
     &__marker {
         &_default {

@@ -1,6 +1,6 @@
 // DEPENDENCIES
 import { toNumber } from 'lodash';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
 
 // HOOKS
@@ -98,10 +98,19 @@ const useMapMarkers = (props: any) => {
     // Hook function to pass into all createMapMarker functions that require vendors to be selected
    const selectVendorProfile = useSelectVendorProfile();
 
+    /* Ref keeps track of when you can render the points
+       If rendered too early the globalState map reference will be the old map and points wont attach,
+       Ref keeps track of when map gets set to null so it resets
+    */
+   const isMapRestRef:any = useRef(false);
+   if (!map) {
+    isMapRestRef.current = true;
+    }
+
     // Initilization of all markers
     useEffect(() => {
-        // If the map is rendered
-        if (map && !areMarkersLoaded) {
+        // If the map is rendered && Reset
+        if (map && !areMarkersLoaded && isMapRestRef.current) {
             // Ensures when this component is loaded this will only run once
             setAreMarkersLoaded(true);
             if ( mapType === 'region') {
@@ -119,6 +128,7 @@ const useMapMarkers = (props: any) => {
                     });
                     return acc;
                 }, {});
+
                 setSingleVendorMarkers(singleVendorMarkersTemp);
 
                 // Add grouped pin vendors to map
@@ -135,7 +145,7 @@ const useMapMarkers = (props: any) => {
                 setGroupVendorMarkers(groupVendorMarkersTemp)
             }
         }
-    }, [map])
+    })
 
     // Sets map markers in real time
     useUpdateMapMarkersState({

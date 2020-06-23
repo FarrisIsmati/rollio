@@ -15,6 +15,14 @@ import useGetAppState from '../common/hooks/use-get-app-state';
 
 import Map from '../map/map';
 
+const map = (state:any) => {
+    const isRegionLoaded = state.loadState.isRegionLoaded;
+    const areVendorsLoaded = state.loadState.areVendorsLoaded;
+  
+    return isRegionLoaded && areVendorsLoaded ? 
+    <Map mapType='region' mapData={ state.regionMap } /> : 
+    <p>loading</p>
+}
 
 const Region = (props:any) => {
   // Effects
@@ -22,25 +30,17 @@ const Region = (props:any) => {
   useUpdateRegionVendorData(); // Set socket listeners
   useProcessMapPoints(props);  // Get all vendors in to the Map Pins on first load
   
-    // Effects
-    const state = useGetAppState();
-
-  // Variables
-  const isRegionLoaded = state.loadState.isRegionLoaded;
-  const areVendorsLoaded = state.loadState.areVendorsLoaded;
+  // Effects
+  const state = useGetAppState();
 
   const isMobile = useWindowEffects.useIsMobile();
 
   return (
     <React.Fragment>
-                {
-            isRegionLoaded && areVendorsLoaded ? 
-              <Map mapType='region' mapData={ state.regionMap } /> : 
-              <p>loading</p> 
-          }
+      {/* { map(state) } */}
         { !isMobile ? 
-            <RegionDesktop /> :
-            <RegionMobile />
+            <RegionDesktop map={map(state)}/> :
+            <RegionMobile map={map(state)}/>
         }
     </React.Fragment>
   );
