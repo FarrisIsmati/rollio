@@ -8,17 +8,11 @@ import Navbar from '../navbar/navbar-desktop';
 import DashboardFilterBar from '../dashboard/dashboard-filterbar';
 
 // HOOKS
-import useGetAppState from '../common/hooks/use-get-app-state';
 import useGetScreenHeightRefDifferenc from '../common/hooks/use-get-screen-height-ref-difference';
 
 const RegionDesktop = (props:any) => {
-  // Effects
-  const state = useGetAppState();
-
   // Variables
   const { map } = props;
-  const isRegionLoaded = state.loadState.isRegionLoaded;
-  const areVendorsLoaded = state.loadState.areVendorsLoaded;
 
   // Refs
   const navbarDesktopRef = useRef();

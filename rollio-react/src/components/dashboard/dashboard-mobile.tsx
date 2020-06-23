@@ -5,7 +5,7 @@ import { useCallbackRef } from 'use-callback-ref';
 
 // COMPONENTS
 import DashboardLinks from './dashboard-links';
-import VendorProfile from '../vendor-profile/vendor-profile'
+import VendorProfileMobile from '../vendor-profile/vendor-profile-mobile'
 import TwoOptionSwitch from '../common/other/two-option-switch';
 
 // ACTIONS
@@ -39,8 +39,11 @@ const DashboardMobile:FC = () => {
     return (
         // Mobile resize this flex centers
         <div className="dashboard_mobile" style={isDashboardExpanded ? {...expandedDashboardStyle, height: properHeight} : contractedDashboardStyle} >
-            <VendorProfile ref={topRef}/>
+
+            <VendorProfileMobile ref={topRef}/>
+
             <div className="dashboard_mobile__content_wrapper">
+
                 <div ref={topRef} className="dashboard_mobile__topbar_wrapper">
                     <div className="dashboard_mobile__topbar">
                         <div className="dashboard_mobile__topbar_text">
@@ -60,6 +63,7 @@ const DashboardMobile:FC = () => {
                         </div>
                     </div>
                 </div>
+
                 <TwoOptionSwitch 
                     onClick={ (opt:string)=>{ dispatch(setDashboardVendorsDisplay(opt === 'a' ? 'active' : 'all')) } }
                     vendorTypeName={ 'Trucks' } 
@@ -67,7 +71,9 @@ const DashboardMobile:FC = () => {
                     font='font__dashboard_switch'
                 />
                 <DashboardLinks { ...{vendorLinksHeight, refs: [topRef]} } />
+
             </div>
+
         </div>
     );
 }

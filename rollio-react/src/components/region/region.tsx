@@ -15,6 +15,7 @@ import useGetAppState from '../common/hooks/use-get-app-state';
 
 import Map from '../map/map';
 
+// Load map only if region data & vendors data is loaded
 const map = (state:any) => {
     const isRegionLoaded = state.loadState.isRegionLoaded;
     const areVendorsLoaded = state.loadState.areVendorsLoaded;

@@ -1,5 +1,5 @@
 // DEPENDENCIES
-import React, { ReactComponentElement, useRef } from 'react';
+import React, { useRef } from 'react';
 
 // COMPONENTS
 import Menu from '../menu/menu';
