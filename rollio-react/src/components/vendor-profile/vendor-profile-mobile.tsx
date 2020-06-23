@@ -42,7 +42,7 @@ const VendorProfileMobile = React.forwardRef((props:any, navbarRef)=> {
   const vendor = state.data.selectedVendor;
 
   return (
-    <div className={showMobileVendorProfile ? 'vendorprofile_mobile__wrapper' : 'vendorprofile_mobile__wrapper_hidden'}>
+    <div className={showMobileVendorProfile ? 'vendorprofile_mobile' : 'vendorprofile_mobile__hidden'}>
         { isLoaded ?
             <React.Fragment>
             <div ref={mobileHeaderRef} className='font__vendor_profile_header vendorprofile_mobile__header_wrapper'>

@@ -37,15 +37,14 @@ const VendorProfileDesktop = React.forwardRef((props:any, navbarRef)=> {
 
   // Difference between the Desktop and Mobile version is how it scrolls the content
   return (
-    <div className={isVendorSelected ? 'vendorprofile__wrapper' : 'vendorprofile__wrapper_hidden'}>
+    <div className={isVendorSelected ? 'vendorprofile' : 'vendorprofile__hidden'}>
       <Scrollbars
         style={{ width: '432px', height: vendorProfileHeight }}
         onScroll={handleScroll}
         // Hide scrollbar when vendor profile is being animated closed
         renderThumbVertical={
           ({ style }:any) => <div style={{ ...style, borderRadius: 'inherit', backgroundColor: isVendorSelected ? 'rgba(0, 0, 0, 0.2)' : 'transparent' }} />
-        }
-      >
+        }>
         { isLoaded ?
           <VendorProfileContent
             isMobile={isMobile}
