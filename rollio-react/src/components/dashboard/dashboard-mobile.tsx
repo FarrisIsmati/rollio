@@ -10,7 +10,7 @@ import TwoOptionSwitch from '../common/other/two-option-switch';
 
 // ACTIONS
 import { toggleMobileDashboard } from '../../redux/actions/ui-actions';
-import { deSelectVendor } from '../../redux/actions/data-actions';
+import { deselectAllVendors } from '../../redux/actions/data-actions';
 import { setDashboardVendorsDisplay } from '../../redux/actions/ui-actions';
 
 // HOOKS
@@ -53,7 +53,8 @@ const DashboardMobile:FC = () => {
                                 <i className="material-icons-outlined" onClick={()=>{
                                     // If there is a currently selected vendor, deselect it then bring the vendor menu back
                                     if (state.regionMap.currentlySelected.id) {
-                                        dispatch(deSelectVendor(() => dispatch(toggleMobileDashboard())));
+                                        dispatch(
+                                            deselectAllVendors({cb:() => dispatch(toggleMobileDashboard())}));
                                     // Else just bring the vendor menu back
                                     } else {
                                         dispatch(toggleMobileDashboard());

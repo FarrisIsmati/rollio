@@ -14,7 +14,7 @@ import useGetScreenHeightRefDifferenc from '../common/hooks/use-get-screen-heigh
 import useMap from '../map/hooks/useMap';
 
 // ACTIONS
-import { deSelectVendor } from '../../redux/actions/data-actions';
+import { deselectAllVendors } from '../../redux/actions/data-actions';
 
 const VendorProfileDesktop = React.forwardRef((props:any, navbarRef)=> {
   // Hooks
@@ -48,7 +48,7 @@ const VendorProfileDesktop = React.forwardRef((props:any, navbarRef)=> {
         { isLoaded ?
           <VendorProfileContent
             isMobile={isMobile}
-            closeVendor={() => dispatch(deSelectVendor())}
+            closeVendor={() => dispatch(deselectAllVendors())}
             findOnMap={(location:any) => { zoomToLocation(location) }}
             vendor={vendor}
             state={state} /> :

@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import useGetAppState from '../../common/hooks/use-get-app-state';
 
 // ACTIONS
-import { selectVendorAsync, deSelectVendor } from '../../../redux/actions/data-actions';
+import { selectVendorAsync, deselectAllVendors } from '../../../redux/actions/data-actions';
 
 // Selecting a vendor profile, called from dashboard link or from map point
 const useSelectVendorProfile = () => {
@@ -16,8 +16,7 @@ const useSelectVendorProfile = () => {
     const regionId = state.data.regionId;
 
     return (vendorID: string, selectedVendorID?: string) => {
-        // If a vendor profile is already selected, deselect it
-        dispatch(deSelectVendor())
+        dispatch(deselectAllVendors({preventIfSameID: true, id: vendorID}))
 
         dispatch(selectVendorAsync({ 
             regionId,

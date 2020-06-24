@@ -13,7 +13,7 @@ import useGetScreenHeightRefDifferenc from '../common/hooks/use-get-screen-heigh
 import useMap from '../map/hooks/useMap';
 
 // ACTIONS
-import { deSelectVendor } from '../../redux/actions/data-actions';
+import { deselectAllVendors } from '../../redux/actions/data-actions';
 import { toggleMobileDashboard } from '../../redux/actions/ui-actions';
 
 // UTILS
@@ -47,7 +47,7 @@ const VendorProfileMobile = React.forwardRef((props:any, navbarRef)=> {
             <React.Fragment>
             <div ref={mobileHeaderRef} className='font__vendor_profile_header vendorprofile_mobile__header_wrapper'>
                 <div className='flex__center'>
-                <i className="material-icons-outlined" onClick={()=>{ dispatch(deSelectVendor()) }}>arrow_back</i>
+                <i className="material-icons-outlined" onClick={()=>{ dispatch(deselectAllVendors()) }}>arrow_back</i>
                 </div>
                 <div className="vendorprofile_mobile_header">
                 <h2>{vendor.name}</h2>
@@ -60,7 +60,7 @@ const VendorProfileMobile = React.forwardRef((props:any, navbarRef)=> {
                         dispatch(toggleMobileDashboard())
                     // Else deselect the non active vendor and toggle menu (Because this vendor doesn't need to still be selected once the menu is hidden)
                     } else {
-                        dispatch(deSelectVendor(() => dispatch(toggleMobileDashboard())))
+                        dispatch(deselectAllVendors({cb: () => dispatch(toggleMobileDashboard())}))
                     }
                     }
                 } >close</i>
