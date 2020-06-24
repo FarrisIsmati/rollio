@@ -46,6 +46,7 @@ const Map = (props: MapProps) => {
         setGlobalState({ ...globalState, map: map });
         map.resize();
       });
+
     };
 
     // If that map has not been rendered, render it
@@ -54,6 +55,9 @@ const Map = (props: MapProps) => {
     }
 
     return () => {
+      if (globalState.map) {
+        globalState.map.remove();
+      }
       setGlobalState({ ...globalState, map: null });
     }
   }, [])
