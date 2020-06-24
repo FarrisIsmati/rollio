@@ -5,6 +5,7 @@ import { UiDefaultState } from "./interfaces";
 import {
     TOGGLE_MOBILE_DASHBOARD,
     TOGGLE_MAIN_DROPDOWN_MENU,
+    TOGGLE_GROUP_SELECT_MENU,
     SET_IS_VENDOR_SELECTED,
     SET_DASHBOARD_VENDORS_DISPLAY
 } from "../constants/constants"
@@ -12,6 +13,7 @@ import {
 const defaultState:UiDefaultState = {
     isMobileDashboardExpanded: false,
     isMainDropDownMenuExpanded: false,
+    isGroupSelectMenuExpanded: false,
     isVendorSelected: false,
     dashboardVendorsDisplay: 'active',
 }
@@ -27,6 +29,11 @@ export function uiReducer(state = defaultState, action: any) {
             return {
                 ...state,
                 isMainDropDownMenuExpanded: !state.isMainDropDownMenuExpanded
+            }
+        case TOGGLE_GROUP_SELECT_MENU:
+            return {
+                ...state,
+                isGroupSelectMenuExpanded: !state.isGroupSelectMenuExpanded
             }
         case SET_IS_VENDOR_SELECTED:
             return {

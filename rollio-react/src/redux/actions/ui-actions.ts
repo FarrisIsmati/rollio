@@ -2,6 +2,7 @@
 import {
     TOGGLE_MOBILE_DASHBOARD,
     TOGGLE_MAIN_DROPDOWN_MENU,
+    TOGGLE_GROUP_SELECT_MENU,
     SET_IS_VENDOR_SELECTED,
     SET_DASHBOARD_VENDORS_DISPLAY
 } from '../constants/constants'
@@ -15,6 +16,12 @@ export function toggleMobileDashboard() {
 export function toggleMainDropDownMenu() {
     return {
         type: TOGGLE_MAIN_DROPDOWN_MENU
+    }
+}
+
+export function toggleGroupSelectMenu() {
+    return {
+        type: TOGGLE_GROUP_SELECT_MENU
     }
 }
 
