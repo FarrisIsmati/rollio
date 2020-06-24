@@ -19,7 +19,7 @@ import {
 
 // Create Marker Style
 const createMapMarker = (props: CreateMapMarkerProps) => {
-    const { vendor, vendors, selected, selectedVendorID, onClick } = props;
+    const { vendor, vendors, selected, onClick } = props;
 
     const mapMarkerEl = document.createElement('div');
 
@@ -40,7 +40,7 @@ const createMapMarker = (props: CreateMapMarkerProps) => {
         mapMarkerEl.onclick = () => {
             // ACTION CURRENTLY ONLY WORKS FOR SINGLE VENDORS
             if (vendor) {
-                onClick(vendor.id, selectedVendorID);
+                onClick(vendor.id);
             }
         }
     }
@@ -50,12 +50,12 @@ const createMapMarker = (props: CreateMapMarkerProps) => {
 
 // Adds a single pin marker to map
 const addSingleVendorToMap = (props: AddSingleVendorToMapProps) => {
-    const { vendor, map, selected, location, selectedVendorID, selectVendorProfile } = props;
+    const { vendor, map, selected, location, selectVendorProfile } = props;
     // Current vendor [lng,lat]
     const coordinates:[number, number] = [location.coordinates.long, location.coordinates.lat];
 
     // // Add marker to map
-    const marker = new mapboxgl.Marker(createMapMarker({vendor, selected, location, selectedVendorID, onClick: selectVendorProfile }))
+    const marker = new mapboxgl.Marker(createMapMarker({vendor, selected, location, onClick: selectVendorProfile }))
         .setLngLat(coordinates)
         .addTo(map)
 
@@ -64,11 +64,11 @@ const addSingleVendorToMap = (props: AddSingleVendorToMapProps) => {
 
 // Adds a grouped pin marker to map
 const addGroupedVendorsToMap = (props: AddGroupedVendorsToMapProps) => {
-    const {vendors, location, map, selected, selectedVendorID} = props;
+    const {vendors, location, map, selected } = props;
     // [lng,lat]
     const coordinates:[number, number] = [location.coordinates.long, location.coordinates.lat];
     // Add marker to map
-    const marker = new mapboxgl.Marker(createMapMarker({ vendors, selected, location, selectedVendorID }))
+    const marker = new mapboxgl.Marker(createMapMarker({ vendors, selected, location }))
         .setLngLat(coordinates)
         .addTo(map);
 
@@ -93,7 +93,6 @@ const useMapMarkers = (props: any) => {
 
     // General variables
     const vendorsData = state.data.vendorsAll;
-    const selectedVendorID = state.data.selectedVendor.id ? state.data.selectedVendor.id : null;
 
     // Hook function to pass into all createMapMarker functions that require vendors to be selected
    const selectVendorProfile = useSelectVendorProfile();
@@ -123,7 +122,7 @@ const useMapMarkers = (props: any) => {
                     const {selected, locations} = vendor;
                     locations.forEach((location:any, index:number) => {
                         if (isLocationActive(location) && location.truckNum === toNumber(truckNum)) {
-                            acc[key] = addSingleVendorToMap({ map, selected, location, vendor, selectedVendorID, selectVendorProfile });
+                            acc[key] = addSingleVendorToMap({ map, selected, location, vendor, selectVendorProfile });
                         }
                     });
                     return acc;
@@ -139,7 +138,7 @@ const useMapMarkers = (props: any) => {
                     const [firstVendorId, truckNum] = vendorsGroup.vendors[0].vendorId.split('-');
                     const {vendors, selected} = vendorsGroup;
                     const location = getCurrentTruckLocation(firstVendorId, toNumber(truckNum), vendorsData);
-                    acc[key] = addGroupedVendorsToMap({vendors, location, map, selected, selectedVendorID, selectVendorProfile });
+                    acc[key] = addGroupedVendorsToMap({vendors, location, map, selected, selectVendorProfile });
                     return acc;
                 }, {});
                 setGroupVendorMarkers(groupVendorMarkersTemp)

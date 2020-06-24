@@ -10,7 +10,6 @@ export interface CreateMapMarkerProps {
   numberOfGroupedVendors?: boolean | number, 
   selected: boolean, 
   location: any, 
-  selectedVendorID: string, 
   onClick?: any
 }
 
@@ -19,7 +18,6 @@ export interface AddSingleVendorToMapProps {
   map:any, 
   selected: boolean, 
   location:any, 
-  selectedVendorID: string, 
   selectVendorProfile: any 
 }
 
@@ -28,6 +26,5 @@ export interface AddGroupedVendorsToMapProps {
   map:any, 
   selected: boolean, 
   location:any, 
-  selectedVendorID: string, 
   selectVendorProfile: any 
 }

@@ -50,7 +50,7 @@ const Map = (props: MapProps) => {
     };
 
     // If that map has not been rendered, render it
-    if ( !mapContainer.current.classList.contains('mapboxgl-map')) { //!mapContainer.current.classList.contains('mapboxgl-map'))
+    if ( !mapContainer.current.classList.contains('mapboxgl-map')) {
       initializeMap({ mapContainer })
     }
 

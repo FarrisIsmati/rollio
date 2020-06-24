@@ -15,7 +15,7 @@ const useSelectVendorProfile = () => {
 
     const regionId = state.data.regionId;
 
-    return (vendorID: string, selectedVendorID?: string) => {
+    return (vendorID: string) => {
         dispatch(deselectAllVendors({preventIfSameID: true, id: vendorID}))
 
         dispatch(selectVendorAsync({ 
