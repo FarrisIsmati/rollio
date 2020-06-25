@@ -28,6 +28,12 @@ const VendorProfileMobile = React.forwardRef((props:any, navbarRef)=> {
   const state = useGetAppState();
   const { zoomToLocation } = useMap();
 
+//   HOW TO HANDLE THIS???!!!!! // CREATE A SEPERATE ACTION THAT HANDLES ALL LOGIC , TOGGLE MENU AND TOGGLE GROUP SAME TIME NEW ACTION
+//   // Open expanded menu if a group is selected
+//   if (!state.ui.isMobileDashboardExpanded && state.ui.isGroupSelectMenuExpanded) {
+//     dispatch(toggleMobileDashboard());
+//   }
+
   // Height of the content minus ()
   const vendorProfileContentHeight = useGetScreenHeightRefDifferenc(mobileHeaderRef) + 'px';
 

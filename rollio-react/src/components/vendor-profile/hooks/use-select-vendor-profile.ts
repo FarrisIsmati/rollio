@@ -9,9 +9,8 @@ import { selectVendorAsync, deselectAllVendors } from '../../../redux/actions/da
 
 // Selecting a vendor profile, called from dashboard link or from map point
 const useSelectVendorProfile = () => {
-    // Redux
-    const dispatch = useDispatch();
     const state = useGetAppState();
+    const dispatch = useDispatch();
 
     const regionId = state.data.regionId;
 
