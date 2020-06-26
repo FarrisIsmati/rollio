@@ -17,7 +17,7 @@ const useSelectVendorProfile = () => {
     return (vendorID: string) => {
         dispatch(deselectAllVendors({preventIfSameID: true, id: vendorID}))
 
-        dispatch(selectVendorAsync({ 
+        dispatch(selectVendorAsync({
             regionId,
             vendorId: vendorID,
             cb: () => console.error('Invalid ID'),

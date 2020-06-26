@@ -10,6 +10,7 @@ import useUpdateMapMarkersState from './useUpdateMapMarkersState';
 import useUpdateMapMarkersStyle from './useUpdateMapMarkersStyle';
 import {getCurrentTruckLocation, isLocationActive} from "../../../util";
 import useSelectVendorProfile from '../../vendor-profile/hooks/use-select-vendor-profile';
+import useSelectGroupedVendors from '../../vendor-profile/hooks/use-select-grouped-vendors';
 
 // ACTIONS
 import { toggleGroupSelectMenu } from '../../../redux/actions/ui-actions';
@@ -103,6 +104,7 @@ const useMapMarkers = (props: any) => {
 
     // Hook function to pass into all createMapMarker functions that require vendors to be selected
    const selectVendorProfile = useSelectVendorProfile();
+   const selectGroupedVendors = useSelectGroupedVendors();
 
     /* Ref keeps track of when you can render the points
        If rendered too early the globalState map reference will be the old map and points wont attach,
@@ -145,7 +147,7 @@ const useMapMarkers = (props: any) => {
                     const [firstVendorId, truckNum] = vendorsGroup.vendors[0].vendorId.split('-');
                     const {vendors, selected} = vendorsGroup;
                     const location = getCurrentTruckLocation(firstVendorId, toNumber(truckNum), vendorsData);
-                    acc[key] = addGroupedVendorsToMap({vendors, location, map, selected, onClickVendor: () => dispatch(toggleGroupSelectMenu()) });
+                    acc[key] = addGroupedVendorsToMap({vendors, location, map, selected, onClickVendor: selectGroupedVendors });
                     return acc;
                 }, {});
                 setGroupVendorMarkers(groupVendorMarkersTemp)

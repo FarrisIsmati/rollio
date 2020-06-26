@@ -13,7 +13,7 @@ import {
 const defaultState:UiDefaultState = {
     isMobileDashboardExpanded: false,
     isMainDropDownMenuExpanded: false,
-    isGroupSelectMenuExpanded: false,
+    isGroupSelectMenuActive: false,
     isVendorSelected: false,
     dashboardVendorsDisplay: 'active',
 }
@@ -31,9 +31,13 @@ export function uiReducer(state = defaultState, action: any) {
                 isMainDropDownMenuExpanded: !state.isMainDropDownMenuExpanded
             }
         case TOGGLE_GROUP_SELECT_MENU:
+            // If group select menu is expanded, the mobile menu needs to be expanded
+            const willGroupSelectMenuBeActive = !state.isGroupSelectMenuActive;
+
             return {
                 ...state,
-                isGroupSelectMenuExpanded: !state.isGroupSelectMenuExpanded
+                isMobileDashboardExpanded: willGroupSelectMenuBeActive,
+                isGroupSelectMenuActive: willGroupSelectMenuBeActive
             }
         case SET_IS_VENDOR_SELECTED:
             return {

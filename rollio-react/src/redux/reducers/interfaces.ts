@@ -154,7 +154,7 @@ export interface LoadStateDefaultState {
 export interface UiDefaultState {
     isMobileDashboardExpanded: boolean,
     isMainDropDownMenuExpanded: boolean,
-    isGroupSelectMenuExpanded: boolean,
+    isGroupSelectMenuActive: boolean,
     isVendorSelected: boolean,
     dashboardVendorsDisplay: string,
 }
