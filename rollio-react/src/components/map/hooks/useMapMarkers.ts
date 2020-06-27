@@ -10,10 +10,7 @@ import useUpdateMapMarkersState from './useUpdateMapMarkersState';
 import useUpdateMapMarkersStyle from './useUpdateMapMarkersStyle';
 import {getCurrentTruckLocation, isLocationActive} from "../../../util";
 import useSelectVendorProfile from '../../vendor-profile/hooks/use-select-vendor-profile';
-import useSelectGroupedVendors from '../../vendor-profile/hooks/use-select-grouped-vendors';
-
-// ACTIONS
-import { toggleGroupSelectMenu } from '../../../redux/actions/ui-actions';
+import useSelectGroupedVendors from '../../dashboard/hooks/use-select-grouped-vendors';
 
 // INTERFACES
 import { 

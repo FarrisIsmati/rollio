@@ -23,6 +23,7 @@ export function uiReducer(state = defaultState, action: any) {
         case TOGGLE_MOBILE_DASHBOARD:
             return {
                 ...state,
+                isGroupSelectMenuActive: false, // Always ensure group select menu is off
                 isMobileDashboardExpanded: !state.isMobileDashboardExpanded
             }
         case TOGGLE_MAIN_DROPDOWN_MENU:

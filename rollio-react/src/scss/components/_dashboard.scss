@@ -101,6 +101,20 @@
             }
         }
     }
+
+    &_group_select_mobile {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        background-color: $color-vendor-profile-background;
+        position: fixed;
+        width: 100%;
+        z-index: 2;
+
+        &__hidden {
+            display: none;
+        }
+    }
 }
 
 // APPLIED FONTS

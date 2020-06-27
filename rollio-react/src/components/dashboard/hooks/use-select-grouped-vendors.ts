@@ -6,7 +6,7 @@ import useGetAppState from '../../common/hooks/use-get-app-state';
 
 // ACTIONS
 import { deselectAllVendors } from '../../../redux/actions/data-actions';
-import { toggleMobileDashboard } from '../../../redux/actions/ui-actions';
+import { toggleGroupSelectMenu } from '../../../redux/actions/ui-actions';
 
 // Selecting a vendor profile, called from dashboard link or from map point
 const useSelectGroupedVendors = () => {
@@ -17,7 +17,7 @@ const useSelectGroupedVendors = () => {
 
     return (vendorID: string) => {
         dispatch(deselectAllVendors());
-        dispatch(toggleMobileDashboard());
+        dispatch(toggleGroupSelectMenu());
     }
 }
 

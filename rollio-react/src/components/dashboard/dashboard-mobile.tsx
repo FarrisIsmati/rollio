@@ -7,6 +7,7 @@ import { useCallbackRef } from 'use-callback-ref';
 import DashboardLinks from './dashboard-links';
 import VendorProfileMobile from '../vendor-profile/vendor-profile-mobile'
 import TwoOptionSwitch from '../common/other/two-option-switch';
+import DashboardGroupSelectMenu from './dashboard-group-select-mobile';
 
 // ACTIONS
 import { toggleMobileDashboard } from '../../redux/actions/ui-actions';
@@ -65,14 +66,19 @@ const DashboardMobile:FC = () => {
                     </div>
                 </div>
 
-                <TwoOptionSwitch 
-                    onClick={ (opt:string)=>{ dispatch(setDashboardVendorsDisplay(opt === 'a' ? 'active' : 'all')) } }
-                    vendorTypeName={ 'Trucks' } 
-                    isOptionA={ state.ui.dashboardVendorsDisplay === 'all' ? true : false } 
-                    font='font__dashboard_switch'
-                />
-                <DashboardLinks { ...{vendorLinksHeight, refs: [topRef]} } />
+                { state.ui.isGroupSelectMenuActive  ? 
+                    <DashboardGroupSelectMenu { ...{vendorLinksHeight, refs: [topRef]} } /> :
+                    <React.Fragment>
+                        <TwoOptionSwitch
+                            onClick={ (opt:string)=>{ dispatch(setDashboardVendorsDisplay(opt === 'a' ? 'active' : 'all')) } }
+                            vendorTypeName={ 'Trucks' } 
+                            isOptionA={ state.ui.dashboardVendorsDisplay === 'all' ? true : false } 
+                            font='font__dashboard_switch'
+                        />
 
+                        <DashboardLinks { ...{vendorLinksHeight, refs: [topRef]} } />
+                    </React.Fragment>
+                }
             </div>
 
         </div>
@@ -80,3 +86,4 @@ const DashboardMobile:FC = () => {
 }
 
 export default DashboardMobile;
+// FIGURE OUT PROFILE IMAGE LAYER ISSUE
