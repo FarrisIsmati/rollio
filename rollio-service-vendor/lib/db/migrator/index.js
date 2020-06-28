@@ -19,14 +19,6 @@ module.exports = async ({
   const migrator = new Migrator(client, migrations);
   let cleanedUp = false;
 
-  /**
-     * Need to do a couple bits of cleanup,
-     * especially around connections to the
-     * mongo client.
-     *
-     * migrator keeps connections
-     * the client for obtaining locks has connections
-     */
   const cleanup = async function () {
     // safeguard
     if (cleanedUp) {
@@ -48,8 +40,6 @@ module.exports = async ({
      * that can be called to release the lock.
      *
      * The lock is good for 2 mins before it's release.
-     *mongodb-lock
-     * @return {Promise->function} a promise that resolves with a function to release the lock
      */
   const acquireLock = function () {
     const db = client.db();
@@ -57,7 +47,7 @@ module.exports = async ({
     const lockName = 'application-migrations';
 
     // Lock object for migrations.
-    // look into https://docs.mongodb.com/manual/reference/method/db.fsyncLock/ instead
+    // TODO: look into https://docs.mongodb.com/manual/reference/method/db.fsyncLock/ as an alternative
     const migrationLock = mongoDbLock(coll, lockName, {
       timeout: timeoutDuration,
       removeExpired: true,
@@ -84,11 +74,6 @@ module.exports = async ({
         rej(new Error('did not obtain lock soon enough'));
       }, timeoutDuration);
 
-      /**
-             * Called once the lock is acquired
-             *
-             * @param {function} releaseLock a callback to call to release migration lock
-             */
       const onLockAcquired = (releaseLock) => {
         // if the lock wasn't acquired on first attempt
         // we're in an interval and need to stop that
@@ -102,11 +87,6 @@ module.exports = async ({
         resolve(releaseLock);
       };
 
-      /**
-             * Attempt to get a lock.
-             *
-             * @param {function} done called once the acquisition has been attempting
-             */
       const attemptToAcquireLock = (done) => {
         // we'll ignore the error here and just retry.
         migrationLock.acquire((error, lockId) =>
@@ -116,9 +96,7 @@ module.exports = async ({
           (lockId ? done(migrationLock.release.bind(migrationLock, lockId)) : done()));
       };
 
-      /**
-             * Starts a polling interval to acquire a lock.
-             */
+      // Starts a polling interval to acquire a lock.
       const startPolling = () => {
         pollingInterval = setInterval(() => {
           attemptToAcquireLock(releaseLock => releaseLock && onLockAcquired(releaseLock));
