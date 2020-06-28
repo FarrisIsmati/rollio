@@ -1,11 +1,10 @@
 const { get } = require('lodash');
-const migrationRegistry = require('./list-of-migrations');
 const logger = require('../../../lib/log/index')('migrations');
 
 class Migrator {
-  constructor(client) {
+  constructor(client, migrations) {
     this._isDisposed = false;
-    this._migrations = migrationRegistry;
+    this._migrations = migrations;
     this._migrationsRun = {};
     this._result = {};
     this._client = client;

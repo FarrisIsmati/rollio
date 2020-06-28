@@ -75,7 +75,10 @@ app.use('/tweets', tweets);
 app.use('/locations', locations);
 
 const isTest = config.NODE_ENV === 'TEST_LOCAL' || config.NODE_ENV === 'TEST_DOCKER';
-migrate(isTest).then(() => {
+const migrateFn = isTest ? () => {
+  logger.info('skipping migrations');
+} : migrate;
+migrateFn().then(() => {
   server.listen(app.get('port'), async () => {
     // Seed the docker db (Only for docker testing purposes now, delete when proper db env setup)
     if (config.NODE_ENV === 'DEVELOPMENT_DOCKER') {

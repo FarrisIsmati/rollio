@@ -17,7 +17,7 @@ module.exports = {
     // just an example - doesn't actually change anything
     bulkUpdates.push({
       updateOne: {
-        filter: { numTrucks: 1 },
+        filter: { name: '1' },
         update: {
           $set: {
             numTrucks: 1,

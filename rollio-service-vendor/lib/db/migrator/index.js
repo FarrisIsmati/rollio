@@ -1,21 +1,19 @@
 const { MongoClient } = require('mongodb');
 const mongoDbLock = require('mongodb-lock');
 const Migrator = require('./Migrator.js');
+const migrationRegistry = require('./list-of-migrations');
 const { MONGO_CONNECT } = require('../../../config');
 
 const timeoutDuration = 2 * 60 * 1000; // 2 mins
 
 
-module.exports = async (isTest) => {
-  if (isTest) {
-    return [];
-  }
-  const client = new MongoClient(MONGO_CONNECT, {
+module.exports = async ({ url = MONGO_CONNECT, locksCollection, migrations = migrationRegistry } = {}) => {
+  const client = new MongoClient(url || MONGO_CONNECT, {
     useNewUrlParser: true, // non-ideal way to upgrade APIs but *shrug*
     useUnifiedTopology: true,
     poolSize: 1,
   });
-  const migrator = new Migrator(client);
+  const migrator = new Migrator(client, migrations);
 
   let cleanedUp = false;
 
@@ -62,7 +60,7 @@ module.exports = async (isTest) => {
      */
   const acquireLock = function () {
     const db = client.db();
-    const coll = db.collection('_locks');
+    const coll = db.collection(locksCollection || '_locks');
     const lockName = 'application-migrations';
 
     // Lock object for migrations.
