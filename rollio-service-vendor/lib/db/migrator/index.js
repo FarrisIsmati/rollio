@@ -1,7 +1,7 @@
 const { MongoClient } = require('mongodb');
 const mongoDbLock = require('mongodb-lock');
 const Migrator = require('./Migrator.js');
-const migrationRegistry = require('./list-of-migrations');
+const migrationRegistry = require('./migrations');
 const { MONGO_CONNECT } = require('../../../config');
 
 const timeoutDuration = 2 * 60 * 1000; // 2 mins
