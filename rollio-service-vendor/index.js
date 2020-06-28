@@ -10,6 +10,7 @@ const socketIO = require('./lib/sockets/index');
 const config = require('./config');
 const seed = require('./lib/db/mongo/seeds/dev-seed');
 const logger = require('./lib/log/index')('index');
+const migrate = require('./lib/db/migrator');
 
 const server = http.createServer(app);
 socketIO.setIOServer(server);
@@ -73,19 +74,23 @@ app.use('/api', login);
 app.use('/tweets', tweets);
 app.use('/locations', locations);
 
-server.listen(app.get('port'), async () => {
-  // Seed the docker db (Only for docker testing purposes now, delete when proper db env setup)
-  if (config.NODE_ENV === 'DEVELOPMENT_DOCKER') {
-    await seed.runSeed();
-  }
+const isTest = config.NODE_ENV === 'TEST_LOCAL' || config.NODE_ENV === 'TEST_DOCKER';
+migrate(isTest).then(() => {
+  server.listen(app.get('port'), async () => {
+    // Seed the docker db (Only for docker testing purposes now, delete when proper db env setup)
+    if (config.NODE_ENV === 'DEVELOPMENT_DOCKER') {
+      await seed.runSeed();
+    }
 
-  // Send init vendor twitterIDs via RabbitMQ to Twitter Service
-  if (config.NODE_ENV !== 'TEST_LOCAL' && config.NODE_ENV !== 'TEST_DOCKER') {
-    logger.info(`Server on port: ${app.get('port')}`);
-    receiveVendorsRequest.receiveRequest();
-    receiveVendorLocation.receiveTweets();
-  }
+    // Send init vendor twitterIDs via RabbitMQ to Twitter Service
+    if (!isTest) {
+      logger.info(`Server on port: ${app.get('port')}`);
+      receiveVendorsRequest.receiveRequest();
+      receiveVendorLocation.receiveTweets();
+    }
+  });
 });
+
 
 // For testing
 module.exports = { app };
