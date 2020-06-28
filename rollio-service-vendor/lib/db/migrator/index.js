@@ -6,15 +6,17 @@ const { MONGO_CONNECT } = require('../../../config');
 
 const timeoutDuration = 2 * 60 * 1000; // 2 mins
 
-
-module.exports = async ({ url = MONGO_CONNECT, locksCollection, migrations = migrationRegistry } = {}) => {
+module.exports = async ({
+  url = MONGO_CONNECT,
+  migrations = migrationRegistry,
+  locksCollection = '_locks',
+} = {}) => {
   const client = new MongoClient(url || MONGO_CONNECT, {
     useNewUrlParser: true, // non-ideal way to upgrade APIs but *shrug*
     useUnifiedTopology: true,
     poolSize: 1,
   });
   const migrator = new Migrator(client, migrations);
-
   let cleanedUp = false;
 
   /**
@@ -30,20 +32,11 @@ module.exports = async ({ url = MONGO_CONNECT, locksCollection, migrations = mig
     if (cleanedUp) {
       return;
     }
-
     await migrator.dispose().catch((err) => {
       console.error(err);
+    }).finally(() => {
+      cleanedUp = true;
     });
-
-    cleanedUp = true;
-    // return Promise.all([
-    //   new Promise(res => migrator.dispose(() => {
-    //     res(); // ignoring shutdown error and just resolving
-    //   })),
-    //   client.close(),
-    // ]).then(() => {
-    //   cleanedUp = true;
-    // });
   };
 
   /**
@@ -60,7 +53,7 @@ module.exports = async ({ url = MONGO_CONNECT, locksCollection, migrations = mig
      */
   const acquireLock = function () {
     const db = client.db();
-    const coll = db.collection(locksCollection || '_locks');
+    const coll = db.collection(locksCollection);
     const lockName = 'application-migrations';
 
     // Lock object for migrations.

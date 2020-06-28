@@ -1,4 +1,4 @@
-const { get } = require('lodash');
+const { get, cloneDeep } = require('lodash');
 const logger = require('../../../lib/log/index')('migrations');
 
 class Migrator {
@@ -9,57 +9,28 @@ class Migrator {
     this._result = {};
     this._client = client;
     this._connectionPromise = null;
+    this._migrationsCollectionUpdatePromises = [];
     this._db = null; // defined after connected
+    this._result = {};
     this._timeout = 60 * 1000; // 1 minute
     this._logger = logger;
   }
 
-  /**
-     * @public
-     *
-     * @param {function} done callback when finished, traditional node cb(err, res) style
-     */
-  migrate(done) {
-    this._runWhenReady(done);
+  allDone(done, err) {
+    // eslint-disable-next-line no-unused-expressions
+    err
+      ? this._logger.error(`migrations finished with ${err}`)
+      : this._logger.info('migrations finished successfully');
+    return Promise.all(this._migrationsCollectionUpdatePromises)
+      .then(() => {
+        this._runInProgress = false;
+        return done(err, this._result);
+      })
+      .catch((error) => {
+        this._runInProgress = false;
+        done(error, this._result);
+      });
   }
-
-  /**
-     * Alias for Migrator.prototype.migrate
-     *
-     * @public
-     */
-  up() {
-    this.migrate.apply(this, arguments);
-  }
-
-  /**
-     * Clean up connections
-     *
-     * @public
-     *
-     * @param {function} cb node-style callback
-     */
-  // dispose(cb) {
-  //   if (this._isDisposed) {
-  //     return cb(new Error('already called migrator.dispose'));
-  //   }
-  //   this._isDisposed = true;
-  //
-  //   // the client is not connected—bail.
-  //   if (!this._db) {
-  //     return cb(null);
-  //   }
-  //
-  //   // close the client connection.
-  //   return this._client
-  //     .close(true)
-  //     .then(() => {
-  //       delete this._db;
-  //       cb(null);
-  //     })
-  //     .catch(cb);
-  // }
-
 
   // cleanup
   dispose() {
@@ -85,13 +56,6 @@ class Migrator {
       });
   }
 
-  /**
-     * Initiate the connection to the database
-     *
-     * @private
-     *
-     * @return {Promise->null} resovles once connected to the database
-     */
   _connect() {
     if (!this._connectionPromise) {
       this._connectionPromise = this._client.isConnected() ? Promise.resolve() : this._client.connect();
@@ -102,11 +66,6 @@ class Migrator {
     return this._connectionPromise;
   }
 
-  /**
-     * @private
-     *
-     * @return {mongodb.Collection} the mongodb collection object
-     */
   _collection() {
     if (!this._db) {
       throw new Error('must call this._connect before calling this._collection');
@@ -114,7 +73,7 @@ class Migrator {
     return this._db.collection('_migrations');
   }
 
-  _runWhenReady(cb) {
+  migrate(cb) {
     // Guard to make sure this hasn't been disposed of yet.
     if (this._isDisposed) {
       return cb(new Error('This migrator is disposed and cannot be used any more'));
@@ -126,6 +85,33 @@ class Migrator {
       .catch(cb);
   }
 
+  recordMigrationSuccess(migration, message) {
+    this._migrationsRun[migration.id] = true;
+    this._migrationsCollectionUpdatePromises.push(
+      this._collection().insertOne({
+        id: migration.id,
+        started: migration.started,
+        finished: new Date(),
+        message: message || '',
+      }),
+    );
+  }
+
+  migrationDone(res, migration) {
+    this._result[migration.id] = res;
+    const { status } = res;
+    if (status === 'ok') {
+      this._logger.info(`${migration.id}: ok ${res.message ? `with message ${res.message}` : ''}`);
+      return this.recordMigrationSuccess(migration, get(res, 'message', ''));
+    }
+    if (status === 'skip') {
+      this._logger.info(`${migration.id}: SKIP with reason ${res.reason || 'unknown'}`);
+    } else {
+      this._logger.error(`${migration.id} finished with error ${res.error || new Error('unknown failure')}`);
+    }
+  }
+
+
   _run(done) {
     // safeguard in case called while already in progress
     if (this._runInProgress) {
@@ -134,118 +120,34 @@ class Migrator {
     this._runInProgress = true;
 
     // determine which migrations to run based on current state.
-    this._result = {};
-    const migrationsToRun = this._migrations.slice(0);
+    const migrationsToRun = cloneDeep(this._migrations);
     this._logger.info(`Running ${migrationsToRun.length}`);
 
-    /**
-         * Setups some initial state
-         */
     let i = 0;
     const totalMigrationsToRun = migrationsToRun.length;
-    const migrationsCollection = this._collection();
-    const migrationsCollectionUpdatePromises = [];
 
-    /**
-         * Call when a single migration finishes running.
-         *
-         * @param {string} id  the id of the migration that ran
-         * @param {string} message optional message to save
-         */
-    const recordMigrationSuccess = (migration, message) => {
-      this._migrationsRun[migration.id] = true;
-      migrationsCollectionUpdatePromises.push(
-        migrationsCollection.insertOne({
-          id: migration.id,
-          started: migration.started,
-          finished: new Date(),
-          message: message || '',
-        }),
-      );
-    };
-
-    /**
-         * Called when _all_ migrations have run.
-         *
-         * @param {Error} [err] an error
-         */
-    const allDone = (err) => {
-      // eslint-disable-next-line no-unused-expressions
-      err
-        ? this._logger.error(`migrations finished with ${err}`)
-        : this._logger.info('migrations finished successfully');
-      return Promise.all(migrationsCollectionUpdatePromises)
-        .then(() => {
-          this._runInProgress = false;
-          return done(err, this._result);
-        })
-        .catch((error) => {
-          this._runInProgress = false;
-          done(error, this._result);
-        });
-    };
-
-    /**
-         * Recursive function that iterates through the available migrations
-         * one at a time.
-         */
     const runNext = () => {
       // Stop the recursion.
       if (i >= totalMigrationsToRun) {
-        return allDone();
+        return this.allDone(done);
       }
       const migration = migrationsToRun[i];
 
       // increment recursion index.
       i += 1;
 
-      /**
-             * Handle a migration finishing. This can be called when the migration
-             * runs succesffuly or is skipped.
-             *
-             * @param {object} res the response from the migration
-             * @param {string} [res.message] an message to record in the DB on success
-             */
-      const migrationDone = (res) => {
-        this._result[migration.id] = res;
-
-        // TODO: logging based on statuses.
-        switch (res.status) {
-          case 'error':
-            this._logger.error(`${migration.id} finished with error ${res.error || new Error('unknown failure')}`);
-            break;
-          case 'skip':
-            this._logger.info(`${migration.id}: SKIP with reason ${res.reason || 'unknown'}`);
-            break;
-          case 'ok':
-            this._logger.info(`${migration.id}: ok ${res.message ? `with message ${res.message}` : ''}`);
-            break;
-        }
-
-        if (res.status === 'ok') {
-          return recordMigrationSuccess(migration, get(res, 'message', ''));
-        }
-      };
-
       let isCallbackCalled = false;
       const timeoutId = setTimeout(() => {
-        let err;
         isCallbackCalled = true;
-        err = new Error('migration timed-out');
-        migrationDone({
+        const err = new Error('migration timed-out');
+        this.migrationDone({
           status: 'error',
           reason: 'migration timed out',
           error: err,
-        });
-        return allDone(err);
+        }, migration);
+        return this.allDone(done, err);
       }, this._timeout);
 
-      /**
-             * Handle the migration run finishing.
-             *
-             * @param {Error}  [err]  the error from attempting to the run the migration
-             * @param {string} [message] data from the migration run.
-             */
       const handleMigrationFinished = (err, data) => {
         // if isCallbackCalled is truthy, then the migration
         // finished after the migration timed out. Skip any
@@ -260,17 +162,17 @@ class Migrator {
 
         // the migration encountered an error.
         if (err) {
-          migrationDone({
+          this.migrationDone({
             status: 'error',
             reason: 'encountered an error during migration',
             error: err,
-          });
+          }, migration);
 
           // abort any following migrations instead of trying to run the next one.
-          return allDone(err);
+          return this.allDone(done, err);
         }
         // success!
-        migrationDone(data);
+        this.migrationDone(data, migration);
 
         // recurse to next one.
         return runNext();
