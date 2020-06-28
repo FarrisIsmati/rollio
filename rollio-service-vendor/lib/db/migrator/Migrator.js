@@ -2,7 +2,7 @@ const { get, cloneDeep } = require('lodash');
 const logger = require('../../../lib/log/index')('migrations');
 
 class Migrator {
-  constructor(client, migrations) {
+  constructor({ client, migrations, timeout }) {
     this._isDisposed = false;
     this._migrations = migrations;
     this._migrationsRun = {};
@@ -12,7 +12,7 @@ class Migrator {
     this._migrationsCollectionUpdatePromises = [];
     this._db = null; // defined after connected
     this._result = {};
-    this._timeout = 60 * 1000; // 1 minute
+    this._timeout = timeout || 60 * 1000; // 1 minute
     this._logger = logger;
   }
 
