@@ -135,6 +135,7 @@ export interface MapDefaultState {
     vendorsDisplayedSingle: { [key: string]: Pin },
     vendorsDisplayedGroup: { [key: string]: GroupPin },
     activeFilters: Filter[],
+    temporarilySelected: string,
     previouslySelected: SelectedMarker[],
     currentlySelected: SelectedMarker[]
 }

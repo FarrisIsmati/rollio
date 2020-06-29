@@ -21,7 +21,7 @@ import {
 
 // Create Marker Style
 const createMapMarker = (props: CreateMapMarkerProps) => {
-    const { vendor, vendors, selected, onClickVendor } = props;
+    const { vendor, vendors, selected, onClickVendor, key} = props;
 
     const mapMarkerEl = document.createElement('div');
 
@@ -40,11 +40,10 @@ const createMapMarker = (props: CreateMapMarkerProps) => {
     // Perform vendor selection action when click on element
     if (onClickVendor) {
         mapMarkerEl.onclick = () => {
-            // ACTION CURRENTLY ONLY WORKS FOR SINGLE VENDORS
             if (vendor) {
                 onClickVendor(vendor.id);
             } else if (vendors) {
-                onClickVendor(vendors);
+                onClickVendor(key);
             }
         }
     }
@@ -68,11 +67,11 @@ const addSingleVendorToMap = (props: AddSingleVendorToMapProps) => {
 
 // Adds a grouped pin marker to map
 const addGroupedVendorsToMap = (props: AddGroupedVendorsToMapProps) => {
-    const {vendors, location, map, selected, onClickVendor } = props;
+    const {vendors, location, map, selected, onClickVendor, key } = props;
     // [lng,lat]
     const coordinates:[number, number] = [location.coordinates.long, location.coordinates.lat];
     // Add marker to map
-    const marker = new mapboxgl.Marker(createMapMarker({ vendors, selected, location, onClickVendor }))
+    const marker = new mapboxgl.Marker(createMapMarker({ vendors, selected, location, onClickVendor, key }))
         .setLngLat(coordinates)
         .addTo(map);
 
@@ -144,7 +143,7 @@ const useMapMarkers = (props: any) => {
                     const [firstVendorId, truckNum] = vendorsGroup.vendors[0].vendorId.split('-');
                     const {vendors, selected} = vendorsGroup;
                     const location = getCurrentTruckLocation(firstVendorId, toNumber(truckNum), vendorsData);
-                    acc[key] = addGroupedVendorsToMap({vendors, location, map, selected, onClickVendor: selectGroupedVendors });
+                    acc[key] = addGroupedVendorsToMap({vendors, location, map, selected, onClickVendor: selectGroupedVendors, key});
                     return acc;
                 }, {});
                 setGroupVendorMarkers(groupVendorMarkersTemp)

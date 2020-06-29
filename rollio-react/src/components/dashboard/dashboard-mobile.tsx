@@ -22,6 +22,31 @@ import useToggleVendorMenuOnScreenSwitch from './hooks/use-toggle-vendor-dashboa
 
 // TO DO: ONCE NAVBAR IS SET PERMANATLEY THEN SET HEIGHT TO A PERCENTAGE OF WIDNOWHEIGHT - NAVBAR HEIGHT
 
+// Components
+const createDashboardTopBar = (props: any) => {
+    const {state, topRef, dispatch, isDashboardExpanded, title} = props;
+    return <div ref={topRef} className="dashboard_mobile__topbar_wrapper">
+    <div className="dashboard_mobile__topbar">
+        <div className="dashboard_mobile__topbar_text">
+            <h2 className="font__dashboard_topbar">{title}</h2>
+            { isDashboardExpanded ? 
+                <i className="material-icons-outlined" onClick={()=>{dispatch(toggleMobileDashboard())}}>close</i> : 
+                <i className="material-icons-outlined" onClick={()=>{
+                    // If there is a currently selected vendor, deselect it then bring the vendor menu back
+                    if (state.regionMap.currentlySelected.id) {
+                        dispatch(
+                            deselectAllVendors({cb:() => dispatch(toggleMobileDashboard())}));
+                    // Else just bring the vendor menu back
+                    } else {
+                        dispatch(toggleMobileDashboard());
+                    }
+                }}>keyboard_arrow_up</i> 
+            }
+        </div>
+    </div>
+</div>
+}
+
 const DashboardMobile:FC = () => {
     // Hooks
     const state = useGetAppState();
@@ -36,7 +61,7 @@ const DashboardMobile:FC = () => {
     const { isDashboardExpanded, expandedDashboardStyle, contractedDashboardStyle} = useSetDashboardMenuStyle();
     // Does vendor profile height size animation based on scroll position
     const { vendorLinksHeight, properHeight } = useSetMobileMenuHeightOnScroll({topRef, expandedDashboardStyle})
-
+    console.log(state)
     return (
         // Mobile resize this flex centers
         <div className="dashboard_mobile" style={isDashboardExpanded ? {...expandedDashboardStyle, height: properHeight} : contractedDashboardStyle} >
@@ -44,31 +69,15 @@ const DashboardMobile:FC = () => {
             <VendorProfileMobile ref={topRef}/>
 
             <div className="dashboard_mobile__content_wrapper">
-
-                <div ref={topRef} className="dashboard_mobile__topbar_wrapper">
-                    <div className="dashboard_mobile__topbar">
-                        <div className="dashboard_mobile__topbar_text">
-                            <h2 className="font__dashboard_topbar">Food Trucks</h2>
-                            { isDashboardExpanded ? 
-                                <i className="material-icons-outlined" onClick={()=>{dispatch(toggleMobileDashboard())}}>close</i> : 
-                                <i className="material-icons-outlined" onClick={()=>{
-                                    // If there is a currently selected vendor, deselect it then bring the vendor menu back
-                                    if (state.regionMap.currentlySelected.id) {
-                                        dispatch(
-                                            deselectAllVendors({cb:() => dispatch(toggleMobileDashboard())}));
-                                    // Else just bring the vendor menu back
-                                    } else {
-                                        dispatch(toggleMobileDashboard());
-                                    }
-                                }}>keyboard_arrow_up</i> 
-                            }
-                        </div>
-                    </div>
-                </div>
-
                 { state.ui.isGroupSelectMenuActive  ? 
-                    <DashboardGroupSelectMenu { ...{vendorLinksHeight, refs: [topRef]} } /> :
                     <React.Fragment>
+                        { createDashboardTopBar({state, topRef, dispatch, isDashboardExpanded, title: 'lol'}) }
+                        <DashboardGroupSelectMenu { ...{vendorLinksHeight, refs: [topRef]} } />
+                    </React.Fragment>
+                     :
+                    <React.Fragment>
+                        { createDashboardTopBar({state, topRef, dispatch, isDashboardExpanded, title: 'Food Trucks'}) }
+
                         <TwoOptionSwitch
                             onClick={ (opt:string)=>{ dispatch(setDashboardVendorsDisplay(opt === 'a' ? 'active' : 'all')) } }
                             vendorTypeName={ 'Trucks' } 

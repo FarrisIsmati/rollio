@@ -7,6 +7,7 @@ import {
   SET_VENDORS_DISPLAYED_SINGLE,
   SET_VENDORS_DISPLAYED_GROUP,
   SET_REGION_MAP_VENDOR,
+  SET_TEMPORARILY_SELECTED_GROUP,
   SET_PREVIOUSLY_SELECTED_REGION_MAP,
   SET_CURRENTLY_SELECTED_REGION_MAP
 } from "../constants/constants"
@@ -15,6 +16,7 @@ const defaultState:MapDefaultState = {
   vendorsDisplayedSingle: {},
   vendorsDisplayedGroup: {},
   activeFilters: [],
+  temporarilySelected: '',
   previouslySelected: [],
   currentlySelected: []
 }
@@ -77,6 +79,11 @@ export function mapReducer(state = defaultState, action: any) {
     }
 
     return payload
+  case SET_TEMPORARILY_SELECTED_GROUP:
+    return {
+      ...state,
+      temporarilySelected: action.payload.id
+    }
   case SET_PREVIOUSLY_SELECTED_REGION_MAP:
     return {
       ...state,
