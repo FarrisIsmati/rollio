@@ -8,7 +8,7 @@ import useGetMenuLinks from './hooks/use-get-links';
 import useGetAppState from '../common/hooks/use-get-app-state';
 
 const DashboardGroupSelectMobile = React.forwardRef((props:any, ref:any) => {
-  const links = useGetMenuLinks();
+  const links = useGetMenuLinks();// CREATE NEW GET GROUP MENU LINKS
 
   const { vendorLinksHeight, refs } = props;
 

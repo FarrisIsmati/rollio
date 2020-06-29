@@ -61,7 +61,13 @@ const DashboardMobile:FC = () => {
     const { isDashboardExpanded, expandedDashboardStyle, contractedDashboardStyle} = useSetDashboardMenuStyle();
     // Does vendor profile height size animation based on scroll position
     const { vendorLinksHeight, properHeight } = useSetMobileMenuHeightOnScroll({topRef, expandedDashboardStyle})
-    console.log(state)
+
+    let groupVendorsCount = 0;
+    // Number of vendors in currently selected group
+    if (state.regionMap.temporarilySelected) {
+        groupVendorsCount = state.regionMap.vendorsDisplayedGroup[state.regionMap.temporarilySelected].vendors.length;
+    }
+
     return (
         // Mobile resize this flex centers
         <div className="dashboard_mobile" style={isDashboardExpanded ? {...expandedDashboardStyle, height: properHeight} : contractedDashboardStyle} >
@@ -71,7 +77,7 @@ const DashboardMobile:FC = () => {
             <div className="dashboard_mobile__content_wrapper">
                 { state.ui.isGroupSelectMenuActive  ? 
                     <React.Fragment>
-                        { createDashboardTopBar({state, topRef, dispatch, isDashboardExpanded, title: 'lol'}) }
+                        { createDashboardTopBar({state, topRef, dispatch, isDashboardExpanded, title: `${groupVendorsCount  } Trucks`}) }
                         <DashboardGroupSelectMenu { ...{vendorLinksHeight, refs: [topRef]} } />
                     </React.Fragment>
                      :
