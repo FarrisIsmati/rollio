@@ -7,7 +7,7 @@ import useGetLinksHeight from './hooks/use-get-links-height';
 import useGetMenuLinks from './hooks/use-get-links';
 import useGetAppState from '../common/hooks/use-get-app-state';
 
-const MenuLinks = React.forwardRef((props:any, ref:any) => {
+const MenuLinksMobile = React.forwardRef((props:any, ref:any) => {
   const links = useGetMenuLinks();
 
   const { vendorLinksHeight, refs } = props;
@@ -34,4 +34,4 @@ const MenuLinks = React.forwardRef((props:any, ref:any) => {
   );
 })
 
-export default MenuLinks;
+export default MenuLinksMobile;
