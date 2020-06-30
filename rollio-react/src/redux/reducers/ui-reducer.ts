@@ -43,7 +43,8 @@ export function uiReducer(state = defaultState, action: any) {
         case SET_IS_VENDOR_SELECTED:
             return {
                 ...state,
-                ...action.payload
+                ...action.payload,
+                isGroupSelectMenuActive: false,
             }
         case SET_DASHBOARD_VENDORS_DISPLAY:
             return {

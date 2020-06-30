@@ -75,7 +75,7 @@ const DashboardMobile:FC = () => {
             <VendorProfileMobile ref={topRef}/>
 
             <div className="dashboard_mobile__content_wrapper">
-                { state.ui.isGroupSelectMenuActive  ? 
+                { state.ui.isGroupSelectMenuActive ? 
                     <React.Fragment>
                         { createDashboardTopBar({state, topRef, dispatch, isDashboardExpanded, title: `${groupVendorsCount  } Trucks`}) }
                         <DashboardGroupSelectMenu { ...{vendorLinksHeight, refs: [topRef]} } />

@@ -4,11 +4,11 @@ import { Scrollbars } from 'react-custom-scrollbars';
 
 // HOOKS
 import useGetLinksHeight from './hooks/use-get-links-height';
-import useGetMenuLinks from './hooks/use-get-links';
+import useGetGroupLinks from './hooks/use-get-group-links';
 import useGetAppState from '../common/hooks/use-get-app-state';
 
 const DashboardGroupSelectMobile = React.forwardRef((props:any, ref:any) => {
-  const links = useGetMenuLinks();// CREATE NEW GET GROUP MENU LINKS
+  const links = useGetGroupLinks();// CREATE NEW GET GROUP MENU LINKS
 
   const { vendorLinksHeight, refs } = props;
 
