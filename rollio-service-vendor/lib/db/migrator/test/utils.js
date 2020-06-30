@@ -13,7 +13,7 @@ const getUrl = () => {
 
 const createConnection = async (url) => {
   const client = new MongoClient(url, {
-    useNewUrlParser: true, // non-ideal way to upgrade APIs but *shrug*
+    useNewUrlParser: true,
     useUnifiedTopology: true,
     poolSize: 1,
   });

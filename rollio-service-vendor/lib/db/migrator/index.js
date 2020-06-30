@@ -100,7 +100,7 @@ module.exports = async ({
     return;
   }
   const client = new MongoClient(url || MONGO_CONNECT, {
-    useNewUrlParser: true, // non-ideal way to upgrade APIs but *shrug*
+    useNewUrlParser: true,
     useUnifiedTopology: true,
     poolSize: 1,
   });
