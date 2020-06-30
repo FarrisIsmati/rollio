@@ -91,10 +91,14 @@ const acquireLock = (client, locksCollection) => {
 
 
 module.exports = async ({
+  isTest = false,
   url = MONGO_CONNECT,
   migrations = migrationRegistry,
   locksCollection = '_locks',
 } = {}) => {
+  if (isTest) {
+    return;
+  }
   const client = new MongoClient(url || MONGO_CONNECT, {
     useNewUrlParser: true, // non-ideal way to upgrade APIs but *shrug*
     useUnifiedTopology: true,
