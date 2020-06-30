@@ -59,8 +59,9 @@ const DashboardMobile:FC = () => {
     useToggleVendorMenuOnScreenSwitch();
 
     const { isDashboardExpanded, expandedDashboardStyle, contractedDashboardStyle} = useSetDashboardMenuStyle();
+
     // Does vendor profile height size animation based on scroll position
-    const { vendorLinksHeight, properHeight } = useSetMobileMenuHeightOnScroll({topRef, expandedDashboardStyle})
+    const { vendorLinksHeight, dashboardHeightNormal, dashboardHeightGroups } = useSetMobileMenuHeightOnScroll({topRef, expandedDashboardStyle})
 
     let groupVendorsCount = 0;
     // Number of vendors in currently selected group
@@ -68,9 +69,10 @@ const DashboardMobile:FC = () => {
         groupVendorsCount = state.regionMap.vendorsDisplayedGroup[state.regionMap.temporarilySelected].vendors.length;
     }
 
+
     return (
         // Mobile resize this flex centers
-        <div className="dashboard_mobile" style={isDashboardExpanded ? {...expandedDashboardStyle, height: properHeight} : contractedDashboardStyle} >
+        <div className="dashboard_mobile" style={isDashboardExpanded ? {...expandedDashboardStyle, height: state.ui.isGroupSelectMenuActive ? dashboardHeightGroups : dashboardHeightNormal} : contractedDashboardStyle} >
 
             <VendorProfileMobile ref={topRef}/>
 

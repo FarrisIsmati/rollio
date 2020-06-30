@@ -26,22 +26,25 @@
     
     // Individual Link
     &_link {
-        &__wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 16px;
+        background-color: $color-vendor-dashboard-link-background;
+
+        h2 {
+            font-size: 20px;
+            line-height: 28px;
+            margin-left: 16px;
+        }
+
+        &:hover {
+            background-color: $color-vendor-dashboard-link-background-hover;
+            cursor: pointer;
+        }
+
+        &__details {
             display: flex;
-            align-items: center;
-            padding: 8px 16px;
-            background-color: $color-vendor-dashboard-link-background;
-
-            h2 {
-                font-size: 20px;
-                line-height: 28px;
-                margin-left: 16px;
-            }
-
-            &:hover {
-                background-color: $color-vendor-dashboard-link-background-hover;
-                cursor: pointer;
-            }
         }
 
         &__image {

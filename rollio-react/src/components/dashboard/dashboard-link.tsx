@@ -13,14 +13,19 @@ const MenuLink = (props:MenuLinkProps) => {
 
   return (
     // Mobile resize this flex centers
-    <div onClick={() => { selectVendorProfile(vendorID) }} className="dashboard_link__wrapper"> 
-      <div className="dashboard_link__image_wrapper">
-          <div className="dashboard_link__image">
-            <img alt={`${name} logo`} src={img} />
-          </div>
+    <div onClick={() => { selectVendorProfile(vendorID) }} className="dashboard_link">
+      <div className='flex'>
+        <div className="dashboard_link__image_wrapper">
+            <div className="dashboard_link__image">
+              <img alt={`${name} logo`} src={img} />
+            </div>
+        </div>
+        <div className='flex__center'>
+          <h2 className="font__dashboard_link">{name}</h2>
+        </div>
       </div>
-      <div>
-        <h2 className="font__dashboard_link">{name}</h2>
+      <div className='flex__center'>
+        <i className="material-icons-outlined">keyboard_arrow_right</i> 
       </div>
     </div>
   )
