@@ -504,7 +504,6 @@ export function receiveAllVendors(vendorLookUp: { [key: string]: VendorCard }) {
         type: RECEIVE_ALL_VENDORS,
         payload: {
             ...Object.entries(vendorLookUp).reduce((acc, entry) => {
-                console.log(entry)
                 const [vendorId, vendorInfo] = entry;
                 const {locations} = vendorInfo;
                 const filteredLocations = locations.filter(isLocationActiveOrWillBeActive);

@@ -28,7 +28,7 @@ const RegionDesktop = (props:any) => {
         <DashboardFilterBar ref={dashboardFilterBarRef}/>
 
         <div className='region__content' style={{ height: regionContentHeight }}>
-          <DashboardDesktop/>
+          <DashboardDesktop regionContentHeight={regionContentHeight} />
           { map }
         </div>
     </div>

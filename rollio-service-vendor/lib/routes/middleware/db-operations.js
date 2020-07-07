@@ -147,7 +147,7 @@ const vendorRouteOpsUtil = {
     }, []);
 
     const {
-      _id: id, name, description, categories, consecutiveDaysInactive, profileImageLink, updateDate: lastUpdated, approved,
+      _id: id, name, description, categories, consecutiveDaysInactive, profileImageLink, updateDate: lastUpdated, approved, bannerImageLink,
     } = vendor;
     return {
       id,
@@ -156,6 +156,7 @@ const vendorRouteOpsUtil = {
       categories,
       consecutiveDaysInactive,
       profileImageLink,
+      bannerImageLink,
       locations,
       selected: false,
       lastUpdated,

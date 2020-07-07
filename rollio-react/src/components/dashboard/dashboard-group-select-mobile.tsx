@@ -3,7 +3,7 @@ import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 
 // HOOKS
-import useGetLinksHeight from './hooks/use-get-links-height';
+import useGetHeightDifference from './hooks/use-get-height-difference';
 import useGetGroupLinks from './hooks/use-get-group-links';
 import useGetAppState from '../common/hooks/use-get-app-state';
 
@@ -14,7 +14,7 @@ const DashboardGroupSelectMobile = React.forwardRef((props:any, ref:any) => {
 
   // Hooks
   const state = useGetAppState();
-  const height = useGetLinksHeight(refs, vendorLinksHeight);
+  const height = useGetHeightDifference(refs, vendorLinksHeight);
 
   // Quick variable references
   const isVendorSelected = state.ui.isVendorSelected;
