@@ -4,11 +4,9 @@ import { Scrollbars } from 'react-custom-scrollbars';
 
 // HOOKS
 import useGetLinksHeight from './hooks/use-get-links-height';
-import useGetMenuLinks from './hooks/use-get-links';
 import useGetAppState from '../common/hooks/use-get-app-state';
 
 const MenuLinksDesktop = React.forwardRef((props:any, ref:any) => {
-  const links = useGetMenuLinks();
 
   const { vendorLinksHeight, refs } = props;
 
@@ -29,7 +27,6 @@ const MenuLinksDesktop = React.forwardRef((props:any, ref:any) => {
         ({ style }:any) => <div style={{ ...style, borderRadius: 'inherit', backgroundColor: isVendorSelected ? 'transparent' : 'rgba(0, 0, 0, 0.2)' }} /> 
       }
     >
-      { links }
     </Scrollbars>
   );
 })

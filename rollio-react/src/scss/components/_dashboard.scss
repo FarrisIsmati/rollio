@@ -18,8 +18,10 @@
         filter: drop-shadow(1px 2px 3px $rollioLightGrey);
 
         &_image {
-            width: 56px;
+            width: 100%;
             height: 120px;
+            display: flex;
+            justify-content: center;
 
             &_wrapper {
                 min-width: 56px;

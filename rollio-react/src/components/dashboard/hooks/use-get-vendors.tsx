@@ -3,7 +3,7 @@ import React from 'react';
 
 // COMPONENTS
 import VendorSelectorLink from '../dashboard-menu-link-mobile';
-
+import DashboardCard from '../dashboard-card';
 // HOOKS
 import useGetAppState from '../../common/hooks/use-get-app-state';
 
@@ -11,7 +11,7 @@ import useGetAppState from '../../common/hooks/use-get-app-state';
 import {isActive} from "../../../util";
 
 // Get data from redux state
-const useGetLinks = () => {
+const useGetVendors = (type: string) => {
     const state = useGetAppState();
     let links = null;
     const allVendors = Object.values(state.data.vendorsAll);
@@ -28,11 +28,16 @@ const useGetLinks = () => {
         list = allVendors.filter((vendor:any) => vendor.approved);
       }
       links = list.sort((a:any, b:any) => (a.name > b.name) ? 1 : -1).map((vendor:any) => {
-        return <VendorSelectorLink name={vendor.name} id={vendor.id} img={vendor.profileImageLink} key={vendor.id}/>
+        if (type === 'link') {
+          return <VendorSelectorLink name={vendor.name} id={vendor.id} img={vendor.profileImageLink} key={vendor.id}/>
+        } else if (type === 'card') {
+          return <DashboardCard name={vendor.name} id={vendor.id} img={vendor.bannerImageLink ? vendor.bannerImageLink : vendor.profileImageLink} key={vendor.id}/>
+
+        }
       })
     }
 
     return links ? links : <p>loading</p>
 }
 
-export default useGetLinks;
+export default useGetVendors;

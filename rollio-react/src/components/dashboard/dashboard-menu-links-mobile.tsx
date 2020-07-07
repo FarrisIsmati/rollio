@@ -4,11 +4,11 @@ import { Scrollbars } from 'react-custom-scrollbars';
 
 // HOOKS
 import useGetLinksHeight from './hooks/use-get-links-height';
-import useGetMenuLinks from './hooks/use-get-links';
+import useGetVendors from './hooks/use-get-vendors';
 import useGetAppState from '../common/hooks/use-get-app-state';
 
 const MenuLinksMobile = React.forwardRef((props:any, ref:any) => {
-  const links = useGetMenuLinks();
+  const links = useGetVendors('link');
 
   const { vendorLinksHeight, refs } = props;
 
