@@ -4,7 +4,7 @@ import { useDispatch  } from 'react-redux';
 import { useCallbackRef } from 'use-callback-ref';
 
 // COMPONENTS
-import DashboardLinks from './dashboard-menu-links-mobile';
+import DashboardLinks from './dashboard-menu-links';
 import VendorProfileMobile from '../vendor-profile/vendor-profile-mobile'
 import TwoOptionSwitch from '../common/other/two-option-switch';
 import DashboardGroupSelectMenu from './dashboard-group-select-mobile';

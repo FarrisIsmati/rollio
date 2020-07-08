@@ -2,7 +2,7 @@
 import React from 'react';
 
 // COMPONENTS
-import VendorSelectorLink from '../dashboard-menu-link-mobile';
+import VendorSelectorLink from '../dashboard-menu-link';
 import DashboardCard from '../dashboard-card';
 // HOOKS
 import useGetAppState from '../../common/hooks/use-get-app-state';
