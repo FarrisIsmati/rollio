@@ -2,9 +2,9 @@
 import React, { FC } from 'react';
 import { useDispatch  } from 'react-redux';
 import { useCallbackRef } from 'use-callback-ref';
+import { Scrollbars } from 'react-custom-scrollbars';
 
 // COMPONENTS
-import DashboardLinks from './dashboard-menu-links';
 import VendorProfileMobile from '../vendor-profile/vendor-profile-mobile'
 import TwoOptionSwitch from '../common/other/two-option-switch';
 import DashboardGroupSelectMenu from './dashboard-group-select-mobile';
@@ -16,9 +16,11 @@ import { setDashboardVendorsDisplay } from '../../redux/actions/ui-actions';
 
 // HOOKS
 import useGetAppState from '../common/hooks/use-get-app-state';
+import useGetVendors from './hooks/use-get-vendors';
 import useSetDashboardMenuStyle from './hooks/use-set-mobile-dashboard-style';
 import useSetMobileMenuHeightOnScroll from './hooks/use-set-mobile-dashboard-height-on-scroll';
 import useToggleVendorMenuOnScreenSwitch from './hooks/use-toggle-vendor-dashboard-on-screen-switch';
+import useGetHeightDifference from './hooks/use-get-height-difference';
 
 // TO DO: ONCE NAVBAR IS SET PERMANATLEY THEN SET HEIGHT TO A PERCENTAGE OF WIDNOWHEIGHT - NAVBAR HEIGHT
 
@@ -51,6 +53,10 @@ const DashboardMobile:FC = () => {
     // Hooks
     const state = useGetAppState();
     const dispatch = useDispatch();
+    const links = useGetVendors('link');
+
+    // Quick variable references
+    const isVendorSelected = state.ui.isVendorSelected;
     
     // Refs
     const topRef = useCallbackRef(null, () => {});
@@ -62,6 +68,7 @@ const DashboardMobile:FC = () => {
 
     // Does vendor profile height size animation based on scroll position
     const { vendorLinksHeight, dashboardHeightNormal, dashboardHeightGroups } = useSetMobileMenuHeightOnScroll({topRef, expandedDashboardStyle})
+    const height = useGetHeightDifference([topRef], vendorLinksHeight);
 
     let groupVendorsCount = 0;
     // Number of vendors in currently selected group
@@ -93,7 +100,16 @@ const DashboardMobile:FC = () => {
                             font='font__dashboard_switch'
                         />
 
-                        <DashboardLinks { ...{vendorLinksHeight, refs: [topRef]} } />
+                        <Scrollbars 
+                            className="dashboard_links__wrapper" 
+                            style={{ width: '100%', height: height }} 
+                            // Hide scrollbar when vendor profile is being animated on
+                            renderThumbVertical={            
+                                ({ style }:any) => <div style={{ ...style, borderRadius: 'inherit', backgroundColor: isVendorSelected ? 'transparent' : 'rgba(0, 0, 0, 0.2)' }} /> 
+                            }
+                        >
+                            { links }
+                        </Scrollbars>
                     </React.Fragment>
                 }
             </div>
