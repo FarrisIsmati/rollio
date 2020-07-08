@@ -16,12 +16,12 @@ const DashboardDesktop = (props:any) => {
   
   // Hooks
   const cards = useGetVendors('card');
-  // Height = Height of desktop region - height of the top content - top padding 26px - top margin 24px
-  const height = useGetHeightDifference([topRef], parseInt(regionContentHeight.substring(0, regionContentHeight.length - 2)) - 50 );
+  // Height = Height of desktop region - height of the top content - top margin 24px
+  const height = useGetHeightDifference([topRef], parseInt(regionContentHeight.substring(0, regionContentHeight.length - 2)) - 24 );
 
   return (      
     <div className='dashboard_desktop'>
-      <div ref={topRef} className='dashboard_desktop__top_info'>
+      <div ref={topRef} className='dashboard_desktop__top_info font__dashboard_desktop_topbar'>
         <p>12 Vendors</p>
       </div>
       <Scrollbars 

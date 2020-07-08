@@ -28,7 +28,7 @@ const createDashboardTopBar = (props: any) => {
     return <div ref={topRef} className="dashboard_mobile__topbar_wrapper">
     <div className="dashboard_mobile__topbar">
         <div className="dashboard_mobile__topbar_text">
-            <h2 className="font__dashboard_topbar">{title}</h2>
+            <h2 className="font__dashboard_mobile_topbar">{title}</h2>
             { isDashboardExpanded ? 
                 <i className="material-icons-outlined" onClick={()=>{dispatch(toggleMobileDashboard())}}>close</i> : 
                 <i className="material-icons-outlined" onClick={()=>{

@@ -1,11 +1,12 @@
 .dashboard {
     &_desktop {
-        width: 54.7%;
-        padding: 26px 4px 0px 24px;
+        min-width: 720px;
 
         &__top_info {
             width: 100%;
             margin-bottom: 24px;
+            margin-left: 24px;
+            font-size: 14px;
         }
     }
 
@@ -20,8 +21,9 @@
         background-color: gray;
         border: solid 0px;
         border-radius: 10px;
-        margin-right: 24px;
+        margin-left: 24px;
         margin-bottom: 24px;
+        overflow: hidden;
         filter: drop-shadow(1px 3px 2px $rollioLighterGrey);
 
         &_image {
@@ -35,8 +37,6 @@
                 min-height: 56px;
                 background-color: $color-blank-image;
                 border: solid 0px;
-                border-top-left-radius: 10px;
-                border-top-right-radius: 10px;
             }
 
             img {
@@ -175,7 +175,12 @@
     color: $color-font-main;
 }
 
-.font__dashboard_topbar {
+.font__dashboard_desktop_topbar {
+    @include font-light;
+    color: $color-font-main-light2;
+}
+
+.font__dashboard_mobile_topbar {
     @include font-bold;
     color: $color-font-main;
 }
