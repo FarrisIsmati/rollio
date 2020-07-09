@@ -1,8 +1,13 @@
 export interface MenuLinkProps  {
-    name: string,
-    id: string,
-    img?: string
-  }
+  name: string,
+  id: string,
+  img?: string
+}
+
+export interface DashboardCardProps {
+  vendor: any,
+  img: string
+}
 
 export interface UseToggleVendorDashboardOnScreenSwitchProps {
   expandedDashboardStyle: {
