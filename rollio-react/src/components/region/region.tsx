@@ -10,7 +10,6 @@ import useWindowEffects from '../common/hooks/use-window-size';
 import useLoadRegion from './hooks/use-load-region';
 import useProcessMapPoints from './hooks/use-process-map-points';
 import useUpdateRegionVendorData from './hooks/use-update-region-vendor-data';
-
 import useGetAppState from '../common/hooks/use-get-app-state';
 
 import Map from '../map/map';

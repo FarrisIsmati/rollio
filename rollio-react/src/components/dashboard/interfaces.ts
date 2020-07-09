@@ -6,7 +6,8 @@ export interface MenuLinkProps  {
 
 export interface DashboardCardProps {
   vendor: any,
-  img: string
+  img: string,
+  state?: any
 }
 
 export interface UseToggleVendorDashboardOnScreenSwitchProps {

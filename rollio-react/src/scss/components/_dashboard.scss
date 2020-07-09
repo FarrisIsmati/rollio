@@ -25,9 +25,14 @@
         margin-bottom: 24px;
         overflow: hidden;
         filter: drop-shadow(1px 3px 2px $rollioLighterGrey);
+        cursor: pointer;
 
         &_title {
-            margin: 12px;
+            margin-bottom: 8px;
+
+            h2 {
+                font-size: 16px;
+            }
         }
 
         &_image {
@@ -49,8 +54,9 @@
             }
         }
 
-        &_categories {
-        
+        &_content {
+            padding: 12px;
+
         }
     }
 
@@ -140,6 +146,7 @@
             display: flex;
             align-self: center;
             margin: 0 16px;
+            @extend .noselect;
 
             &_wrapper {
                 display: flex;
@@ -152,6 +159,10 @@
                 width: 100%;
                 justify-content: space-between;
                 align-items: center;
+
+                i {
+                    cursor: pointer;
+                }
             }
         }
     }

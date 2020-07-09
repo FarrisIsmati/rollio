@@ -9,10 +9,14 @@ import DashboardFilterBar from '../dashboard/dashboard-filterbar';
 
 // HOOKS
 import useGetScreenHeightRefDifferenc from '../common/hooks/use-get-screen-height-ref-difference';
+import useGetAppState from '../common/hooks/use-get-app-state';
 
 const RegionDesktop = (props:any) => {
   // Variables
   const { map } = props;
+
+  // Effects
+  const state = useGetAppState();
 
   // Refs
   const navbarDesktopRef = useRef();
@@ -25,7 +29,7 @@ const RegionDesktop = (props:any) => {
   return (
     <div className={ 'region_desktop' }>
         <Navbar ref={navbarDesktopRef}/>
-        <DashboardFilterBar ref={dashboardFilterBarRef}/>
+        <DashboardFilterBar state={state} ref={dashboardFilterBarRef}/>
 
         <div className='region__content' style={{ height: regionContentHeight }}>
           <DashboardDesktop regionContentHeight={regionContentHeight} />

@@ -285,10 +285,15 @@
             justify-content: space-between;
             padding: 8px 16px;
             background-color: $color-vendor-profile-mobile-header;
+            @extend .noselect;
 
             h2 {
                 word-break: break-word;
                 text-align: center;
+            }
+
+            i {
+                cursor: pointer;
             }
         }
 

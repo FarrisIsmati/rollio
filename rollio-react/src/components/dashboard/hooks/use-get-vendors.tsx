@@ -31,7 +31,7 @@ const useGetVendors = (type: string) => {
         if (type === 'link') {
           return <VendorSelectorLink name={vendor.name} id={vendor.id} img={vendor.profileImageLink} key={vendor.id}/>
         } else if (type === 'card') {
-          return <DashboardCard vendor={vendor} img={vendor.bannerImageLink ? vendor.bannerImageLink : vendor.profileImageLink} key={vendor.id}/>
+          return <DashboardCard state={state} vendor={vendor} img={vendor.bannerImageLink ? vendor.bannerImageLink : vendor.profileImageLink} key={vendor.id}/>
 
         }
       })

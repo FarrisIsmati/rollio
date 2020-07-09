@@ -61,7 +61,9 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        
+        @extend .noselect;
+        cursor: pointer;
+
         &_wrapper {
             height: 72px;
             width: 100%;
