@@ -19,7 +19,7 @@ const DashboardDesktop = (props:any) => {
   // Height = Height of desktop region - height of the top content - top margin 24px
   const height = useGetHeightDifference([topRef], parseInt(regionContentHeight.substring(0, regionContentHeight.length - 2)) - 24 );
 
-  return (      
+  return (
     <div className='dashboard_desktop'>
       <div ref={topRef} className='dashboard_desktop__top_info font__dashboard_desktop_topbar'>
         <p>12 Vendors</p>

@@ -1,6 +1,6 @@
 // DEPENDENCIES
 import React from 'react';
-import TwoOptionSwitch from '../common/other/two-option-switch';
+import Switch from '../common/other/switch';
 import { useDispatch  } from 'react-redux';
 
 // ACTIONS
@@ -15,11 +15,12 @@ const DashboardFilterBar = React.forwardRef((props:any, ref:any) =>  {
 
   return (      
     <div className='dashboard__filterbar' ref={ref}>
-      <TwoOptionSwitch
+      <Switch
         onClick={ (opt:string)=>{ dispatch(setDashboardVendorsDisplay(opt === 'a' ? 'active' : 'all')) } }
         vendorTypeName={ 'Trucks' } 
         isOptionA={ state.ui.dashboardVendorsDisplay === 'all' ? true : false } 
         font='font__dashboard_switch'
+        type='round'
       />
     </div>
   );

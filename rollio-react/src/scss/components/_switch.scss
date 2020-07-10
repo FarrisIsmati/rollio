@@ -1,6 +1,6 @@
 
-.twooptionswitch {
-    &__wrapper {
+.switch {
+    &__flat {
         display: flex;
         padding: 0px 16px;
 
@@ -8,42 +8,88 @@
         & div:nth-child(2) {
             padding-left: 16px;
         }
-    }
 
-    &__text {
-        padding-bottom: 14px;
-        border-bottom: 3px solid;
-        border-color: $color-vendor-switch-active;
-        transition: color .2s, border-color .2s;
-
-        h2 {
-            font-size: 20px;
-            line-height: 28px;
-        }
-
-        &:hover {
-            cursor:pointer;
-        }
-
-        &_inactive {
-            // Overwrites font color
-            color: $color-vendor-switch-inactive !important;
+        &_text {
             padding-bottom: 14px;
             border-bottom: 3px solid;
-            border-color: $color-vendor-switch-inactive;;
+            border-color: $color-vendor-switch-active;
             transition: color .2s, border-color .2s;
-
+    
             h2 {
                 font-size: 20px;
                 line-height: 28px;
             }
-
+    
             &:hover {
                 cursor:pointer;
-                color: $color-vendor-switch-active !important;
+            }
+    
+            &_inactive {
+                // Overwrites font color
+                color: $color-vendor-switch-inactive !important;
+                padding-bottom: 14px;
                 border-bottom: 3px solid;
-                border-color: $color-vendor-switch-active;;
+                border-color: $color-vendor-switch-inactive;;
                 transition: color .2s, border-color .2s;
+    
+                h2 {
+                    font-size: 20px;
+                    line-height: 28px;
+                }
+    
+                &:hover {
+                    cursor:pointer;
+                    color: $color-vendor-switch-active !important;
+                    border-bottom: 3px solid;
+                    border-color: $color-vendor-switch-active;;
+                    transition: color .2s, border-color .2s;
+                }
+            }
+        }
+    }
+
+    &__round {
+        display: inline-flex;
+        padding: 0px 16px;
+        border: solid 3px;
+        border-color: $color-switch-round-border;
+        border-radius: 100px;
+        background-color: $color-switch-round-background;
+
+        // Second Text Element
+        & div:nth-child(2) {
+            padding-left: 16px;
+        }
+
+        &_text {
+            border: solid 0px;
+            border-radius: 100px;
+            background-color: $color-switch-round-text-background-active;
+
+            h2 {
+                font-size: 14px;
+                line-height: 24px;
+            }
+    
+            &:hover {
+                cursor:pointer;
+            }
+    
+            &_inactive {
+                // Overwrites font color
+                color: $color-switch-round-text-inactive !important;
+                transition: color .2s, border-color .2s;
+
+                h2 {
+                    font-size: 14px;
+                    line-height: 24px;
+                }
+    
+                &:hover {
+                    cursor:pointer;
+                    color: $color-vendor-switch-active !important;
+                    transition: color .2s, border-color .2s;
+                }
             }
         }
     }

@@ -6,7 +6,7 @@ import { Scrollbars } from 'react-custom-scrollbars';
 
 // COMPONENTS
 import VendorProfileMobile from '../vendor-profile/vendor-profile-mobile'
-import TwoOptionSwitch from '../common/other/two-option-switch';
+import Switch from '../common/other/switch';
 import DashboardGroupSelectMenu from './dashboard-group-select-mobile';
 
 // ACTIONS
@@ -93,11 +93,12 @@ const DashboardMobile:FC = () => {
                     <React.Fragment>
                         { createDashboardTopBar({state, topRef, dispatch, isDashboardExpanded, title: 'Food Trucks'}) }
 
-                        <TwoOptionSwitch
+                        <Switch
                             onClick={ (opt:string)=>{ dispatch(setDashboardVendorsDisplay(opt === 'a' ? 'active' : 'all')) } }
                             vendorTypeName={ 'Trucks' } 
                             isOptionA={ state.ui.dashboardVendorsDisplay === 'all' ? true : false } 
                             font='font__dashboard_switch'
+                            type='flat'
                         />
 
                         <Scrollbars 
