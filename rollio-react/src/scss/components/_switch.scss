@@ -50,7 +50,6 @@
 
     &__round {
         display: inline-flex;
-        padding: 0px 16px;
         border: solid 3px;
         border-color: $color-switch-round-border;
         border-radius: 100px;
@@ -65,6 +64,7 @@
             border: solid 0px;
             border-radius: 100px;
             background-color: $color-switch-round-text-background-active;
+            padding: 4px 9px;
 
             h2 {
                 font-size: 14px;
@@ -79,7 +79,8 @@
                 // Overwrites font color
                 color: $color-switch-round-text-inactive !important;
                 transition: color .2s, border-color .2s;
-
+                padding: 4px 9px;
+                
                 h2 {
                     font-size: 14px;
                     line-height: 24px;
