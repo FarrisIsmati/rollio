@@ -106,6 +106,7 @@ switch (NODE_ENV) {
 const uuidv1 = require('uuid/v1');
 
 const SERVER_ID = uuidv1();
+const isTest = NODE_ENV === 'TEST_LOCAL' || NODE_ENV === 'TEST_DOCKER';
 
 module.exports = {
   NODE_ENV,
@@ -129,4 +130,5 @@ module.exports = {
   MAILGUN_DOMAIN,
   SMTP_PORT,
   CLIENT_DOMAIN,
+  isTest,
 };

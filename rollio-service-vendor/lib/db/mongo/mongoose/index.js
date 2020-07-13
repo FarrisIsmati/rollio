@@ -9,6 +9,7 @@ const { TweetSchema } = require('../schemas/vendor-schema');
 const { LocationSchema } = require('../schemas/vendor-schema');
 const RegionSchema = require('../schemas/region-schema');
 const UserSchema = require('../schemas/user-schema');
+const MigrationSchema = require('../schemas/migration-schema');
 
 dbConnection.model('Vendor', VendorSchema);
 dbConnection.model('Comment', CommentSchema);
@@ -17,5 +18,6 @@ dbConnection.model('Tweet', TweetSchema);
 dbConnection.model('Location', LocationSchema);
 dbConnection.model('Region', RegionSchema);
 dbConnection.model('User', UserSchema);
+dbConnection.model('_Migration', MigrationSchema);
 
 module.exports = dbConnection;
