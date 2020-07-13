@@ -157,5 +157,6 @@ export interface UiDefaultState {
     isMainDropDownMenuExpanded: boolean,
     isGroupSelectMenuActive: boolean,
     isVendorSelected: boolean,
+    showSelectedVendor: boolean
     dashboardVendorsDisplay: string,
 }

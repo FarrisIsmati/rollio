@@ -18,7 +18,7 @@ const VendorProfileCategories = (props:any) => {
     if (vendor.price) {
       Categories.unshift(<Chip key={vendor.price} text={vendor.price}/>)
     }
-    console.log(limit);
+
     // If limit reduce number of returned categories
     if (limit) {
       return <React.Fragment>{Categories.slice(0,limit)}</React.Fragment>;

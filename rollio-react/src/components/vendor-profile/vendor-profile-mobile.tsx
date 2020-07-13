@@ -37,7 +37,7 @@ const VendorProfileMobile = React.forwardRef((props:any, navbarRef)=> {
 
   // Variables
   const isVendorSelected = state.ui.isVendorSelected;
-  const showMobileVendorProfile = isVendorSelected && state.ui.isMobileDashboardExpanded;
+  const showMobileVendorProfile = isVendorSelected && state.ui.showSelectedVendor && state.ui.isMobileDashboardExpanded;
   const isLoaded = state.loadState.isVendorLoaded;
   const vendor = state.data.selectedVendor;
 

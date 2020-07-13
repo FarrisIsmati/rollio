@@ -44,7 +44,7 @@ import {
 } from '../constants/constants'
 
 // ACTIONS
-import { setIsVendorSelected } from './ui-actions';
+import { setIsVendorSelected, setshowSelectedVendor } from './ui-actions';
 import { setRegionMapVendor, setPreviouslySelectedRegionMap, setCurrentlySelectedRegionMap } from './map-actions';
 
 // INTERFACES
@@ -259,7 +259,8 @@ export function deselectAllVendors(props?:{cb?:any, preventIfSameID?: boolean, i
         
         if (stateSelectedVendorID) {
             dispatch(setIsVendorSelected(false));
-    
+            dispatch(setshowSelectedVendor(false));
+
             if (state.regionMap.currentlySelected.length) {
                 const { isSingle, regionMapID } = getRegionMapVendorData({
                     stateRegionMap,
