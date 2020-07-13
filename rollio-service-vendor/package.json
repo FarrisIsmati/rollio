@@ -62,6 +62,8 @@
     "mocha": "^5.2.0",
     "moment": "^2.24.0",
     "mongo-querystring": "^4.1.1",
+    "mongodb": "^3.5.9",
+    "mongodb-lock": "^1.0.1",
     "mongoose": "^5.8.9",
     "morgan": "^1.9.1",
     "node-geocoder": "^3.22.0",
