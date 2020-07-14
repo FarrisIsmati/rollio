@@ -2,6 +2,7 @@
 import React from 'react';
 import { useDispatch  } from 'react-redux';
 import { Scrollbars } from 'react-custom-scrollbars';
+import Modal from 'react-modal';
 
 // COMPONENTS
 import VendorProfileContent from './vendor-profile-content';
@@ -32,29 +33,62 @@ const VendorProfileDesktop = React.forwardRef((props:any, navbarRef)=> {
   // Variables
   const isMobile = windowSizeEffects.useIsMobile();
   const isVendorSelected = state.ui.isVendorSelected;
+  const isOpen = state.ui.showSelectedVendor;
   const isLoaded = state.loadState.isVendorLoaded;
   const vendor = state.data.selectedVendor;
 
-  // Difference between the Desktop and Mobile version is how it scrolls the content
+  // Makes modal fully accessible
+  Modal.setAppElement('#root');
+
+  const customStyles = {
+    overlay: {
+      zIndex: 2
+    },
+    content : {
+      height : '740px',
+      width : '692px',
+      top : '50%',
+      left : '50%',
+      right : 'auto',
+      bottom : 'auto',
+      marginRight : '-50%',
+      transform : 'translate(-50%, -50%)',
+      overflow: 'hidden'
+    }
+  };
+
   return (
-    <div className={isVendorSelected ? 'vendorprofile' : 'vendorprofile__hidden'}>
-      <Scrollbars
-        style={{ width: '432px', height: vendorProfileHeight }}
-        onScroll={handleScroll}
-        // Hide scrollbar when vendor profile is being animated closed
-        renderThumbVertical={
-          ({ style }:any) => <div style={{ ...style, borderRadius: 'inherit', backgroundColor: isVendorSelected ? 'rgba(0, 0, 0, 0.2)' : 'transparent' }} />
-        }>
-        { isLoaded ?
-          <VendorProfileContent
-            isMobile={isMobile}
-            closeVendor={() => dispatch(deselectAllVendors())}
-            findOnMap={(location:any) => { zoomToLocation(location) }}
-            vendor={vendor}
-            state={state} /> :
-          <p>loading...</p>}
-      </Scrollbars>
-    </div>
+    <Modal
+      isOpen={isOpen && isVendorSelected}
+      onAfterOpen={()=>{}}
+      onRequestClose={()=>{}}
+      style={customStyles}
+      contentLabel="Example Modal"
+    >
+      <div className='vendorprofile'>
+        <Scrollbars
+          style={{ width: '432px', height: '300px' }}
+          onScroll={handleScroll}
+          // Hide scrollbar when vendor profile is being animated closed
+          renderThumbVertical={
+            ({ style }:any) => <div style={{ ...style, borderRadius: 'inherit', backgroundColor: isVendorSelected ? 'rgba(0, 0, 0, 0.2)' : 'transparent' }} />
+          }>
+          { isLoaded ?
+            <div>
+              <p>lol</p>
+              <button onClick={()=>{}}>close</button>
+              <VendorProfileContent
+                isMobile={isMobile}
+                closeVendor={() => dispatch(deselectAllVendors())}
+                findOnMap={(location:any) => { zoomToLocation(location) }}
+                vendor={vendor}
+                state={state} />
+            </div>
+            :
+            <p>loading...</p>}
+        </Scrollbars>
+      </div>
+    </Modal>
   );
 });
 
