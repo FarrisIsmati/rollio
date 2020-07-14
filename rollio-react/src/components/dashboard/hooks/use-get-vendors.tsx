@@ -4,8 +4,10 @@ import React from 'react';
 // COMPONENTS
 import VendorSelectorLink from '../dashboard-menu-link';
 import DashboardCard from '../dashboard-card';
+
 // HOOKS
 import useGetAppState from '../../common/hooks/use-get-app-state';
+import useSelectVendorProfile from '../../vendor-profile/hooks/use-select-vendor-profile';
 
 // UTILS
 import {isActive} from "../../../util";

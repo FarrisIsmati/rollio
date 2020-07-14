@@ -16,8 +16,7 @@ const DashboardCard = (props:DashboardCardProps) => {
 
   return (
     // Mobile resize this flex centers
-    // onClick={() => { selectVendorProfile(vendor.id) }}
-    <div  className="dashboard__card">
+    <div  className="dashboard__card" onClick={() => { selectVendorProfile(vendor.id) }}>
       <div className="dashboard__card_image_wrapper">
           <div className="dashboard__card_image">
             <img alt={`${vendor.name} logo`} src={img} />
