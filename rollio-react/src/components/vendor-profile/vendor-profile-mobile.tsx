@@ -55,13 +55,13 @@ const VendorProfileMobile = React.forwardRef((props:any, navbarRef)=> {
                 <div className='flex__center'>
                 <i className="material-icons-outlined"
                     onClick={ () => {
-                    // If there is a currently selected vendor just toggle the menu
-                    if (isActive(vendor)) {
-                        dispatch(toggleMobileDashboard())
-                    // Else deselect the non active vendor and toggle menu (Because this vendor doesn't need to still be selected once the menu is hidden)
-                    } else {
-                        dispatch(deselectAllVendors({cb: () => dispatch(toggleMobileDashboard())}))
-                    }
+                        // If there is a currently selected vendor just toggle the menu
+                        if (isActive(vendor)) {
+                            dispatch(toggleMobileDashboard())
+                        // Else deselect the non active vendor and toggle menu (Because this vendor doesn't need to still be selected once the menu is hidden)
+                        } else {
+                            dispatch(deselectAllVendors({cb: () => dispatch(toggleMobileDashboard())}))
+                        }
                     }
                 } >close</i>
                 </div>
