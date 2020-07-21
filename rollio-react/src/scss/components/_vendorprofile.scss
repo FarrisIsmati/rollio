@@ -1,10 +1,10 @@
 .vendorprofile {
     display: flex;
+    width: 692px;
+    height: 740px;
     flex-direction: column;
-    height: 100%;
     background-color: $color-vendor-profile-background;
     position: fixed;
-    width: 500px;
     transform: translateX(0%);
     z-index: 2;
 

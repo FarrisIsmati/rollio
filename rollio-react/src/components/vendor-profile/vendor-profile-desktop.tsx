@@ -67,23 +67,19 @@ const VendorProfileDesktop = React.forwardRef((props:any, navbarRef)=> {
     >
       <div className='vendorprofile'>
         <Scrollbars
-          style={{ width: '432px', height: '300px' }}
+          style={{ width: '100%', height: '100%' }}
           onScroll={handleScroll}
           // Hide scrollbar when vendor profile is being animated closed
           renderThumbVertical={
             ({ style }:any) => <div style={{ ...style, borderRadius: 'inherit', backgroundColor: isVendorSelected ? 'rgba(0, 0, 0, 0.2)' : 'transparent' }} />
           }>
           { isLoaded ?
-            <div>
-              <p>lol</p>
-              <button onClick={()=>{}}>close</button>
-              <VendorProfileContent
-                isMobile={isMobile}
-                closeVendor={() => dispatch(deselectAllVendors())}
-                findOnMap={(location:any) => { zoomToLocation(location) }}
-                vendor={vendor}
-                state={state} />
-            </div>
+            <VendorProfileContent
+              isMobile={isMobile}
+              closeVendor={() => dispatch(deselectAllVendors())}
+              findOnMap={(location:any) => { zoomToLocation(location) }}
+              vendor={vendor}
+              state={state} />
             :
             <p>loading...</p>}
         </Scrollbars>
