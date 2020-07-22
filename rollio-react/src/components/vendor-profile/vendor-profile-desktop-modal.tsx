@@ -16,7 +16,7 @@ import useMap from '../map/hooks/useMap';
 // ACTIONS
 import { deselectAllVendors } from '../../redux/actions/data-actions';
 
-const VendorProfileDesktop = React.forwardRef((props:any, navbarRef)=> {
+const VendorProfileDesktopModal = React.forwardRef((props:any, navbarRef)=> {
   // Hooks
   const dispatch = useDispatch();
   const state = useGetAppState();
@@ -84,4 +84,4 @@ const VendorProfileDesktop = React.forwardRef((props:any, navbarRef)=> {
   );
 });
 
-export default VendorProfileDesktop;
+export default VendorProfileDesktopModal;

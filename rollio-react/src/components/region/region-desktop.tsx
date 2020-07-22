@@ -2,11 +2,11 @@
 import React, { useRef } from 'react';
   
 // COMPONENTS
-// import Map from '../map/map';
 import DashboardDesktop from '../dashboard/dashboard-desktop';
 import Navbar from '../navbar/navbar-desktop';
 import DashboardFilterBar from '../dashboard/dashboard-filterbar';
-import VendorProfileDesktop from '../vendor-profile/vendor-profile-desktop';
+import VendorProfileDesktopModal from '../vendor-profile/vendor-profile-desktop-modal';
+import DashboardGroupSelectDesktopModal from '../dashboard/dashboard-group-select-desktop-modal';
 
 // HOOKS
 import useGetScreenHeightRefDifferenc from '../common/hooks/use-get-screen-height-ref-difference';
@@ -32,9 +32,10 @@ const RegionDesktop = (props:any) => {
           <DashboardDesktop regionContentHeight={regionContentHeight} />
           { map }
         </div>
-
-        {/* Vendor Profile is here because it's a modal */}
-        <VendorProfileDesktop /> 
+        
+        {/* Region Desktop Modals */}
+        <VendorProfileDesktopModal />
+        <DashboardGroupSelectDesktopModal />
     </div>
   );
 }

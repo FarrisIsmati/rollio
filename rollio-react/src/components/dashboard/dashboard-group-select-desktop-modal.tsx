@@ -7,7 +7,7 @@ import Modal from 'react-modal';
 import useGetGroupLinks from './hooks/use-get-group-links';
 import useGetAppState from '../common/hooks/use-get-app-state';
 
-const DashboardGroupSelectDesktop= React.forwardRef((props:any, ref:any) => {
+const DashboardGroupSelectDesktopModal= React.forwardRef((props:any, ref:any) => {
   const links = useGetGroupLinks();// CREATE NEW GET GROUP MENU LINKS
 
   // Hooks
@@ -59,4 +59,4 @@ const DashboardGroupSelectDesktop= React.forwardRef((props:any, ref:any) => {
   );
 })
 
-export default DashboardGroupSelectDesktop;
+export default DashboardGroupSelectDesktopModal;
