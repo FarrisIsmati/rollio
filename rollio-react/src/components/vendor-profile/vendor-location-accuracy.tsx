@@ -1,6 +1,10 @@
 // DEPENDENCIES
 import React, { ReactElement } from 'react';
+import { useDispatch  } from 'react-redux';
 import { isLocationActive } from "../../util/index";
+
+// ACTIONS
+import { setshowSelectedVendor } from '../../redux/actions/ui-actions';
 
 // HOOKS
 import useUpdateVendorLocationAccuracy from './hooks/use-update-vendor-location-accuracy';
@@ -12,6 +16,9 @@ import { accuracyAsyncStateEnum } from './hooks/interfaces';
 const VendorProfileContentAccuracy = (props:any) => {
     const { state, vendor, findOnMap } = props;
     const { updateVendorLocationAccuracy, accuracyAsyncState } = useUpdateVendorLocationAccuracy(state.data.regionId,state.data.selectedVendor.id, state.data.selectedVendor.locations);
+
+    // Hooks
+    const dispatch = useDispatch();
 
     const vendorAccuracyComponent = (locationID:string, accuracy:number) => {
       return (
@@ -45,7 +52,7 @@ const VendorProfileContentAccuracy = (props:any) => {
               <i className="material-icons-outlined">room</i> 
             </div>
 
-            <p className='vendorprofile__info_detail_address flex__verticle_center' onClick={ () => findOnMap(location) }>
+            <p className='vendorprofile__info_detail_address flex__verticle_center' onClick={ () => onClickAddress(location) }>
               { location.address }
             </p>
             {/* Empty div to properly order row/columns */}
@@ -54,8 +61,15 @@ const VendorProfileContentAccuracy = (props:any) => {
           </div>
       )
 
+      const onClickAddress = (location:any) => {
+        findOnMap(location);
+
+        // If desktop hide modal
+        dispatch(setshowSelectedVendor(false))
+      }
+
       return vendor.locations.filter((location:any) => isLocationActive(location)).map((location:any, i:number) => {
-        return setAddress(<h2 key={location._id} onClick={ () => findOnMap(location) }>{location.address}</h2>, location);
+        return setAddress(<h2 key={location._id} onClick={ () => onClickAddress(location) }>{location.address}</h2>, location);
       })
     }
 

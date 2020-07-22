@@ -3,7 +3,7 @@ import { MapDefaultState } from '../../redux/reducers/interfaces';
 
 export interface MapProps  {
     mapType: string,
-    mapData: MapDefaultState
+    mapData: MapDefaultState,
   }
 
   export interface MapInfoCardProps {

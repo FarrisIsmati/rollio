@@ -44,7 +44,7 @@ import {
 } from '../constants/constants'
 
 // ACTIONS
-import { setIsVendorSelected } from './ui-actions';
+import { setIsVendorSelected, setshowSelectedVendor } from './ui-actions';
 import { setRegionMapVendor, setPreviouslySelectedRegionMap, setCurrentlySelectedRegionMap } from './map-actions';
 
 // INTERFACES
@@ -244,17 +244,23 @@ export function selectVendorAsync(payload:SelectVendorAsyncPayload) {
 
 // Sets all selected vendor states to deselected, resets selectedVender object to original states
 // Doesn't need a payload thanks to previouslySelected Vendor state being stored
-export function deSelectVendor(cb:()=>void = ()=>{}) {
+export function deselectAllVendors(props?:{cb?:any, preventIfSameID?: boolean, id?: string}) {
     return (dispatch:any, getState:any) => {
         const state = getState();
 
         const stateRegionMapCurrentlySelectedID = state.regionMap.currentlySelected.id;
         const stateRegionMap = state.regionMap;
         const stateSelectedVendorID = state.data.selectedVendor.id;
+
+        // Stops deselection action if you are selecting the vendor ID that is already selected
+        if (props && props.preventIfSameID && props.id === stateSelectedVendorID) {
+            return;
+        }
         
         if (stateSelectedVendorID) {
             dispatch(setIsVendorSelected(false));
-    
+            dispatch(setshowSelectedVendor(false));
+
             if (state.regionMap.currentlySelected.length) {
                 const { isSingle, regionMapID } = getRegionMapVendorData({
                     stateRegionMap,
@@ -275,9 +281,11 @@ export function deSelectVendor(cb:()=>void = ()=>{}) {
                 // dispatch(setCurrentlySelectedRegionMap([{ id: '', isSingle: null }]));
                 dispatch(setCurrentlySelectedRegionMap([]));
             }
-    
-            // Any additional code to execute after vendor is deselected
-            cb();
+            
+            if (props && props.cb) {
+                // Any additional code to execute after vendor is deselected
+                props.cb();
+            }
         }
     }
 }

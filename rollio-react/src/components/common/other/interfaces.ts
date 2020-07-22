@@ -1,6 +1,7 @@
-export interface TwoOptionSwitchProps {
+export interface SwitchProps {
     vendorTypeName: string,
     isOptionA: boolean,
     onClick: (e:any)=>any, 
-    font:string
+    font: string,
+    type: string
 }

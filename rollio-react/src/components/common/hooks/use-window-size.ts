@@ -1,5 +1,5 @@
 // DEPENDENCIES
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 const effects = {
     useWindowWidth() {

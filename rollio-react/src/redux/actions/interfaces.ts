@@ -83,6 +83,10 @@ export interface SetRegionMapVendorPayload {
   }
 }
 
+export interface SetTemporarilySelectedGroupPayload {
+  id: string
+}
+
 export interface SetPreviouslySelectedRegionMapPayload {
   [index: number]: { id: string, isSingle?: boolean | null }
 }

@@ -8,7 +8,7 @@ import useGetAppState from '../common/hooks/use-get-app-state';
 // ACTIONS
 import { toggleMainDropDownMenu } from '../../redux/actions/ui-actions';
 
-const RegionNavbar = React.forwardRef((props:any, ref:any) => {
+const NavbarMobile = React.forwardRef((props:any, ref:any) => {
   // Hooks
   const dispatch = useDispatch();
   const state = useGetAppState();
@@ -19,24 +19,24 @@ const RegionNavbar = React.forwardRef((props:any, ref:any) => {
   return (
       // Mobile resize this flex centers
     <div ref={ref} className="navbar__wrapper"> 
-        <div className="navbar__content_wrapper">
+        <div className="navbar__content">
           <div>
             <h1 className="font__navbar">ROLLIO</h1>
           </div>
 
-          { isMainDropDownMenuExpanded ?
-            <div onClick={() => dispatch(toggleMainDropDownMenu())} className="navbar__icon_close">
-              <i className="material-icons-outlined">close</i>
-            </div> :
-            <div onClick={() => dispatch(toggleMainDropDownMenu())} className="navbar__icon">
-              <i className="material-icons-outlined">menu</i>
-            </div>
-          }
-
+          <div className="navbar_mobile__menu">
+            { isMainDropDownMenuExpanded ?
+              <div onClick={() => dispatch(toggleMainDropDownMenu())} className="navbar__icon_close">
+                <i className="material-icons-outlined">close</i>
+              </div> :
+              <div onClick={() => dispatch(toggleMainDropDownMenu())} className="navbar__icon">
+                <i className="material-icons-outlined">menu</i>
+              </div>
+            }
+          </div>
         </div>
     </div>
   );
 })
 
-
-export default RegionNavbar;
+export default NavbarMobile;

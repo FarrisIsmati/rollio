@@ -12,6 +12,7 @@ import useShowInfoCard from './hooks/useShowInfoCard';
 import useGetInfoCardData from './hooks/useGetInfoCardData';
 import useMapMarkers from './hooks/useMapMarkers';
 import useGlobalState from '../common/hooks/use-global-state';
+import useWindowSize from '../common/hooks/use-window-size';
 
 // CONFIG
 import { MAPBOX_API_KEY } from '../../config'
@@ -27,7 +28,8 @@ const Map = (props: MapProps) => {
   const mapContainer = useRef<any>(null);
   const showInfoCard = useShowInfoCard();
   const infoCardData = useGetInfoCardData();
-  
+  const isMobile = useWindowSize.useIsMobile();
+
   useEffect(() => {
     //@ts-ignore
     mapboxgl.accessToken = MAPBOX_API_KEY;
@@ -41,24 +43,36 @@ const Map = (props: MapProps) => {
       });
 
       map.on("load", () => {
-        setGlobalState({ map });
+        setGlobalState({ ...globalState, map: map });
         map.resize();
       });
+
     };
 
     // If that map has not been rendered, render it
-    if (!globalState.map) initializeMap({ mapContainer });
-  }, [globalState.map])
+    if ( !mapContainer.current.classList.contains('mapboxgl-map')) {
+      initializeMap({ mapContainer })
+    }
 
+    return () => {
+      if (globalState.map) {
+        globalState.map.remove();
+      }
+      setGlobalState({ ...globalState, map: null });
+    }
+  }, [])
+  
   // Should reupdate everytime the map updates
   useMapMarkers({...props, map: globalState.map, mapMarkerElement})
 
   return (
-    <div className='map__wrapper'>
-      {/* Map OVerlay only for mobile */}
+    <div className={isMobile ? 'map_mobile' : 'map_desktop'}>
+      {/* Map Overlay only for mobile */}
       <MapOverlay />
-      {/*  Show if currentlySelected && !isMobileDashboardExpanded */}
+
+      {/* Show Info Card only for mobile */}
       { showInfoCard ? <MapInfoCard name={ infoCardData.name } profileImageLink={ infoCardData.profileImageLink } onClick={ infoCardData.onClick } /> : null }
+
       <div ref={el => (mapContainer.current = el)}></div>
     </div>
   );

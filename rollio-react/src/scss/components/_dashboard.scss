@@ -1,7 +1,70 @@
 .dashboard {
-    &__wrapper {
-        margin-top: 16px;
-        width: $vendor-dashboard-width;
+    &_desktop {
+        min-width: 720px;
+
+        &__top_info {
+            width: 100%;
+            margin-bottom: 24px;
+            margin-left: 24px;
+            font-size: 14px;
+        }
+    }
+
+    &__cards {
+        display: flex;
+        flex-wrap: wrap;    
+    }
+
+    &__card {
+        width: 322px;
+        height: 248px;
+        background-color: $white;
+        border: solid 0px;
+        border-radius: 10px;
+        margin-left: 24px;
+        margin-bottom: 24px;
+        overflow: hidden;
+        filter: drop-shadow(1px 3px 2px $rollioLighterGrey);
+        cursor: pointer;
+
+        &_title {
+            margin-bottom: 8px;
+
+            h2 {
+                font-size: 16px;
+            }
+        }
+
+        &_image {
+            width: 100%;
+            height: 120px;
+            display: flex;
+            justify-content: center;
+
+            &_wrapper {
+                min-width: 56px;
+                min-height: 56px;
+                background-color: $white;
+                border: solid 0px;
+            }
+
+            img {
+                max-width: 100%;
+                max-height: 100%;
+            }
+        }
+
+        &_content {
+            padding: 12px;
+
+        }
+    }
+
+    &__filterbar {
+        box-sizing: border-box;
+        height: 56px;
+        width: 100%;
+        padding: 0px 20px;
     }
 
     &__title_wrapper {
@@ -20,22 +83,25 @@
     
     // Individual Link
     &_link {
-        &__wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 16px;
+        background-color: $color-vendor-dashboard-link-background;
+
+        h2 {
+            font-size: 20px;
+            line-height: 28px;
+            margin-left: 16px;
+        }
+
+        &:hover {
+            background-color: $color-vendor-dashboard-link-background-hover;
+            cursor: pointer;
+        }
+
+        &__details {
             display: flex;
-            align-items: center;
-            padding: 8px 16px;
-            background-color: $color-vendor-dashboard-link-background;
-
-            h2 {
-                font-size: 20px;
-                line-height: 28px;
-                margin-left: 16px;
-            }
-
-            &:hover {
-                background-color: $color-vendor-dashboard-link-background-hover;
-                cursor: pointer;
-            }
         }
 
         &__image {
@@ -62,14 +128,12 @@
 
     // MOBILE
     &_mobile {
-        &__wrapper {
-            height: 56px;
-            width: 100%;
-            background-color: white;
-            position: fixed;
-            z-index: 4;
-            bottom: 0;
-        }
+        height: 56px;
+        width: 100%;
+        background-color: white;
+        position: fixed;
+        z-index: 4;
+        bottom: 0;
 
         &__content_wrapper {
             display: flex;
@@ -82,6 +146,7 @@
             display: flex;
             align-self: center;
             margin: 0 16px;
+            @extend .noselect;
 
             &_wrapper {
                 display: flex;
@@ -94,7 +159,25 @@
                 width: 100%;
                 justify-content: space-between;
                 align-items: center;
+
+                i {
+                    cursor: pointer;
+                }
             }
+        }
+    }
+
+    &_group_select_mobile {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        background-color: $color-vendor-profile-background;
+        position: fixed;
+        width: 100%;
+        z-index: 2;
+
+        &__hidden {
+            display: none;
         }
     }
 }
@@ -106,12 +189,22 @@
     color: $color-font-main;
 }
 
+.font__dashboard_card_title {
+    @include font-bold;
+    color: $color-font-main;
+}
+
 .font__dashboard_switch {
     @include font-bold;
     color: $color-font-main;
 }
 
-.font__dashboard_topbar {
+.font__dashboard_desktop_topbar {
+    @include font-light;
+    color: $color-font-main-light2;
+}
+
+.font__dashboard_mobile_topbar {
     @include font-bold;
     color: $color-font-main;
 }

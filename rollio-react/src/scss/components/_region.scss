@@ -1,18 +1,11 @@
 .region {
-    &__wrapper {
+    &_desktop &_mobile{
         display: flex;
-        height: 100%;
+        flex-direction: column;
     }
 
-    // MOBILE
-    &_mobile {
-        &__wrapper {
-            @extend .region__wrapper;
-            flex-direction: column;
-        }
-
-        &__map_wrapper {
-            height: calc(100% - #{$map-mobile-bottom-margin + $map-mobile-bottom-margin});
-        }
+    &__content {
+        display: flex;
+        height: 100%;
     }
 }

@@ -7,7 +7,7 @@ import Comments from '../comments/comment-section';
 import VendorProfileContentItemToggle from './vendor-profile-content-item-toggle';
 import Tweet from '../twitter/Tweet';
 import VendorProfileCategories from './vendor-profile-categories';
-import VendorProfileContentAccuracy from './vendor-profile-content-accuracy';
+import VendorLocationAccuracy from './vendor-location-accuracy';
 
 // HOOKS
 import useToggleComponents from './hooks/use-toggle-components';
@@ -75,17 +75,17 @@ const VendorProfileContent = (props:VendorProfileContentProps) => {
           <div className='vendorprofile__info_wrapper'>
             {/* Locations */}
             { vendor.locations.filter((location:any) => isLocationActive(location)).length ?
-            <React.Fragment>
-              <div className='vendorprofile__info_row'>
-                <div className='vendorprofile__info_text_wrapper font__vendor_profile_info flex__verticle_center'>
-                  <h2>Locations</h2>
+              <React.Fragment>
+                <div className='vendorprofile__info_row'>
+                  <div className='vendorprofile__info_text_wrapper font__vendor_profile_info flex__verticle_center'>
+                    <h2>Locations</h2>
+                  </div>
                 </div>
-              </div>
 
-              <div className={`vendorprofile__info_row_expanded font__vendor_profile_info_desc`}>
-                  <VendorProfileContentAccuracy state={state} vendor={vendor} findOnMap={findOnMap}/>
-              </div>
-            </React.Fragment> :
+                <div className='vendorprofile__info_row_expanded font__vendor_profile_info_desc'>
+                    <VendorLocationAccuracy state={state} vendor={vendor} findOnMap={findOnMap}/>
+                </div>
+              </React.Fragment> :
               null
             }
 

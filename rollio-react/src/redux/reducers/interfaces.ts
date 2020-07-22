@@ -135,6 +135,7 @@ export interface MapDefaultState {
     vendorsDisplayedSingle: { [key: string]: Pin },
     vendorsDisplayedGroup: { [key: string]: GroupPin },
     activeFilters: Filter[],
+    temporarilySelected: string,
     previouslySelected: SelectedMarker[],
     currentlySelected: SelectedMarker[]
 }
@@ -154,6 +155,8 @@ export interface LoadStateDefaultState {
 export interface UiDefaultState {
     isMobileDashboardExpanded: boolean,
     isMainDropDownMenuExpanded: boolean,
+    isGroupSelectMenuActive: boolean,
     isVendorSelected: boolean,
+    showSelectedVendor: boolean
     dashboardVendorsDisplay: string,
 }

@@ -12,8 +12,7 @@ import { toggleMainDropDownMenu } from '../../../redux/actions/ui-actions';
 const useSetMainMenu = (props:any) => {
     const { menuRef } = props;
 
-    // Hooks
-    const dispatch = useDispatch();
+    const dispatch = useDispatch();    
     const state = useGetAppState();
 
     // Hides menu if click event outside menu

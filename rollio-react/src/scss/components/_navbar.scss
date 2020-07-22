@@ -7,11 +7,25 @@
         background-color: $color-background-nav;
     }
 
-    &__content_wrapper {
+    &__content {
         display: flex;
         justify-content: space-between;
         width: 100%;
         margin: 0 16px;
+    }
+
+    &__menu {
+        display: flex;
+        align-items: center;
+
+        h1 {
+            margin-left: 34px;
+            font-size: 16px;
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
     }
 
     &__icon {
@@ -60,4 +74,9 @@
 .font__navbar {
     @include font-black;
     color: $color-font-alt;
+}
+
+.font__navbar_menu_desktop {
+    @include font-black;
+    color: $color-font-main;
 }

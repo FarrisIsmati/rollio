@@ -29,8 +29,8 @@ const stringifyCoordinates = (coordinates: {lat:number, long:number}) => {
 // Currently only groups points if they are at the same exact coordinate
 // Only setup for initial load, not accounting for changes to the map like FILTERS YET
 const useProcessMapPoints = (props:any) => {
-    // Hooks
     const dispatch = useDispatch();
+    
     const state = useGetAppState();
 
     const allVendors = state.data.vendorsAll;

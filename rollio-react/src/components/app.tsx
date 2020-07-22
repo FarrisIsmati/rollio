@@ -19,7 +19,7 @@ import rootReducer from '../redux/reducers/root-reducer';
 import {fetchUserAsync} from "../redux/actions/user-actions";
 
 // COMPONENTS
-import RegionHome from './region/region-home';
+import Region from './region/region';
 import PageInvalid from './error/page-invalid';
 import PermissionDenied from './error/permission-denied';
 import LoginOut from './authentication/login-out';
@@ -31,9 +31,11 @@ import UnapprovedVendorTable from "./admin/unapproved-vendor-table";
 import UpdateLocation from './tweets/update-tweet-location'
 import LocationEditor from './locations/location-editor'
 
+
 const loggerMiddleware = createLogger();
 
 const App:FC = () => {
+  // Redux
   const store = createStore(
       rootReducer,
       applyMiddleware(
@@ -43,7 +45,8 @@ const App:FC = () => {
   );
   const { dispatch } = store;
   const { user } = store.getState();
-
+  
+  // Hooks
   useEffect(() => {
     if (localStorage.token && !user.isAuthenticated) {
       fetchUserAsync()(dispatch);
@@ -55,7 +58,7 @@ const App:FC = () => {
       <BrowserRouter>
         <div className="App">
           <Switch>
-            <Route exact path="/region/:regionName" component={ RegionHome } />
+            <Route exact path="/region/:regionName" component={ Region } /> :
             {/* <Route exact path="/region/:regionId/vendor/:vendorId" component={ VendorProfile } /> */}
             <Route exact path="/login" component={ () => <LoginOut isLogin={true}/> } />
             <Route exact path="/signup" component={ () => <LoginOut isLogin={false}/> } />

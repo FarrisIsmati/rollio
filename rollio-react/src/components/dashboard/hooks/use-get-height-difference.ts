@@ -1,7 +1,7 @@
 // DEPENDENCIES
 import { useEffect, useLayoutEffect, useState } from 'react';
 
-const useGetLinksHeight = (refs:any[], vendorSelectorLinksHeight:number) => {
+const useGetHeightDifference = (refs:any[], vendorSelectorLinksHeight:number) => {
     const [height, setHeight] = useState('0px');
 
     // Reducer sums up the total offSetHeight of all refs passed in as an arugment to the refs array
@@ -24,4 +24,4 @@ const useGetLinksHeight = (refs:any[], vendorSelectorLinksHeight:number) => {
     return height
 }
 
-export default useGetLinksHeight;
+export default useGetHeightDifference;
