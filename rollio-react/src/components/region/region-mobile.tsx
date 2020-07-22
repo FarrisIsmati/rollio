@@ -12,36 +12,30 @@ import useSetMainMenu from '../menu/hooks/use-set-main-menu';
 import useGetScreenHeightRefDifferenc from '../common/hooks/use-get-screen-height-ref-difference';
 
 const RegionMobile = (props:any) => {
-  // Effects
+  const { map } = props;
+
   const state = useGetAppState();
 
-  // Variables
-  const { map } = props;
   const showMenu = state.ui.isMainDropDownMenuExpanded
 
   // Refs
   const navbarRef = useRef();
   const menuRef = useRef();
-  useSetMainMenu({menuRef});
 
-  // On Render height sizing
-  // Gets height of content area minus ref heights
-  const regionContentHeight = useGetScreenHeightRefDifferenc(navbarRef) + 'px';
+  useSetMainMenu({menuRef});
+  const MenuItem = showMenu ? <Menu ref={menuRef} /> : null
+
+  const regionContentHeight = useGetScreenHeightRefDifferenc(navbarRef) + 'px'; // Gets height of content area minus ref heights
 
   return (
     <div className='region_mobile'>
-        <React.Fragment>
-          <Navbar ref={navbarRef} />
-            <div className='region_mobile__map_wrapper' style={{ height: regionContentHeight }}>
-              { 
-                showMenu ?
-                  <Menu ref={menuRef} /> :
-                  null
-              }
-              { map }
-            </div>
-          <DashboardMobile />
-        </React.Fragment> 
+      <Navbar ref={navbarRef} />
+        <div className='region_mobile__map_wrapper' style={{ height: regionContentHeight }}>
+          { MenuItem }
+          { map }
+        </div>
+        
+      <DashboardMobile />
     </div>
   );
 }

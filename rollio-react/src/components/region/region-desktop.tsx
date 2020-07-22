@@ -13,19 +13,15 @@ import useGetScreenHeightRefDifferenc from '../common/hooks/use-get-screen-heigh
 import useGetAppState from '../common/hooks/use-get-app-state';
 
 const RegionDesktop = (props:any) => {
-  // Variables
   const { map } = props;
 
-  // Effects
   const state = useGetAppState();
 
   // Refs
   const navbarDesktopRef = useRef();
   const dashboardFilterBarRef = useRef();
 
-  // On Render height sizing
-  // Gets height of content area minus ref heights
-  const regionContentHeight = useGetScreenHeightRefDifferenc(navbarDesktopRef, dashboardFilterBarRef) + 'px';
+  const regionContentHeight = useGetScreenHeightRefDifferenc(navbarDesktopRef, dashboardFilterBarRef) + 'px'; // Gets height of content area minus ref heights
 
   return (
     <div className={ 'region_desktop' }>
@@ -37,7 +33,8 @@ const RegionDesktop = (props:any) => {
           { map }
         </div>
 
-        <VendorProfileDesktop />
+        {/* Vendor Profile is here because it's a modal */}
+        <VendorProfileDesktop /> 
     </div>
   );
 }

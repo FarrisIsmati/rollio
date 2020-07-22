@@ -6,16 +6,15 @@ import { useEffect } from 'react';
 import { useDispatch  } from 'react-redux';
 import { toNumber } from 'lodash';
 
+// HOOKS
+import useGlobalState from '../../common/hooks/use-global-state';
+
 // ACTIONS
 import {
     updateVendorsAll,
     addTweetToSelectedVendorTweetHistory,
     updateSelectedVendorLocations,
 } from '../../../redux/actions/data-actions';
-
-// HOOKS
-import useGlobalState from '../../common/hooks/use-global-state';
-import useGetAppState from '../../common/hooks/use-get-app-state';
 
 // CONFIG
 import { VENDOR_API } from '../../../config';
@@ -24,11 +23,8 @@ import { VENDOR_API } from '../../../config';
 const socket = socketIOClient(VENDOR_API);
 
 const useUpdateRegionVendorData = () => {
-    // Hooks
-    const state = useGetAppState();
     const dispatch = useDispatch();
 
-    // Global State
     const [globalState, setGlobalState] = useGlobalState();
 
     useEffect(() => {
