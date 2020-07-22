@@ -10,7 +10,7 @@ import useGetAppState from '../common/hooks/use-get-app-state';
 const DashboardGroupSelectDesktopModal= React.forwardRef((props:any, ref:any) => {
   const state = useGetAppState();
 
-  const links = useGetGroupLinks();// CREATE NEW GET GROUP MENU LINKS
+  const links = useGetGroupLinks(); // CREATE NEW GET GROUP MENU LINKS
 
   const isVendorSelected = state.ui.isVendorSelected;
   const isOpen = state.ui.isGroupSelectMenuActive;
