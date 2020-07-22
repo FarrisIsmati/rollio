@@ -1,11 +1,11 @@
 // DEPENDENCIES
 import React from 'react';
 
-// INTERFACES
-import { MenuLinkProps } from './interfaces';
-
 // HOOKS
 import useSelectVendorProfile from '../vendor-profile/hooks/use-select-vendor-profile';
+
+// INTERFACES
+import { MenuLinkProps } from './interfaces';
 
 const MenuLink = (props:MenuLinkProps) => {
   const { name, id: vendorID, img } = props;

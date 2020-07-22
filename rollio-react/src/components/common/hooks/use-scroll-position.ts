@@ -5,7 +5,6 @@ const useScrollPosition = (args:{ scrollRef?:any, isLoaded:boolean, cb?:any }) =
     // Use scrollref only for traditional scrolling
     const { scrollRef, isLoaded, cb } = args;
 
-
     const prevScrollHeight:any = useRef(0);
     const prevScrollDir:any = useRef('');
     const prevScrollTimeStamp:any = useRef(0);

@@ -8,19 +8,17 @@ import useGetGroupLinks from './hooks/use-get-group-links';
 import useGetAppState from '../common/hooks/use-get-app-state';
 
 const DashboardGroupSelectDesktopModal= React.forwardRef((props:any, ref:any) => {
-  const links = useGetGroupLinks();// CREATE NEW GET GROUP MENU LINKS
-
-  // Hooks
   const state = useGetAppState();
 
-  // Quick variable references
+  const links = useGetGroupLinks();// CREATE NEW GET GROUP MENU LINKS
+
   const isVendorSelected = state.ui.isVendorSelected;
   const isOpen = state.ui.isGroupSelectMenuActive;
 
   // Makes modal fully accessible
   Modal.setAppElement('#root');
 
-  const customStyles = {
+  const customModalStyle = {
     overlay: {
       zIndex: 2
     },
@@ -42,8 +40,8 @@ const DashboardGroupSelectDesktopModal= React.forwardRef((props:any, ref:any) =>
       isOpen={isOpen}
       onAfterOpen={()=>{}}
       onRequestClose={()=>{}}
-      style={customStyles}
-      contentLabel="Example Modal"
+      style={customModalStyle}
+      contentLabel="Grouped Vendors"
     >
       <Scrollbars
         className={'dashboard_group_select_mobile'}

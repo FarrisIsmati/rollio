@@ -9,20 +9,18 @@ import VendorProfileMobile from '../vendor-profile/vendor-profile-mobile'
 import Switch from '../common/other/switch';
 import DashboardGroupSelectMenu from './dashboard-group-select-mobile';
 
-// ACTIONS
-import { toggleMobileDashboard } from '../../redux/actions/ui-actions';
-import { deselectAllVendors } from '../../redux/actions/data-actions';
-import { setDashboardVendorsDisplay } from '../../redux/actions/ui-actions';
-
 // HOOKS
 import useGetAppState from '../common/hooks/use-get-app-state';
-import useGetVendors from './hooks/use-get-vendors';
+import useGetVendorLinks from './hooks/use-get-vendors-links';
 import useSetDashboardMenuStyle from './hooks/use-set-mobile-dashboard-style';
 import useSetMobileMenuHeightOnScroll from './hooks/use-set-mobile-dashboard-height-on-scroll';
 import useToggleVendorMenuOnScreenSwitch from './hooks/use-toggle-vendor-dashboard-on-screen-switch';
 import useGetHeightDifference from './hooks/use-get-height-difference';
 
-// TO DO: ONCE NAVBAR IS SET PERMANATLEY THEN SET HEIGHT TO A PERCENTAGE OF WIDNOWHEIGHT - NAVBAR HEIGHT
+// ACTIONS
+import { toggleMobileDashboard } from '../../redux/actions/ui-actions';
+import { deselectAllVendors } from '../../redux/actions/data-actions';
+import { setDashboardVendorsDisplay } from '../../redux/actions/ui-actions';
 
 // Components
 const createDashboardTopBar = (props: any) => {
@@ -50,12 +48,12 @@ const createDashboardTopBar = (props: any) => {
 }
 
 const DashboardMobile:FC = () => {
-    // Hooks
+
     const state = useGetAppState();
     const dispatch = useDispatch();
-    const links = useGetVendors('link');
 
-    // Quick variable references
+    const links = useGetVendorLinks('link');
+
     const isVendorSelected = state.ui.isVendorSelected;
     
     // Refs
@@ -66,16 +64,16 @@ const DashboardMobile:FC = () => {
 
     const { isDashboardExpanded, expandedDashboardStyle, contractedDashboardStyle} = useSetDashboardMenuStyle();
 
-    // Does vendor profile height size animation based on scroll position
     const { vendorLinksHeight, dashboardHeightNormal, dashboardHeightGroups } = useSetMobileMenuHeightOnScroll({topRef, expandedDashboardStyle})
+
     const height = useGetHeightDifference([topRef], vendorLinksHeight);
 
-    let groupVendorsCount = 0;
     // Number of vendors in currently selected group
+    let groupVendorsCount = 0;
+
     if (state.regionMap.temporarilySelected) {
         groupVendorsCount = state.regionMap.vendorsDisplayedGroup[state.regionMap.temporarilySelected].vendors.length;
     }
-
 
     return (
         // Mobile resize this flex centers
@@ -120,4 +118,3 @@ const DashboardMobile:FC = () => {
 }
 
 export default DashboardMobile;
-// FIGURE OUT PROFILE IMAGE LAYER ISSUE

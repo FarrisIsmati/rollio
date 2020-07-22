@@ -4,13 +4,13 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import { useCallbackRef } from 'use-callback-ref';
 
 // HOOKS
-import useGetVendors from './hooks/use-get-vendors';
+import useGetVendorLinks from './hooks/use-get-vendors-links';
 import useGetHeightDifference from './hooks/use-get-height-difference';
 
 const DashboardDesktop = (props:any) => {
   const { regionContentHeight } = props;
 
-  const cards = useGetVendors('card');
+  const cards = useGetVendorLinks('card');
 
   // Refs
   const topRef = useCallbackRef(null, () => {});

@@ -6,7 +6,6 @@ import { useDispatch  } from 'react-redux';
 // ACTIONS
 import { setDashboardVendorsDisplay } from '../../redux/actions/ui-actions';
 
-
 const DashboardFilterBar = React.forwardRef((props:any, ref:any) =>  {
   const { state } = props;
   
