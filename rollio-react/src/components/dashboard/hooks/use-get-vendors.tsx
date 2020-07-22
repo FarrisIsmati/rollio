@@ -7,39 +7,43 @@ import DashboardCard from '../dashboard-card';
 
 // HOOKS
 import useGetAppState from '../../common/hooks/use-get-app-state';
-import useSelectVendorProfile from '../../vendor-profile/hooks/use-select-vendor-profile';
 
 // UTILS
 import {isActive} from "../../../util";
 
 // Get data from redux state
-const useGetVendors = (type: string) => {
+const useGetVendors:any = (type: string) => {
+
     const state = useGetAppState();
-    let links = null;
-    const allVendors = Object.values(state.data.vendorsAll);
+
+    const allVendors:any = Object.values(state.data.vendorsAll);
 
     if (allVendors.length) {
-      let list:any[] = [];
+      let list:Element[] = [];
       const dashboardVendorsDisplayState = state.ui.dashboardVendorsDisplay;
 
-      // Links are dependent on menu state
-      // May be changed if used else where than single menu
+      // Get vendors based on menu state
       if (dashboardVendorsDisplayState === 'active') {
         list = allVendors.filter(isActive);
       } else if (dashboardVendorsDisplayState === 'all') {
         list = allVendors.filter((vendor:any) => vendor.approved);
       }
-      links = list.sort((a:any, b:any) => (a.name > b.name) ? 1 : -1).map((vendor:any) => {
+
+      const vendorsFormatted:(JSX.Element | never[])[] = list.sort((a:any, b:any) => (a.name > b.name) ? 1 : -1).map((vendor:any) => {
         if (type === 'link') {
           return <VendorSelectorLink name={vendor.name} id={vendor.id} img={vendor.profileImageLink} key={vendor.id}/>
         } else if (type === 'card') {
           return <DashboardCard state={state} vendor={vendor} img={vendor.bannerImageLink ? vendor.bannerImageLink : vendor.profileImageLink} key={vendor.id}/>
-
+        } else {
+          return []
         }
       })
+
+      return vendorsFormatted ? vendorsFormatted : <p>loading</p>
+    } else {
+      return <p>loading</p>
     }
 
-    return links ? links : <p>loading</p>
 }
 
 export default useGetVendors;

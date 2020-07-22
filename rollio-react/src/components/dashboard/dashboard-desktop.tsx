@@ -4,7 +4,6 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import { useCallbackRef } from 'use-callback-ref';
 
 // HOOKS
-import useGetAppState from '../common/hooks/use-get-app-state';
 import useGetVendors from './hooks/use-get-vendors';
 import useGetHeightDifference from './hooks/use-get-height-difference';
 
@@ -12,7 +11,6 @@ const DashboardDesktop = (props:any) => {
   const { regionContentHeight } = props;
 
   const cards = useGetVendors('card');
-  const state = useGetAppState();
 
   // Refs
   const topRef = useCallbackRef(null, () => {});
@@ -24,7 +22,7 @@ const DashboardDesktop = (props:any) => {
     <div className='dashboard_desktop'>
 
       <div ref={topRef} className='dashboard_desktop__top_info font__dashboard_desktop_topbar'>
-        <p>12 Vendors</p>
+        <p>{cards.length} Vendors</p>
       </div>
       <Scrollbars
         className="dashboard_desktop__scrollbar" 
