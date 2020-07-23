@@ -1,8 +1,11 @@
 // DEPENDENCIES
 import React from 'react';
+import { LOADING_COLOR } from '../../common/constants/style_constants';
 
 // COMPONENTS
 import VendorSelectorLink from '../dashboard-menu-link';
+import ReactLoading from 'react-loading';
+
 
 // HOOKS
 import useGetAppState from '../../common/hooks/use-get-app-state';
@@ -27,9 +30,9 @@ const useGetGroupLinks = () => {
         })
       }
   
-      return links ? links : <p>loading</p>
+      return links ? links : <ReactLoading type={'spokes'} color={LOADING_COLOR} height={64} width={64} />
     } else {
-      return <p>loading</p>
+      return <ReactLoading type={'spokes'} color={LOADING_COLOR} height={64} width={64} />
     }
 }
 
