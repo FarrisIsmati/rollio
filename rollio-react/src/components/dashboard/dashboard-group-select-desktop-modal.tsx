@@ -2,13 +2,18 @@
 import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import Modal from 'react-modal';
+import { useDispatch  } from 'react-redux';
 
 // HOOKS
 import useGetGroupLinks from './hooks/use-get-group-links';
 import useGetAppState from '../common/hooks/use-get-app-state';
 
+// ACTIONS
+import { toggleGroupSelectMenu } from '../../redux/actions/ui-actions';
+
 const DashboardGroupSelectDesktopModal= React.forwardRef((props:any, ref:any) => {
   const state = useGetAppState();
+  const dispatch = useDispatch();
 
   const links = useGetGroupLinks(); // CREATE NEW GET GROUP MENU LINKS
 
@@ -17,6 +22,12 @@ const DashboardGroupSelectDesktopModal= React.forwardRef((props:any, ref:any) =>
 
   // Makes modal fully accessible
   Modal.setAppElement('#root');
+
+  let vendorsCount = 0;
+
+  if (links.length) {
+    vendorsCount = links.length;
+  }
 
   const customModalStyle = {
     overlay: {
@@ -31,7 +42,8 @@ const DashboardGroupSelectDesktopModal= React.forwardRef((props:any, ref:any) =>
         bottom : 'auto',
         marginRight : '-50%',
         transform : 'translate(-50%, -50%)',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        padding: 0
     }
   };
 
@@ -43,8 +55,14 @@ const DashboardGroupSelectDesktopModal= React.forwardRef((props:any, ref:any) =>
       style={customModalStyle}
       contentLabel="Grouped Vendors"
     >
+      <div className='dashboard__group_select_topbar_desktop font__dashboard_desktop_group_select'>
+        <p>{vendorsCount} Vendors</p>
+
+        <i className="material-icons-outlined" onClick={ () => { dispatch(toggleGroupSelectMenu()) } } >close</i>
+      </div>
+
       <Scrollbars
-        className={'dashboard_group_select_mobile'}
+        className={'dashboard__group_select'}
         style={{ width: '400px', height: '300px' }} 
         // Hide scrollbar when vendor profile is being animated on
         renderThumbVertical={            

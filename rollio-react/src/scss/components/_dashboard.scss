@@ -169,17 +169,28 @@
         }
     }
 
-    &_group_select_mobile {
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-        background-color: $color-vendor-profile-background;
-        position: fixed;
-        width: 100%;
-        z-index: 2;
+    &__group {
+        &_select {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            background-color: $color-vendor-profile-background;
+            position: fixed;
+            width: 100%;
+            z-index: 2;
+    
+            &__hidden {
+                display: none;
+            }
 
-        &__hidden {
-            display: none;
+            &_topbar_desktop {
+                @extend .flex__center_space_between;
+                padding: 8px 16px;
+                
+                i:hover {
+                    cursor: pointer;
+                }
+            }
         }
     }
 }
@@ -204,6 +215,11 @@
 .font__dashboard_desktop_topbar {
     @include font-light;
     color: $color-font-main-light2;
+}
+
+.font__dashboard_desktop_group_select {
+    @include font-bold;
+    color: $color-font-main;
 }
 
 .font__dashboard_mobile_topbar {

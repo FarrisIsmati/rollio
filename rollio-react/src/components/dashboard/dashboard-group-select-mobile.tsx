@@ -22,7 +22,7 @@ const DashboardGroupSelectMobile = React.forwardRef((props:any, ref:any) => {
   return (
     // Mobile resize this flex centers
     <Scrollbars
-      className={'dashboard_group_select_mobile'}
+      className={'dashboard__group_select'}
       style={{ width: '100%', height: height }} 
       // Hide scrollbar when vendor profile is being animated on
       renderThumbVertical={            
