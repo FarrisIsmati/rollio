@@ -2,9 +2,11 @@
 import React, { useRef } from 'react';
 import { useDispatch  } from 'react-redux';
 import { Scrollbars } from 'react-custom-scrollbars';
+import { LOADING_COLOR } from '../common/constants/style_constants';
 
 // COMPONENTS
 import VendorProfileContent from './vendor-profile-content';
+import ReactLoading from 'react-loading';
 
 // HOOKS
 import useGetAppState from '../common/hooks/use-get-app-state';
@@ -78,7 +80,7 @@ const VendorProfileMobile = React.forwardRef((props:any, navbarRef)=> {
                         state={state} 
                     />
                 </Scrollbars>
-                </React.Fragment> : <p>loading...</p>
+                </React.Fragment> : <div className='flex__center_full_height'><ReactLoading type={'spokes'} color={LOADING_COLOR} height={64} width={64} /></div>
             }
         </div>
     );
