@@ -44,7 +44,8 @@ const VendorProfileDesktopModal = React.forwardRef((props:any, navbarRef)=> {
       bottom : 'auto',
       marginRight : '-50%',
       transform : 'translate(-50%, -50%)',
-      overflow: 'hidden'
+      overflow: 'hidden',
+      padding: 0
     }
   };
 
@@ -56,6 +57,9 @@ const VendorProfileDesktopModal = React.forwardRef((props:any, navbarRef)=> {
       style={customModalStyle}
       contentLabel="Profile"
     >
+      <div className="vendorprofile__close_wrapper">
+          <i className="material-icons-outlined" onClick={() => dispatch(deselectAllVendors())}>close</i>
+      </div>
       <div className='vendorprofile'>
         <Scrollbars
           style={{ width: '100%', height: '100%' }}
@@ -66,7 +70,6 @@ const VendorProfileDesktopModal = React.forwardRef((props:any, navbarRef)=> {
           { isLoaded ?
             <VendorProfileContent
               isMobile={isMobile}
-              closeVendor={() => dispatch(deselectAllVendors())}
               findOnMap={(location:any) => { zoomToLocation(location) }}
               vendor={vendor}
               state={state} />

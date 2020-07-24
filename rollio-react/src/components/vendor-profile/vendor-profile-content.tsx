@@ -14,7 +14,6 @@ import useToggleComponents from './hooks/use-toggle-components';
 
 interface VendorProfileContentProps  {
     isMobile: boolean,
-    closeVendor?: any,
     findOnMap: any,
     vendor: any,
     state: any
@@ -22,8 +21,6 @@ interface VendorProfileContentProps  {
 
 const VendorProfileContent = (props:VendorProfileContentProps) => {
     const { 
-      isMobile, 
-      closeVendor, 
       findOnMap, 
       vendor, 
       state,
@@ -46,23 +43,12 @@ const VendorProfileContent = (props:VendorProfileContentProps) => {
     });
 
     return (
-        <React.Fragment>
-        {/* Show or don't show close out X in profile image depending on Mobile or Desktop */}
-          { isMobile ?
-            <div className='vendorprofile__image_wrapper'>
-                <div className='vendorprofile__image'>
-                    <img alt={`${vendor.name} logo`} src={vendor.bannerImageLink} />
-                </div>
-            </div> :
-            <div className='vendorprofile__image_wrapper'>
-                <div className='vendorprofile__image'>
-                <div className="vendorprofile__close_wrapper">
-                    <i className="material-icons-outlined" onClick={closeVendor}>close</i>
-                </div>
-                <img alt={`${vendor.name} logo`} src={vendor.bannerImageLink} />
-                </div>
-            </div>
-          }
+        <React.Fragment>         
+          <div className='vendorprofile__image_wrapper'>
+              <div className='vendorprofile__image'>
+                  <img alt={`${vendor.name} logo`} src={vendor.bannerImageLink} />
+              </div>
+          </div> 
 
           <div className='font__vendor_profile_title vendorprofile__title_wrapper'>
             <h2>{vendor.name}</h2>
