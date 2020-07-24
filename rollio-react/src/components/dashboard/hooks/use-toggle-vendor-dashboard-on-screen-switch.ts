@@ -16,7 +16,9 @@ const useToggleVendorDashboardOnScreenSwitch = () => {
 
     useEffect(() => {
         // Expands or contracts dashboard pending desktop/mobile state when window changes from desktop/mobile
-        if (state.ui.isVendorSelected && !state.ui.isMobileDashboardExpanded) {
+        if (state.ui.showSelectedVendor && !state.ui.isMobileDashboardExpanded) {
+            dispatch(toggleMobileDashboard())
+        } else if (!state.ui.showSelectedVendor && state.ui.isMobileDashboardExpanded) {
             dispatch(toggleMobileDashboard())
         }
     }, [state.ui.isVendorSelected]);

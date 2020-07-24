@@ -15,7 +15,7 @@ import useMap from '../map/hooks/useMap';
 
 // ACTIONS
 import { deselectAllVendors } from '../../redux/actions/data-actions';
-import { toggleMobileDashboard } from '../../redux/actions/ui-actions';
+import { toggleMobileDashboard, setshowSelectedVendor } from '../../redux/actions/ui-actions';
 
 // UTILS
 import {isActive} from "../../util";
@@ -52,7 +52,8 @@ const VendorProfileMobile = React.forwardRef((props:any, navbarRef)=> {
                         onClick={ () => {
                             // If there is a currently selected vendor just toggle the menu
                             if (isActive(vendor)) {
-                                dispatch(toggleMobileDashboard())
+                                dispatch(toggleMobileDashboard());
+                                dispatch(setshowSelectedVendor(false));
                             // Else deselect the non active vendor and toggle menu (Because this vendor doesn't need to still be selected once the menu is hidden)
                             } else {
                                 dispatch(deselectAllVendors({cb: () => dispatch(toggleMobileDashboard())}))
