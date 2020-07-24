@@ -12,7 +12,9 @@
 
     &__cards {
         display: flex;
-        flex-wrap: wrap;    
+        flex-wrap: wrap;
+        height: 100%;
+        width: 100%;
     }
 
     &__card {

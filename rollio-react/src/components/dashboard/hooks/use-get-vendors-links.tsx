@@ -1,9 +1,11 @@
 // DEPENDENCIES
 import React from 'react';
+import { LOADING_COLOR } from '../../common/constants/style_constants';
 
 // COMPONENTS
 import VendorSelectorLink from '../dashboard-menu-link';
 import DashboardCard from '../dashboard-card';
+import ReactLoading from 'react-loading';
 
 // HOOKS
 import useGetAppState from '../../common/hooks/use-get-app-state';
@@ -39,9 +41,9 @@ const useGetVendors:any = (type: string) => {
         }
       })
 
-      return vendorsFormatted ? vendorsFormatted : <p>loading</p>
+      return vendorsFormatted ? vendorsFormatted : <div className='flex__center_full_height'><ReactLoading type={'spokes'} color={LOADING_COLOR} height={64} width={64} /></div>
     } else {
-      return <p>loading</p>
+      return <div className='flex__center_full_height'><ReactLoading type={'spokes'} color={LOADING_COLOR} height={64} width={64} /></div>
     }
 
 }

@@ -342,7 +342,7 @@ module.exports = {
           return err;
         });
     }
-    
+
     const errMsg = new Error('Amount must be either 1 or -1');
     logger.error(errMsg);
     return errMsg;
