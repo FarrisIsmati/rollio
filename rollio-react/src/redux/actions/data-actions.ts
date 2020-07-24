@@ -364,10 +364,8 @@ export function updateVendorLocationAccuracyAsync(payload:UpdateVendorLocationAc
         }
 
         axios.put(`${VENDOR_API}/vendor/${regionID}/${vendorID}/locationaccuracy`, {
-            params: {
-                amount,
-                locationID
-            }
+            amount,
+            locationID
         })
         .then((res: AxiosResponse<any>) => {
             if (res.data.level === 'error') {
@@ -377,6 +375,7 @@ export function updateVendorLocationAccuracyAsync(payload:UpdateVendorLocationAc
                 }
                 return;
             }
+
             dispatch(recieveVendorLocationAccuracy(res.data.locationAccuracy, locationID));
             dispatch(updateVendorLocationAccuracySuccess());
 

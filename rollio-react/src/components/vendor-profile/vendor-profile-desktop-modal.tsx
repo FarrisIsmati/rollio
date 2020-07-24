@@ -3,9 +3,11 @@ import React from 'react';
 import { useDispatch  } from 'react-redux';
 import { Scrollbars } from 'react-custom-scrollbars';
 import Modal from 'react-modal';
+import { LOADING_COLOR } from '../common/constants/style_constants';
 
 // COMPONENTS
 import VendorProfileContent from './vendor-profile-content';
+import ReactLoading from 'react-loading';
 
 // HOOKS
 import useGetAppState from '../common/hooks/use-get-app-state';
@@ -69,7 +71,10 @@ const VendorProfileDesktopModal = React.forwardRef((props:any, navbarRef)=> {
               vendor={vendor}
               state={state} />
             :
-            <p>loading...</p>}
+            <div className='flex__center_full_height'>
+              <ReactLoading type={'spokes'} color={LOADING_COLOR} height={64} width={64} />
+            </div>
+          }
         </Scrollbars>
       </div>
     </Modal>
