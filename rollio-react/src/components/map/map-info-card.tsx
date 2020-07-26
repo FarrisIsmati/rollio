@@ -5,10 +5,10 @@ import React from 'react';
 import { MapInfoCardProps } from './interfaces';
 
 const MapInfoCard = (props:MapInfoCardProps) => {
-  const { name, profileImageLink, onClick } = props;
+  const { name, profileImageLink, style, onClick } = props;
 
   return (
-    <div className='map__infocard_wrapper'>
+    <div className='map__infocard_wrapper' style={style}>
       <div className='map__infocard' onClick={onClick}>
         <div className='flex__verticle_center'>
           <div className='map__infocard_image'>
