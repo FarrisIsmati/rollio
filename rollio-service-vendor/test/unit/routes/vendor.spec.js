@@ -3,18 +3,18 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const jwt = require('jsonwebtoken');
 const { ObjectId } = require('mongoose').Types;
-const mongoose = require('../../lib/db/mongo/mongoose/index');
-const { app } = require('../../index');
-const { JWT_SECRET } = require('../../config');
+const mongoose = require('../../../lib/db/mongo/mongoose/index');
+const { app } = require('../../../index');
+const { JWT_SECRET } = require('../../../config');
 
 const { expect } = chai;
 
 // OPERATIONS
-const { incrementVendorConsecutiveDaysInactive } = require('../../lib/db/mongo/operations/vendor-ops');
+const { incrementVendorConsecutiveDaysInactive } = require('../../../lib/db/mongo/operations/vendor-ops');
 
 // SEED
-const seed = require('../../lib/db/mongo/seeds/dev-seed');
-const seedData = require('../../lib/db/mongo/data/dev');
+const seed = require('../../../lib/db/mongo/seeds/dev-seed');
+const seedData = require('../../../lib/db/mongo/data/dev');
 
 // SCHEMAS
 const Region = mongoose.model('Region');

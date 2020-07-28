@@ -2,10 +2,10 @@
 const chai = require('chai');
 
 const { expect } = chai;
-const { client, pub, sub } = require('../../lib/redis/index');
+const { client, pub, sub } = require('../../../lib/redis/index');
 
 // CONFIG
-const config = require('../../config');
+const config = require('../../../config');
 
 // TESTS
 describe('Redis Config', () => {

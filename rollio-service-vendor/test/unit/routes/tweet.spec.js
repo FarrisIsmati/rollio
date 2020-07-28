@@ -5,14 +5,14 @@ const queryString = require('query-string');
 const jwt = require('jsonwebtoken');
 const moment = require('moment');
 const { sortBy } = require('lodash');
-const mongoose = require('../../lib/db/mongo/mongoose/index');
-const { app: server } = require('../../index');
-const { JWT_SECRET } = require('../../config');
+const mongoose = require('../../../lib/db/mongo/mongoose/index');
+const { app: server } = require('../../../index');
+const { JWT_SECRET } = require('../../../config');
 
 const { expect } = chai;
 
 // SEED
-const seed = require('../../lib/db/mongo/seeds/dev-seed');
+const seed = require('../../../lib/db/mongo/seeds/dev-seed');
 
 // SCHEMAS
 const Vendor = mongoose.model('Vendor');

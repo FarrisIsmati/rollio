@@ -8,16 +8,16 @@ const { sortBy, omit } = require('lodash');
 const dateTime = require('chai-datetime');
 const assertArrays = require('chai-arrays');
 const { ObjectId } = require('mongoose').Types;
-const mongoose = require('../../lib/db/mongo/mongoose/index');
+const mongoose = require('../../../lib/db/mongo/mongoose/index');
 
 const { expect } = chai;
 
 // OPERATIONS
-const vendorOps = require('../../lib/db/mongo/operations/vendor-ops');
-const regionOps = require('../../lib/db/mongo/operations/region-ops');
-const tweetOps = require('../../lib/db/mongo/operations/tweet-ops');
-const userOps = require('../../lib/db/mongo/operations/user-ops');
-const sharedOps = require('../../lib/db/mongo/operations/shared-ops');
+const vendorOps = require('../../../lib/db/mongo/operations/vendor-ops');
+const regionOps = require('../../../lib/db/mongo/operations/region-ops');
+const tweetOps = require('../../../lib/db/mongo/operations/tweet-ops');
+const userOps = require('../../../lib/db/mongo/operations/user-ops');
+const sharedOps = require('../../../lib/db/mongo/operations/shared-ops');
 
 // SCHEMAS
 const Vendor = mongoose.model('Vendor');
@@ -27,7 +27,7 @@ const Tweet = mongoose.model('Tweet');
 const User = mongoose.model('User');
 
 // SEED
-const seed = require('../../lib/db/mongo/seeds/dev-seed');
+const seed = require('../../../lib/db/mongo/seeds/dev-seed');
 
 chai.use(chaid);
 chai.use(assertArrays);

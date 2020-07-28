@@ -4,18 +4,18 @@ const chai = require('chai');
 chai.use(require('chai-datetime'));
 const { ObjectId } = require('mongoose').Types;
 
-const mongoose = require('../../lib/db/mongo/mongoose/index');
+const mongoose = require('../../../lib/db/mongo/mongoose/index');
 
 const { expect } = chai;
-const receiveVendorLocation = require('../../lib/messaging/receive/receive-vendor-location.js');
-const vendorOps = require('../../lib/db/mongo/operations/vendor-ops');
+const receiveVendorLocation = require('../../../lib/messaging/receive/receive-vendor-location.js');
+const vendorOps = require('../../../lib/db/mongo/operations/vendor-ops');
 
 // SCHEMAS
 const Vendor = mongoose.model('Vendor');
 const Region = mongoose.model('Region');
 
 // SEED
-const seed = require('../../lib/db/mongo/seeds/dev-seed');
+const seed = require('../../../lib/db/mongo/seeds/dev-seed');
 
 describe('Message Receive Vendor Location', () => {
   describe('update location', () => {

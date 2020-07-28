@@ -98,6 +98,7 @@ switch (NODE_ENV) {
   default:
 }
 
+console.log(MONGO_CONNECT)
 // Get the current server ID
 // Once hosted on AWS, get instance ID
 // https://stackoverflow.com/questions/37350416/how-to-get-instanceid-via-ec2-api

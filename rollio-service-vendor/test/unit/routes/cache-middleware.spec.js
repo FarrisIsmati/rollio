@@ -4,20 +4,20 @@ const chai = require('chai');
 const { expect } = chai;
 const sinonChai = require('sinon-chai');
 const sinonExpressMock = require('sinon-express-mock');
-const mongoose = require('../../lib/db/mongo/mongoose/index');
+const mongoose = require('../../../lib/db/mongo/mongoose/index');
 
 const { mockReq, mockRes } = sinonExpressMock;
-const { client } = require('../../lib/redis/index');
+const { client } = require('../../../lib/redis/index');
 
 // MIDDLEWARE
-const { checkCache, regionRouteOps, vendorRouteOps } = require('../../lib/routes/middleware/db-operations');
+const { checkCache, regionRouteOps, vendorRouteOps } = require('../../../lib/routes/middleware/db-operations');
 
 // SCHEMAS
 const Vendor = mongoose.model('Vendor');
 const Region = mongoose.model('Region');
 
 // SEED
-const seed = require('../../lib/db/mongo/seeds/dev-seed');
+const seed = require('../../../lib/db/mongo/seeds/dev-seed');
 
 chai.use(sinonChai);
 

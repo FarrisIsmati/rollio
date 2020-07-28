@@ -1,6 +1,6 @@
 // DEPENDENCIES
 const chai = require('chai');
-const util = require('../../lib/util/util');
+const util = require('../../../lib/util/util');
 
 const { expect } = chai;
 

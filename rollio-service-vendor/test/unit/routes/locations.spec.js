@@ -2,15 +2,15 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const jwt = require('jsonwebtoken');
-const mongoose = require('../../lib/db/mongo/mongoose/index');
-const { app } = require('../../index');
-const { JWT_SECRET } = require('../../config');
+const mongoose = require('../../../lib/db/mongo/mongoose/index');
+const { app } = require('../../../index');
+const { JWT_SECRET } = require('../../../config');
 
 const { expect } = chai;
 
 
 // SEED
-const seed = require('../../lib/db/mongo/seeds/dev-seed');
+const seed = require('../../../lib/db/mongo/seeds/dev-seed');
 
 // SCHEMAS
 const Location = mongoose.model('Location');

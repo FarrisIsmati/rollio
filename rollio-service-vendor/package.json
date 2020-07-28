@@ -8,9 +8,8 @@
     "local": "NODE_ENV=DEVELOPMENT_LOCAL nodemon --inspect=8001 index.js",
     "startcluster": "pm2 start index.js -i 4",
     "killcluster": "pm2 delete index",
-    "test": "set NODE_ENV=TEST_LOCAL&& mocha ./test/**/*spec.js --timeout 10000 --exit",
-    "testunix": "NODE_ENV=TEST_LOCAL&& mocha ./test/**/*spec.js --timeout 10000 --exit",
-    "seeddev": "node -e require('./lib/db/mongo/seeds/dev-seed.js').runSeed()"
+    "test-unit": "set NODE_ENV=TEST_LOCAL&& mocha ./test/unit/**/*spec.js --timeout 10000 --exit",
+    "seed-dev": "node -e \"require('./lib/db/mongo/seeds/dev-seed.js').runSeed()\""
   },
   "repository": {
     "type": "git",
@@ -55,7 +54,7 @@
     "faker": "^4.1.0",
     "glob": "^7.1.6",
     "jsonwebtoken": "^8.5.1",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "maildev": "^1.1.0",
     "mailgun-js": "^0.22.0",
     "mjml": "^4.6.3",

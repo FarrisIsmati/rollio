@@ -2,7 +2,7 @@
 const chai = require('chai');
 const moment = require('moment');
 const { ObjectId } = require('mongoose').Types;
-const mongoose = require('../../lib/db/mongo/mongoose/index');
+const mongoose = require('../../../lib/db/mongo/mongoose/index');
 
 const { expect } = chai;
 
