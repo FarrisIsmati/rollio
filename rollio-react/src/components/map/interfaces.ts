@@ -6,8 +6,15 @@ export interface MapProps  {
     mapData: MapDefaultState,
   }
 
+export interface DesktopInfoCardProps {
+  width?: string,
+  padding?: string,
+  marginLeft?: string
+}
+
   export interface MapInfoCardProps {
     name: string,
     profileImageLink: string,
+    style?: DesktopInfoCardProps
     onClick: () => any
   }

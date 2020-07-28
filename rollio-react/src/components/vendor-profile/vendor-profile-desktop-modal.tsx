@@ -33,7 +33,7 @@ const VendorProfileDesktopModal = React.forwardRef((props:any, navbarRef)=> {
 
   const customModalStyle = {
     overlay: {
-      zIndex: 2
+      zIndex: 99
     },
     content : {
       height : '740px',
@@ -45,7 +45,7 @@ const VendorProfileDesktopModal = React.forwardRef((props:any, navbarRef)=> {
       marginRight : '-50%',
       transform : 'translate(-50%, -50%)',
       overflow: 'hidden',
-      padding: 0
+      padding: 0,
     }
   };
 

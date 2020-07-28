@@ -8,27 +8,36 @@ import MapInfoCard from './map-info-card';
 import MapOverlay from './map-overlay'
 
 // HOOKS
-import useShowInfoCard from './hooks/useShowInfoCard';
 import useGetInfoCardData from './hooks/useGetInfoCardData';
 import useMapMarkers from './hooks/useMapMarkers';
 import useGlobalState from '../common/hooks/use-global-state';
 import useWindowSize from '../common/hooks/use-window-size';
+import useGetAppState from '../common/hooks/use-get-app-state';
 
 // CONFIG
 import { MAPBOX_API_KEY } from '../../config'
 
 // INTERFACES
-import { MapProps } from './interfaces';
+import { MapProps, DesktopInfoCardProps } from './interfaces';
 
 const mapMarkerElement:any = (<div></div>)
 
 const Map = (props: MapProps) => {
-  // Effects
+  const state = useGetAppState();
   const [globalState, setGlobalState] = useGlobalState();
   const mapContainer = useRef<any>(null);
-  const showInfoCard = useShowInfoCard();
   const infoCardData = useGetInfoCardData();
   const isMobile = useWindowSize.useIsMobile();
+
+  const showMapInfoCard = !state.ui.isMobileMenuExpanded && state.regionMap.currentlySelected.length;
+  const infoCardWidth = 450;
+  const infoCardStyle: DesktopInfoCardProps = {
+    width: `${infoCardWidth}px`
+  }
+  if (mapContainer.current) {
+    infoCardStyle.padding = '0';
+    infoCardStyle.marginLeft = `${(mapContainer.current.offsetWidth / 2) - (infoCardWidth / 2)}px`
+  }
 
   useEffect(() => {
     //@ts-ignore
@@ -70,8 +79,7 @@ const Map = (props: MapProps) => {
       {/* Map Overlay only for mobile */}
       <MapOverlay />
 
-      {/* Show Info Card only for mobile */}
-      { showInfoCard ? <MapInfoCard name={ infoCardData.name } profileImageLink={ infoCardData.profileImageLink } onClick={ infoCardData.onClick } /> : null }
+      { showMapInfoCard ? <MapInfoCard name={ infoCardData.name } profileImageLink={ infoCardData.profileImageLink } style={ infoCardStyle } onClick={ infoCardData.onClick } /> : null }
 
       <div ref={el => (mapContainer.current = el)}></div>
     </div>
