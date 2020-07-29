@@ -8,7 +8,8 @@
     "local": "NODE_ENV=DEVELOPMENT_LOCAL nodemon --inspect=8001 index.js",
     "startcluster": "pm2 start index.js -i 4",
     "killcluster": "pm2 delete index",
-    "test-unit": "set NODE_ENV=TEST_LOCAL&& mocha ./test/unit/**/*spec.js --timeout 10000 --exit",
+    "test-unit-windows": "set NODE_ENV=TEST_LOCAL&& mocha ./test/unit/**/*spec.js --timeout 10000 --exit",
+    "test-unit-unix": "NODE_ENV=TEST_LOCAL mocha ./test/unit/**/*spec.js --timeout 10000 --exit",
     "seed-dev": "node -e \"require('./lib/db/mongo/seeds/dev-seed.js').runSeed()\""
   },
   "repository": {
