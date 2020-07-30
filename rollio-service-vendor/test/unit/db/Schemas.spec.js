@@ -376,46 +376,177 @@ describe('Schemas', () => {
     });
   });
 
-//   describe('Vendor Schema', () => {
-//     it('expect to be invalid if type is not within schema timezone enum', (done) => {
-//       const fakeVendorType = 'mobileTrucks';
-//       const vendor = new Vendor({ type: fakeVendorType });
+  describe('Vendor Schema', () => {
+    const initVendorSchema = {
+      name: 'schema1',
+      type: 'mobileTruck',
+      description: 'descrip1',
+      establishedDate: Date.now(),
+      closedDate: Date.now(),
+      creditCard: 'y',
+      email: 'test@gmail.com',
+      website: 'test.com',
+      numTrucks: 1,
+      phoneNumber: '7039121234',
+      profileImageLink: '123.com',
+      bannerImageLink: '123.com',
+      price: '$$$',
+      yelpId: '123yelp',
+      yelpRating: '5start',
+      twitterID: '123twitter',
+      twitterUserName: '123truck',
+      twitterHandle: '123handle',
+      tweetHistory: [new ObjectId()],
+      locationHistory: [new ObjectId()],
+      comments: [],
+      consecutiveDaysInactive: 0,
+      categories: ['authentic'],
+      regionID: new ObjectId(),
+      date: Date.now(),
+      updateDate: Date.now(),
+      approved: false
+    }
 
-//       vendor.validate((err) => {
-//         expect(err.errors.type).to.exist;
-//         expect(err.errors.type.properties.message).to.equal(`\`${fakeVendorType}\` is not a valid enum value for path \`type\`.`);
-//         done();
-//       });
-//     });
+    it('expect to initVendor to be valid', (done) => {
+      const vendorData = {...initVendorSchema};
 
-//     it('expect to be invalid if creditCard is not within schema creditCard enum', (done) => {
-//       const creditCard = 'x';
-//       const vendor = new Vendor({ creditCard });
-//       vendor.validate((err) => {
-//         expect(err.errors.creditCard).to.exist;
-//         expect(err.errors.creditCard.properties.message).to.equal(`\`${creditCard}\` is not a valid enum value for path \`creditCard\`.`);
-//         done();
-//       });
-//     });
-//   });
+      const vendor = new Vendor(vendorData);
+      vendor.validate((err) => {
+        expect(err).to.be.null;
+        done();
+      });
+    });
 
-//   describe('User Schema', () => {
-//     it('expect hasAllRequiredFields to be true if type, email, and regionID included', (done) => {
-//       const newUser = new User({ type: 'admin', email: 'fake@fake.com', regionID: ObjectId() });
+    it('expect to be invalid if type is not within schema type enum', (done) => {
+      const vendorData = {...initVendorSchema};
+      vendorData.type = 'fakeTruck';
 
-//       newUser.save((err, user) => {
-//         expect(user.hasAllRequiredFields).to.be.true;
-//         done();
-//       });
-//     });
+      const vendor = new Vendor(vendorData);
+      vendor.validate((err) => {
+        expect(Object.keys(err.errors).length).to.be.equal(1);
+        expect(err.errors).to.include.keys('type');
+        done();
+      });
+    });
 
-//     it('expect hasAllRequiredFields to be false if regionID is not included', (done) => {
-//       const newUser = new User({ type: 'admin', email: 'fake@fake.com' });
+    it('expect to be invalid if creditCard is not within schema creditCard enum', (done) => {
+      const vendorData = {...initVendorSchema};
+      vendorData.creditCard = 'x';
 
-//       newUser.save((err, user) => {
-//         expect(user.hasAllRequiredFields).to.be.false;
-//         done();
-//       });
-//     });
-//   });
+      const vendor = new Vendor(vendorData);
+      vendor.validate((err) => {
+        expect(Object.keys(err.errors).length).to.be.equal(1);
+        expect(err.errors).to.include.keys('creditCard');
+        done();
+      });
+    });
+
+    it('expect to be invalid if type is not within schema type enum', (done) => {
+      const vendorData = {...initVendorSchema};
+      vendorData.type = 'fakeTruck';
+
+      const vendor = new Vendor(vendorData);
+      vendor.validate((err) => {
+        expect(Object.keys(err.errors).length).to.be.equal(1);
+        expect(err.errors).to.include.keys('type');
+        done();
+      });
+    });
+
+    it('expect to be valid if phonenumber given (703)-321-1849', (done) => {
+      const vendorData = {...initVendorSchema};
+      vendorData.phoneNumber = '(703)-321-1849';
+
+      const vendor = new Vendor(vendorData);
+      vendor.validate((err) => {
+        expect(err).to.be.null;
+        done();
+      });
+    });
+
+    it('expect to be valid if phonenumber given 7033211849', (done) => {
+      const vendorData = {...initVendorSchema};
+      vendorData.phoneNumber = '7033211849';
+
+      const vendor = new Vendor(vendorData);
+      vendor.validate((err) => {
+        expect(err).to.be.null;
+        done();
+      });
+    });
+
+    it('expect to be invalid if phonenumber given 000-000-0000', (done) => {
+      const vendorData = {...initVendorSchema};
+      vendorData.phoneNumber = '000-000-0000';
+
+      const vendor = new Vendor(vendorData);
+      vendor.validate((err) => {
+        expect(Object.keys(err.errors).length).to.be.equal(1);
+        expect(err.errors).to.include.keys('phoneNumber');
+        done();
+      });
+    });
+
+    it('expect to be invalid if improper phonenumber given FakeNumber', (done) => {
+      const vendorData = {...initVendorSchema};
+      vendorData.phoneNumber = 'FakeNumber';
+
+      const vendor = new Vendor(vendorData);
+      vendor.validate((err) => {
+        expect(Object.keys(err.errors).length).to.be.equal(1);
+        expect(err.errors).to.include.keys('phoneNumber');
+        done();
+      });
+    });
+  });
+
+  describe('User Schema', () => {
+    const initUserSchema = {
+      email: 'john@gmail.com',
+      type: 'admin',
+      vendorID: new ObjectId(),
+      regionID: new ObjectId(),
+      twitterProvider: {
+        type: {
+          id: 'tst',
+          token: 'tst1',
+          username: 'tst2',
+          displayName: 'tst3'
+        }
+      },
+      select: false
+    };
+
+    it('expect to initUserSchema to be valid', (done) => {
+      const userData = {...initUserSchema};
+
+      const user = new User(userData);
+      user.validate((err) => {
+        expect(err).to.be.null;
+        done();
+      });
+    });
+
+    it('expect to type to be valid if = customer', (done) => {
+      const userData = {...initUserSchema};
+      userData.type = 'customer';
+
+      const user = new User(userData);
+      user.validate((err) => {
+        expect(err).to.be.null;
+        done();
+      });
+    });
+
+    it('expect to type to be valid if = vendor', (done) => {
+      const userData = {...initUserSchema};
+      userData.type = 'vendor';
+      
+      const user = new User(userData);
+      user.validate((err) => {
+        expect(err).to.be.null;
+        done();
+      });
+    });
+  });
 });
