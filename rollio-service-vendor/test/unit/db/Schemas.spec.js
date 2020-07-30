@@ -298,27 +298,83 @@ describe('Schemas', () => {
     });
   });
 
-//   describe('Comment Schema', () => {
-//     it('expect to be invalid if the comment length is under 5 characters long', (done) => {
-//       const text = 'four';
-//       const comment = new Comment({ text });
-//       comment.validate((err) => {
-//         expect(err.errors).to.exist;
-//         expect(err.errors.text.properties.message).to.equal(`Path \`text\` (\`${text}\`) is shorter than the minimum allowed length (5).`);
-//         done();
-//       });
-//     });
+  describe('Comment Schema', () => {
+    const initCommentSchema = {
+      commentDate: Date.now(),
+      name: 'Comment1',
+      text: 'Test123',
+    }
 
-//     it('expect to be invalid if the comment length is over 255 characters long', (done) => {
-//       const text = 'test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test t';
-//       const comment = new Comment({ text });
-//       comment.validate((err) => {
-//         expect(err.errors).to.exist;
-//         expect(err.errors.text.properties.message).to.equal(`Path \`text\` (\`${text}\`) is longer than the maximum allowed length (255).`);
-//         done();
-//       });
-//     });
-//   });
+    it('expect to initComment to be valid', (done) => {
+      const commentData = {...initCommentSchema};
+
+      const comment = new Comment(commentData);
+      comment.validate((err) => {
+        expect(err).to.be.null;
+        done();
+      });
+    });
+
+    it('expect to commentDate to exist and be type date after creation when not provided', (done) => {
+      const commentData = {...initCommentSchema};
+      delete commentData.commentDate;
+
+      const comment = new Comment(commentData);
+      comment.validate((err) => {
+        expect(err).to.be.null;
+        expect(comment.commentDate).to.be.date();
+        done();
+      });
+    });
+
+    it('expect to be invalid if comment name is not provided', (done) => {
+      const commentData = {...initCommentSchema};
+      delete commentData.name;
+
+      const comment = new Comment(commentData);
+      comment.validate((err) => {
+        expect(Object.keys(err.errors).length).to.be.equal(1);
+        expect(err.errors).to.include.keys('name');
+        done();
+      });
+    });
+
+    it('expect to be invalid if text is not provided', (done) => {
+      const commentData = {...initCommentSchema};
+      delete commentData.text;
+
+      const comment = new Comment(commentData);
+      comment.validate((err) => {
+        expect(Object.keys(err.errors).length).to.be.equal(1);
+        expect(err.errors).to.include.keys('text');
+        done();
+      });
+    });
+
+    it('expect to be invalid if the comment length is under 5 characters long', (done) => {
+      const commentData = {...initCommentSchema};
+      commentData.text = 'test';
+
+      const comment = new Comment(commentData);
+      comment.validate((err) => {
+        expect(Object.keys(err.errors).length).to.be.equal(1);
+        expect(err.errors).to.include.keys('text');
+        done();
+      });
+    });
+
+    it('expect to be invalid if the comment length is over 255 characters long', (done) => {
+      const commentData = {...initCommentSchema};
+      commentData.text = 'test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test t';
+      
+      const comment = new Comment(commentData);
+      comment.validate((err) => {
+        expect(Object.keys(err.errors).length).to.be.equal(1);
+        expect(err.errors).to.include.keys('text');
+        done();
+      });
+    });
+  });
 
 //   describe('Vendor Schema', () => {
 //     it('expect to be invalid if type is not within schema timezone enum', (done) => {
