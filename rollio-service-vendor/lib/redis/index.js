@@ -24,6 +24,8 @@ const redisConfig = {
   port: config.REDIS_PORT,
 };
 
+const { isTest } = config;
+
 const redisConnect = {
   backoffMultiplyer: 2,
   connectAttempts: 0,
@@ -49,7 +51,9 @@ const redisConnect = {
     client.on('ready', () => {
       this.backoffMultiplyer = 2;
       this.connectAttempts = 0;
-      logger.info('Redis Client: Successfully connected');
+      if (!isTest) {
+        logger.info('Redis Client: Successfully connected');
+      }
       return true;
     });
 
@@ -69,9 +73,13 @@ const redisConnect = {
     sub.on('ready', () => {
       this.backoffMultiplyer = 2;
       this.connectAttempts = 0;
-      logger.info('Redis Subscriber: Successfully connected');
+      if (!isTest) {
+        logger.info('Redis Subscriber: Successfully connected');
+      }
       sub.subscribe(REDIS_TWITTER_CHANNEL);
-      logger.info(`Redis Subscriber: Subscribed to channel ${REDIS_TWITTER_CHANNEL}`);
+      if (!isTest) {
+        logger.info(`Redis Subscriber: Subscribed to channel ${REDIS_TWITTER_CHANNEL}`);
+      }
       return true;
     });
 
@@ -79,8 +87,10 @@ const redisConnect = {
     sub.on('message', (channel, msg) => {
       const message = JSON.parse(msg);
       if (message.serverID !== SERVER_ID) {
-        logger.info(`Redis Subscriber: Received message from server: ${SERVER_ID}`);
-        logger.info(`Redis Subscriber: ${message}`);
+        if (!isTest) {
+          logger.info(`Redis Subscriber: Received message from server: ${SERVER_ID}`);
+          logger.info(`Redis Subscriber: ${message}`);
+        }
         io.sockets.emit(message.type, omit(message, ['serverID']));
       }
     });
@@ -101,7 +111,9 @@ const redisConnect = {
     pub.on('ready', () => {
       this.backoffMultiplyer = 2;
       this.connectAttempts = 0;
-      logger.info('Redis Publisher: Successfully connected');
+      if (!isTest) {
+        logger.info('Redis Publisher: Successfully connected');
+      }
       return true;
     });
 

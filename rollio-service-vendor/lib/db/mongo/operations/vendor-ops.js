@@ -121,7 +121,6 @@ module.exports = {
   getVendor(regionID, vendorID, tweetLimit = 10) {
     if (arguments.length < 2) {
       const err = new Error('Must include a regionID and vendorID as arguments');
-      console.error(err);
       logger.error(err);
       return err;
     }
