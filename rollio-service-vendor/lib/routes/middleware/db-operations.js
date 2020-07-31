@@ -26,7 +26,7 @@ const {
   updateVendorPushPosition,
   updateVendorSet,
   createNonTweetLocation,
-  editNonTweetLocation,
+  updateNonTweetLocation,
   getUnapprovedVendors,
 } = require('../../db/mongo/operations/vendor-ops');
 
@@ -185,7 +185,7 @@ const vendorRouteOps = {
     const isVendor = type === 'vendor';
     const { vendorID: routeVendorID, locationID } = req.params;
     if (isAdmin || (isVendor && String(vendorID) === routeVendorID)) {
-      return editNonTweetLocation(locationID, routeVendorID, req.body).then((location) => {
+      return updateNonTweetLocation(locationID, routeVendorID, req.body).then((location) => {
         res.status(200).json({ location });
       }).catch((err) => {
         console.error(err);

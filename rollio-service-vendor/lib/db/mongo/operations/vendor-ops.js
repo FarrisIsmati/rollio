@@ -13,35 +13,46 @@ const Location = mongoose.model('Location');
 const User = mongoose.model('User');
 
 module.exports = {
-  async getUnapprovedVendors() {
-    const unapprovedVendors = await Vendor.find({ approved: false });
-    if (!unapprovedVendors.length) {
-      return [];
+  // CREATE
+  // Create a vendor
+  async createVendor(vendorData, regionID, user) {
+    const { type: userType, _id: userID } = user;
+
+    const userIsAVendor = userType === 'vendor';
+    const userIsAnAdmin = userType === 'admin';
+
+    if (userIsAVendor) {
+      vendorData.twitterID = user.twitterProvider.id;
+      vendorData.approved = false;
+    } else if (userIsAnAdmin) {
+      // Automatically approve a vendor if created by an Admin
+      vendorData.approved = true;
     }
-    const associatedUsers = await User.find({ vendorID: { $in: unapprovedVendors.map(vendor => vendor._id) } }).select('+twitterProvider');
-    const twitterLookUp = associatedUsers.reduce((acc, user) => {
-      const { twitterProvider = {}, vendorID } = user;
-      const { username, displayName } = twitterProvider;
-      acc[String(vendorID)] = { username, displayName };
-      return acc;
-    }, {});
-    // we look up and add on the twitter displayName so that we can look at their twitter account before approving
-    return unapprovedVendors
-      .map(vendor => ({ ...vendor.toObject(), twitterInfo: twitterLookUp[String(vendor._id)] }));
-  },
-  async editNonTweetLocation(locationID, vendorID, locationData) {
-    try {
-      const updatedLocation = await editLocationAndCorrectConflicts(locationID, locationData);
-      const { regionID, twitterID } = await Vendor.findOne({ _id: vendorID }).lean(true);
-      await publishLocationUpdateAndClearCache({
-        newLocations: [updatedLocation], vendorID, twitterID, regionID,
-      });
-      return updatedLocation;
-    } catch (err) {
-      logger.error(err);
+
+    // Populate a vendors tweet history
+    const newVendor = await Vendor.create({
+      ...vendorData, 
+      regionID,
+      dailyActive: false, 
+      consecutiveDaysInactive: 0, 
+    }).then(async (res) => {
+      await redisClient.hdelAsync('vendor', `q::method::GET::path::/${regionID}/${res._id}`);
+      return res;
+    }).catch((err) => {
+      const errMsg = new Error(err);
+      logger.error(errMsg);
       throw err;
+    });
+
+    // If the user is a vendor update the user's vendorID to match the newVendor._id
+    if (userIsAVendor && newVendor) {
+      await User.findOneAndUpdate({ _id: userID }, { vendorID: newVendor._id });
     }
+
+    return newVendor;
   },
+
+  // Create a location
   async createNonTweetLocation(vendorID, locationData) {
     try {
       const newLocation = await createLocationAndCorrectConflicts({ ...locationData, vendorID, matchMethod: 'Vendor Input' });
@@ -64,14 +75,10 @@ module.exports = {
       throw err;
     }
   },
+
+  // GET
   // Gets all vendors given a regionID
   getVendors(regionID) {
-    if (!arguments.length) {
-      const err = new Error('Must include regionID argument');
-      logger.error(err);
-      return err;
-    }
-
     return Vendor.find({
       regionID, approved: true,
     }).populate('tweetHistory')
@@ -83,48 +90,11 @@ module.exports = {
         return err;
       });
   },
-  async createVendor(vendorData, regionID, user) {
-    const { type: userType, _id: userID } = user;
-    const userIsAVendor = userType === 'vendor';
-    const userIsAnAdmin = userType === 'admin';
-    /* eslint-disable no-param-reassign */
-    if (userIsAVendor) {
-      vendorData.twitterID = user.twitterProvider.id;
-      vendorData.approved = false;
-    } else if (userIsAnAdmin) {
-      vendorData.approved = true;
-    }
-    /* eslint-disable no-param-reassign */
 
-    // theoretically, the client expects that we populate tweetHistory,
-    // locationHistory, and userLocationHistory, but those all should be blank, so no need
-    const newVendor = await Vendor.create({
-      dailyActive: false, consecutiveDaysInactive: 0, ...vendorData, regionID,
-    }).then(async (res) => {
-      await redisClient.hdelAsync('vendor', `q::method::GET::path::/${regionID}/${res._id}`);
-      return res;
-    })
-      .catch((err) => {
-        const errMsg = new Error(err);
-        logger.error(errMsg);
-        throw err;
-      });
-    // if the user is a vendor, update the user's vendorID to match the newVendor._id
-    if (userIsAVendor && newVendor) {
-      await User.findOneAndUpdate({ _id: userID }, { vendorID: newVendor._id });
-    }
-    return newVendor;
-  },
   // Gets a single vendor given a regionID and vendorID
   // tweetLimit optional argument controls how many tweets are returned
   // in the tweet history
   getVendor(regionID, vendorID, tweetLimit = 10) {
-    if (arguments.length < 2) {
-      const err = new Error('Must include a regionID and vendorID as arguments');
-      logger.error(err);
-      return err;
-    }
-
     return Vendor.findOne({
       regionID,
       _id: vendorID,
@@ -146,14 +116,9 @@ module.exports = {
         return err;
       });
   },
+
   // Gets a single vendor given a regionID and vendor twitterID
   getVendorByTwitterID(regionID, twitterID, tweetLimit = 10) {
-    if (arguments.length !== 2) {
-      const err = new Error('Must include a regionID and twitterID as arguments');
-      logger.error(err);
-      return err;
-    }
-
     return Vendor.findOne({
       regionID,
       twitterID,
@@ -174,9 +139,11 @@ module.exports = {
         return err;
       });
   },
+
   // Gets all vendors given a set of Queries
   getVendorsByQuery(params) {
     const { regionID } = params;
+
     if (!regionID) {
       const err = new Error('Must include a regionID property in params argument');
       logger.error(err);
@@ -203,11 +170,44 @@ module.exports = {
         return err;
       });
   },
+
+  // Get list of unapproved vendors
+  async getUnapprovedVendors() {
+    try {
+      const unapprovedVendors = await Vendor.find({ approved: false });
+
+      if (!unapprovedVendors.length) {
+        return [];
+      }
+
+      const associatedUsers = await User
+        .find({vendorID: { $in: unapprovedVendors.map(vendor => vendor._id) } })
+        .select('+twitterProvider');
+  
+      const twitterLookUp = associatedUsers
+        .reduce((acc, user) => {
+          const { twitterProvider = {}, vendorID } = user;
+          const { username, displayName } = twitterProvider;
+          acc[String(vendorID)] = { username, displayName };
+          return acc;
+        }, {});
+  
+      // We look up and add on the twitter displayName so that we can look at their twitter account before approving
+      return unapprovedVendors
+        .map(vendor => ({ ...vendor.toObject(), twitterInfo: twitterLookUp[String(vendor._id)] }));
+    } catch (err) {
+      logger.error(err);
+      throw err;
+    }
+  },
+
+  // UPDATE
   // Sets data to a field given a regionID, vendorID, field, and data
   updateVendorSet(params) {
     const {
       regionID, vendorID, field, data,
     } = params;
+
     if (!regionID || !vendorID || !field || !data) {
       const err = new Error('Must include a regionID, vendorID, field, & data properties in params argument');
       logger.error(err);
@@ -215,6 +215,7 @@ module.exports = {
     }
 
     let obj = { [field]: data };
+
     // If you're updating multiple fields
     if (field.constructor === Array) {
       obj = {};
@@ -222,6 +223,7 @@ module.exports = {
         obj[field[i]] = data[i];
       }
     }
+
     return Vendor.findOneAndUpdate({
       regionID,
       _id: vendorID,
@@ -239,29 +241,34 @@ module.exports = {
         return err;
       });
   },
+
   // Pushes a payload to a field of type Array given a regionID, vendorID, field, and payload
   async updateVendorPush(params) {
     const {
       regionID, vendorID, field, payload: originalPayload,
     } = params;
+
     if (!regionID || !vendorID || !field || !originalPayload) {
       const err = new Error('Must include a regionID, vendorID, field, & payload properties in params');
       logger.error(err);
       return err;
     }
+
     let payload = originalPayload;
+
     if (['tweetHistory', 'userLocationHistory'].includes(field)) {
       const createPayload = { ...originalPayload, vendorID };
       const newDocument = field === 'tweetHistory' ? await Tweet.create(createPayload) : await Location.create(createPayload);
       payload = newDocument._id;
     }
+
     return Vendor.findOneAndUpdate({
-      regionID,
-      _id: vendorID,
-    }, {
-      $push: { [field]: payload },
-      $set: { updateDate: Date.now() },
-    }, { new: true })
+        regionID,
+        _id: vendorID,
+      }, {
+        $push: { [field]: payload },
+        $set: { updateDate: Date.now() },
+      }, { new: true })
       .then(async (res) => {
         await redisClient.hdelAsync('vendor', `q::method::GET::path::/${regionID}/${vendorID}`);
         return res;
@@ -272,6 +279,7 @@ module.exports = {
         return err;
       });
   },
+
   // Pushes a payload to a field of type Array given a regionID, vendorID, field, and payload
   updateVendorPushPosition(params) {
     const {
@@ -308,6 +316,7 @@ module.exports = {
         return err;
       });
   },
+
   // Increments a vendors locationAccuracy by one given a regionID and vendorID
   async updateLocationAccuracy(params) {
     const {
@@ -346,6 +355,7 @@ module.exports = {
     logger.error(errMsg);
     return errMsg;
   },
+
   // Increments a vendors consecutiveDaysInactive field by 1 given a regionID and vendorID
   incrementVendorConsecutiveDaysInactive(regionID, vendorID) {
     if (arguments.length !== 2) {
@@ -370,4 +380,18 @@ module.exports = {
         return err;
       });
   },
+  
+  async updateNonTweetLocation(locationID, vendorID, locationData) {
+    try {
+      const updatedLocation = await editLocationAndCorrectConflicts(locationID, locationData);
+      const { regionID, twitterID } = await Vendor.findOne({ _id: vendorID }).lean(true);
+      await publishLocationUpdateAndClearCache({
+        newLocations: [updatedLocation], vendorID, twitterID, regionID,
+      });
+      return updatedLocation;
+    } catch (err) {
+      logger.error(err);
+      throw err;
+    }
+  }
 };

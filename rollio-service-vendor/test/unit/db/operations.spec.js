@@ -9,7 +9,6 @@ const assertArrays = require('chai-arrays');
 const { ObjectId } = require('mongoose').Types;
 const mongoose = require('../../../lib/db/mongo/mongoose/index');
 const sinon = require('sinon');
-require('sinon-mongoose')
 
 const { expect } = chai;
 
@@ -32,28 +31,13 @@ chai.use(assertArrays);
 chai.use(dateTime);
 
 describe('DB Operations', () => {
+  afterEach(() => {
+    // Restore the default sandbox here
+    sinon.restore();
+  });
+
   describe('Vendor DB Operations', () => {
     describe('Get Vendor Operations', () => {
-      it('expect getVendors to fail if not given a regionID', (done) => {
-        const result = vendorOps.getVendors();
-        expect(result.level).to.be.equal('error');
-        done();
-      });
-
-      it('expects getVendor to fail if not given any arguments', (done) => {
-        const result = vendorOps.getVendor();
-        expect(result.level).to.be.equal('error');
-
-        done();
-      });
-
-      it('expects getVendor to fail if given one argument', (done) => {
-        const result = vendorOps.getVendor('arg1');
-        expect(result.level).to.be.equal('error');
-
-        done();
-      });
-
       it('expects getVendor to pass both arguments to Vendor.findOne method', (done) => {
         const findOneSpy = sinon.spy(Vendor, 'findOne');
         const expectedArgument = {
@@ -62,12 +46,22 @@ describe('DB Operations', () => {
         };
 
         vendorOps.getVendor('arg1', 'arg2');
-        findOneSpy.restore();
         sinon.assert.calledWith(findOneSpy, expectedArgument);
-
         done();
       });
-// https://semaphoreci.com/community/tutorials/best-practices-for-spies-stubs-and-mocks-in-sinon-js
+
+      it('expects getVendor to pass both arguments to Vendor.findOne method', (done) => {
+        // const findOneSpy = sinon.spy(Vendor, 'findOne');
+        // const expectedArgument = {
+        //   regionID: 'arg1',
+        //   _id: 'arg2'
+        // };
+
+        // vendorOps.getVendor('arg1', 'arg2');
+        // sinon.assert.calledWith(findOneSpy, expectedArgument);
+        // done();
+      });
+
       it('expect to return a vendor given a regionID and a vendor twitterID', (done) => {
         done();
       });
@@ -302,7 +296,7 @@ describe('DB Operations', () => {
     //       coordinates: [0, 1],
     //       truckNum: 1,
     //     };
-    //     const editedLocation = await vendorOps.editNonTweetLocation(locationID, vendor._id, locationData);
+    //     const editedLocation = await vendorOps.updateNonTweetLocation(locationID, vendor._id, locationData);
     //     const updatedVendor = await Vendor.findOne({ _id: vendor._id });
     //     expect(editedLocation.overridden).to.be.false;
     //     expect(updatedVendor.locationHistory[0].toString()).to.equal(String(editedLocation._id));

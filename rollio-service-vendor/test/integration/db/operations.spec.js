@@ -401,7 +401,7 @@ describe('DB Operations', () => {
           coordinates: [0, 1],
           truckNum: 1,
         };
-        const editedLocation = await vendorOps.editNonTweetLocation(locationID, vendor._id, locationData);
+        const editedLocation = await vendorOps.updateNonTweetLocation(locationID, vendor._id, locationData);
         const updatedVendor = await Vendor.findOne({ _id: vendor._id });
         expect(editedLocation.overridden).to.be.false;
         expect(updatedVendor.locationHistory[0].toString()).to.equal(String(editedLocation._id));

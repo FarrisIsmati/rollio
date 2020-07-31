@@ -9,6 +9,7 @@
     "startcluster": "pm2 start index.js -i 4",
     "killcluster": "pm2 delete index",
     "test-unit": "NODE_ENV=TEST_LOCAL mocha ./test/unit/**/*spec.js --timeout 10000 --exit",
+    "test-integration": "NODE_ENV=TEST_LOCAL mocha ./test/integration/**/*spec.js --timeout 10000 --exit",
     "seed-dev": "node -e \"require('./lib/db/mongo/seeds/dev-seed.js').runSeed()\""
   },
   "repository": {
@@ -81,6 +82,7 @@
     "sinon-chai": "^3.3.0",
     "sinon-express-mock": "^2.2.0",
     "sinon-mongoose": "^2.3.0",
+    "sinon-test": "^3.0.0",
     "socket.io": "^2.3.0",
     "sqs-consumer": "^5.4.0",
     "uuid": "^3.3.3",
