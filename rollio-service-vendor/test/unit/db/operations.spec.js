@@ -38,21 +38,62 @@ describe('DB Operations', () => {
 
   describe('Vendor DB Operations', () => {
     describe('Get Vendor Operations', () => {
-      let findOneStub = null;
-      let findStub = null;
-
-      const vendorObject = {};
-      const popualte3 = { populate: sinon.stub().returns(Promise.resolve(vendorObject)) }
+      const popualte3 = { populate: sinon.stub().returns(Promise.resolve({})) }
       const populate2 = { populate: sinon.stub().returns(popualte3) }
       const populate1 = { populate: sinon.stub().returns(populate2) }
 
+      it('expects createVendor to recieve arguments as vendor', (done) => {
+        const createStub = sinon.stub(Vendor, 'create').resolves(Promise.resolve({}));
 
-      beforeEach(() => {
-        findOneStub = sinon.stub(Vendor, 'findOne').returns(populate1);
-        findStub = sinon.stub(Vendor, 'find').returns(populate1);
-      })
+        const userID = new ObjectId()
+
+        const expectedArgument = {
+          regionID: '123',
+          dailyActive: false, 
+          consecutiveDaysInactive: 0, 
+          twitterID: 'twitterID',
+          approved: false
+        };
+
+        vendorOps.createVendor({}, '123', { twitterProvider: { id: 'twitterID' }, type: 'vendor', _id: userID });
+        sinon.assert.calledWith(createStub, expectedArgument);
+
+        done();
+      });
+
+      it('expects createVendor to recieve arguments as admin', (done) => {
+        const createStub = sinon.stub(Vendor, 'create').resolves(Promise.resolve({}));
+
+        const userID = new ObjectId()
+
+        const expectedArgument = {
+          regionID: '123',
+          dailyActive: false, 
+          consecutiveDaysInactive: 0, 
+          approved: true
+        };
+
+        vendorOps.createVendor({}, '123', { twitterProvider: { id: 'twitterID' }, type: 'admin', _id: userID });
+        sinon.assert.calledWith(createStub, expectedArgument);
+
+        done();
+      });
+
+      it('expects createVendor to update new vendor if user is a vendor', (done) => {
+        sinon.stub(Vendor, 'create').resolves(Promise.resolve({ _id: new ObjectId() }));
+        const findOneAndUpdateStub = sinon.stub(User, 'findOneAndUpdate');
+
+        const userID = new ObjectId()
+
+        vendorOps.createVendor({}, '123', { twitterProvider: { id: 'twitterID' }, type: 'vendor', _id: userID });
+        sinon.assert.called(findOneAndUpdateStub);
+
+        done();
+      });
 
       it('expects getVendors to pass argument to Vendor.find method', (done) => {
+        findStub = sinon.stub(Vendor, 'find').returns(populate1);
+
         const expectedArgument = {
           regionID: 'regionID1',
           approved: true
@@ -64,6 +105,8 @@ describe('DB Operations', () => {
       });
 
       it('expects getVendor to pass arguments to Vendor.findOne & populate method', (done) => {
+        findOneStub = sinon.stub(Vendor, 'findOne').returns(populate1);
+
         const expectedArgumentFindOne = {
           regionID: 'arg1',
           twitterID: 'arg2'
@@ -82,6 +125,8 @@ describe('DB Operations', () => {
       });
 
       it('expects getVendorByTwitterID to pass arguments to Vendor.findOne & populate method', (done) => {
+        findOneStub = sinon.stub(Vendor, 'findOne').returns(populate1);
+
         const expectedArgumentFindOne = {
           regionID: 'arg1',
           twitterID: 'arg2'
@@ -100,6 +145,8 @@ describe('DB Operations', () => {
       });
         
       it('expects getVendorsByQuery to pass arguments to Vendor.findOne & populate method', (done) => {
+        findStub = sinon.stub(Vendor, 'find').returns(populate1);
+
         const expectedArgumentFind = {
           approved: true,
           regionID: '123'
