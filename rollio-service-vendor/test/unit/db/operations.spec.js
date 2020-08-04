@@ -17,7 +17,7 @@ const vendorOps = require('../../../lib/db/mongo/operations/vendor-ops');
 // const regionOps = require('../../../lib/db/mongo/operations/region-ops');
 // const tweetOps = require('../../../lib/db/mongo/operations/tweet-ops');
 // const userOps = require('../../../lib/db/mongo/operations/user-ops');
-// const sharedOps = require('../../../lib/db/mongo/operations/shared-ops');
+const sharedOps = require('../../../lib/db/mongo/operations/shared-ops');
 
 // SCHEMAS
 const Vendor = mongoose.model('Vendor');
@@ -79,15 +79,35 @@ describe('DB Operations', () => {
         done();
       });
 
-      it('expects createVendor to update new vendor if user is a vendor', (done) => {
+      it('expects createVendor to update new vendor if user is a vendor', async () => {
         sinon.stub(Vendor, 'create').resolves(Promise.resolve({ _id: new ObjectId() }));
-        const findOneAndUpdateStub = sinon.stub(User, 'findOneAndUpdate');
+        const findOneAndUpdateStub = sinon.spy(User, 'findOneAndUpdate');
 
         const userID = new ObjectId()
 
-        vendorOps.createVendor({}, '123', { twitterProvider: { id: 'twitterID' }, type: 'vendor', _id: userID });
+        await vendorOps.createVendor({}, '123', { twitterProvider: { id: 'twitterID' }, type: 'vendor', _id: userID });
         sinon.assert.called(findOneAndUpdateStub);
+      });
 
+      it('expects createVendor to NOT update new vendor if user is an admin', async () => {
+        sinon.stub(Vendor, 'create').resolves(Promise.resolve({ _id: new ObjectId() }));
+        const findOneAndUpdateStub = sinon.spy(User, 'findOneAndUpdate');
+
+        const userID = new ObjectId()
+
+        await vendorOps.createVendor({}, '123', { type: 'admin', _id: userID });
+        sinon.assert.notCalled(findOneAndUpdateStub);
+      });
+
+      it('expects createNonTweetLocation all funcs to recieve proper arguments', async () => {
+        const { publishLocationUpdateAndClearCache, createLocationAndCorrectConflicts, editLocationAndCorrectConflicts } = sharedOps;
+        createLocationAndCorrectConflictsStub = sinon.stub(createLocationAndCorrectConflicts).resolves(Promise.resolve({}));
+
+        const vendorObjectID = new ObjectId();
+        const expectedArgument = { vendorID: vendorObjectID, matchMethod: 'Vendor Input' };
+
+        vendorOps.createNonTweetLocation(vendorObjectID);
+        sinon.assert.calledWith(createLocationAndCorrectConflictsStub, expectedArgument);
         done();
       });
 
