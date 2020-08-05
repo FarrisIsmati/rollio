@@ -100,15 +100,39 @@ describe('DB Operations', () => {
       });
 
       it('expects createNonTweetLocation all funcs to recieve proper arguments', async () => {
-        const { publishLocationUpdateAndClearCache, createLocationAndCorrectConflicts, editLocationAndCorrectConflicts } = sharedOps;
-        createLocationAndCorrectConflictsStub = sinon.stub(createLocationAndCorrectConflicts).resolves(Promise.resolve({}));
+        const createLocationAndCorrectConflictsStub = sinon.stub(sharedOps, 'createLocationAndCorrectConflicts').resolves(Promise.resolve({ _id: '123'}));
+        const findOneAndUpdateStub = sinon.stub(Vendor, 'findOneAndUpdate').returns({ lean: sinon.stub().returns({ regionID: 'regionID123', twitterID: 'twitterID123' }) });
+        const publishLocationUpdateAndClearCacheStub = sinon.stub(sharedOps, 'publishLocationUpdateAndClearCache');
 
         const vendorObjectID = new ObjectId();
-        const expectedArgument = { vendorID: vendorObjectID, matchMethod: 'Vendor Input' };
 
-        vendorOps.createNonTweetLocation(vendorObjectID);
+        const locationData = {
+          address: '123',
+          coordinates: {
+            lat: 1, long: 1
+          }
+        }
+        
+        const expectedArgument = { ...locationData, vendorID: vendorObjectID, matchMethod: 'Vendor Input' };
+        const expectedArgument2a = 
+          { _id: vendorObjectID }
+        const expectedArgument2b = {
+          $push: {
+            locationHistory: {
+              $each: ['123'],
+              $position: 0,
+            },
+          }
+        }
+        const expectedArgument3 = {
+          newLocations: [{_id: '123'}], vendorID: vendorObjectID, twitterID: 'twitterID123', regionID: 'regionID123',
+        }
+
+        await vendorOps.createNonTweetLocation(vendorObjectID, locationData);
+
         sinon.assert.calledWith(createLocationAndCorrectConflictsStub, expectedArgument);
-        done();
+        sinon.assert.calledWith(findOneAndUpdateStub, expectedArgument2a, expectedArgument2b);
+        sinon.assert.calledWith(publishLocationUpdateAndClearCacheStub, expectedArgument3);
       });
 
       it('expects getVendors to pass argument to Vendor.find method', (done) => {

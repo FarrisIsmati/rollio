@@ -4,7 +4,7 @@
 const mongoose = require('../mongoose/index');
 const { client: redisClient } = require('../../../redis/index');
 const logger = require('../../../log/index')('mongo/operations/vendor-ops');
-const { publishLocationUpdateAndClearCache, createLocationAndCorrectConflicts, editLocationAndCorrectConflicts } = require('./shared-ops');
+const sharedOps = require('./shared-ops');
 
 // SCHEMA
 const Vendor = mongoose.model('Vendor');
@@ -55,7 +55,8 @@ module.exports = {
   // Create a location
   async createNonTweetLocation(vendorID, locationData) {
     try {
-      const newLocation = await createLocationAndCorrectConflicts({ ...locationData, vendorID, matchMethod: 'Vendor Input' });
+      const newLocation = await sharedOps.createLocationAndCorrectConflicts({ ...locationData, vendorID, matchMethod: 'Vendor Input' });
+
       const { regionID, twitterID } = await Vendor.findOneAndUpdate(
         { _id: vendorID }, {
           $push: {
@@ -66,9 +67,11 @@ module.exports = {
           },
         },
       ).lean(true);
-      await publishLocationUpdateAndClearCache({
+
+      await sharedOps.publishLocationUpdateAndClearCache({
         newLocations: [newLocation], vendorID, twitterID, regionID,
       });
+
       return newLocation;
     } catch (err) {
       logger.error(err);
@@ -383,9 +386,9 @@ module.exports = {
   
   async updateNonTweetLocation(locationID, vendorID, locationData) {
     try {
-      const updatedLocation = await editLocationAndCorrectConflicts(locationID, locationData);
+      const updatedLocation = await sharedOps.editLocationAndCorrectConflicts(locationID, locationData);
       const { regionID, twitterID } = await Vendor.findOne({ _id: vendorID }).lean(true);
-      await publishLocationUpdateAndClearCache({
+      await sharedOps.publishLocationUpdateAndClearCache({
         newLocations: [updatedLocation], vendorID, twitterID, regionID,
       });
       return updatedLocation;
