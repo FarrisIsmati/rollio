@@ -18,6 +18,7 @@ const vendorOps = require('../../../lib/db/mongo/operations/vendor-ops');
 // const tweetOps = require('../../../lib/db/mongo/operations/tweet-ops');
 // const userOps = require('../../../lib/db/mongo/operations/user-ops');
 const sharedOps = require('../../../lib/db/mongo/operations/shared-ops');
+const { error } = require('winston');
 
 // SCHEMAS
 const Vendor = mongoose.model('Vendor');
@@ -227,6 +228,49 @@ describe('DB Operations', () => {
         expect(results).to.have.length(1);
         expect(results[0]).to.haveOwnProperty('twitterInfo');
         expect(results[0].twitterInfo.twitterID).to.be.equal('123')
+      });
+
+      it('expects updateVendorSet to take in arguments given one field being updated', async () => {
+        const vendorFindOneAndUpdateStub = sinon.stub(Vendor, 'findOneAndUpdate').returns(populate1);
+
+        const result = await vendorOps.updateVendorSet({regionID: 'regionID123', vendorID: 'vendorID123', field: ['field1'], data: ['data1']});
+
+        const expectedArgument1 = {
+          regionID: 'regionID123',
+          _id: 'vendorID123'
+        }
+
+        const expectedArgument2 = {
+          $set: {
+            field1: 'data1'
+          }
+        }
+
+        const expectedArgument3 = { new: true }
+
+        sinon.assert.calledWith(vendorFindOneAndUpdateStub, expectedArgument1, expectedArgument2, expectedArgument3);
+      });
+
+      it('expects updateVendorSet to take in arguments given multiple field being updated', async () => {
+        const vendorFindOneAndUpdateStub = sinon.stub(Vendor, 'findOneAndUpdate').returns(populate1);
+
+        const result = await vendorOps.updateVendorSet({regionID: 'regionID123', vendorID: 'vendorID123', field: ['field1', 'field2'], data: ['data1', 'data2']});
+
+        const expectedArgument1 = {
+          regionID: 'regionID123',
+          _id: 'vendorID123'
+        }
+
+        const expectedArgument2 = {
+          $set: {
+            field1: 'data1',
+            field2: 'data2'
+          }
+        }
+
+        const expectedArgument3 = { new: true }
+
+        sinon.assert.calledWith(vendorFindOneAndUpdateStub, expectedArgument1, expectedArgument2, expectedArgument3);
       });
     });
   });

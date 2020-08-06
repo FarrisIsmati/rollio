@@ -209,12 +209,6 @@ module.exports = {
       regionID, vendorID, field, data,
     } = params;
 
-    if (!regionID || !vendorID || !field || !data) {
-      const err = new Error('Must include a regionID, vendorID, field, & data properties in params argument');
-      logger.error(err);
-      return err;
-    }
-
     let obj = { [field]: data };
 
     // If you're updating multiple fields
@@ -249,12 +243,6 @@ module.exports = {
       regionID, vendorID, field, payload: originalPayload,
     } = params;
 
-    if (!regionID || !vendorID || !field || !originalPayload) {
-      const err = new Error('Must include a regionID, vendorID, field, & payload properties in params');
-      logger.error(err);
-      return err;
-    }
-
     let payload = originalPayload;
 
     if (['tweetHistory', 'userLocationHistory'].includes(field)) {
@@ -287,12 +275,6 @@ module.exports = {
       regionID, vendorID, field, payload, position,
     } = params;
 
-    if (!regionID || !vendorID || !field || !payload || position === undefined) {
-      const err = new Error('Must include a regionID, vendorID, field, payload, & position properties in params');
-      logger.error('Must include a regionID, vendorID, field, payload, & position properties in params');
-      return err;
-    }
-
     return Vendor.findOneAndUpdate({
       regionID,
       _id: vendorID,
@@ -323,12 +305,6 @@ module.exports = {
     const {
       regionID, vendorID, locationID, amount,
     } = params;
-
-    if ((!regionID || !vendorID || !locationID || !amount)) {
-      const err = new Error('Must include a regionID, vendorID, locationID, & amount properties in params argument');
-      logger.error(err);
-      return err;
-    }
 
     // Amount can only be 1 or -1
     if (amount === 1 || amount === -1) {
