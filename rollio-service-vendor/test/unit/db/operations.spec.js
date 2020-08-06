@@ -136,7 +136,7 @@ describe('DB Operations', () => {
       });
 
       it('expects getVendors to pass argument to Vendor.find method', (done) => {
-        findStub = sinon.stub(Vendor, 'find').returns(populate1);
+        const findStub = sinon.stub(Vendor, 'find').returns(populate1);
 
         const expectedArgument = {
           regionID: 'regionID1',
@@ -149,7 +149,7 @@ describe('DB Operations', () => {
       });
 
       it('expects getVendor to pass arguments to Vendor.findOne & populate method', (done) => {
-        findOneStub = sinon.stub(Vendor, 'findOne').returns(populate1);
+        const findOneStub = sinon.stub(Vendor, 'findOne').returns(populate1);
 
         const expectedArgumentFindOne = {
           regionID: 'arg1',
@@ -169,7 +169,7 @@ describe('DB Operations', () => {
       });
 
       it('expects getVendorByTwitterID to pass arguments to Vendor.findOne & populate method', (done) => {
-        findOneStub = sinon.stub(Vendor, 'findOne').returns(populate1);
+        const findOneStub = sinon.stub(Vendor, 'findOne').returns(populate1);
 
         const expectedArgumentFindOne = {
           regionID: 'arg1',
@@ -189,7 +189,7 @@ describe('DB Operations', () => {
       });
         
       it('expects getVendorsByQuery to pass arguments to Vendor.findOne & populate method', (done) => {
-        findStub = sinon.stub(Vendor, 'find').returns(populate1);
+        const findStub = sinon.stub(Vendor, 'find').returns(populate1);
 
         const expectedArgumentFind = {
           approved: true,
@@ -208,12 +208,25 @@ describe('DB Operations', () => {
         done();
       });
 
-      it('expect to return a vendor given a regionID and a vendor twitterID', (done) => {
-        done();
+      it('expects getUnapprovedVendors to return an empty array if no approved vendors found', async () => {
+        sinon.stub(Vendor, 'find').returns([]);
+
+        const results = await vendorOps.getUnapprovedVendors();
+
+        expect(results).to.be.an('array');
+        expect(results).to.have.length(0);
       });
 
-      it('expect a vendor given an object with a set of mongo query parameters, expect number of consecuitve days inactive vendors 7', (done) => {
-        done();
+      it('expects getUnapprovedVendors to return an array if approved vendors found', async () => {
+        sinon.stub(Vendor, 'find').returns([{ _id: 'vendorid123', toObject: ()=>{return {obj: 'obj1'}} }]);
+        sinon.stub(User, 'find').returns({ select: sinon.stub().returns({ reduce: sinon.stub().returns({'vendorid123': {twitterID: '123'}}) }) })
+
+        const results = await vendorOps.getUnapprovedVendors();
+
+        expect(results).to.be.an('array');
+        expect(results).to.have.length(1);
+        expect(results[0]).to.haveOwnProperty('twitterInfo');
+        expect(results[0].twitterInfo.twitterID).to.be.equal('123')
       });
     });
   });
