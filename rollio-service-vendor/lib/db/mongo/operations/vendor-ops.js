@@ -276,28 +276,28 @@ module.exports = {
     } = params;
 
     return Vendor.findOneAndUpdate({
-      regionID,
-      _id: vendorID,
-    }, {
-      $push: {
-        [field]: {
-          $each: [payload],
-          $position: position,
+        regionID,
+        _id: vendorID,
+      }, {
+        $push: {
+          [field]: {
+            $each: [payload],
+            $position: position,
+          },
         },
-      },
-    }, {
-      new: true,
-    }).populate('tweetHistory')
-      .populate('locationHistory')
-      .populate('userLocationHistory')
-      .then((res) => {
-        redisClient.hdelAsync('vendor', `q::method::GET::path::/${regionID}/${vendorID}`);
-        return res;
-      })
-      .catch((err) => {
-        logger.error(err);
-        return err;
-      });
+      }, {
+        new: true,
+      }).populate('tweetHistory')
+        .populate('locationHistory')
+        .populate('userLocationHistory')
+        .then((res) => {
+          redisClient.hdelAsync('vendor', `q::method::GET::path::/${regionID}/${vendorID}`);
+          return res;
+        })
+        .catch((err) => {
+          logger.error(err);
+          return err;
+        });
   },
 
   // Increments a vendors locationAccuracy by one given a regionID and vendorID
@@ -334,19 +334,13 @@ module.exports = {
   },
 
   // Increments a vendors consecutiveDaysInactive field by 1 given a regionID and vendorID
-  incrementVendorConsecutiveDaysInactive(regionID, vendorID) {
-    if (arguments.length !== 2) {
-      const err = new Error('Must include regionID and vendorID');
-      logger.error(err);
-      return err;
-    }
-
+  async incrementVendorConsecutiveDaysInactive(regionID, vendorID) {
     return Vendor.updateOne({
-      regionID,
-      _id: vendorID,
-    }, {
-      $inc: { consecutiveDaysInactive: 1 },
-    })
+        regionID,
+        _id: vendorID,
+      }, {
+        $inc: { consecutiveDaysInactive: 1 },
+      })
       .then(async (res) => {
         await redisClient.hdelAsync('vendor', `q::method::GET::path::/${regionID}/${vendorID}`);
         return res;

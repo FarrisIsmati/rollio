@@ -254,7 +254,7 @@ describe('DB Operations', () => {
       it('expects updateVendorSet to take in arguments given multiple field being updated', async () => {
         const vendorFindOneAndUpdateStub = sinon.stub(Vendor, 'findOneAndUpdate').returns(populate1);
 
-        const result = await vendorOps.updateVendorSet({regionID: 'regionID123', vendorID: 'vendorID123', field: ['field1', 'field2'], data: ['data1', 'data2']});
+        await vendorOps.updateVendorSet({regionID: 'regionID123', vendorID: 'vendorID123', field: ['field1', 'field2'], data: ['data1', 'data2']});
 
         const expectedArgument1 = {
           regionID: 'regionID123',
@@ -271,6 +271,133 @@ describe('DB Operations', () => {
         const expectedArgument3 = { new: true }
 
         sinon.assert.calledWith(vendorFindOneAndUpdateStub, expectedArgument1, expectedArgument2, expectedArgument3);
+      });
+
+      it('expects updateVendorPush to take in arguments given tweetHistory', async () => {
+        const vendorFindOneAndUpdateStub = sinon.spy(Vendor, 'findOneAndUpdate');
+        sinon.stub(Date, 'now').returns('123');
+        sinon.stub(Tweet, 'create').returns({_id: '1122'});
+
+        await vendorOps.updateVendorPush({regionID: 'regionID123', vendorID: 'vendorID123', field: 'tweetHistory', payload: {'tst': '123'}});
+
+        const expectedArgument1 = {
+          regionID: 'regionID123',
+          _id: 'vendorID123'
+        }
+
+        const expectedArgument2 = {
+          $push: { tweetHistory: '1122' },
+          $set: { updateDate: '123' },
+        }
+
+        const expectedArgument3 = { new: true }
+
+        sinon.assert.calledWith(vendorFindOneAndUpdateStub, expectedArgument1, expectedArgument2, expectedArgument3);
+      });
+
+      it('expects updateVendorPush to take in arguments given userLocationHistory', async () => {
+        const vendorFindOneAndUpdateStub = sinon.spy(Vendor, 'findOneAndUpdate');
+        sinon.stub(Date, 'now').returns('123');
+        sinon.stub(Location, 'create').returns({_id: 'location1'});
+
+        await vendorOps.updateVendorPush({regionID: 'regionID123', vendorID: 'vendorID123', field: 'userLocationHistory', payload: {'tst': '123'}});
+        
+        const expectedArgument1 = {
+          regionID: 'regionID123',
+          _id: 'vendorID123'
+        }
+
+        const expectedArgument2 = {
+          $push: { userLocationHistory: 'location1' },
+          $set: { updateDate: '123' },
+        }
+
+        const expectedArgument3 = { new: true }
+
+        sinon.assert.calledWith(vendorFindOneAndUpdateStub, expectedArgument1, expectedArgument2, expectedArgument3);
+      });
+
+      it('expects updateVendorPushPosition to update arguments with userLocationHistory field', async () => {
+        const vendorFindOneAndUpdateStub = sinon.spy(Vendor, 'findOneAndUpdate');
+
+        await vendorOps.updateVendorPushPosition({regionID: 'regionID123', vendorID: 'vendorID123', field: 'userLocationHistory', payload: {'tst': '123'}, position: '123'});
+
+        const expectedArgument1 = {
+          regionID: 'regionID123',
+          _id: 'vendorID123'
+        }
+
+        const expectedArgument2 = {
+          $push: {
+            'userLocationHistory': {
+              $each: [{'tst': '123'}],
+              $position: '123',
+            },
+          },
+        }
+
+        const expectedArgument3 = { new: true }
+
+        sinon.assert.calledWith(vendorFindOneAndUpdateStub, expectedArgument1, expectedArgument2, expectedArgument3);
+      });
+
+      it('expects updateLocationAccuracy to fail given an incorrect amount string \'1\'', async () => {
+        const result = await vendorOps.updateLocationAccuracy({regionID: 'regionID123', vendorID: 'vendorID123', locationID: 'location123', amount: '1'});
+
+        expect(result.level).to.equal('error');
+      });
+
+      it('expects updateLocationAccuracy to fail given an incorrect amount 2', async () => {
+        const result = await vendorOps.updateLocationAccuracy({regionID: 'regionID123', vendorID: 'vendorID123', locationID: 'location123', amount: 2});
+
+        expect(result.level).to.equal('error');
+      });
+
+      it('expects updateLocationAccuracy to fail given an incorrect amount -2', async () => {
+        const result = await vendorOps.updateLocationAccuracy({regionID: 'regionID123', vendorID: 'vendorID123', locationID: 'location123', amount: -2});
+
+        expect(result.level).to.equal('error');
+      });
+
+      it('expects updateLocationAccuracy to fail given an incorrect amount 0', async () => {
+        const result = await vendorOps.updateLocationAccuracy({regionID: 'regionID123', vendorID: 'vendorID123', locationID: 'location123', amount: 0});
+
+        expect(result.level).to.equal('error');
+      });
+
+      it('expects updateLocationAccuracy to be called with proper arguments', async () => {
+        const locationFindOneAndUpdateStub = sinon.stub(Location, 'findOneAndUpdate').resolves(Promise.resolve());
+
+        await vendorOps.updateLocationAccuracy({regionID: 'regionID123', vendorID: 'vendorID123', locationID: 'location123', amount: 1});
+
+        const expectedArgument1 = {
+          _id: 'location123',
+        }
+
+        const expectedArgument2 = {
+          $inc: { accuracy: 1 },
+        }
+
+        const expectedArgument3 = { new: true }
+
+        sinon.assert.calledWith(locationFindOneAndUpdateStub, expectedArgument1, expectedArgument2, expectedArgument3);
+      });
+
+      it('expects incrementVendorConsecutiveDaysInactive ---', async () => {
+        const vendorUpdateOneStub = sinon.stub(Vendor, 'updateOne').resolves(Promise.resolve());
+
+        await vendorOps.incrementVendorConsecutiveDaysInactive('regionID123', 'vendorID123');
+
+        const expectedArgument1 = {
+          regionID: 'regionID123',
+          _id: 'vendorID123',
+        }
+
+        const expectedArgument2 = {
+          $inc: { consecutiveDaysInactive: 1 },
+        }
+
+        sinon.assert.calledWith(vendorUpdateOneStub, expectedArgument1, expectedArgument2);
       });
     });
   });
