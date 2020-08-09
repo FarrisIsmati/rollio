@@ -19,6 +19,7 @@ const vendorOps = require('../../../lib/db/mongo/operations/vendor-ops');
 // const userOps = require('../../../lib/db/mongo/operations/user-ops');
 const sharedOps = require('../../../lib/db/mongo/operations/shared-ops');
 const { error } = require('winston');
+const { ObjectID } = require('mongodb');
 
 // SCHEMAS
 const Vendor = mongoose.model('Vendor');
@@ -383,7 +384,7 @@ describe('DB Operations', () => {
         sinon.assert.calledWith(locationFindOneAndUpdateStub, expectedArgument1, expectedArgument2, expectedArgument3);
       });
 
-      it('expects incrementVendorConsecutiveDaysInactive ---', async () => {
+      it('expects incrementVendorConsecutiveDaysInactive to be called with proper arguments', async () => {
         const vendorUpdateOneStub = sinon.stub(Vendor, 'updateOne').resolves(Promise.resolve());
 
         await vendorOps.incrementVendorConsecutiveDaysInactive('regionID123', 'vendorID123');
@@ -398,6 +399,22 @@ describe('DB Operations', () => {
         }
 
         sinon.assert.calledWith(vendorUpdateOneStub, expectedArgument1, expectedArgument2);
+      });
+
+      it('expects updateNonTweetLocation to call all methods with proper arguments', async () => {
+        const locationID = new ObjectID();
+        const vendorID = new ObjectID();
+        await sinon.stub(sharedOps, 'editLocationAndCorrectConflicts').returns({ lat: '123', long: '223'});
+        await sinon.stub(Vendor, 'findOne').returns({ lean: sinon.stub().returns({ regionID: 'regionID123', twitterID: 'twitterID123'}) });
+        const sharedOpsPublishLocationUpdateAndClearCacheStub = await sinon.spy(sharedOps, 'publishLocationUpdateAndClearCache');
+
+        await vendorOps.updateNonTweetLocation(locationID, vendorID, {data: '123'});
+
+        const expectedArgument1 = {
+          newLocations: [{ lat: '123', long: '223'}], vendorID: vendorID, twitterID: 'twitterID123', regionID: 'regionID123',
+        }
+
+        sinon.assert.calledWith(sharedOpsPublishLocationUpdateAndClearCacheStub, expectedArgument1);
       });
     });
   });
