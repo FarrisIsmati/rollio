@@ -17,6 +17,10 @@ const updateConflictingLocationDates = async (existingLocation, startDate, endDa
   const newStartDate = moment(startDate);
   const newEndDate = moment(endDate);
   const { _id, startDate: existingStartDate, endDate: existingEndDate } = existingLocation;
+
+  console.log(startDate)
+  console.log(endDate);
+
   const existingStartsBeforeNewStart = moment(existingStartDate).isSameOrBefore(newStartDate);
   const existingEndsBeforeNewEnd = moment(existingEndDate).isSameOrBefore(newEndDate);
   let update = {};
@@ -119,6 +123,7 @@ const publishLocationUpdateAndClearCache = async ({
 
 
 module.exports = {
+  updateConflictingLocationDates,
   publishLocationUpdateAndClearCache,
   createLocationAndCorrectConflicts,
   correctLocationConflicts,
