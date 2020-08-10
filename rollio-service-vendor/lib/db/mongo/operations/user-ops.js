@@ -43,6 +43,7 @@ module.exports = {
       ...vendorIdUpdate,
       type,
     }).save();
+
     const user = newUser.toJSON();
     // eslint-disable-next-line max-len
     // annoyingly, .save doesn't seem to honor the 'select: false' on the schema.  So, just deleting here
