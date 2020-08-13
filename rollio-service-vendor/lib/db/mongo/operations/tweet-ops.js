@@ -2,22 +2,25 @@
 const mongoose = require('../mongoose/index');
 const logger = require('../../../log/index')('db/mongo/operations/tweet-ops');
 const sharedOps = require('./shared-ops');
+const { ObjectId } = require('mongodb');
 
 // SCHEMA
 const Tweet = mongoose.model('Tweet');
 const Vendor = mongoose.model('Vendor');
 const Location = mongoose.model('Location');
 
-module.exports = {
+const tweetOps = {
   async createTweetLocation(id, data) {
     let updatedTweet;
     const { locationToOverride, ...newLocationData } = data;
+
     try {
       const originalTweet = await Tweet.findById(id).lean(true);
       const { vendorID } = originalTweet;
       if (locationToOverride) {
-        await deleteTweetLocation(id, locationToOverride._id, false);
+        await tweetOps.deleteTweetLocation(id, locationToOverride._id, false);
       }
+
       const newLocation = await sharedOps.createLocationAndCorrectConflicts({ ...newLocationData, vendorID, matchMethod: 'Manual from Tweet' });
       const { regionID, twitterID } = await Vendor.findOneAndUpdate(
         { _id: vendorID }, {
@@ -29,7 +32,9 @@ module.exports = {
           },
         },
       ).lean(true);
+
       updatedTweet = await Tweet.findOneAndUpdate({ _id: id }, { $push: { locations: newLocation._id }, $set: { usedForLocation: true } }, { new: true }).populate('vendorID').populate('locations');
+
       await sharedOps.publishLocationUpdateAndClearCache({
         updatedTweet, newLocations: [newLocation], vendorID, twitterID, regionID,
       });
@@ -37,6 +42,7 @@ module.exports = {
       logger.error(err);
       throw err;
     }
+
     return updatedTweet;
   },
 
@@ -88,3 +94,5 @@ module.exports = {
     return updatedTweet;
   }
 };
+
+module.exports = tweetOps;

@@ -16,7 +16,7 @@ const { expect } = chai;
 // const regionOps = require('../../../lib/db/mongo/operations/region-ops');
 const tweetOps = require('../../../lib/db/mongo/operations/tweet-ops');
 // const userOps = require('../../../lib/db/mongo/operations/user-ops');
-// const sharedOps = require('../../../lib/db/mongo/operations/shared-ops');
+const sharedOps = require('../../../lib/db/mongo/operations/shared-ops');
 const { error } = require('winston');
 const { ObjectID } = require('mongodb');
 const userOps = require('../../../lib/db/mongo/operations/user-ops');
@@ -32,9 +32,8 @@ chai.use(chaid);
 chai.use(assertArrays);
 chai.use(dateTime);
 
-describe('Shared Operations', () => {
+describe('Tweet Operations', () => {
     afterEach(() => {
-        // Restore sinon spies,stubs,mocks,etc.
         sinon.restore();
     });
 
@@ -42,20 +41,82 @@ describe('Shared Operations', () => {
     const populate2 = { populate: sinon.stub().returns(popualte3) }
     const populate1 = { populate: sinon.stub().returns(populate2) }
 
-    it('expects correctLocationConflicts to return an empty array if overriden', async () => {
-        const locationData = {
-            vendorID: new ObjectId(),
-            startDate: 'Date123',
-            endDate: 'EndDate123',
-            truckNum: 1,
-            _id: new ObjectId(),
-            overridden: true,
-        }
+    it('expects createTweetLocation to delete tweet if locationToOverride provided', async () => {
+        const tweetID = new ObjectId();
+        
+        sinon.stub(Tweet, 'findById').returns({ lean: sinon.stub().returns({ vendorID: 'vendorID1'}) });
 
-        const result = await sharedOps.correctLocationConflicts(locationData);
+        const didDeleteTweet = sinon.stub(tweetOps, 'deleteTweetLocation').returns(true);
 
-        expect(result).to.be.an('array');
-        expect(result.length).to.be.equal(0);
+        sinon.stub(sharedOps, 'createLocationAndCorrectConflicts').returns({_id: 'newLocationId'});
+        sinon.stub(Vendor, 'findOneAndUpdate').returns({ lean: sinon.stub().returns({ regionID: 'regionId', twitterID: 'twitterId'})});
+        sinon.stub(Tweet, 'findOneAndUpdate').returns(populate1);
+        sinon.stub(sharedOps, 'publishLocationUpdateAndClearCache');
+
+        await tweetOps.createTweetLocation(tweetID, { 
+            locationToOverride: {
+              _id: new ObjectId()
+            },
+            newLocationData: {
+              exists: true
+            }
+          });
+
+        sinon.assert.called(didDeleteTweet);
+    });
+
+    it('expects createTweetLocation to NOT delete tweet if locationToOverride NOT provided', async () => {
+        const tweetID = new ObjectId();
+        
+        sinon.stub(Tweet, 'findById').returns({ lean: sinon.stub().returns({ vendorID: 'vendorID1'}) });
+
+        const didDeleteTweet = sinon.stub(tweetOps, 'deleteTweetLocation').returns(true);
+
+        sinon.stub(sharedOps, 'createLocationAndCorrectConflicts').returns({_id: 'newLocationId'});
+        sinon.stub(Vendor, 'findOneAndUpdate').returns({ lean: sinon.stub().returns({ regionID: 'regionId', twitterID: 'twitterId'})});
+        sinon.stub(Tweet, 'findOneAndUpdate').returns(populate1);
+        sinon.stub(sharedOps, 'publishLocationUpdateAndClearCache');
+
+        await tweetOps.createTweetLocation(tweetID, { 
+            newLocationData: {
+              exists: true
+            }
+          });
+
+        sinon.assert.notCalled(didDeleteTweet);
     });
     
+    it('expects createTweetLocation vendor findOneAndUpdate to be called with correct arguments', async () => {
+        const tweetID = new ObjectId();
+        
+        sinon.stub(Tweet, 'findById').returns({ lean: sinon.stub().returns({ vendorID: 'vendorID1'}) });
+        sinon.stub(tweetOps, 'deleteTweetLocation').returns(true);
+        sinon.stub(sharedOps, 'createLocationAndCorrectConflicts').returns({_id: 'newLocationId'});
+
+        const getRegionIdTwitterId = sinon.stub(Vendor, 'findOneAndUpdate').returns({ lean: sinon.stub().returns({ regionID: 'regionId', twitterID: 'twitterId'})});
+
+        sinon.stub(Tweet, 'findOneAndUpdate').returns(populate1);
+        sinon.stub(sharedOps, 'publishLocationUpdateAndClearCache');
+
+        const expectedArgument1 = { _id: 'vendorID1' }
+        const expectedArgument2 = {
+            $push: {
+              locationHistory: {
+                $each: ['newLocationId'],
+                $position: 0,
+              },
+            },
+        }
+
+        await tweetOps.createTweetLocation(tweetID, { 
+            locationToOverride: {
+              _id: new ObjectId()
+            },
+            newLocationData: {
+              exists: true
+            }
+          });
+
+        sinon.assert.calledWith(getRegionIdTwitterId, expectedArgument1, expectedArgument2);
+    });
 });

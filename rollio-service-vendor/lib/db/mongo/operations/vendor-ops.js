@@ -183,16 +183,17 @@ module.exports = {
         return [];
       }
 
-      const twitterLookUp = await User
+      const associatedUsers = await User
         .find({vendorID: { $in: unapprovedVendors.map(vendor => vendor._id) } })
-        .select('+twitterProvider')
-        .reduce((acc, user) => {
-            const { twitterProvider = {}, vendorID } = user;
-            const { username, displayName } = twitterProvider;
-            acc[String(vendorID)] = { username, displayName };
-            return acc;
-          }, {});
-  
+        .select('+twitterProvider');
+
+      const twitterLookUp = associatedUsers.reduce((acc, user) => {
+        const { twitterProvider = {}, vendorID } = user;
+        const { username, displayName } = twitterProvider;
+        acc[String(vendorID)] = { username, displayName };
+        return acc;
+      }, {});
+
       // We look up and add on the twitter displayName so that we can look at their twitter account before approving
       return unapprovedVendors
         .map(vendor => ({ ...vendor.toObject(), twitterInfo: twitterLookUp[String(vendor._id)] }));
