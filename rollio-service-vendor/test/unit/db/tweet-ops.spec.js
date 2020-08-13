@@ -119,4 +119,14 @@ describe('Tweet Operations', () => {
 
         sinon.assert.calledWith(getRegionIdTwitterId, expectedArgument1, expectedArgument2);
     });
+
+    it('expects getAllTweets to ---', async () => {
+        const tweetFindStub = sinon.stub(Tweet, 'find').returns({ sort: sinon.stub().returns({ populate: sinon.stub().returns(Promise.resolve())})})
+
+        const vendorID = new ObjectId();
+
+        await tweetOps.getAllTweets({startDate: '2020-01-01', endDate: '2020-01-02', vendorID});
+
+        sinon.assert.called(tweetFindStub);
+    }); // STILL WORKIN ON THIS
 });
