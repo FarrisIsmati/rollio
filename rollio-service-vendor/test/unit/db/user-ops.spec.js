@@ -23,7 +23,6 @@ chai.use(dateTime);
 
 describe('User Operations', () => {
     afterEach(() => {
-        // Restore sinon spies,stubs,mocks,etc.
         sinon.restore();
     });
 

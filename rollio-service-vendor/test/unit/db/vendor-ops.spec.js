@@ -27,7 +27,6 @@ chai.use(dateTime);
 
 describe('Vendor Operations', () => {
   afterEach(() => {
-    // Restore sinon spies,stubs,mocks,etc.
     sinon.restore();
   });
 
