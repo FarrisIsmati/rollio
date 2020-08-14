@@ -71,26 +71,41 @@ const tweetOps = {
     const updatedLocation = await Location.findOneAndUpdate({ _id: locationId }, { $set: data }, { new: true }).lean(true);
     await sharedOps.correctLocationConflicts(updatedLocation);
     const updatedTweet = await Tweet.findOne({ _id: tweetId }).populate('vendorID').populate('locations').lean();
-    const { regionID, twitterID } = updatedTweet.vendorID;
+
+    // ??!?!?!?!??!?! WHY IS updatedTweet.vendorID an object that contains regionID and twitterID ??????!?!??!?!!?
+    const { regionID, twitterID } = updatedTweet.vendorID; 
+    // ??!?!?!?!??!?! WHY IS updatedTweet.vendorID an object that contains regionID and twitterID ??????!?!??!?!!?
+
+    // ??!?!?!?!??!?! WHY IS updatedTweet being inserted in updatedTweet and vendorID: updatedTweet ??????!?!??!?!!?
     await sharedOps.publishLocationUpdateAndClearCache({
       updatedTweet, newLocations: [updatedLocation], vendorID: updatedTweet, twitterID, regionID,
     });
+    // ??!?!?!?!??!?! WHY IS updatedTweet being inserted in updatedTweet and vendorID: updatedTweet ??????!?!??!?!!?
+
     return updatedTweet;
   },
 
   async deleteTweetLocation(tweetId, locationId, publishData = true) {
-    // look up tweet
+    // Look up tweet
     const originalTweet = await Tweet.findById(tweetId).lean(true);
-    // set previously used location to overridden
+
+    // Set previously used location to overridden
     await Location.updateOne({ _id: locationId }, { $set: { overridden: true } });
     const { twitterID, regionID, _id: vendorID } = await Vendor.findOneAndUpdate({ _id: originalTweet.vendorID }, { $pull: { locationHistory: locationId } }, { new: true });
-    // delete the old location and set usedForLocation to false
-    const updatedTweet = await Tweet.findOneAndUpdate({ _id: tweetId }, { $pull: { locations: locationId }, $set: { usedForLocation: originalTweet.locations.length > 1 } }, { new: true }).populate('vendorID').populate('locations').lean(true);
+
+    // Delete the old location and set usedForLocation to false
+    const updatedTweet = await Tweet.findOneAndUpdate(
+      { _id: tweetId }, 
+      { $pull: { locations: locationId }, $set: { usedForLocation: originalTweet.locations.length > 1 } }, 
+      { new: true }
+    ).populate('vendorID').populate('locations').lean(true);
+
     if (publishData) {
       await sharedOps.publishLocationUpdateAndClearCache({
         updatedTweet, newLocations: [], vendorID, twitterID, regionID,
       });
     }
+
     return updatedTweet;
   }
 };
