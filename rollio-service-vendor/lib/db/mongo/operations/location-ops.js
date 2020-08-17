@@ -4,6 +4,7 @@ const Location = mongoose.model('Location');
 
 module.exports = {
   async getAllLocations(query = {}) {
+    // ~~~~~~~~~~~~~ ????!!!!! why ...rest, why not just rest !!!!!???? ~~~~~~~~~~~~~~~~~~
     const { vendorID, ...rest } = query;
     // vendorID sometimes come back as just an empty string, which we should ignore
     const vendorIDQuery = vendorID ? { vendorID } : {};
