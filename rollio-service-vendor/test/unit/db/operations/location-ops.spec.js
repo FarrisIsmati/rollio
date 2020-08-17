@@ -1,10 +1,10 @@
 // DEPENDENCIES
-const mongoose = require('../../../lib/db/mongo/mongoose/index');
+const mongoose = require('../../../../lib/db/mongo/mongoose/index');
 const { ObjectId } = require('mongoose').Types;
 const sinon = require('sinon');
 
 // OPERATIONS
-const locationOps = require('../../../lib/db/mongo/operations/location-ops');
+const locationOps = require('../../../../lib/db/mongo/operations/location-ops');
 
 // SCHEMAS
 const Location = mongoose.model('Location');

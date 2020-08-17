@@ -12,7 +12,6 @@ const Tweet = mongoose.model('Tweet');
 const Location = mongoose.model('Location');
 const User = mongoose.model('User');
 
-
 // DATA
 const {
   vendors: vendorsData,
@@ -21,6 +20,7 @@ const {
   locations: locationData,
   users: usersData,
 } = require('../data/dev');
+const { ObjectId } = require('mongodb');
 
 
 // const yelpAPIKey = config.YELP_API_KEY;
@@ -121,6 +121,7 @@ const seedObj = {
     const region = await Region.findOne(
       { name: regionName },
     );
+    
     const regionID = await region._id;
     let isTestEnv = false;
 
@@ -130,7 +131,7 @@ const seedObj = {
 
     // Run all async operations on seed data (collect data from various api's per vendor)
     const vendorsAsyncUpdated = vendorsData.map(
-      async vendor => this.asyncUpdateVendor({ vendor, regionID, isTestEnv })
+      async vendor => seedObj.asyncUpdateVendor({ vendor, regionID, isTestEnv })
         .catch((err) => {
           logger.error(err);
           throw err;

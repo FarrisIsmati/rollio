@@ -1,25 +1,18 @@
 /* eslint-disable no-console */
 // DEPENDENCIES
 const chai = require('chai');
-const chaid = require('chaid');
-const dateTime = require('chai-datetime');
-const assertArrays = require('chai-arrays');
 const { ObjectId } = require('mongoose').Types;
-const mongoose = require('../../../lib/db/mongo/mongoose/index');
+const mongoose = require('../../../../lib/db/mongo/mongoose/index');
 const sinon = require('sinon');
-const { pub } = require('../../../lib/redis/index');
+const { pub } = require('../../../../lib/redis/index');
 
 const { expect } = chai;
 
 // OPERATIONS
-const sharedOps = require('../../../lib/db/mongo/operations/shared-ops');
+const sharedOps = require('../../../../lib/db/mongo/operations/shared-ops');
 
 // SCHEMAS
 const Location = mongoose.model('Location');
-
-chai.use(chaid);
-chai.use(assertArrays);
-chai.use(dateTime);
 
 describe('Shared Operations', () => {
     afterEach(() => {
@@ -107,6 +100,7 @@ describe('Shared Operations', () => {
         }
 
         sinon.stub(sharedOps, 'getVendorLocations').returns([{}]);
+        
         const pubStub = sinon.stub(pub, 'publish');
 
         const expectedArgument1 = 'test_twitter'

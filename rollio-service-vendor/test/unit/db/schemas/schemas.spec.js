@@ -1,8 +1,9 @@
 // DEPENDENCIES
 const chai = require('chai');
 const asserttype = require('chai-asserttype');
+const mongoose = require('../../../../lib/db/mongo/mongoose/index');
+
 const { ObjectId } = require('mongoose').Types;
-const mongoose = require('../../../lib/db/mongo/mongoose/index');
 
 // SCHEMAS
 const Comment = mongoose.model('Comment');

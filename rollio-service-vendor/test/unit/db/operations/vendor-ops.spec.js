@@ -1,18 +1,15 @@
 /* eslint-disable no-console */
 // DEPENDENCIES
 const chai = require('chai');
-const chaid = require('chaid');
-const dateTime = require('chai-datetime');
-const assertArrays = require('chai-arrays');
 const { ObjectId } = require('mongoose').Types;
-const mongoose = require('../../../lib/db/mongo/mongoose/index');
+const mongoose = require('../../../../lib/db/mongo/mongoose/index');
 const sinon = require('sinon');
 
 const { expect } = chai;
 
 // OPERATIONS
-const vendorOps = require('../../../lib/db/mongo/operations/vendor-ops');
-const sharedOps = require('../../../lib/db/mongo/operations/shared-ops');
+const vendorOps = require('../../../../lib/db/mongo/operations/vendor-ops');
+const sharedOps = require('../../../../lib/db/mongo/operations/shared-ops');
 const { ObjectID } = require('mongodb');
 
 // SCHEMAS
@@ -20,10 +17,6 @@ const Vendor = mongoose.model('Vendor');
 const Location = mongoose.model('Location');
 const Tweet = mongoose.model('Tweet');
 const User = mongoose.model('User');
-
-chai.use(chaid);
-chai.use(assertArrays);
-chai.use(dateTime);
 
 describe('Vendor Operations', () => {
   afterEach(() => {

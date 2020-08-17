@@ -1,25 +1,18 @@
 /* eslint-disable no-console */
 // DEPENDENCIES
 const chai = require('chai');
-const chaid = require('chaid');
-const dateTime = require('chai-datetime');
-const assertArrays = require('chai-arrays');
 const { ObjectId } = require('mongoose').Types;
-const mongoose = require('../../../lib/db/mongo/mongoose/index');
+const mongoose = require('../../../../lib/db/mongo/mongoose/index');
 const sinon = require('sinon');
 
 const { expect } = chai;
 
 // OPERATIONS
-const userOps = require('../../../lib/db/mongo/operations/user-ops');
+const userOps = require('../../../../lib/db/mongo/operations/user-ops');
 
 // SCHEMAS
 const Vendor = mongoose.model('Vendor');
 const User = mongoose.model('User');
-
-chai.use(chaid);
-chai.use(assertArrays);
-chai.use(dateTime);
 
 describe('User Operations', () => {
     afterEach(() => {

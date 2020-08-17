@@ -1,5 +1,5 @@
+// DEPENDENCIES
 const moment = require('moment');
-
 const { client: redisClient, pub } = require('./../../../redis');
 const { io } = require('../../../sockets/index');
 const { REDIS_TWITTER_CHANNEL, SERVER_ID } = require('../../../../config');

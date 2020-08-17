@@ -2,7 +2,6 @@
 const mongoose = require('../mongoose/index');
 const logger = require('../../../log/index')('db/mongo/operations/tweet-ops');
 const sharedOps = require('./shared-ops');
-const { ObjectId } = require('mongodb');
 
 // SCHEMA
 const Tweet = mongoose.model('Tweet');
