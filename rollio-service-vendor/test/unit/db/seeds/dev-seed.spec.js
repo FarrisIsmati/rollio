@@ -11,10 +11,6 @@ const Vendor = mongoose.model('Vendor');
 // DATA
 const {
     vendors: vendorsData,
-    regions: regionsData,
-    tweets: tweetData,
-    locations: locationData,
-    users: usersData,
   } = require('../../../../lib/db/mongo/data/dev');
 
 describe('Dev Seed', () => {
@@ -23,10 +19,9 @@ describe('Dev Seed', () => {
     });
 
     it('expects seedVendors to be called with proper', async () => {    
-        const { seedVendors } = seedObj;
         const regionID = new ObjectId();
 
-        const regionStub = sinon.stub(Region, 'findOne').returns({ _id: regionID });
+        sinon.stub(Region, 'findOne').returns({ _id: regionID });
         const vendorInsertManyStub = sinon.stub(Vendor, 'insertMany').returns(Promise.resolve());
 
         const expectedArgument1 = vendorsData.map((vendor) => { return {...vendor, regionID} })

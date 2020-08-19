@@ -127,13 +127,15 @@ paths.forEach((filePath) => {
   }
 });
 
-module.exports = async (data) => {
-  const { context, template, subject } = data;
-  const templateFn = templates[template];
-
-  if (!templateFn) {
-    throw new Error(`${template} does not exist`);
+module.exports = {
+  async getHtml(data) {
+    const { context, template, subject } = data;
+    const templateFn = templates[template];
+  
+    if (!templateFn) {
+      throw new Error(`${template} does not exist`);
+    }
+    context.title = context.title || subject;
+    return templateFn(context);
   }
-  context.title = context.title || subject;
-  return templateFn(context);
-};
+}
