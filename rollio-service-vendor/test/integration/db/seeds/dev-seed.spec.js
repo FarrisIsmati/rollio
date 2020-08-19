@@ -1,6 +1,6 @@
 // DEPENDENCIES
 const chai = require('chai');
-const mongoose = require('../../../lib/db/mongo/mongoose/index');
+const mongoose = require('../../../../lib/db/mongo/mongoose/index');
 
 const { expect } = chai;
 
@@ -9,8 +9,8 @@ const Region = mongoose.model('Region');
 const Vendor = mongoose.model('Vendor');
 
 // SEED
-const seed = require('../../../lib/db/mongo/seeds/dev-seed');
-const seedData = require('../../../lib/db/mongo/data/dev');
+const seed = require('../../../../lib/db/mongo/seeds/dev-seed');
+const seedData = require('../../../../lib/db/mongo/data/dev');
 
 describe('Development Seed Operations', () => {
   const seedDB = (done) => { seed.runSeed().then(() => done()); };

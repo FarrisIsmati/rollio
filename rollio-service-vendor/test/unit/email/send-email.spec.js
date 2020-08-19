@@ -6,7 +6,7 @@ const email = require('../../../lib/email/send-email');
 const templating = require('../../../lib/email/templating');
 const mailer = require('../../../lib/email/mailer-transport');
 
-describe('send-email.js', () => {
+describe('Send Email', () => {
     afterEach(() => {
         sinon.restore();
     });
