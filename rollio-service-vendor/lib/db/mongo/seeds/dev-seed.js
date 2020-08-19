@@ -131,11 +131,7 @@ const seedObj = {
 
     // Run all async operations on seed data (collect data from various api's per vendor)
     const vendorsAsyncUpdated = vendorsData.map(
-      async vendor => seedObj.asyncUpdateVendor({ vendor, regionID, isTestEnv })
-        .catch((err) => {
-          logger.error(err);
-          throw err;
-        }),
+      async vendor => { return {...vendor, regionID } }
     );
 
     // Resolve all promises within vendorsAsyncUpdated
@@ -150,21 +146,6 @@ const seedObj = {
         logger.error(err);
         throw err;
       });
-  },
-  async asyncUpdateVendor(params) {
-    const { vendor, regionID } = params; // isTestEnv
-    const payload = { ...vendor, regionID };
-    // If running tests, dont make calls to the Yelp API to preserve 5,000 daily limit
-    // Also set as a param and not checking actual ENV for when you want to test this function alone
-
-    // Yelp wont let you update more than at a time (rate limited on seed) FIX THIS
-    // if (vendor.yelpId && !isTestEnv) {
-    //   const yelpDataString = await yelpClient.business(vendor.yelpId).then(res => res.body);
-    //   const yelpData = JSON.parse(yelpDataString);
-    //   payload.yelpRating = yelpData.rating;
-    //   payload.price = yelpData.price;
-    // }
-    return payload;
   },
   runSeed() {
     return this.emptySeed()
