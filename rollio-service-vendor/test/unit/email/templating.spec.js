@@ -105,4 +105,20 @@ describe('Templating Email', () => {
         // Remove all whitespace before checking
         expect(result.replace(/\s/g,'')).to.be.equal(expectedResult);
     });
+
+    // Way code is formatted makes it difficult ot test the other methods
+
+    // it('expects getHtml to return an error if no template function is found', async () => {
+    //   sinon.stub(templates, 'admin.new-location').returns(true);
+
+    //   const getHtmlArgs = { context: {
+    //       title: 'templateTitle'
+    //     }, 
+    //     template: 'admin.new-location',
+    //     subject: 'test'
+    //   };
+
+    //   const result = templating.getHtml(getHtmlArgs);
+    //   // Remove all whitespace before checking
+    // });
 });

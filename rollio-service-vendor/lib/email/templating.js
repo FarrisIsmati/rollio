@@ -8,13 +8,15 @@ const logger = require('../log')('templating');
 const templating = {
   async getHtml(data) {
     const { context, template, subject } = data;
-    const templateFn = templates[template];
-  
-    if (!templateFn) {
-      throw new Error(`${template} does not exist`);
+
+    if (!templates[template]) {
+      const error = new Error(`${template} does not exist`);
+      logger.error(error)
+      return error;
     }
+
     context.title = context.title || subject;
-    return templateFn(context);
+    return templates[template](context);
   },
   _gatherFilePath(filePath) {
     // Use regex to find template parent name and template name within file path
