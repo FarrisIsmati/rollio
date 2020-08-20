@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 // DEPENDENCIES
 const mq = require('../../../../lib/messaging/index');
-const sendVendorTwitterIDs = require('../../../../lib/messaging/send/send-vendor-twitterid');
+const recieve = require('../../../../lib/messaging/recieve/receive-vendors-request');
 const sinon = require('sinon');
 const config = require('../../../../config');
 
@@ -15,22 +15,15 @@ describe('Send', () => {
     });
 
     describe('Send', () => {
-        it('expects sendVendorTwitterIDs to ...', async () => {     
-            const regionID = 'regionID1'
-            const twitterConnection = 'www.rollio.io';
+        it('expects _recieveVendorRequestProcess to ... ', async () => {     
+            // const mqReceiveStub = sinon.stub(mq, 'recieve').returns();
 
-            sinon.stub(config, 'AWS_SQS_TWITTER_IDS').value(twitterConnection);
-            sinon.stub(regionOps, 'getRegionByName').returns(Promise.resolve(regionID));
-            sinon.stub(vendorOps, 'getVendors').returns(Promise.resolve([{twitterID: 'tid1'}, {twitterID: 'tid2'}]));
-
-            const mqSendStub = sinon.stub(mq, 'send');
-
-            const expectedArgument1 = twitterConnection;
-            const expectedArgument2 = 'tid1,tid2';
+            // const expectedArgument1 = twitterConnection;
+            // const expectedArgument2 = 'tid1,tid2';
     
-            await sendVendorTwitterIDs();
+            // await sendVendorTwitterIDs();
     
-            sinon.assert.calledWith(mqSendStub, expectedArgument1, expectedArgument2);
+            // sinon.assert.calledWith(mqSendStub, expectedArgument1, expectedArgument2);
         });
     })
 });

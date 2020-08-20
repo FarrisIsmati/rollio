@@ -6,8 +6,8 @@ const config = require('../../../config');
 // LIB
 const sendVendorTwitterIDs = require('../send/send-vendor-twitterid');
 
-const receiveVendorsRequest = () => {
-  mq.receive(config.AWS_SQS_REQUEST_VENDORS, async (msg) => {
+const recieve = {
+  async _recieveVendorRequestProcess(msg) {
     // eslint-disable-next-line no-console
     logger.info(`Vendors list request received: ${JSON.stringify(msg.content)}`);
     const twitterServiceRequest = msg.content;
@@ -17,9 +17,10 @@ const receiveVendorsRequest = () => {
       await sendVendorTwitterIDs();
     }
     return twitterServiceRequest;
-  });
-};
+  },
+  receiveRequest() {
+    mq.receive(config.AWS_SQS_REQUEST_VENDORS, async (msg) => _recieveVendorRequestProcess(msg));
+  }
+}
 
-module.exports = {
-  receiveRequest: receiveVendorsRequest,
-};
+module.exports = recieve;
