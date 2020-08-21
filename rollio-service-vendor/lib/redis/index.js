@@ -2,7 +2,7 @@
 // DEPENDENCIES
 const redis = require('redis');
 const bluebird = require('bluebird');
-const { omit } = require('lodash');
+const lodash = require('lodash');
 const config = require('../../config');
 const util = require('../util/util');
 const logger = require('../log/index')('redis/index');
@@ -91,7 +91,7 @@ const redisConnect = {
           logger.info(`Redis Subscriber: Received message from server: ${SERVER_ID}`);
           logger.info(`Redis Subscriber: ${message}`);
         }
-        io.sockets.emit(message.type, omit(message, ['serverID']));
+        io.sockets.emit(message.type, lodash.omit(message, ['serverID']));
       }
     });
 
@@ -123,4 +123,7 @@ const redisConnect = {
 
 const redisClient = redisConnect.connect();
 
-module.exports = redisClient;
+module.exports = {
+  redisClient,
+  redisConnect
+};

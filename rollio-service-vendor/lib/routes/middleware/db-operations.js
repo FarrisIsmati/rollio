@@ -10,7 +10,9 @@ const config = require('../../../config');
 const send = require('../../messaging/send/send-vendor-twitterid');
 
 const qs = new MongoQS(); // MongoQS takes req.query and converts it into MongoQuery
-const { client: redisClient, pub } = require('../../redis/index');
+const redis = require('../../redis/index');
+const { client: redisClient, pub } = redis.redisClient;
+
 // SOCKET
 const { io } = require('../../sockets/index');
 

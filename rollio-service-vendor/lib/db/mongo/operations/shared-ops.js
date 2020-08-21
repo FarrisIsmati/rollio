@@ -1,6 +1,7 @@
 // DEPENDENCIES
 const moment = require('moment');
-const { client: redisClient, pub } = require('./../../../redis');
+const redis = require('./../../../redis');
+const { client: redisClient, pub } = redis.redisClient;
 const { io } = require('../../../sockets/index');
 const { REDIS_TWITTER_CHANNEL, SERVER_ID } = require('../../../../config');
 const logger = require('../../../log/index')('db/mongo/operations/shared-ops');

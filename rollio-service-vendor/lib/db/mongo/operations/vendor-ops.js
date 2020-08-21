@@ -2,7 +2,8 @@
 /* eslint-disable no-console */
 // DEPENDENCIES
 const mongoose = require('../mongoose/index');
-const { client: redisClient } = require('../../../redis/index');
+const redis = require('../../../redis/index');
+const { client: redisClient } = redis.redisClient;
 const logger = require('../../../log/index')('mongo/operations/vendor-ops');
 const sharedOps = require('./shared-ops');
 

@@ -4,7 +4,8 @@ const chai = require('chai');
 const { ObjectId } = require('mongoose').Types;
 const mongoose = require('../../../../lib/db/mongo/mongoose/index');
 const sinon = require('sinon');
-const { pub } = require('../../../../lib/redis/index');
+const redis = require('../../../../lib/redis/index');
+const { pub } = redis.redisClient;
 
 const { expect } = chai;
 
