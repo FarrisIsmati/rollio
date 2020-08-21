@@ -4,7 +4,7 @@ const logger = require('../../log/index')('messaging/receive/receive-vendors-req
 const config = require('../../../config');
 
 // LIB
-const sendVendorTwitterIDs = require('../send/send-vendor-twitterid');
+const send = require('../send/send-vendor-twitterid');
 
 const recieve = {
   async _recieveVendorRequestProcess(msg) {
@@ -14,8 +14,9 @@ const recieve = {
 
     // Send updated vendors list
     if (twitterServiceRequest) {
-      await sendVendorTwitterIDs();
+      await send.sendVendorTwitterIDs();
     }
+
     return twitterServiceRequest;
   },
   receiveRequest() {

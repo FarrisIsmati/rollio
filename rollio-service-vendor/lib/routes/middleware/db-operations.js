@@ -7,7 +7,7 @@ const logger = require('../../log/index')('routes/middleware/db-operations');
 const config = require('../../../config');
 
 // MESSAGING
-const sendVendorTwitterIDs = require('../../messaging/send/send-vendor-twitterid');
+const send = require('../../messaging/send/send-vendor-twitterid');
 
 const qs = new MongoQS(); // MongoQS takes req.query and converts it into MongoQuery
 const { client: redisClient, pub } = require('../../redis/index');
@@ -225,7 +225,7 @@ const vendorRouteOps = {
           if (vendor.approved) {
             publishUpdatedVendor(vendor);
             if (vendorSetToApproved) {
-              await sendVendorTwitterIDs();
+              await send.sendVendorTwitterIDs();
             }
           }
           res.status(200).json({ vendor });
@@ -247,7 +247,7 @@ const vendorRouteOps = {
         .then(async (vendor) => {
           // Need to tell twitter service to start listening for new vendors
           if (vendor.approved) {
-            await sendVendorTwitterIDs();
+            await send.sendVendorTwitterIDs();
             publishUpdatedVendor(vendor);
           }
           return res.status(200).json({ vendor });

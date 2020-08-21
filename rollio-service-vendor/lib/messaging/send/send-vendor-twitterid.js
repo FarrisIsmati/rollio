@@ -26,4 +26,6 @@ const sendVendorTwitterIDs = async () => {
   logger.info('Sent Vendor TwitterIDs');
 };
 
-module.exports = sendVendorTwitterIDs;
+module.exports = {
+  sendVendorTwitterIDs
+};
