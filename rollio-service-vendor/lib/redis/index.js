@@ -29,6 +29,18 @@ const { isTest } = config;
 const redisConnect = {
   backoffMultiplyer: 2,
   connectAttempts: 0,
+  async _onError() {
+    if (redisConnect.connectAttempts < 8) {
+      redisConnect.connectAttempts += 1;
+      util.backoff(redisConnect.backoffMultiplyer);
+      redisConnect.backoffMultiplyer *= 1.5;
+      logger.error(`Redis Client: Connection failed trying again, attempts: ${redisConnect.connectAttempts}`);
+      
+      return redisConnect.connect();
+    }
+    logger.error('Redis Client: I couldn`t connect, sorry man I fucked up');
+    return err;
+  },
   connect() {
     const client = redis.createClient(redisConfig);
     const sub = redis.createClient(redisConfig);
@@ -36,16 +48,7 @@ const redisConnect = {
 
     // Client for caching and rate limiting
     client.on('error', async (err) => {
-      if (this.connectAttempts < 8) {
-        this.connectAttempts += 1;
-        util.backoff(this.backoffMultiplyer);
-        this.backoffMultiplyer *= 1.5;
-        logger.error(`Redis Client: Connection failed trying again, attempts: ${this.connectAttempts}`);
-
-        return this.connect();
-      }
-      logger.error('Redis Client: I couldn`t connect, sorry man I fucked up');
-      return err;
+      redisConnect._onError(err);
     });
 
     client.on('ready', () => {
@@ -59,15 +62,7 @@ const redisConnect = {
 
     // Listens to messages on a channel, seperate scope from client key space
     sub.on('error', (err) => {
-      if (this.connectAttempts < 8) {
-        this.connectAttempts += 1;
-        util.backoff(this.backoffMultiplyer);
-        this.backoffMultiplyer *= 1.5;
-        logger.error(`Redis Subscriber: Connection failed trying again, attempts: ${this.connectAttempts}`);
-        return this.connect();
-      }
-      logger.error('Redis Subscriber: I couldn`t connect, sorry man I fucked up');
-      return err;
+      redisConnect._onError(err);
     });
 
     sub.on('ready', () => {
@@ -97,15 +92,7 @@ const redisConnect = {
 
     // Publishes to messages to a channel, seperate scope from client key space
     pub.on('error', (err) => {
-      if (this.connectAttempts < 8) {
-        this.connectAttempts += 1;
-        util.backoff(this.backoffMultiplyer);
-        this.backoffMultiplyer *= 1.5;
-        logger.error(`Redis Publisher: Connection failed trying again, attempts: ${this.connectAttempts}`);
-        return this.connect();
-      }
-      logger.error('Redis Publisher: I couldn`t connect, sorry man I fucked up');
-      return err;
+      return redisConnect._onError(err);
     });
 
     pub.on('ready', () => {
