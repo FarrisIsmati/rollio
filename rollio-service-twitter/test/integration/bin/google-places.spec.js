@@ -3,7 +3,7 @@ const chai = require('chai');
 
 const { expect } = chai;
 // LIB
-const googlePlaces = require('../../lib/bin/google-places');
+const googlePlaces = require('../../../lib/bin/google-places');
 
 describe('Google Places', async () => {
   describe('Search Method', () => {

@@ -3,7 +3,7 @@ const chai = require('chai');
 
 const { expect } = chai;
 // LIB
-const locationOps = require('../../lib/bin/location-ops');
+const locationOps = require('../../../lib/bin/location-ops');
 
 describe('Location Ops', async () => {
   // it('Expect coordinates 32.8328,-117.2713 to return the address 6903 Fay Ave, La Jolla, CA 92037, USA', async () => {
