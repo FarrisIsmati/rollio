@@ -88,13 +88,17 @@ const twitter = {
       userName: e.user.name,
       userScreenName: e.user.screen_name,
     };
+
     let place = null;
-    if (e.place !== null) {
+
+    if (e.place) {
       place = { ...e.place };
     }
-    if (e.geo !== null) {
+
+    if (e.geo) {
       payload.geolocation = await locationOps.reverseGeolocation(e);
     }
+
     return { ...payload, place, twitterID: e.user.id_str };
   }
 };
