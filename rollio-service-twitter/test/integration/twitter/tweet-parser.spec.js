@@ -5,7 +5,7 @@ const { expect } = chai;
 const tweetParser = require('../../../lib/twitter/parse/tweet-parser');
 
 // DATA
-const tweets = require('./test-data/data.json');
+const tweets = require('./test-data/tweets.json');
 
 describe('Tweet Parser', () => {
   describe('Scan Address', () => {

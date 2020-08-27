@@ -5,8 +5,8 @@ const chai = require('chai');
 const { expect } = chai;
 
 // DATA
-const tweets = require('./test-data/data.json');
-const sampleData = require('../../../lib/twitter/data/tweet-data-sample');
+const tweets = require('./test-data/tweets.json');
+const sampleData = require('./test-data/tweet-data-sample');
 
 describe('Twitter', () => {
   describe('Connection', () => {
@@ -62,6 +62,7 @@ describe('Twitter', () => {
       expect(results.length).to.be.equal(sampleData.length);
     });
 
+    // Modify based on NLP changes
     it('expect there to be 14 matches', async () => {
       let matches = 0;
 

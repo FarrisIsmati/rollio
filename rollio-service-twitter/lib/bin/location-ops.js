@@ -12,7 +12,8 @@ const geocoder = NodeGeocoder({
 module.exports = {
   reverseGeolocation: async (e) => {
     const reverseGeocode = await geocoder
-      .reverse({ lat: e.geo.coordinates[0], lon: e.geo.coordinates[1] });
+      .reverse({ lat: e.geo.coordinates[0], lon: e.geo.coordinates[1] })
+
     const geolocation = {
       locationDate: e.created_at,
       address: reverseGeocode[0].formattedAddress,
@@ -20,6 +21,7 @@ module.exports = {
       neighborhood: reverseGeocode[0].extra.neighborhood,
       coordinates: [...e.geo.coordinates],
     };
+
     return geolocation;
   },
 };

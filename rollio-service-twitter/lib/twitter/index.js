@@ -96,28 +96,7 @@ const twitter = {
       payload.geolocation = await locationOps.reverseGeolocation(e);
     }
     return { ...payload, place, twitterID: e.user.id_str };
-  },
-  // Strictly for testing sample twitter data
-  test: async () => {
-    // eslint-disable-next-line global-require
-    const sampleData = require('./data/tweet-data-sample');
-    const resultsPromise = [];
-
-    for (let i = 0; i < sampleData.length; i += 1) {
-      const tweet = sampleData[i];
-      resultsPromise.push(tweetParser.scanAddress(tweet));
-    }
-
-    const results = await Promise.all(resultsPromise);
-
-    if (config.NODE_ENV === 'DEVELOPMENT_LOCAL' || config.NODE_ENV === 'DEVELOPMENT_DOCKER') {
-      for (let i = 0; i < results.length; i += 1) {
-        logger.info(results[i]);
-      }
-    }
-
-    return results;
-  },
+  }
 };
 
 module.exports = twitter;
