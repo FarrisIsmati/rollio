@@ -91,28 +91,30 @@ describe('Twitter', () => {
         sinon.assert.notCalled(locationOpsSpy);
     });
 
+    it('expects connect to invoke twitter.stream methods x times', async () => {
+        let connectedInvocationCount = 0;
+        let dataInvocationCount = 0;
+        let errorInvocationCount = 0;
+
+        sinon.stub(twitter, 'client').returns({ 
+            stream: sinon.stub().returns({
+                on: (state, cb) => {
+                    if (state === 'connected') {
+                        connectedInvocationCount++;
+                    } else if (state === 'data') {
+                        dataInvocationCount++;
+                    } else if (state === 'error') {
+                        errorInvocationCount++;
+                    }
+                }
+            })
+        })
+
+        await twitter.connect();
+
+        expect(connectedInvocationCount).to.be.equal(1);
+        expect(errorInvocationCount).to.be.equal(1);
+        expect(dataInvocationCount).to.be.equal(1);
+    })
+
 });
-
-
-
-// const tweetID = new ObjectId();
-        
-// sinon.stub(Tweet, 'findById').returns({ lean: sinon.stub().returns({ vendorID: 'vendorID1'}) });
-
-// const didDeleteTweet = sinon.stub(tweetOps, 'deleteTweetLocation').returns(true);
-
-// sinon.stub(sharedOps, 'createLocationAndCorrectConflicts').returns({_id: 'newLocationId'});
-// sinon.stub(Vendor, 'findOneAndUpdate').returns({ lean: sinon.stub().returns({ regionID: 'regionId', twitterID: 'twitterId'})});
-// sinon.stub(Tweet, 'findOneAndUpdate').returns(populate1);
-// sinon.stub(sharedOps, 'publishLocationUpdateAndClearCache');
-
-// await tweetOps.createTweetLocation(tweetID, { 
-//     locationToOverride: {
-//       _id: new ObjectId()
-//     },
-//     newLocationData: {
-//       exists: true
-//     }
-//   });
-
-// sinon.assert.called(didDeleteTweet);

@@ -9,44 +9,43 @@ const tweetParser = require('./parse/tweet-parser');
 const locationOps = require('../bin/location-ops');
 const sendParsedTweet = require('../messaging/send/send-parsed-tweet');
 
-const client = new Twitter({
-  consumer_key: config.TWITTER_CONSUMER_KEY,
-  consumer_secret: config.TWITTER_CONSUMER_SECRET,
-  access_token_key: config.TWITTER_ACCESS_TOKEN,
-  access_token_secret: config.TWITTER_ACCESS_SECRET,
-});
-
 const twitter = {
   stream: null,
   vendorList: '',
   connectAtt: 0,
   backoffTime: 3,
+  client: () => new Twitter({
+    consumer_key: config.TWITTER_CONSUMER_KEY,
+    consumer_secret: config.TWITTER_CONSUMER_SECRET,
+    access_token_key: config.TWITTER_ACCESS_TOKEN,
+    access_token_secret: config.TWITTER_ACCESS_SECRET,
+  }),
   async streamClient(vendorList, tstIDs = '1053649707493404678') {
     if (config.NODE_ENV === 'TEST_LOCAL' || config.NODE_ENV === 'TEST_DOCKER') {
-      this.vendorList = tstIDs;
+      twitter.vendorList = tstIDs;
     } else {
-      this.vendorList = vendorList;
+      twitter.vendorList = vendorList;
     }
 
-    this.connect();
+    twitter.connect();
 
-    return this.stream;
+    return twitter.stream;
   },
   async connect(tstIDs = '1053649707493404678') {
-    if (!this.vendorList.length) {
-      this.vendorList = tstIDs;
+    if (!twitter.vendorList.length) {
+      twitter.vendorList = tstIDs;
     }
 
-    this.stream = client.stream('statuses/filter', { follow: this.vendorList });
+    twitter.stream = twitter.client().stream('statuses/filter', { follow: twitter.vendorList });
 
-    this.connectAtt += 1;
+    twitter.connectAtt += 1;
 
-    this.stream.on('connected', (e) => {
+    twitter.stream.on('connected', (e) => {
       logger.info(`Twitter: Connected ${e}`);
     });
 
-    this.stream.on('data', async (e) => {
-      const formattedTweet = await this.tweetFormatter(e);
+    twitter.stream.on('data', async (e) => {
+      const formattedTweet = await twitter.tweetFormatter(e);
       const parsedTweet = await tweetParser.scanAddress(formattedTweet);
       logger.info('Received Tweet');
       logger.info(parsedTweet);
@@ -56,14 +55,14 @@ const twitter = {
     });
 
     // Exponential backoff upon failure of stream up to 8 retries before shutting down
-    this.stream.on('error', (err) => {
-      this.stream.destroy();
-      if (this.connectAtt < 8) {
+    twitter.stream.on('error', (err) => {
+      twitter.stream.destroy();
+      if (twitter.connectAtt < 8) {
         logger.error('Twitter: Connection failed trying again`');
         logger.error(err);
-        this.backoff(this.backoffTime);
-        logger.error(`attempts: ${this.connectAtt}`);
-        this.connect();
+        twitter.backoff(twitter.backoffTime);
+        logger.error(`attempts: ${twitter.connectAtt}`);
+        twitter.connect();
       } else {
         logger.error(err);
         throw err;
