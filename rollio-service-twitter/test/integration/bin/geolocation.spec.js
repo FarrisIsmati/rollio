@@ -4,9 +4,9 @@ const chai = require('chai');
 const { expect } = chai;
 
 // LIB
-const locationOps = require('../../../lib/bin/location-ops');
+const geolocation = require('../../../lib/bin/geolocation');
 
-describe('Location Ops - Ensuring Google Maps API working as expected', async () => {
+describe('Geolocation - Ensuring Google Maps API working as expected', async () => {
   it('Expect coordinates 32.8328,-117.2713 to return the address 6903 Fay Ave, La Jolla, CA 92037, USA', async () => {
     const payload = {
       geo: {
@@ -22,7 +22,7 @@ describe('Location Ops - Ensuring Google Maps API working as expected', async ()
       coordinates: [32.8328, -117.2713],
     };
 
-    const res = await locationOps.reverseGeolocation(payload);
+    const res = await geolocation.reverseGeolocation(payload);
     expect(res).to.be.deep.equal(expectedRes);
   });
 });

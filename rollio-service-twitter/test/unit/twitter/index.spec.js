@@ -1,7 +1,7 @@
 // DEPENDENCIES
 const chai = require('chai');
 const twitter = require('../../../lib/twitter/index');
-const locationOps = require('../../../lib/bin/location-ops');
+const geolocation = require('../../../lib/bin/geolocation');
 const sinon = require('sinon');
 
 const { expect } = chai;
@@ -12,7 +12,7 @@ describe('Twitter', () => {
     });
 
     it('expects tweetFormatter to return a payload with correct properties', async () => {
-        sinon.stub(locationOps, 'reverseGeolocation').returns('location1')
+        sinon.stub(geolocation, 'reverseGeolocation').returns('location1')
 
         const payload = {
             id_str: 'id1',
@@ -50,8 +50,8 @@ describe('Twitter', () => {
         expect(result.place).to.be.equal(expectedResult.place);
     });
 
-    it('expects tweetFormatter to call locationOps.reverseGelocation if given a geo field', async () => {
-        const locationOpsSpy = sinon.stub(locationOps, 'reverseGeolocation');
+    it('expects tweetFormatter to call geolocation.reverseGelocation if given a geo field', async () => {
+        const geolocationSpy = sinon.stub(geolocation, 'reverseGeolocation');
 
         const payload = {
             id_str: 'id1',
@@ -68,11 +68,11 @@ describe('Twitter', () => {
 
         twitter.tweetFormatter(payload);
 
-        sinon.assert.called(locationOpsSpy);
+        sinon.assert.called(geolocationSpy);
     });
 
-    it('expects tweetFormatter to not call locationOps.reverseGelocation if not given a geo field', async () => {
-        const locationOpsSpy = sinon.stub(locationOps, 'reverseGeolocation');
+    it('expects tweetFormatter to not call geolocation.reverseGelocation if not given a geo field', async () => {
+        const geolocationSpy = sinon.stub(geolocation, 'reverseGeolocation');
 
         const payload = {
             id_str: 'id1',
@@ -88,7 +88,7 @@ describe('Twitter', () => {
 
         twitter.tweetFormatter(payload);
 
-        sinon.assert.notCalled(locationOpsSpy);
+        sinon.assert.notCalled(geolocationSpy);
     });
 
     it('expects connect to invoke twitter.stream methods x times', async () => {

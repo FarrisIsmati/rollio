@@ -2,17 +2,16 @@
 const NodeGeocoder = require('node-geocoder');
 const config = require('../../config');
 
-const geocoder = NodeGeocoder({
-  provider: 'google',
-  httpAdapter: 'https',
-  apiKey: config.GOOGLE_MAPS_API_KEY,
-  formatter: null,
-});
-
-module.exports = {
+const geolocationOps = {
+  geocoder: () => NodeGeocoder({
+    provider: 'google',
+    httpAdapter: 'https',
+    apiKey: config.GOOGLE_MAPS_API_KEY,
+    formatter: null,
+  }),
   reverseGeolocation: async (e) => {
-    const reverseGeocode = await geocoder
-      .reverse({ lat: e.geo.coordinates[0], lon: e.geo.coordinates[1] })
+    const NodeGeocoder = await geolocationOps.geocoder();
+    const reverseGeocode = await NodeGeocoder.reverse({ lat: e.geo.coordinates[0], lon: e.geo.coordinates[1] });
 
     const geolocation = {
       locationDate: e.created_at,
@@ -23,5 +22,7 @@ module.exports = {
     };
 
     return geolocation;
-  },
+  }
 };
+
+module.exports = geolocationOps;

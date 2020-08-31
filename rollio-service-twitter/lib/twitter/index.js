@@ -6,7 +6,7 @@ const logger = require('../log/index')('twitter/index');
 
 // LIB
 const tweetParser = require('./parse/tweet-parser');
-const locationOps = require('../bin/location-ops');
+const geolocation = require('../bin/geolocation');
 const sendParsedTweet = require('../messaging/send/send-parsed-tweet');
 
 const twitter = {
@@ -95,7 +95,7 @@ const twitter = {
     }
 
     if (e.geo) {
-      payload.geolocation = await locationOps.reverseGeolocation(e);
+      payload.geolocation = await geolocation.reverseGeolocation(e);
     }
 
     return { ...payload, place, twitterID: e.user.id_str };
