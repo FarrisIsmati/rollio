@@ -21,7 +21,7 @@ module.exports = {
   },
   getRegionByName(name) {
     return Region.findOne({
-      name,
+      name
     })
     .catch((err) => {
       const errMsg = new Error(err);

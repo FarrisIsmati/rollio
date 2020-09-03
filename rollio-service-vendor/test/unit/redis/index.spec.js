@@ -1,10 +1,7 @@
 /* eslint-disable no-console */
 // DEPENDENCIES
 const redis = require('redis');
-const bluebird = require('bluebird');
 const lodash = require('lodash');
-const config = require('../../../config');
-const util = require('../../../lib/util/util');
 const { redisConnect } = require('../../../lib/redis/index');
 const sinon = require('sinon');
 

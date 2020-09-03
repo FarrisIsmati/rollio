@@ -16,22 +16,22 @@ describe('Send', () => {
     });
 
     describe('Send', () => {
-        it('expects _recieveVendorRequestProcess to call sendVendorTwitterIDs if given a message with content ', async () => {     
+        it('expects _receiveVendorRequestProcess to call sendVendorTwitterIDs if given a message with content ', async () => {     
             const sendStub = sinon.stub(send, 'sendVendorTwitterIDs');
 
             const message = {content: 'hi'};
     
-            await receive._recieveVendorRequestProcess(message);
+            await receive._receiveVendorRequestProcess(message);
     
             sinon.assert.called(sendStub);
         });
 
-        it('expects _recieveVendorRequestProcess to NOT call sendVendorTwitterIDs if NOT given a message with content ', async () => {     
+        it('expects _receiveVendorRequestProcess to NOT call sendVendorTwitterIDs if NOT given a message with content ', async () => {     
             const sendStub = sinon.stub(send, 'sendVendorTwitterIDs');
 
             const message = {};
     
-            await receive._recieveVendorRequestProcess(message);
+            await receive._receiveVendorRequestProcess(message);
     
             sinon.assert.notCalled(sendStub);
         });

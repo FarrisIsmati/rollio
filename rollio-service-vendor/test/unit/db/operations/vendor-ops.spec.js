@@ -27,7 +27,7 @@ describe('Vendor Operations', () => {
   const populate2 = { populate: sinon.stub().returns(popualte3) }
   const populate1 = { populate: sinon.stub().returns(populate2) }
 
-  it('expects createVendor to recieve arguments as vendor', (done) => {
+  it('expects createVendor to receive arguments as vendor', (done) => {
     const createStub = sinon.stub(Vendor, 'create').resolves(Promise.resolve({}));
 
     const userID = new ObjectId()
@@ -46,7 +46,7 @@ describe('Vendor Operations', () => {
     done();
   });
 
-  it('expects createVendor to recieve arguments as admin', (done) => {
+  it('expects createVendor to receive arguments as admin', (done) => {
     const createStub = sinon.stub(Vendor, 'create').resolves(Promise.resolve({}));
 
     const userID = new ObjectId()
@@ -84,7 +84,7 @@ describe('Vendor Operations', () => {
     sinon.assert.notCalled(findOneAndUpdateStub);
   });
 
-  it('expects createNonTweetLocation all funcs to recieve proper arguments', async () => {
+  it('expects createNonTweetLocation all funcs to receive proper arguments', async () => {
     const createLocationAndCorrectConflictsStub = sinon.stub(sharedOps, 'createLocationAndCorrectConflicts').resolves(Promise.resolve({ _id: '123'}));
     const findOneAndUpdateStub = sinon.stub(Vendor, 'findOneAndUpdate').returns({ lean: sinon.stub().returns({ regionID: 'regionID123', twitterID: 'twitterID123' }) });
     const publishLocationUpdateAndClearCacheStub = sinon.stub(sharedOps, 'publishLocationUpdateAndClearCache');
