@@ -1,10 +1,12 @@
 // DEPENDENCIES
 const socketIO = require('socket.io');
 
-module.exports = {
+const socket = {
   io: null,
   socketIO,
   setIOServer(server) {
-    this.io = socketIO(server);
+    socket.io = socket.socketIO(server);
   },
 };
+
+module.exports = socket;

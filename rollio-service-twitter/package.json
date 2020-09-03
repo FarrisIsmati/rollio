@@ -6,8 +6,8 @@
   "scripts": {
     "local": "NODE_ENV=DEVELOPMENT_LOCAL nodemon --inspect=8002 index.js",
     "start": "node index.js",
-    "test": "set NODE_ENV=TEST_LOCAL&& mocha ./test/**/*spec.js --timeout 10000 --exit",
-    "testunix": "NODE_ENV=TEST_LOCAL&& mocha ./test/**/*spec.js --timeout 10000 --exit"
+    "test-unit": "NODE_ENV=TEST_LOCAL mocha './test/unit/**/*spec.js' --timeout 10000 --exit",
+    "test-integration": "NODE_ENV=TEST_LOCAL mocha './test/integration/**/*spec.js' --timeout 10000 --exit"
   },
   "repository": {
     "type": "git",
@@ -32,6 +32,7 @@
     "mocha": "^7.1.1",
     "morgan": "^1.9.1",
     "node-geocoder": "^3.22.0",
+    "sinon": "^9.0.3",
     "sqs-consumer": "^5.4.0",
     "twitter": "^1.7.1",
     "winston": "^3.2.1"

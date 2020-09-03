@@ -5,6 +5,7 @@ const { format } = winston;
 const { label } = format;
 
 const getLabel = callingModule => `[${callingModule}]`;
+const { isTest } = config;
 
 module.exports = (callingModule) => {
   const isAWS = config.NODE_ENV === 'DEVELOPMENT_DOCKER' || config.NODE_ENV === 'PRODUCTION' || config.NODE_ENV === 'TEST_DOCKER';
@@ -29,6 +30,7 @@ module.exports = (callingModule) => {
         format: winston.format.simple(),
       }),
     ],
+    silent: isTest
   });
 
   return logger;

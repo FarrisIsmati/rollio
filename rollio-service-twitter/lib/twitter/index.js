@@ -6,47 +6,46 @@ const logger = require('../log/index')('twitter/index');
 
 // LIB
 const tweetParser = require('./parse/tweet-parser');
-const locationOps = require('../bin/location-ops');
+const geolocation = require('../bin/geolocation');
 const sendParsedTweet = require('../messaging/send/send-parsed-tweet');
-
-const client = new Twitter({
-  consumer_key: config.TWITTER_CONSUMER_KEY,
-  consumer_secret: config.TWITTER_CONSUMER_SECRET,
-  access_token_key: config.TWITTER_ACCESS_TOKEN,
-  access_token_secret: config.TWITTER_ACCESS_SECRET,
-});
 
 const twitter = {
   stream: null,
   vendorList: '',
   connectAtt: 0,
   backoffTime: 3,
+  client: () => new Twitter({
+    consumer_key: config.TWITTER_CONSUMER_KEY,
+    consumer_secret: config.TWITTER_CONSUMER_SECRET,
+    access_token_key: config.TWITTER_ACCESS_TOKEN,
+    access_token_secret: config.TWITTER_ACCESS_SECRET,
+  }),
   async streamClient(vendorList, tstIDs = '1053649707493404678') {
     if (config.NODE_ENV === 'TEST_LOCAL' || config.NODE_ENV === 'TEST_DOCKER') {
-      this.vendorList = tstIDs;
+      twitter.vendorList = tstIDs;
     } else {
-      this.vendorList = vendorList;
+      twitter.vendorList = vendorList;
     }
 
-    this.connect();
+    twitter.connect();
 
-    return this.stream;
+    return twitter.stream;
   },
   async connect(tstIDs = '1053649707493404678') {
-    if (!this.vendorList.length) {
-      this.vendorList = tstIDs;
+    if (!twitter.vendorList.length) {
+      twitter.vendorList = tstIDs;
     }
 
-    this.stream = client.stream('statuses/filter', { follow: this.vendorList });
+    twitter.stream = twitter.client().stream('statuses/filter', { follow: twitter.vendorList });
 
-    this.connectAtt += 1;
+    twitter.connectAtt += 1;
 
-    this.stream.on('connected', (e) => {
+    twitter.stream.on('connected', (e) => {
       logger.info(`Twitter: Connected ${e}`);
     });
 
-    this.stream.on('data', async (e) => {
-      const formattedTweet = await this.tweetFormatter(e);
+    twitter.stream.on('data', async (e) => {
+      const formattedTweet = await twitter.tweetFormatter(e);
       const parsedTweet = await tweetParser.scanAddress(formattedTweet);
       logger.info('Received Tweet');
       logger.info(parsedTweet);
@@ -56,14 +55,14 @@ const twitter = {
     });
 
     // Exponential backoff upon failure of stream up to 8 retries before shutting down
-    this.stream.on('error', (err) => {
-      this.stream.destroy();
-      if (this.connectAtt < 8) {
+    twitter.stream.on('error', (err) => {
+      twitter.stream.destroy();
+      if (twitter.connectAtt < 8) {
         logger.error('Twitter: Connection failed trying again`');
         logger.error(err);
-        this.backoff(this.backoffTime);
-        logger.error(`attempts: ${this.connectAtt}`);
-        this.connect();
+        twitter.backoff(twitter.backoffTime);
+        logger.error(`attempts: ${twitter.connectAtt}`);
+        twitter.connect();
       } else {
         logger.error(err);
         throw err;
@@ -88,36 +87,19 @@ const twitter = {
       userName: e.user.name,
       userScreenName: e.user.screen_name,
     };
+
     let place = null;
-    if (e.place !== null) {
+
+    if (e.place) {
       place = { ...e.place };
     }
-    if (e.geo !== null) {
-      payload.geolocation = await locationOps.reverseGeolocation(e);
+
+    if (e.geo) {
+      payload.geolocation = await geolocation.reverseGeolocation(e);
     }
+
     return { ...payload, place, twitterID: e.user.id_str };
-  },
-  // Strictly for testing sample twitter data
-  test: async () => {
-    // eslint-disable-next-line global-require
-    const sampleData = require('./data/tweet-data-sample');
-    const resultsPromise = [];
-
-    for (let i = 0; i < sampleData.length; i += 1) {
-      const tweet = sampleData[i];
-      resultsPromise.push(tweetParser.scanAddress(tweet));
-    }
-
-    const results = await Promise.all(resultsPromise);
-
-    if (config.NODE_ENV === 'DEVELOPMENT_LOCAL' || config.NODE_ENV === 'DEVELOPMENT_DOCKER') {
-      for (let i = 0; i < results.length; i += 1) {
-        logger.info(results[i]);
-      }
-    }
-
-    return results;
-  },
+  }
 };
 
 module.exports = twitter;

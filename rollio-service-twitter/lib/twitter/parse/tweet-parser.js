@@ -2,6 +2,7 @@
 const googlePlaces = require('../../bin/google-places');
 const knownLocationKeys = require('../data/known-location-keys');
 const nlp = require('../../bin/nlp');
+const { search } = require('../../bin/google-places');
 
 // TODO: add truckNum, startDate, and endDate, if information is available
 //  though, not required, as each have a default value)
@@ -52,15 +53,33 @@ const tweetParser = {
     const {
       payload, rgxMatchLocation = '', searchAddress,
     } = googlePlacesPayload;
-    const [address] = await googlePlaces.search(searchAddress);
+
+    if (!searchAddress) {
+      return null;
+    }
+
+    // Format search address with '+' before sending into URL
+    let searchAddressFormatted = searchAddress.replace(/[^\w]/gi, '+')
+    const [address] = await googlePlaces.search(searchAddressFormatted);
+
     if (!address) {
       return null;
     }
 
     // find neighborhood from coordinates
-    const { neighborhood, city } = await googlePlaces.neighborhoodCityStateFromCoords(
+    const placesResult = await googlePlaces.neighborhoodCityStateFromCoords(
       address.geometry.location.lat, address.geometry.location.lng,
     );
+
+    if (!placesResult) {
+      return null;
+    }
+
+    // let neighborhood = '';
+    // let city = ''
+
+    // if (placesResult)
+    const { neighborhood, city } = placesResult;
 
     return {
       ...payload,

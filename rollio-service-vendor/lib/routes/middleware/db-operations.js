@@ -7,10 +7,12 @@ const logger = require('../../log/index')('routes/middleware/db-operations');
 const config = require('../../../config');
 
 // MESSAGING
-const sendVendorTwitterIDs = require('../../messaging/send/send-vendor-twitterid');
+const send = require('../../messaging/send/send-vendor-twitterid');
 
 const qs = new MongoQS(); // MongoQS takes req.query and converts it into MongoQuery
-const { client: redisClient, pub } = require('../../redis/index');
+const redis = require('../../redis/index');
+const { client: redisClient, pub } = redis.redisClient;
+
 // SOCKET
 const { io } = require('../../sockets/index');
 
@@ -26,7 +28,7 @@ const {
   updateVendorPushPosition,
   updateVendorSet,
   createNonTweetLocation,
-  editNonTweetLocation,
+  updateNonTweetLocation,
   getUnapprovedVendors,
 } = require('../../db/mongo/operations/vendor-ops');
 
@@ -185,7 +187,7 @@ const vendorRouteOps = {
     const isVendor = type === 'vendor';
     const { vendorID: routeVendorID, locationID } = req.params;
     if (isAdmin || (isVendor && String(vendorID) === routeVendorID)) {
-      return editNonTweetLocation(locationID, routeVendorID, req.body).then((location) => {
+      return updateNonTweetLocation(locationID, routeVendorID, req.body).then((location) => {
         res.status(200).json({ location });
       }).catch((err) => {
         console.error(err);
@@ -225,7 +227,7 @@ const vendorRouteOps = {
           if (vendor.approved) {
             publishUpdatedVendor(vendor);
             if (vendorSetToApproved) {
-              await sendVendorTwitterIDs();
+              await send.sendVendorTwitterIDs();
             }
           }
           res.status(200).json({ vendor });
@@ -247,7 +249,7 @@ const vendorRouteOps = {
         .then(async (vendor) => {
           // Need to tell twitter service to start listening for new vendors
           if (vendor.approved) {
-            await sendVendorTwitterIDs();
+            await send.sendVendorTwitterIDs();
             publishUpdatedVendor(vendor);
           }
           return res.status(200).json({ vendor });

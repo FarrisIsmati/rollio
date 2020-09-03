@@ -1,0 +1,33 @@
+// DEPENDENCIES
+const sinon = require('sinon');
+const mongoose = require('../../../../lib/db/mongo/mongoose/index');
+const { ObjectId } = require('mongoose').Types;
+const seedObj = require('../../../../lib/db/mongo/seeds/dev-seed.js');
+
+// SCHEMAS
+const Region = mongoose.model('Region');
+const Vendor = mongoose.model('Vendor');
+
+// DATA
+const {
+    vendors: vendorsData,
+  } = require('../../../../lib/db/mongo/data/dev');
+
+describe('Dev Seed', () => {
+    afterEach(() => {
+        sinon.restore();
+    });
+
+    it('expects seedVendors to be called with proper', async () => {    
+        const regionID = new ObjectId();
+
+        sinon.stub(Region, 'findOne').returns({ _id: regionID });
+        const vendorInsertManyStub = sinon.stub(Vendor, 'insertMany').returns(Promise.resolve());
+
+        const expectedArgument1 = vendorsData.map((vendor) => { return {...vendor, regionID} })
+
+        await seedObj.seedVendors('WASHINGTONDC');
+
+        sinon.assert.calledWith(vendorInsertManyStub, expectedArgument1);
+    });
+});

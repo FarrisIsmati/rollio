@@ -2,6 +2,7 @@
 // DEPENDENCIES
 const axios = require('axios');
 const config = require('../../config');
+const { add } = require('winston');
 const logger = require('../log/index')('google-places');
 
 module.exports = {
@@ -14,6 +15,9 @@ module.exports = {
         return res.data.candidates;
       })
       .catch((err) => {
+        console.log('it failed')
+        console.log(address);
+        console.log(err);
         logger.error(`Google Places API Failure: ${err}`);
         return err;
       });
@@ -21,11 +25,16 @@ module.exports = {
   async neighborhoodCityStateFromCoords(lat, lng) {
     return axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&result_type=neighborhood&key=${config.GOOGLE_PLACES_API_KEY}`)
       .then((res) => {
+        if (!res.data.results[0]){
+          return null;
+        }
+
         const lowerCaseLongName = addressComponent => (addressComponent ? addressComponent.long_name.toLowerCase() : '');
         const addressComponents = res.data.results[0].address_components;
         const neighborhood = addressComponents.find(component => component.types.includes('neighborhood'));
         const city = addressComponents.find(component => component.types.includes('locality'));
         const state = addressComponents.find(component => component.types.includes('administrative_area_level_1'));
+        
         return {
           neighborhood: lowerCaseLongName(neighborhood),
           city: lowerCaseLongName(city),

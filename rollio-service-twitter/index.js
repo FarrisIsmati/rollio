@@ -10,7 +10,7 @@ const logger = require('./lib/log/index')('index');
 
 // LIB
 const sendVendorsRequest = require('./lib/messaging/send/send-vendors-request');
-const receiveVendorList = require('./lib/messaging/receive/receive-vendor-list');
+const {receiveVendorList} = require('./lib/messaging/receive/receive-vendor-list');
 
 switch (config.NODE_ENV) {
   case 'DEVELOPMENT_DOCKER':

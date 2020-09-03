@@ -2,7 +2,7 @@
 // DEPENDENCIES
 const redis = require('redis');
 const bluebird = require('bluebird');
-const { omit } = require('lodash');
+const lodash = require('lodash');
 const config = require('../../config');
 const util = require('../util/util');
 const logger = require('../log/index')('redis/index');
@@ -24,9 +24,23 @@ const redisConfig = {
   port: config.REDIS_PORT,
 };
 
+const { isTest } = config;
+
 const redisConnect = {
   backoffMultiplyer: 2,
   connectAttempts: 0,
+  async _onError() {
+    if (redisConnect.connectAttempts < 8) {
+      redisConnect.connectAttempts += 1;
+      util.backoff(redisConnect.backoffMultiplyer);
+      redisConnect.backoffMultiplyer *= 1.5;
+      logger.error(`Redis Client: Connection failed trying again, attempts: ${redisConnect.connectAttempts}`);
+      
+      return redisConnect.connect();
+    }
+    logger.error('Redis Client: I couldn`t connect, sorry man I fucked up');
+    return err;
+  },
   connect() {
     const client = redis.createClient(redisConfig);
     const sub = redis.createClient(redisConfig);
@@ -34,44 +48,33 @@ const redisConnect = {
 
     // Client for caching and rate limiting
     client.on('error', async (err) => {
-      if (this.connectAttempts < 8) {
-        this.connectAttempts += 1;
-        util.backoff(this.backoffMultiplyer);
-        this.backoffMultiplyer *= 1.5;
-        logger.error(`Redis Client: Connection failed trying again, attempts: ${this.connectAttempts}`);
-
-        return this.connect();
-      }
-      logger.error('Redis Client: I couldn`t connect, sorry man I fucked up');
-      return err;
+      redisConnect._onError(err);
     });
 
     client.on('ready', () => {
       this.backoffMultiplyer = 2;
       this.connectAttempts = 0;
-      logger.info('Redis Client: Successfully connected');
+      if (!isTest) {
+        logger.info('Redis Client: Successfully connected');
+      }
       return true;
     });
 
     // Listens to messages on a channel, seperate scope from client key space
     sub.on('error', (err) => {
-      if (this.connectAttempts < 8) {
-        this.connectAttempts += 1;
-        util.backoff(this.backoffMultiplyer);
-        this.backoffMultiplyer *= 1.5;
-        logger.error(`Redis Subscriber: Connection failed trying again, attempts: ${this.connectAttempts}`);
-        return this.connect();
-      }
-      logger.error('Redis Subscriber: I couldn`t connect, sorry man I fucked up');
-      return err;
+      redisConnect._onError(err);
     });
 
     sub.on('ready', () => {
       this.backoffMultiplyer = 2;
       this.connectAttempts = 0;
-      logger.info('Redis Subscriber: Successfully connected');
+      if (!isTest) {
+        logger.info('Redis Subscriber: Successfully connected');
+      }
       sub.subscribe(REDIS_TWITTER_CHANNEL);
-      logger.info(`Redis Subscriber: Subscribed to channel ${REDIS_TWITTER_CHANNEL}`);
+      if (!isTest) {
+        logger.info(`Redis Subscriber: Subscribed to channel ${REDIS_TWITTER_CHANNEL}`);
+      }
       return true;
     });
 
@@ -79,29 +82,25 @@ const redisConnect = {
     sub.on('message', (channel, msg) => {
       const message = JSON.parse(msg);
       if (message.serverID !== SERVER_ID) {
-        logger.info(`Redis Subscriber: Received message from server: ${SERVER_ID}`);
-        logger.info(`Redis Subscriber: ${message}`);
-        io.sockets.emit(message.type, omit(message, ['serverID']));
+        if (!isTest) {
+          logger.info(`Redis Subscriber: Received message from server: ${SERVER_ID}`);
+          logger.info(`Redis Subscriber: ${message}`);
+        }
+        io.sockets.emit(message.type, lodash.omit(message, ['serverID']));
       }
     });
 
     // Publishes to messages to a channel, seperate scope from client key space
     pub.on('error', (err) => {
-      if (this.connectAttempts < 8) {
-        this.connectAttempts += 1;
-        util.backoff(this.backoffMultiplyer);
-        this.backoffMultiplyer *= 1.5;
-        logger.error(`Redis Publisher: Connection failed trying again, attempts: ${this.connectAttempts}`);
-        return this.connect();
-      }
-      logger.error('Redis Publisher: I couldn`t connect, sorry man I fucked up');
-      return err;
+      return redisConnect._onError(err);
     });
 
     pub.on('ready', () => {
       this.backoffMultiplyer = 2;
       this.connectAttempts = 0;
-      logger.info('Redis Publisher: Successfully connected');
+      if (!isTest) {
+        logger.info('Redis Publisher: Successfully connected');
+      }
       return true;
     });
 
@@ -111,4 +110,7 @@ const redisConnect = {
 
 const redisClient = redisConnect.connect();
 
-module.exports = redisClient;
+module.exports = {
+  redisClient,
+  redisConnect
+};
