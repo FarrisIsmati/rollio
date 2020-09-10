@@ -53,7 +53,7 @@ const VendorProfileDesktopModal = React.forwardRef((props:any, navbarRef)=> {
     <Modal
       isOpen={isOpen && isVendorSelected}
       onAfterOpen={()=>{}}
-      onRequestClose={()=>{}}
+      onRequestClose={()=>dispatch(deselectAllVendors())}
       style={customModalStyle}
       contentLabel="Profile"
     >
