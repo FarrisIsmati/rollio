@@ -115,9 +115,20 @@ const sharedOps = {
   publishLocationUpdateAndClearCache: async ({
     updatedTweet, newLocations, vendorID, twitterID, regionID,
   }) => {
+    // Update location
     await sharedOps.publishLocationUpdate({
       updatedTweet, newLocations, vendorID, twitterID, regionID,
     });
+
+    // Clear location accuracy rate limit cache
+    try {
+      console.log(`rl::method::PUT::path::/${regionID}/${vendorID}/locationaccuracy::regionID::${regionID}::vendorID::${vendorID}`)
+      await redisClient.delAsync(`rl::method::PUT::path::/${regionID}/${vendorID}/locationaccuracy::regionID::${regionID}::vendorID::${vendorID}`);
+    } catch (err) {
+      logger.error(err);
+    }
+
+    // Clear vendor cache
     return sharedOps.clearVendorCache({ regionID, vendorID });
   }
 }
