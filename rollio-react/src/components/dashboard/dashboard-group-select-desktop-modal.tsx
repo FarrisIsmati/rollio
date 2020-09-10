@@ -51,7 +51,7 @@ const DashboardGroupSelectDesktopModal= React.forwardRef((props:any, ref:any) =>
     <Modal
       isOpen={isOpen}
       onAfterOpen={()=>{}}
-      onRequestClose={()=>{}}
+      onRequestClose={()=>{dispatch(toggleGroupSelectMenu())}}
       style={customModalStyle}
       contentLabel="Grouped Vendors"
     >
