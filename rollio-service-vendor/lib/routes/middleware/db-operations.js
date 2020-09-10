@@ -59,7 +59,7 @@ const checkCache = async (req, res, payload) => {
 
   if (redisClient.connected) {
     if (value !== undefined && value !== null) {
-      logger.info('Cache Hit');
+      logger.info(`Cache Hit: ${payload.collectionKey} ${payload.queryKey}`);
       return res.status(200).json(JSON.parse(value));
     }
     return payload.ops(req, res, async (data) => {

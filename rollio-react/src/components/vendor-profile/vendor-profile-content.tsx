@@ -93,31 +93,37 @@ const VendorProfileContent = (props:VendorProfileContentProps) => {
               </div>
 
               {/* Website */}
-              <div className ='vendorprofile__info_detail'>
-                <div className='vendorprofile__info_icon_wrapper_alt_center'>
-                  <i className="material-icons-outlined">web</i> 
-                </div>
+              { vendor.website ? 
+                <div className ='vendorprofile__info_detail'>
+                  <div className='vendorprofile__info_icon_wrapper_alt_center'>
+                    <i className="material-icons-outlined">web</i> 
+                  </div>
 
-                { vendor.website ? <p className='flex__verticle_center'><a target='_blank' href={vendor.website}>Website</a></p> : <p className='vendorprofile__info_detail_unavailable flex__verticle_center'>Website Unavailable</p> }
-              </div>
+                  <p className='flex__verticle_center'><a target='_blank' href={vendor.website}>{vendor.website}</a></p>
+                </div> : null 
+              }
 
               {/* Phone Number */}
-              <div className ='vendorprofile__info_detail'>
-                <div className='vendorprofile__info_icon_wrapper_alt_center'>
-                  <i className="material-icons-outlined">local_phone</i>
-                </div>
+              { vendor.phoneNumber ?
+                <div className ='vendorprofile__info_detail'>
+                  <div className='vendorprofile__info_icon_wrapper_alt_center'>
+                    <i className="material-icons-outlined">local_phone</i>
+                  </div>
 
-                { vendor.phoneNumber ? <p className='flex__verticle_center'><a href={`tel:${vendor.phoneNumber}`}>{vendor.phoneNumber}</a></p> : <p className='vendorprofile__info_detail_unavailable flex__verticle_center'>Phone Unavailable</p> }
-              </div>
+                  <p className='flex__verticle_center'><a href={`tel:${vendor.phoneNumber}`}>{vendor.phoneNumber}</a></p>
+                </div> : null
+              }
 
               {/* Credit Card */}
-              <div className='vendorprofile__info_detail'>
-                <div className='vendorprofile__info_icon_wrapper_alt_center'>
-                  <i className="material-icons-outlined">credit_card</i>
-                </div>
+              { vendor.creditCard === 'y' ? 
+                <div className='vendorprofile__info_detail'>
+                  <div className='vendorprofile__info_icon_wrapper_alt_center'>
+                    <i className="material-icons-outlined">credit_card</i>
+                  </div>
 
-                { vendor.creditCard === 'y' ? <p className='flex__verticle_center'>Accepts Credit Cards</p> : <p className='vendorprofile__info_detail_unavailable flex__verticle_center'>Doesn't Accept Credit Card</p>}
-              </div>
+                  <p className='flex__verticle_center'>Accepts Credit Cards</p>
+                </div> : null 
+              }
             </VendorProfileContentItemToggle>
 
             {/* Comments */}
