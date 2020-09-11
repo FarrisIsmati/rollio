@@ -26,11 +26,11 @@ const locations = require('./lib/routes/locations');
 const receiveVendorsRequest = require('./lib/messaging/receive/receive-vendors-request');
 const receiveVendorLocation = require('./lib/messaging/receive/receive-vendor-location');
 
-// MAIL
+// MAIL DISABLED!!!!!!!
 if (config.NODE_ENV !== 'PRODUCTION') {
   // only set up local maildev if not production
   // eslint-disable-next-line global-require
-  require('./lib/email/maildev');
+  // require('./lib/email/maildev');
 }
 
 switch (config.NODE_ENV) {
@@ -76,7 +76,7 @@ app.use('/locations', locations);
 
 const { isTest } = config;
 
-migrate({ isTest }).then(() => {
+migrate({isTest}).then(() => {
   server.listen(app.get('port'), async () => {
     // Seed the docker db (Only for docker testing purposes now, delete when proper db env setup)
     if (config.NODE_ENV === 'DEVELOPMENT_DOCKER') {

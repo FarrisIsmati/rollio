@@ -3,12 +3,19 @@ const mongoDbLock = require('mongodb-lock');
 const Migrator = require('./Migrator.js');
 const migrationRegistry = require('./migrations');
 const { MONGO_CONNECT } = require('../../../config');
+const { loggers } = require('winston');
 
 const timeout = 2 * 60 * 1000; // 2 mins
 
-const cleanup = async migrator => migrator.dispose().catch((err) => {
-  console.error(err);
-});
+const cleanup = async migrator => {
+  try {
+    // Dispose returns null, figure out what it does?
+    return migrator.dispose()
+  } catch (err) {
+    loggers.error('Migrator dispose failed');
+    return err;
+  }
+}
 
 /**
  * Attempts to acquire a lock on the DB to run migrations
@@ -96,14 +103,17 @@ module.exports = async ({
   migrations = migrationRegistry,
   locksCollection = '_locks',
 } = {}) => {
+  // Do not run while testing
   if (isTest) {
     return;
   }
+
   const client = new MongoClient(url || MONGO_CONNECT, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     poolSize: 1,
   });
+
   const migrator = new Migrator({ client, migrations, timeout });
 
   const migrateAndReleaseLock = releaseLock => new Promise((resolve, reject) => {
@@ -128,7 +138,7 @@ module.exports = async ({
      * 3. Run migrations
      * 4. Cleanup DB connections, etc.
      * 5. Resolve with results of migration
-     */
+  */
   return client
     .connect()
     .then(() => acquireLock(client, locksCollection))
