@@ -413,6 +413,8 @@ export function requestPostVendorComment(payload:any) {
             text
         })
         .then((res:any) => {
+            console.log('RESPONSO?')
+            console.log(res);
             dispatch(postVendorComment({
                 commentDate: moment().format('YYYY-MM-DDTHH:mm:SS'),
                 _id: res.data._id,

@@ -10,10 +10,10 @@ const routeLimitVendorOp = async (req, res) => {
   if (redisClient && redisClient.connected) {
     // Key is identified as Method (GET, PUT, POST, DEL), regionID, & vendorID
     const key = `rl::method::${req.method}::path::${req.path}::regionID::${req.params.regionID}::vendorID::${req.params.vendorID}`;
+
     // Value is identified as the result value of adding to a Redis Set
     // (1 if it doesn't exist 0 if it does exist)
-
-    const value = await client.saddAsync(key, req.connection.remoteAddress)
+    const value = await redisClient.saddAsync(key, req.connection.remoteAddress)
     .catch(() => res.status(500).send('Internal server error: Issue with Redis'));
 
     // If value is not equal to 1 then the user has already sent a request to this route
@@ -21,6 +21,9 @@ const routeLimitVendorOp = async (req, res) => {
       res.status(429).send('The user has sent too many requests to this route');
       return null;
     }
+
+    // No cache hit, continue
+    return true;
   } else {
     logger.error('Redis: Skipping rate limit check, no redisClient found');
     // Returns true, will not rate limit if redis cannot be connected
@@ -34,6 +37,9 @@ const routeLimitVendor = async (req, res, next) => {
     const result = await routeLimitVendorOp(req, res);
     if (result) {
       next();
+    } else {
+      // If no proper exit in routeLimitVendorOp
+      res.status(500).send('Internal server error: Issue with Rate Limit Function');
     }
   } else {
     next();

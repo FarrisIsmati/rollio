@@ -37,7 +37,7 @@ const redisConnect = {
   backoffMultiplyer: 2,
   connectAttempts: 0,
   async _onError(err, caller = '') {
-    if (redisConnect.connectAttempts < 2) {
+    if (redisConnect.connectAttempts < 6) {
       redisConnect.connectAttempts += 1;
       util.backoff(redisConnect.backoffMultiplyer);
       redisConnect.backoffMultiplyer *= 1.5;
@@ -53,7 +53,7 @@ const redisConnect = {
       status: connectStatusConstants.FAILED,
     }
   },
-  async connect() {
+  connect() {
     const client = redis.createClient(redisConfig);
     let clientErrorStatus = connectStatusConstants.IDLE;
     const sub = redis.createClient(redisConfig);
@@ -71,7 +71,7 @@ const redisConnect = {
     });
 
     client.on('ready', () => {
-      this.backoffMultiplyer = 2;
+      this.backoffMultiplyer = 4;
       this.connectAttempts = 0;
       if (!isTest) {
         logger.info('Redis Client: Successfully connected');

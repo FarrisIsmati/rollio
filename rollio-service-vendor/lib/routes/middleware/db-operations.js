@@ -396,7 +396,9 @@ const vendorRouteOps = {
       },
       position: 0,
     })
-      .then(update => res.status(200).json(update.comments[0]))
+      .then(update => {
+        return res.status(200).json(update.comments[0])
+      })
       .catch(err => res.status(500).send(err));
   },
 };
