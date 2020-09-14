@@ -54,19 +54,21 @@ const {
 // Caching data happens on get requests in the middleware,
 // clearing the cache happens in the operations in mongo folder
 const checkCache = async (req, res, payload) => {
-  const value = await redisClient.hgetAsync(payload.collectionKey, payload.queryKey)
+  if (redisClient && redisClient.connected) {
+    const value = await redisClient.hgetAsync(payload.collectionKey, payload.queryKey)
     .catch(() => false);
 
-  if (redisClient.connected) {
     if (value !== undefined && value !== null) {
       logger.info(`Cache Hit: ${payload.collectionKey} ${payload.queryKey}`);
       return res.status(200).json(JSON.parse(value));
     }
+
     return payload.ops(req, res, async (data) => {
       await redisClient.hsetAsync(payload.collectionKey, payload.queryKey, JSON.stringify(data));
     });
   }
-  logger.error('Redis: No redisClient found');
+
+  logger.error('Redis: Unable to check cache, no redisClient found');
   return payload.ops(req, res);
 };
 
@@ -374,9 +376,12 @@ const vendorRouteOps = {
     // so posting an empty comment wont count towards your rate limit
     if (req.body.text === '') {
       try {
-        await redisClient.sremAsync(`rl::method::${req.method}::path::${req.path}::regionID::${req.params.regionID}::vendorID::${req.params.vendorID}`, req.connection.remoteAddress);
+        if (redisClient && redisClient.connected) {
+          await redisClient.sremAsync(`rl::method::${req.method}::path::${req.path}::regionID::${req.params.regionID}::vendorID::${req.params.vendorID}`, req.connection.remoteAddress);
+        }
         res.status(403).send('Comment body cannot be empty');
       } catch (err) {
+        logger.error('Redis: Unable to clear comment cache');
         res.status(500).send(err);
       }
     }
@@ -391,7 +396,9 @@ const vendorRouteOps = {
       },
       position: 0,
     })
-      .then(update => res.status(200).json(update.comments[0]))
+      .then(update => {
+        return res.status(200).json(update.comments[0])
+      })
       .catch(err => res.status(500).send(err));
   },
 };
