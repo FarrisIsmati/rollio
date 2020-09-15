@@ -23,6 +23,14 @@ module.exports = {
     return Region.findOne({
       name
     })
+    .then((res) => {
+      if (res) {
+        return res;
+      }
+
+      logger.error('Region Ops: No region found');
+      return null;
+    })
     .catch((err) => {
       const errMsg = new Error(err);
       logger.error(errMsg);

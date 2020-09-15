@@ -18,8 +18,7 @@ const routeLimitVendorOp = async (req, res) => {
 
     // If value is not equal to 1 then the user has already sent a request to this route
     if (value !== 1) {
-      res.status(429).send('The user has sent too many requests to this route');
-      return null;
+      return false;
     }
 
     // No cache hit, continue
@@ -38,8 +37,7 @@ const routeLimitVendor = async (req, res, next) => {
     if (result) {
       next();
     } else {
-      // If no proper exit in routeLimitVendorOp
-      res.status(500).send('Internal server error: Issue with Rate Limit Function');
+      res.status(429).send('The user has sent too many requests to this route');
     }
   } else {
     next();

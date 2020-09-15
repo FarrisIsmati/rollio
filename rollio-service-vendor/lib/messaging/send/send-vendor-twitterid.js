@@ -9,17 +9,27 @@ const regionOps = require('../../db/mongo/operations/region-ops');
 const vendorOps = require('../../db/mongo/operations/vendor-ops');
 
 const sendVendorTwitterIDs = async () => {
+  console.log('SEND');
   const regionID = await regionOps.getRegionByName(config.REGION)
-    .then(region => region._id)
+    .then(region => {
+      if (region) {
+        return region._id
+      }
+      
+      logger.error('Messaging: Send vendor twitter IDs no region found');
+      return null;
+    })
     .catch((err) => {
       logger.error(err);
       return err;
     });
+
   const vendors = await vendorOps.getVendors(regionID)
     .catch((err) => {
       logger.error(err);
       return err;
     });
+
   // Puts vendors list into a string separated by ','
   const userIDs = vendors.filter(vendor => vendor.twitterID).map(vendor => vendor.twitterID).join(',');
   await mq.send(config.AWS_SQS_TWITTER_IDS, userIDs);
