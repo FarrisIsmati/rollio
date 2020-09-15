@@ -9,7 +9,6 @@ const regionOps = require('../../db/mongo/operations/region-ops');
 const vendorOps = require('../../db/mongo/operations/vendor-ops');
 
 const sendVendorTwitterIDs = async () => {
-  console.log('SEND');
   const regionID = await regionOps.getRegionByName(config.REGION)
     .then(region => {
       if (region) {
