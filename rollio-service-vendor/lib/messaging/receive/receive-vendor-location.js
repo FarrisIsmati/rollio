@@ -34,6 +34,8 @@ const addLocationToVendorLocationHistory = async (payload, regionID, vendorID) =
 const createNewLocations = async ({
   tweetLocationPayloads, tweetID, vendorID, regionID,
 }) => {
+  console.log('');
+  console.log(tweetLocationPayloads);
   const newLocations = await Promise.all(tweetLocationPayloads.map(location => sharedOps.createLocationAndCorrectConflicts({ ...location, tweetID, vendorID })));
   await Promise.all(newLocations.map(newLocation => addLocationToVendorLocationHistory(newLocation._id, regionID, vendorID)));
   return newLocations;
@@ -51,12 +53,17 @@ const receiveTweets = async () => {
     const { _id: vendorID, name: vendorName } = vendor;
 
     const {
-      tweet: text, tweetID, date, newLocations: tweetLocationPayloads, twitterID,
+      tweet: text, 
+      tweetID, date, 
+      newLocations: tweetLocationPayloads, 
+      twitterID, 
+      match
     } = message;
 
-    const newLocations = await createNewLocations({
-      tweetLocationPayloads, tweetID, vendorID, regionID,
-    });
+    // If tweet has a match create locations, else return empty array
+    const newLocations = match ? await createNewLocations({
+      tweetLocationPayloads, tweetID, vendorID, regionID
+    }) : [];
 
     // Format tweet as it is stored in vendor.tweetHistory
     const tweetPayload = {
@@ -95,3 +102,7 @@ module.exports = {
   receiveTweets,
   addLocationToVendorLocationHistory,
 };
+
+
+
+/// CUUURENTLY ON HANDLING INCOMING LOCATION DATA WITHOUT LOCATIONS!!!!
