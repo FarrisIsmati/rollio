@@ -122,7 +122,6 @@ const sharedOps = {
 
     // Clear location accuracy rate limit cache
     try {
-      console.log(`rl::method::PUT::path::/${regionID}/${vendorID}/locationaccuracy::regionID::${regionID}::vendorID::${vendorID}`)
       await redisClient.delAsync(`rl::method::PUT::path::/${regionID}/${vendorID}/locationaccuracy::regionID::${regionID}::vendorID::${vendorID}`);
     } catch (err) {
       logger.error(err);

@@ -39,8 +39,9 @@ module.exports = {
     }).then(async (res) => {
       if (redisClient && redisClient.connected) {
         await redisClient.hdelAsync('vendor', `q::method::GET::path::/${regionID}/${res._id}`);
+      } else {
+        logger.error('Redis: Unable to clear vendor cache, no redisClient found');
       }
-      logger.error('Redis: Unable to clear vendor cache, no redisClient found');
       return res;
     }).catch((err) => {
       const errMsg = new Error(err);
@@ -234,8 +235,9 @@ module.exports = {
         if (redisClient && redisClient.connected) {
           // TODO: this busts the cache for the individual vendor, but what about getVendorsAsObject ?
           await redisClient.hdelAsync('vendor', `q::method::GET::path::/${regionID}/${vendorID}`);
+        } else {
+          logger.error('Redis: Unable to clear vendor cache, no redisClient found');
         }
-        logger.error('Redis: Unable to clear vendor cache, no redisClient found');
         return res;
       })
       .catch((err) => {
@@ -269,8 +271,9 @@ module.exports = {
       .then(async (res) => {
         if (redisClient && redisClient.connected) {
           await redisClient.hdelAsync('vendor', `q::method::GET::path::/${regionID}/${vendorID}`);
+        } else {
+          logger.error('Redis: Unable to clear vendor cache, no redisClient found');
         }
-        logger.error('Redis: Unable to clear vendor cache, no redisClient found');
         return res;
       })
       .catch((err) => {
@@ -304,8 +307,9 @@ module.exports = {
         .then((res) => {
           if (redisClient && redisClient.connected) {
             redisClient.hdelAsync('vendor', `q::method::GET::path::/${regionID}/${vendorID}`);
+          } else {
+            logger.error('Redis: Unable to clear vendor cache, no redisClient found');
           }
-          logger.error('Redis: Unable to clear vendor cache, no redisClient found');
           return res;
         })
         .catch((err) => {
@@ -332,8 +336,9 @@ module.exports = {
         .then(async (res) => {
           if (redisClient && redisClient.connected) {
             await redisClient.hdelAsync('vendor', `q::method::GET::path::/${regionID}/${vendorID}`);
+          } else {
+            logger.error('Redis: Unable to clear vendor cache, no redisClient found');
           }
-          logger.error('Redis: Unable to clear vendor cache, no redisClient found');
           return {
             locationAccuracy: res.accuracy,
           };
@@ -361,8 +366,9 @@ module.exports = {
       .then(async (res) => {
         if (redisClient && redisClient.connected) {
           await redisClient.hdelAsync('vendor', `q::method::GET::path::/${regionID}/${vendorID}`);
+        } else {
+          logger.error('Redis: Unable to clear vendor cache, no redisClient found');
         }
-        logger.error('Redis: Unable to clear vendor cache, no redisClient found');
         return res;
       })
       .catch((err) => {
