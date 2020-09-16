@@ -65,7 +65,6 @@ const DashboardMobile:FC = () => {
     const { isDashboardExpanded, expandedDashboardStyle, contractedDashboardStyle} = useSetDashboardMenuStyle();
 
     const { vendorLinksHeight, dashboardHeightNormal, dashboardHeightGroups } = useSetMobileMenuHeightOnScroll({topRef, expandedDashboardStyle})
-
     const height = useGetHeightDifference([topRef], vendorLinksHeight);
 
     // Number of vendors in currently selected group
@@ -73,6 +72,12 @@ const DashboardMobile:FC = () => {
 
     if (state.regionMap.temporarilySelected) {
         groupVendorsCount = state.regionMap.vendorsDisplayedGroup[state.regionMap.temporarilySelected].vendors.length;
+    }
+
+    if (topRef.current !== null) {
+        // @ts-ignore 
+        console.log(topRef.current.clientHeight);
+        console.log(dashboardHeightNormal);
     }
 
     return (
