@@ -22,7 +22,7 @@ import {fetchUserAsync} from "../redux/actions/user-actions";
 import Region from './region/region';
 import PageInvalid from './error/page-invalid';
 import PermissionDenied from './error/permission-denied';
-import LoginOut from './authentication/login-out';
+import Authentication from './authentication/authentication';
 import UserProfileForm from './authentication/user-profile';
 import VendorProfileForm from './authentication/vendor-profile';
 import TweetTable from './tweets/tweet-table';
@@ -60,8 +60,8 @@ const App:FC = () => {
           <Switch>
             <Route exact path="/region/:regionName" component={ Region } /> :
             {/* <Route exact path="/region/:regionId/vendor/:vendorId" component={ VendorProfile } /> */}
-            <Route exact path="/login" component={ () => <LoginOut isLogin={true}/> } />
-            <Route exact path="/signup" component={ () => <LoginOut isLogin={false}/> } />
+            <Route exact path="/login" component={ () => <Authentication isLogin={true}/> } />
+            <Route exact path="/signup" component={ () => <Authentication isLogin={false}/> } />
             <Route exact path="/profile/user" component={ UserProfileForm } />
             <Route exact path="/profile/region/:regionName/vendor/:vendorId?" component={ VendorProfileForm } />
             <Route exact path="/newlocation/:vendorID?/:locationId?" component={ LocationEditor } />

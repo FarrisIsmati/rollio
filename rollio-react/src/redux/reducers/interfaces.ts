@@ -115,7 +115,7 @@ export interface DataDefaultState {
     }
 }
 
-// NOTE: this interface is also used in login-out.tsx and user-profile.tsx
+// NOTE: this interface is also used in authentication.tsx and user-profile.tsx
 export interface UserDefaultState {
     isAuthenticated: boolean,
     id: string,
