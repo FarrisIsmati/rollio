@@ -25,7 +25,7 @@ const RegionDesktop = (props:any) => {
 
   return (
     <div className={ 'region_desktop' }>
-        <Navbar ref={navbarDesktopRef}/>
+        <Navbar ref={navbarDesktopRef} {...props} />
         <DashboardFilterBar state={state} ref={dashboardFilterBarRef}/>
 
         <div className='region__content' style={{ height: regionContentHeight }}>

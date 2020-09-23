@@ -5,7 +5,7 @@ const Menu = React.forwardRef((props:any, ref:any) => {
   return (      
     <div ref={ref} className='menu__wrapper'>
         <div className='menu__link font__menu_link'>
-            <h1>SIGN IN</h1>
+            <h1 onClick={() => props.history.push('/login')}>SIGN IN</h1>
         </div>
         <div className='menu__link font__menu_link'>
             <h1>ABOUT</h1>

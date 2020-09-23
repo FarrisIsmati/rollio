@@ -11,7 +11,7 @@ const Authentication = (props:any) => {
             <div className='authentication__login flex__center_column'>
                 <h2>Vendors</h2>
                 <p>Vendor login/sign up via twitter</p>
-                <LoginFrame />
+                <LoginFrame {...props} />
             </div>
         </div>
     );
