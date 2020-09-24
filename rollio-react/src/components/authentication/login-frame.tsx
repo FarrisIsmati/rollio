@@ -14,11 +14,11 @@ const SIGN_IN = 'Sign In';
 const SIGN_UP = 'Sign Up';
 
 const LoginFrame = (props:any) => {
-    const { isLogin, userType } = props;
     const dispatch = useDispatch();
 
     const twitterLoginUrl = `${VENDOR_API}/api/auth/twitter`;
     const twitterRequestTokenUrl = `${VENDOR_API}/api/auth/twitter/reverse`;
+    console.log(`${twitterLoginUrl}/vendor/`)
 
     const twitterLoginFailure = (error:any) => {
         alert(error);
@@ -35,14 +35,10 @@ const LoginFrame = (props:any) => {
         });
     };
 
-    const goToOtherLoginPage = () => {
-        props.history.push(isLogin ? '/signup' : '/login');
-    };
-
     return (
         <div className='loginframe__wrappper'>
             <TwitterLogin
-                loginUrl={`${twitterLoginUrl}/${userType}/`}
+                loginUrl={`${twitterLoginUrl}/vendor/`}
                 onFailure={twitterLoginFailure}
                 onSuccess={twitterLoginSuccess}
                 requestTokenUrl={twitterRequestTokenUrl}
@@ -57,7 +53,7 @@ const LoginFrame = (props:any) => {
                     </IconContext.Provider>
                 </div>
             </TwitterLogin>
-            <p>{isLogin ? "Don't" : "Already"} have an account? <a className="twitter_login__sign_up_link twitter_login__pointer" onClick={goToOtherLoginPage}>{ isLogin ? SIGN_UP : SIGN_IN }</a></p>
+            {/* <p>{isLogin ? "Don't" : "Already"} have an account? <a className="twitter_login__sign_up_link twitter_login__pointer" onClick={goToOtherLoginPage}>{ isLogin ? SIGN_UP : SIGN_IN }</a></p> */}
         </div>
     );
 }

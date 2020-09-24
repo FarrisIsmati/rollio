@@ -18,7 +18,7 @@ socketIO.setIOServer(server);
 // ROUTES
 const region = require('./lib/routes/region');
 const vendor = require('./lib/routes/vendor');
-const login = require('./lib/routes/login');
+const login = require('./lib/routes/auth');
 const tweets = require('./lib/routes/tweets');
 const locations = require('./lib/routes/locations');
 
