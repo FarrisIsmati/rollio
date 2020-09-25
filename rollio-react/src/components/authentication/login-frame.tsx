@@ -5,6 +5,7 @@ import { VENDOR_API } from "../../config";
 import { useDispatch } from "react-redux";
 import { IconContext } from 'react-icons';
 import { IoLogoTwitter } from 'react-icons/io';
+import constants from './utils/constants';
 
 // REDUX
 import { receiveUser, fetchUserSuccess } from "../../redux/actions/user-actions";
@@ -42,6 +43,7 @@ const LoginFrame = (props:any) => {
                 onFailure={twitterLoginFailure}
                 onSuccess={twitterLoginSuccess}
                 requestTokenUrl={twitterRequestTokenUrl}
+                customHeaders={{action: constants.LOGIN}}
                 style={{margin: '0 0', padding: '0 0', border: '0'}}
             >
                 <div className="twitter_login__login_button">

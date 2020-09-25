@@ -1,11 +1,28 @@
+// DEPENDENCIES
 const mongoose = require('mongoose');
+
+// CONSTANTS
+const typeEnumConstants = {
+  CUSTOMER: 'customer',
+  ADMIN: 'admin',
+  VENDOR: 'vendor'
+}
+
+const statusEnumConstants = {
+  ACTIVE: 'ACTIVE',
+  REQUESTED: 'REQUESTED',
+  INACTIVE: 'INACTIVE'
+}
 
 const UserSchema = new mongoose.Schema({
   email: {
     type: String, required: false, trim: true, unique: true, match: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
   },
   type: {
-    type: String, enum: ['customer', 'admin', 'vendor'], required: true, default: 'customer',
+    type: String, enum: [typeEnumConstants.CUSTOMER, typeEnumConstants.ADMIN, typeEnumConstants.VENDOR], required: true, default: statusEnumConstants.CUSTOMER,
+  },
+  status: {
+    type: String, enum: [statusEnumConstants.ACTIVE, statusEnumConstants.REQUESTED, statusEnumConstants.INACTIVE], required: true, default: statusEnumConstants.INACTIVE,
   },
   vendorID: { type: mongoose.Schema.Types.ObjectId, required: false, ref: 'Vendor' },
   regionID: { type: mongoose.Schema.Types.ObjectId, required: false, ref: 'Region' },
