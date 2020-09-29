@@ -29,6 +29,8 @@ const userOps = {
       if (existingUser) {
         return { user: existingUser };
       }
+
+      return {};
     } catch (error) {
       logger.error(error);
       return {};

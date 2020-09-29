@@ -3,7 +3,7 @@ import React from "react";
 import { withRouter } from 'react-router';
 
 // COMPONENTS
-import LoginFrame from './login-frame';
+import TwitterAuthentication from './twitter-authentication';
 
 const Authentication = (props:any) => {
     return (
@@ -11,7 +11,7 @@ const Authentication = (props:any) => {
             <div className='authentication__login flex__center_column'>
                 <h2>Vendors</h2>
                 <p>Vendor login/sign up via twitter</p>
-                <LoginFrame {...props} />
+                <TwitterAuthentication {...props} />
             </div>
         </div>
     );

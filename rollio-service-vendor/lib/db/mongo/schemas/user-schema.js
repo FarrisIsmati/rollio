@@ -22,7 +22,7 @@ const UserSchema = new mongoose.Schema({
     type: String, enum: [typeEnumConstants.CUSTOMER, typeEnumConstants.ADMIN, typeEnumConstants.VENDOR], required: true, default: statusEnumConstants.CUSTOMER,
   },
   status: {
-    type: String, enum: [statusEnumConstants.ACTIVE, statusEnumConstants.REQUESTED, statusEnumConstants.INACTIVE], required: true, default: statusEnumConstants.INACTIVE,
+    type: String, enum: [statusEnumConstants.ACTIVE, statusEnumConstants.REQUESTED, statusEnumConstants.INACTIVE], required: true, default: statusEnumConstants.ACTIVE,
   },
   vendorID: { type: mongoose.Schema.Types.ObjectId, required: false, ref: 'Vendor' },
   regionID: { type: mongoose.Schema.Types.ObjectId, required: false, ref: 'Region' },
