@@ -13,7 +13,8 @@ const defaultState:UserDefaultState = {
     type: '',
     vendorID: '',
     regionID: '',
-    hasAllRequiredFields: false
+    hasAllRequiredFields: false,
+    status: ''
 };
 
 export function userReducer(state = defaultState, action: any) {

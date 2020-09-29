@@ -1,3 +1,5 @@
+import { string } from "prop-types";
+
 export interface Coordinates {
     lat: number | null,
     long: number | null,
@@ -123,7 +125,8 @@ export interface UserDefaultState {
     type: string,
     vendorID: string,
     regionID: string,
-    hasAllRequiredFields: boolean
+    hasAllRequiredFields: boolean,
+    status: string
 }
 
 interface SelectedMarker {

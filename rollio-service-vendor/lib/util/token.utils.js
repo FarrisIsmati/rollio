@@ -2,6 +2,7 @@
 const jwt = require('jsonwebtoken');
 const request = require('request');
 const passport = require('./passport');
+const constants = require('./constants');
 const logger = require('../log/index')('routes/util/token.utils');
 const { JWT_SECRET } = require('../../config');
 const { TWITTER_CONFIG } = require('../../config');
@@ -72,8 +73,9 @@ module.exports = {
   // 3
   // Set req authorization
   setRequestAuth(req, res, next) {
-    if (!req.user) {
-      return res.status(401).send('User Not Authenticated');
+    // If no user was created, user is inactive, or user is pending
+    if (!req.user || req.user.status === constants.INACTIVE || req.user.status === constants.REQUESTED) {
+      return res.status(401).json(req.user);
     }
 
     req.auth = {
@@ -93,7 +95,8 @@ module.exports = {
   sendToken(req, res) {
     try {
       res.setHeader('x-auth-token', req.token);
-      return res.status(200).send(JSON.stringify(req.user));
+      
+      return res.status(200).json(req.user);
     } catch(error) {
       logger.error('Token Util: Unable to send token to user');
       return res.status(500).send('Internal server error');

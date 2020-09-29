@@ -10,6 +10,7 @@ import constants from './utils/constants';
 // REDUX
 import { receiveUser, fetchUserSuccess } from "../../redux/actions/user-actions";
 import { UserDefaultState } from "../../redux/reducers/interfaces";
+import { constant } from "lodash";
 
 const SIGN_IN = 'Sign In';
 const SIGN_UP = 'Sign Up';
@@ -22,13 +23,21 @@ const LoginFrame = (props:any) => {
     console.log(`${twitterLoginUrl}/vendor/`)
 
     const twitterLoginFailure = (error:any) => {
-        alert(error);
+        console.log(error);
+        // Redirect away
     };
 
     const twitterLoginSuccess = (response:any) => {
         const token = response.headers.get('x-auth-token');
-        response.json().then((user:UserDefaultState) => {
-            if (token) {
+
+        response.json().then((user: UserDefaultState) => {
+            if (user.status === constants.INACTIVE) {
+                // Redirect away to signup
+                console.log('inactive');
+            } else if (user.status === constants.REQUESTED) {
+                // Redirect to notification page
+                console.log('requested');
+            } else if (token) {
                 localStorage.token = token;
                 dispatch(receiveUser(user));
                 dispatch(fetchUserSuccess());

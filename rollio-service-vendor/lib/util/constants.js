@@ -1,6 +1,9 @@
 const constants = {
     LOGIN: 'LOGIN',
-    SIGNUP: 'SIGNUP'
+    SIGNUP: 'SIGNUP',
+    ACTIVE: 'ACTIVE',
+    REQUESTED: 'REQUESTED',
+    INACTIVE: 'INACTIVE'
 }
 
 module.exports = constants;

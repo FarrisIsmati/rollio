@@ -15,21 +15,31 @@ passport.use(new TwitterTokenStrategy({
     const { type } = req.params;
     const { action } = req.headers;
 
-    // Login Workflow vs Signup Workflow
     if (action === constants.LOGIN) {
+        // Login
+        // Only lookup user
         const {user, err} =  await getExistingTwitterUser(profile.id)
             .catch(err => {
                 logger.error(err);
+                done(err, user);
             });
+
+        done(err, user);
     } else if (action === constants.SIGNUP) {
+        // Sign up
+        // Create user
+        // Set pending status
         const {user, err} = await upsertTwitterUser(token, tokenSecret, profile, type)
             .catch(err => {
                 logger.error(err);
+                done(err, user);
             });
-        
+
+        done(err, user);
     } else {
-        console.log("BREAK");
+        done(user)
     }
+
 
     // Check if user has been approved
         // Yes
@@ -38,7 +48,6 @@ passport.use(new TwitterTokenStrategy({
             // Send response that will state so
         // Pending
             // Send response that will state so
-            done(err, user);
 
 }));
 
