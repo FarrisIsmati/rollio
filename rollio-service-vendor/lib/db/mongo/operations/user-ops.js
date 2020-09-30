@@ -42,7 +42,11 @@ const userOps = {
       id, username, displayName, emails,
     } = profile;
 
-    await userOps.getExistingTwitterUser(id);
+    // If user already exists return existing user
+    const existingUser = await userOps.getExistingTwitterUser(id);
+    if (existingUser) {
+      return existingUser
+    }
 
     try {
       // Associate user with vendor if it exists

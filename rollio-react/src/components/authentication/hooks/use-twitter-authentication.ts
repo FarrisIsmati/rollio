@@ -20,12 +20,12 @@ const useAuthentication = (history:any) => {
         // Failure handling happens here as well
         twitterLoginSuccess: (response:any) => {
             const token = response.headers.get('x-auth-token');
-    
             response.json().then((user: UserDefaultState) => {
                 if (user.status === constants.INACTIVE) {
                     // Redirect away to signup
                     // Show flash message
-                    history.goBack();
+                    console.log('inactive go to signup')
+                    history.push('/signup');
                 } else if (user.status === constants.REQUESTED) {
                     // Redirect to notification page
                     // Show flash message
@@ -35,6 +35,7 @@ const useAuthentication = (history:any) => {
                     localStorage.token = token;
                     dispatch(receiveUser(user));
                     dispatch(fetchUserSuccess());
+                    history.push('/profile/user');
                 }
             });
         }

@@ -4,7 +4,6 @@ import TwitterLogin from 'react-twitter-auth';
 import { VENDOR_API } from "../../config";
 import { IconContext } from 'react-icons';
 import { IoLogoTwitter } from 'react-icons/io';
-import constants from './utils/constants';
 
 // HOOKS
 import useTwitterAuthentication from './hooks/use-twitter-authentication';
@@ -19,7 +18,7 @@ const TwitterAuthentication= (props:any) => {
                 onFailure={twitterAuth.twitterLoginFailure}
                 onSuccess={twitterAuth.twitterLoginSuccess}
                 requestTokenUrl={`${VENDOR_API}/api/auth/twitter/reverse`}
-                customHeaders={{action: constants.LOGIN}}
+                customHeaders={{action: props.authMethod}}
                 style={{margin: '0 0', padding: '0 0', border: '0'}}
             >
                 <div className="twitter_login__login_button">

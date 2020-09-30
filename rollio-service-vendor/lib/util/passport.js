@@ -28,14 +28,12 @@ passport.use(new TwitterTokenStrategy({
             if (existingTwitterUser.user) {
                 done(existingTwitterUser.err, existingTwitterUser.user);
             }
-            
-            // WHATS THE PROBLEM
-            // 
-            // 
-            // 
-            // __________________
+
+            console.log(existingTwitterUser);
+            console.log('NO USER FOUND');
+
+            done({});
         } catch(err) {
-            console.log('lasjdflaf')
             logger.error(err);
             done(err, {});
         }
@@ -61,12 +59,5 @@ passport.use(new TwitterTokenStrategy({
         }
     };
 }));
-    // Check if user has been approved
-        // Yes
-            // Return token stuff
-        // No 
-            // Send response that will state so
-        // Pending
-            // Send response that will state so
 
 module.exports = passport;

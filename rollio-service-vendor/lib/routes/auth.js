@@ -11,10 +11,10 @@ const { userRouteOps } = require('./middleware/db-operations');
 // POST
 router.post('/auth/twitter/reverse', requestTwitterToken);
 router.post('/auth/twitter/:type', 
-    getTwitterUser, 
+    getTwitterUser,
     passportTwitterAuthenticate,
-    setRequestAuth, 
-    generateToken, 
+    setRequestAuth,
+    generateToken,
     sendToken
 );
 router.get('/auth/users', expressJwt({ secret: JWT_SECRET }), userRouteOps.getUser);
