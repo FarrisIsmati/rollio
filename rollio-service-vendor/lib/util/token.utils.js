@@ -77,8 +77,6 @@ module.exports = {
     } catch(error) {
       logger.error(error);
       return res.status(500).json({
-        body: {},
-        message: 'Internal server error',
         status: constants.INACTIVE
       })
     }
@@ -86,23 +84,15 @@ module.exports = {
   // 2
   // Option to authenticate type, either a vendor or user, CURRENTLY ONLY AUTHENTICATING VENDORS
   async passportTwitterAuthenticate(req, res, next) {
-    passport.authenticate('twitter-token', { session: false, state: req.params.type  })(req,res,next);
+    passport.authenticate('twitter-token', { session: false, state: req.params.type })(req,res,next);
   },
   // 3
   // Set req authorization
   setRequestAuth(req, res, next) {
     try {
-      // If no user was created, user is inactive, or user is pending
-      if (!req.user || req.user.status === constants.INACTIVE || req.user.status === constants.REQUESTED) {
-        if (req.user) {
-          return res.status(401).json(req.user);
-        } else {
-          return res.status(401).json({
-            body: {},
-            message: 'No user was found',
-            status: constants.INACTIVE
-          })
-        }
+      // If user is inactive, or user is pending
+      if (req.user.status === constants.INACTIVE || req.user.status === constants.REQUESTED) {
+        return res.status(401).json(req.user);
       }
 
       req.auth = {
@@ -113,8 +103,6 @@ module.exports = {
     } catch(error) {
       logger.error(error);
       return res.status(500).json({
-        body: {},
-        message: 'Internal server error',
         status: constants.INACTIVE
       })
     }
@@ -128,8 +116,6 @@ module.exports = {
     } catch(error) {
       logger.error(error);
       return res.status(500).json({
-        body: {},
-        message: 'Internal server error',
         status: constants.INACTIVE
       });
     }
@@ -143,8 +129,6 @@ module.exports = {
     } catch(error) {
       logger.error(error);
       return res.status(500).json({
-        body: {},
-        message: 'Internal server error',
         status: constants.INACTIVE
       });
     }

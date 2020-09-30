@@ -44,11 +44,12 @@ const userOps = {
 
     // If user already exists return existing user
     const existingUser = await userOps.getExistingTwitterUser(id);
-    if (existingUser) {
+    if (existingUser.user) {
       return existingUser
     }
 
     try {
+      console.log('TRYY')
       // Associate user with vendor if it exists
       const vendor = await Vendor.findOne({ twitterID: id });
       const vendorIdUpdate = vendor ? { vendorID: vendor._id } : {};

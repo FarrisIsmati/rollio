@@ -29,13 +29,11 @@ passport.use(new TwitterTokenStrategy({
                 done(existingTwitterUser.err, existingTwitterUser.user);
             }
 
-            console.log(existingTwitterUser);
-            console.log('NO USER FOUND');
-
-            done({});
+            // Fail
+            done(null, { status: constants.INACTIVE });
         } catch(err) {
             logger.error(err);
-            done(err, {});
+            done(err, { status: constants.INACTIVE });
         }
     } else if (action === constants.SIGNUP) {
         // Sign up, Create user, set pending status
@@ -45,17 +43,17 @@ passport.use(new TwitterTokenStrategy({
                     logger.error(err);
                     done(err, user);
                 });
-            
+
             // Success pass user
             if (upsertedTwitterUser.user) {
                 done(upsertedTwitterUser.err, upsertedTwitterUser.user);
             }
 
-            // Fail pass empty
-            done({});
+            // Fail
+            done(null, { status: constants.INACTIVE });
         } catch(err) {
             logger.error(err);
-            done(err, {});
+            done(err, { status: constants.INACTIVE });
         }
     };
 }));

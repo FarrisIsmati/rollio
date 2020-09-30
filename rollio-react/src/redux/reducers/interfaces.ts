@@ -126,7 +126,8 @@ export interface UserDefaultState {
     vendorID: string,
     regionID: string,
     hasAllRequiredFields: boolean,
-    status: string
+    status: string,
+    error?: string
 }
 
 interface SelectedMarker {
