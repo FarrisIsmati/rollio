@@ -1,3 +1,4 @@
+// DEPENDENCIES
 const { ObjectId } = require('mongoose').Types;
 const faker = require('faker');
 const moment = require('moment');
@@ -645,6 +646,7 @@ module.exports = {
         username: 'fakeacc51947888',
         displayName: 'fake account',
       },
+      status: 'ACTIVE',
       __v: 0,
       regionID: region1Id,
       vendorID: ObjectId('5e9b6be2169b1f125fa0744b'),
@@ -660,6 +662,7 @@ module.exports = {
         username: faker.random.word(),
         displayName: faker.random.words(2),
       },
+      status: 'ACTIVE',
       regionID: region1Id,
     },
     {
@@ -685,6 +688,7 @@ module.exports = {
         username: faker.random.word(),
         displayName: faker.random.words(2),
       },
+      status: 'ACTIVE',
       regionID: region1Id,
     },
     {
@@ -698,6 +702,7 @@ module.exports = {
         username: faker.random.word(),
         displayName: faker.random.words(2),
       },
+      status: 'ACTIVE',
       regionID: region1Id,
       vendorID: vendor1Id,
     },
@@ -712,6 +717,7 @@ module.exports = {
         username: faker.random.word(),
         displayName: faker.random.words(2),
       },
+      status: 'ACTIVE',
       regionID: region1Id,
       vendorID: vendor2Id,
     },
@@ -726,6 +732,7 @@ module.exports = {
         username: faker.random.word(),
         displayName: faker.random.words(2),
       },
+      status: 'ACTIVE',
       regionID: region1Id,
     },
   ],

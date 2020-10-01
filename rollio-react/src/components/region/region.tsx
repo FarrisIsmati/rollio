@@ -35,8 +35,8 @@ const Region = (props:any) => {
   return (
     <React.Fragment>
         { !isMobile ? 
-            <RegionDesktop map={map(state)}/> :
-            <RegionMobile map={map(state)}/>
+            <RegionDesktop map={map(state)} {...props}/> :
+            <RegionMobile map={map(state)} {...props}/>
         }
     </React.Fragment>
   );

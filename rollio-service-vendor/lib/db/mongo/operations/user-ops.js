@@ -1,12 +1,13 @@
 // DEPENDENCIES
 const { omit } = require('lodash');
 const mongoose = require('../mongoose/index');
+const logger = require('../../../log/index')('db/mongo/operations/user-ops');
 
 // SCHEMAs
 const User = mongoose.model('User');
 const Vendor = mongoose.model('Vendor');
 
-module.exports = {
+const userOps = {
   async findUserById(userId, includeTwitterProvider = false) {
     return includeTwitterProvider ? User.findById(userId).select('+twitterProvider') : User.findById(userId);
   },
@@ -19,35 +20,62 @@ module.exports = {
     }
     return User.findOneAndUpdate({ _id }, { $set: omit(data, ['twitterProvider']), ...unsetUpdate }, { new: true });
   },
+  // Return existing user
+  async getExistingTwitterUser(id) {
+    try {
+      // Check if user exists in DB return
+      const existingUser = await User.findOne({ 'twitterProvider.id': id });
+
+      if (existingUser) {
+        return { user: existingUser };
+      }
+
+      return {};
+    } catch (error) {
+      logger.error(error);
+      return {};
+    }
+  },
+  // Create New User
   async upsertTwitterUser(token, tokenSecret, profile, type) {
     const {
       id, username, displayName, emails,
     } = profile;
-    const existingUser = await User.findOne({ 'twitterProvider.id': id });
-    if (existingUser) {
-      // eslint-disable-next-line max-len
-      // TODO: think about how to allow users to change 'type' if they want to.  For now, they are locked in after the first time
-      return { user: existingUser };
-    }
-    const vendor = await Vendor.findOne({ twitterID: id });
-    const vendorIdUpdate = vendor ? { vendorID: vendor._id } : {};
-    const newUser = await new User({
-      email: emails[0].value,
-      twitterProvider: {
-        id,
-        token,
-        tokenSecret,
-        username,
-        displayName,
-      },
-      ...vendorIdUpdate,
-      type,
-    }).save();
 
-    const user = newUser.toJSON();
-    // eslint-disable-next-line max-len
-    // annoyingly, .save doesn't seem to honor the 'select: false' on the schema.  So, just deleting here
-    delete user.twitterProvider;
-    return { user };
-  },
+    // If user already exists return existing user
+    const existingUser = await userOps.getExistingTwitterUser(id);
+    if (existingUser.user) {
+      return existingUser
+    }
+
+    try {
+      // Associate user with vendor if it exists
+      const vendor = await Vendor.findOne({ twitterID: id });
+      const vendorIdUpdate = vendor ? { vendorID: vendor._id } : {};
+
+      // Create new user
+      const newUser = await new User({
+        email: emails[0].value,
+        twitterProvider: {
+          id,
+          token,
+          tokenSecret,
+          username,
+          displayName,
+        },
+        ...vendorIdUpdate,
+        type,
+      }).save();
+  
+      const user = newUser.toJSON();
+      delete user.twitterProvider;
+      return { user };
+    } catch (error) {
+      logger.error(error);
+      return {};
+    }
+  }
 };
+
+
+module.exports = userOps;

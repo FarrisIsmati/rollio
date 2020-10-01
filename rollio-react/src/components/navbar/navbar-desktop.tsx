@@ -12,7 +12,7 @@ const NavbarDesktop = React.forwardRef((props:any, ref:any) => {
 
           <div className="navbar__menu font__navbar_menu_desktop">
             <h1>About</h1>
-            <h1>Sign In</h1>
+            <h1 onClick={() => props.history.push('/login')}>Sign In</h1>
           </div>
         </div>
     </div>
