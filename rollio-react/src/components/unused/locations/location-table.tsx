@@ -5,7 +5,7 @@ import ReactTable from 'react-table';
 import '../unused/admin/node_modules/react-table/react-table.css'
 import moment from 'moment';
 import "../unused/admin/node_modules/react-datepicker/dist/react-datepicker.css";
-import useAuthentication from "../../common/hooks/use-authentication";
+import useAuthenticateRoute from "../../authentication/hooks/use-authenticate-route";
 import {isLocationActive} from "../../../util/index";
 import useFetchLocationsAndVendors from "./hooks/use-fetch-locations-and-vendors";
 import ButtonBare from "../../common/buttons/button-bare";
@@ -118,7 +118,7 @@ const LocationTable = (props:any) => {
     ];
 
     const { locationsLoaded, locations, vendorLookUp } = useFetchLocationsAndVendors(props, vendorID);
-    useAuthentication(props, true, true);
+    useAuthenticateRoute(props, true, true);
     useEffect(() => {
         if (locationsLoaded) {
             setTableLocations(locations)

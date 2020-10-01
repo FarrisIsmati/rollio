@@ -3,7 +3,7 @@ import React, {useEffect, useState} from "react";
 import { withRouter } from 'react-router';
 import { receiveUser } from "../../../redux/actions/user-actions";
 import useGetRegions from '../authentication/hooks/use-get-regions';
-import useAuthentication from "../../common/hooks/use-authentication";
+import useAuthenticateRoute from "../../authentication/hooks/use-authenticate-route";
 import redirectToNewPage from "../authentication/utils/redirect-to-new-page";
 import { UserDefaultState } from "../../../redux/reducers/interfaces";
 import axios, {AxiosResponse} from "axios";
@@ -27,7 +27,7 @@ const UserProfile = (props:any) => {
     // @ts-ignore
     const disabled = !requiredFields.every(field => localUser[field]);
 
-    useAuthentication(props, true);
+    useAuthenticateRoute(props, true);
     useGetRegions();
     useEffect(() => {
         if (user.isAuthenticated && areRegionsLoaded){

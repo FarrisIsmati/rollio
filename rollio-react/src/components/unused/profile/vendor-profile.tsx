@@ -60,7 +60,7 @@ import { getRegion } from "../authentication/utils/get-region";
 // HOOKS
 import useGetAppState from "../../common/hooks/use-get-app-state";
 import useGetRegions from '../authentication/hooks/use-get-regions';
-import useAuthentication from "../../common/hooks/use-authentication";
+import useAuthenticateRoute from "../../authentication/hooks/use-authenticate-route";
 
 // REDUX
 import { receiveUser } from "../../../redux/actions/user-actions";
@@ -102,7 +102,7 @@ const UserProfile = (props:any) => {
         props.history.replace('/invalid');
     };
 
-    useAuthentication(props, true);
+    useAuthenticateRoute(props, true);
     useGetRegions();
 
     // get the regionId from the regionName in the route

@@ -1,6 +1,6 @@
 // DEPENDENCIES
 import React from 'react';
-import { LOADING_COLOR } from '../../common/constants/style_constants';
+import constants from '../../../util/constants';
 
 // COMPONENTS
 import VendorSelectorLink from '../dashboard-menu-link';
@@ -30,9 +30,9 @@ const useGetGroupLinks = () => {
         })
       }
   
-      return links ? links : <ReactLoading type={'spokes'} color={LOADING_COLOR} height={64} width={64} />
+      return links ? links : <ReactLoading type={'spokes'} color={constants.LOADING_COLOR} height={64} width={64} />
     } else {
-      return <ReactLoading type={'spokes'} color={LOADING_COLOR} height={64} width={64} />
+      return <ReactLoading type={'spokes'} color={constants.LOADING_COLOR} height={64} width={64} />
     }
 }
 

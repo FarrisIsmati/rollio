@@ -8,7 +8,7 @@ import DatePicker from "react-datepicker";
 import axios from "axios";
 import moment from 'moment';
 import Autocomplete from 'react-google-autocomplete';
-import useAuthentication from "../../common/hooks/use-authentication";
+import useAuthenticateRoute from "../../authentication/hooks/use-authenticate-route";
 import useFetchLocationsAndVendors from "./hooks/use-fetch-locations-and-vendors";
 import {get, pick} from "lodash";
 import { isLocationActive } from "../../../util";
@@ -106,7 +106,7 @@ const LocationEditor = (props:any) => {
             throw err;
         })
     };
-    useAuthentication(props, true, false);
+    useAuthenticateRoute(props, true, false);
     const { locationsLoaded, locations, vendors, vendorsLoaded } = useFetchLocationsAndVendors(props);
     useEffect(() => {
         if ((!routeLocationID || locationsLoaded) && vendorsLoaded) {

@@ -9,7 +9,7 @@ import moment from 'moment';
 import DatePicker from "react-datepicker";
 import "../unused/admin/node_modules/react-datepicker/dist/react-datepicker.css";
 import queryString from 'query-string';
-import useAuthentication from "../../common/hooks/use-authentication";
+import useAuthenticateRoute from "../../authentication/hooks/use-authenticate-route";
 import useFetchVendors from "../../common/hooks/use-fetch-vendors";
 import { Tweet } from "./interfaces";
 import { get } from "lodash";
@@ -159,7 +159,7 @@ const TweetTable = (props:any) => {
             )
         }
     ];
-    useAuthentication(props, true, true);
+    useAuthenticateRoute(props, true, true);
     useEffect(() => {
         if (isAuthenticated && vendorLookupLoaded) {
                 fetchTweets();

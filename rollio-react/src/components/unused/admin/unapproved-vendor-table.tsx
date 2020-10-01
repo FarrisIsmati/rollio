@@ -4,7 +4,7 @@ import { withRouter } from 'react-router';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css'
 import "react-datepicker/dist/react-datepicker.css";
-import useAuthentication from "../../common/hooks/use-authentication";
+import useAuthenticateRoute from "../../authentication/hooks/use-authenticate-route";
 import useFetchUnapprovedVendors from "./hooks/useFetchUnapprovedVendors";
 
 const UnapprovedVendorTable = (props:any) => {
@@ -12,7 +12,7 @@ const UnapprovedVendorTable = (props:any) => {
     const goToLoginPage = () => {
         props.history.push('/login');
     };
-    useAuthentication(props, true, true);
+    useAuthenticateRoute(props, true, true);
     const { vendors, vendorsLoaded, approveVendor } = useFetchUnapprovedVendors(props)
     const columns = [
         {

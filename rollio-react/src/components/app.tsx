@@ -21,7 +21,7 @@ import {fetchUserAsync} from "../redux/actions/user-actions";
 // COMPONENTS
 import Region from './region/region';
 import PageInvalid from './error/page-invalid';
-import PermissionDenied from './error/permission-denied';
+import PermissionDenied from './error/page-invalid';
 import Authentication from './authentication/authentication';
 
 const loggerMiddleware = createLogger();

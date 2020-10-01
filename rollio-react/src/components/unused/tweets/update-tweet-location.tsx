@@ -8,7 +8,7 @@ import DatePicker from "react-datepicker";
 import axios, {AxiosResponse} from "axios";
 import moment from 'moment';
 import Autocomplete from 'react-google-autocomplete';
-import useAuthentication from "../../common/hooks/use-authentication";
+import useAuthenticateRoute from "../../authentication/hooks/use-authenticate-route";
 import {Tweet, TweetDefaultState } from "./interfaces";
 import { get } from "lodash";
 import { isLocationActive } from "../../../util";
@@ -143,7 +143,7 @@ const UpdateLocation = (props:any) => {
         })
     }
 
-    useAuthentication(props, true, true);
+    useAuthenticateRoute(props, true, true);
     useEffect(() => {
         if (isAuthenticated) {
             fetchTweet();

@@ -1,6 +1,6 @@
 // DEPENDENCIES
 import React from 'react';
-import { LOADING_COLOR } from '../../common/constants/style_constants';
+import constants from '../../../util/constants';
 
 // COMPONENTS
 import VendorSelectorLink from '../dashboard-menu-link';
@@ -41,9 +41,9 @@ const useGetVendors:any = (type: string) => {
         }
       })
 
-      return vendorsFormatted ? vendorsFormatted : <div className='flex__center_full_height'><ReactLoading type={'spokes'} color={LOADING_COLOR} height={64} width={64} /></div>
+      return vendorsFormatted ? vendorsFormatted : <div className='flex__center_full_height'><ReactLoading type={'spokes'} color={constants.LOADING_COLOR} height={64} width={64} /></div>
     } else {
-      return <div className='flex__center_full_height'><ReactLoading type={'spokes'} color={LOADING_COLOR} height={64} width={64} /></div>
+      return <div className='flex__center_full_height'><ReactLoading type={'spokes'} color={constants.LOADING_COLOR} height={64} width={64} /></div>
     }
 
 }
