@@ -1,17 +1,74 @@
-import useGetAppState from "../common/hooks/use-get-app-state";
+
+/*
+
+REBUILT FORM SCRATCH ONCE VENDOR/ADMIN DASHBOARD IS DESIGNED
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// DEPENDENCIES
 import React, {useEffect, useState} from "react";
 import { withRouter } from 'react-router';
-import {receiveUser} from "../../redux/actions/user-actions";
-import {useDispatch} from "react-redux";
-import {receiveVendorData, fetchVendorDataAsync} from "../../redux/actions/data-actions";
+import { useDispatch } from "react-redux";
 import axios, {AxiosResponse} from "axios";
 import {VENDOR_API} from "../../config";
+import { getRegion } from "./utils/get-region";
+
+// HOOKS
+import useGetAppState from "../common/hooks/use-get-app-state";
 import useGetRegions from './hooks/use-get-regions';
 import useAuthentication from "../common/hooks/use-authentication";
-import {getRegion} from "./utils/get-region";
+
+// REDUX
+import { receiveUser } from "../../redux/actions/user-actions";
+import { receiveVendorData, fetchVendorDataAsync } from "../../redux/actions/data-actions";
+
+// INTERFACES
 import { VendorFull } from "../../redux/reducers/interfaces";
 
-// TODO: add validations on email, phone number, etc. inputs
 const UserProfile = (props:any) => {
     const dispatch = useDispatch();
     const { user, data, loadState } = useGetAppState();

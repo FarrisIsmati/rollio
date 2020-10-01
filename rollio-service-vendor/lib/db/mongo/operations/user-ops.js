@@ -49,7 +49,6 @@ const userOps = {
     }
 
     try {
-      console.log('TRYY')
       // Associate user with vendor if it exists
       const vendor = await Vendor.findOne({ twitterID: id });
       const vendorIdUpdate = vendor ? { vendorID: vendor._id } : {};

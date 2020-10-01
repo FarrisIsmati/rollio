@@ -83,7 +83,7 @@ module.exports = {
   },
   // 2
   // Option to authenticate type, either a vendor or user, CURRENTLY ONLY AUTHENTICATING VENDORS
-  async passportTwitterAuthenticate(req, res, next) {
+  passportTwitterAuthenticate(req, res, next) {
     passport.authenticate('twitter-token', { session: false, state: req.params.type })(req,res,next);
   },
   // 3

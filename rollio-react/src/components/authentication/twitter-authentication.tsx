@@ -30,7 +30,6 @@ const TwitterAuthentication= (props:any) => {
                     </IconContext.Provider>
                 </div>
             </TwitterLogin>
-            {/* <p>{isLogin ? "Don't" : "Already"} have an account? <a className="twitter_login__sign_up_link twitter_login__pointer" onClick={goToOtherLoginPage}>{ isLogin ? SIGN_UP : SIGN_IN }</a></p> */}
         </div>
     );
 }

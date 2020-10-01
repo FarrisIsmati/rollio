@@ -24,12 +24,10 @@ const useAuthentication = (history:any) => {
                 if (user.status === constants.INACTIVE) {
                     // Redirect away to signup
                     // Show flash message
-                    console.log('inactive go to signup')
                     history.push('/signup');
                 } else if (user.status === constants.REQUESTED) {
                     // Redirect to notification page
                     // Show flash message
-                    console.log('requested');
                     history.goBack();
                 } else if (token) {
                     localStorage.token = token;

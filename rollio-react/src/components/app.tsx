@@ -28,9 +28,8 @@ import VendorProfileForm from './authentication/vendor-profile';
 import TweetTable from './tweets/tweet-table';
 import LocationTable from './locations/location-table';
 import UnapprovedVendorTable from "./admin/unapproved-vendor-table";
-import UpdateLocation from './tweets/update-tweet-location'
-import LocationEditor from './locations/location-editor'
-
+import UpdateLocation from './tweets/update-tweet-location';
+import LocationEditor from './locations/location-editor';
 
 const loggerMiddleware = createLogger();
 
@@ -58,12 +57,11 @@ const App:FC = () => {
       <BrowserRouter>
         <div className="App">
           <Switch>
-            <Route exact path="/region/:regionName" component={ Region } /> :
-            {/* <Route exact path="/region/:regionId/vendor/:vendorId" component={ VendorProfile } /> */}
-            <Route exact path="/login" component={ () => <Authentication isLogin={true}/> } />
-            <Route exact path="/signup" component={ () => <Authentication isLogin={false}/> } />
-            <Route exact path="/profile/user" component={ UserProfileForm } />
-            <Route exact path="/profile/region/:regionName/vendor/:vendorId?" component={ VendorProfileForm } />
+            <Route exact path="/region/:regionName" component={ Region } /> { /* PASS */ }
+            <Route exact path="/login" component={ () => <Authentication isLogin={true}/> } /> { /* PASS */ }
+            <Route exact path="/signup" component={ () => <Authentication isLogin={false}/> } /> { /* PASS */ }
+            <Route exact path="/profile/user" component={ UserProfileForm } /> { /* WORK ON THIS REDSIGN */ } 
+            {/* <Route exact path="/profile/region/:regionName/vendor/:vendorId?" component={ VendorProfileForm } />  */ } { /* REDSIGN */ } 
             <Route exact path="/newlocation/:vendorID?/:locationId?" component={ LocationEditor } />
             <Route exact path="/unapproved-vendors" component={ UnapprovedVendorTable } />
             <Route exact path="/tweets/:vendorId?" component={ TweetTable } />
