@@ -10,7 +10,7 @@ import useUpdateMapMarkersState from './useUpdateMapMarkersState';
 import useUpdateMapMarkersStyle from './useUpdateMapMarkersStyle';
 import {getCurrentTruckLocation, isLocationActive} from "../../../util";
 import useSelectVendorProfile from '../../vendor-profile/hooks/use-select-vendor-profile';
-import useSelectGroupedVendors from '../../dashboard/hooks/use-select-grouped-vendors';
+import useSelectGroupedVendors from '../../dashboard-public/hooks/use-select-grouped-vendors';
 
 // INTERFACES
 import { 

@@ -2,11 +2,11 @@
 import React, {useEffect, useState} from 'react';
 
 // HOOKS
-import useGetAppState from "../../common/hooks/use-get-app-state";
+import useGetAppState from "../../../common/hooks/use-get-app-state";
 
 // UTILS
 import axios, {AxiosResponse} from "axios";
-import {VENDOR_API} from "../../../config";
+import {VENDOR_API} from "../../../../config";
 
 // Get data from redux state
 const useFetchUnapprovedVendors = (props:any) => {

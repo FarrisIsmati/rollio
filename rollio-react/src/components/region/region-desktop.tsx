@@ -2,11 +2,11 @@
 import React, { useRef } from 'react';
   
 // COMPONENTS
-import DashboardDesktop from '../dashboard/dashboard-desktop';
+import DashboardDesktop from '../dashboard-public/dashboard-desktop';
 import Navbar from '../navbar/navbar-desktop';
-import DashboardFilterBar from '../dashboard/dashboard-filterbar';
+import DashboardFilterBar from '../dashboard-public/dashboard-filterbar';
 import VendorProfileDesktopModal from '../vendor-profile/vendor-profile-desktop-modal';
-import DashboardGroupSelectDesktopModal from '../dashboard/dashboard-group-select-desktop-modal';
+import DashboardGroupSelectDesktopModal from '../dashboard-public/dashboard-group-select-desktop-modal';
 
 // HOOKS
 import useGetScreenHeightRefDifferenc from '../common/hooks/use-get-screen-height-ref-difference';

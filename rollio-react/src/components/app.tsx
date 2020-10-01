@@ -23,13 +23,6 @@ import Region from './region/region';
 import PageInvalid from './error/page-invalid';
 import PermissionDenied from './error/permission-denied';
 import Authentication from './authentication/authentication';
-import UserProfileForm from './authentication/user-profile';
-import VendorProfileForm from './authentication/vendor-profile';
-import TweetTable from './tweets/tweet-table';
-import LocationTable from './locations/location-table';
-import UnapprovedVendorTable from "./admin/unapproved-vendor-table";
-import UpdateLocation from './tweets/update-tweet-location';
-import LocationEditor from './locations/location-editor';
 
 const loggerMiddleware = createLogger();
 
@@ -57,16 +50,9 @@ const App:FC = () => {
       <BrowserRouter>
         <div className="App">
           <Switch>
-            <Route exact path="/region/:regionName" component={ Region } /> { /* PASS */ }
-            <Route exact path="/login" component={ () => <Authentication isLogin={true}/> } /> { /* PASS */ }
-            <Route exact path="/signup" component={ () => <Authentication isLogin={false}/> } /> { /* PASS */ }
-            <Route exact path="/profile/user" component={ UserProfileForm } /> { /* WORK ON THIS REDSIGN */ } 
-            {/* <Route exact path="/profile/region/:regionName/vendor/:vendorId?" component={ VendorProfileForm } />  */ } { /* REDSIGN */ } 
-            <Route exact path="/newlocation/:vendorID?/:locationId?" component={ LocationEditor } />
-            <Route exact path="/unapproved-vendors" component={ UnapprovedVendorTable } />
-            <Route exact path="/tweets/:vendorId?" component={ TweetTable } />
-            <Route exact path="/locations/:vendorId?" component={ LocationTable } />
-            <Route exact path="/tweets/vendor/:vendorId/tweet/:tweetId" component={ UpdateLocation } />
+            <Route exact path="/region/:regionName" component={ Region } />
+            <Route exact path="/login" render={ () => <Authentication isLogin={true}/> } />
+            <Route exact path="/signup" render={ () => <Authentication isLogin={false}/> } />
             <Route exact path="/invalid" component={ PageInvalid } />
             <Route exact path="/permission-denied" component={ PermissionDenied } />
             <Route path="/*" component={ PageInvalid } />

@@ -1,7 +1,7 @@
 // DEPENDENCIES
 import React from "react";
 import { withRouter } from 'react-router';
-import constants from './utils/constants';
+import constants from './constants';
 
 // COMPONENTS
 import TwitterAuthentication from './twitter-authentication';

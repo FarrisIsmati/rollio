@@ -9,7 +9,7 @@ import {get} from "lodash";
 import axios, {AxiosResponse} from "axios";
 import {VENDOR_API} from "../../../config";
 import queryString from "query-string";
-import {VendorNameAndId} from "../../tweets/interfaces";
+import {VendorNameAndId} from "../../unused/tweets/interfaces";
 
 // Get data from redux state
 const useFetchVendors = (props:any) => {

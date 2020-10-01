@@ -54,20 +54,20 @@ import React, {useEffect, useState} from "react";
 import { withRouter } from 'react-router';
 import { useDispatch } from "react-redux";
 import axios, {AxiosResponse} from "axios";
-import {VENDOR_API} from "../../config";
-import { getRegion } from "./utils/get-region";
+import {VENDOR_API} from "../../../config";
+import { getRegion } from "../authentication/utils/get-region";
 
 // HOOKS
-import useGetAppState from "../common/hooks/use-get-app-state";
-import useGetRegions from './hooks/use-get-regions';
-import useAuthentication from "../common/hooks/use-authentication";
+import useGetAppState from "../../common/hooks/use-get-app-state";
+import useGetRegions from '../authentication/hooks/use-get-regions';
+import useAuthentication from "../../common/hooks/use-authentication";
 
 // REDUX
-import { receiveUser } from "../../redux/actions/user-actions";
-import { receiveVendorData, fetchVendorDataAsync } from "../../redux/actions/data-actions";
+import { receiveUser } from "../../../redux/actions/user-actions";
+import { receiveVendorData, fetchVendorDataAsync } from "../../../redux/actions/data-actions";
 
 // INTERFACES
-import { VendorFull } from "../../redux/reducers/interfaces";
+import { VendorFull } from "../../../redux/reducers/interfaces";
 
 const UserProfile = (props:any) => {
     const dispatch = useDispatch();

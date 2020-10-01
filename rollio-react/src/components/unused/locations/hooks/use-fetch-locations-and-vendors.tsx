@@ -1,12 +1,12 @@
 // DEPENDENCIES
 import React, {useEffect, useState} from 'react';
 // HOOKS
-import useGetAppState from '../../common/hooks/use-get-app-state';
-import useFetchVendors from "../../common/hooks/use-fetch-vendors";
+import useGetAppState from '../../../common/hooks/use-get-app-state';
+import useFetchVendors from "../../../common/hooks/use-fetch-vendors";
 // UTILS
 import {get} from "lodash";
 import axios, {AxiosResponse} from "axios";
-import {VENDOR_API} from "../../../config";
+import {VENDOR_API} from "../../../../config";
 import queryString from "query-string";
 
 const useFetchLocationsAndVendors = (props:any, vendorID?:string) => {

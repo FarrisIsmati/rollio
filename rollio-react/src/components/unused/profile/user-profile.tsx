@@ -1,15 +1,15 @@
-import useGetAppState from "../common/hooks/use-get-app-state";
+import useGetAppState from "../../common/hooks/use-get-app-state";
 import React, {useEffect, useState} from "react";
 import { withRouter } from 'react-router';
-import { receiveUser } from "../../redux/actions/user-actions";
-import useGetRegions from './hooks/use-get-regions';
-import useAuthentication from "../common/hooks/use-authentication";
-import redirectToNewPage from "./utils/redirect-to-new-page";
-import { UserDefaultState } from "../../redux/reducers/interfaces";
+import { receiveUser } from "../../../redux/actions/user-actions";
+import useGetRegions from '../authentication/hooks/use-get-regions';
+import useAuthentication from "../../common/hooks/use-authentication";
+import redirectToNewPage from "../authentication/utils/redirect-to-new-page";
+import { UserDefaultState } from "../../../redux/reducers/interfaces";
 import axios, {AxiosResponse} from "axios";
-import { VENDOR_API } from "../../config";
+import { VENDOR_API } from "../../../config";
 import { omit } from 'lodash';
-import { RegionNameOnly } from "./interfaces";
+import { RegionNameOnly } from "../authentication/interfaces";
 
 const UserProfile = (props:any) => {
     const { user, data, loadState } = useGetAppState();

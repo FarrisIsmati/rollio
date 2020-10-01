@@ -1,10 +1,10 @@
-import useGetAppState from "../common/hooks/use-get-app-state";
+import useGetAppState from "../../common/hooks/use-get-app-state";
 import React from "react";
 import { withRouter } from 'react-router';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css'
 import "react-datepicker/dist/react-datepicker.css";
-import useAuthentication from "../common/hooks/use-authentication";
+import useAuthentication from "../../common/hooks/use-authentication";
 import useFetchUnapprovedVendors from "./hooks/useFetchUnapprovedVendors";
 
 const UnapprovedVendorTable = (props:any) => {

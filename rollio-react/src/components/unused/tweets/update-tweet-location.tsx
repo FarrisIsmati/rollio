@@ -1,17 +1,17 @@
-import useGetAppState from "../common/hooks/use-get-app-state";
+import useGetAppState from "../../common/hooks/use-get-app-state";
 import React, { useEffect, useState } from "react";
 import { withRouter } from 'react-router';
-import { VENDOR_API } from "../../config";
-import 'react-table/react-table.css'
-import "react-datepicker/dist/react-datepicker.css";
+import { VENDOR_API } from "../../../config";
+import '../unused/admin/node_modules/react-table/react-table.css'
+import "../unused/admin/node_modules/react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
 import axios, {AxiosResponse} from "axios";
 import moment from 'moment';
 import Autocomplete from 'react-google-autocomplete';
-import useAuthentication from "../common/hooks/use-authentication";
+import useAuthentication from "../../common/hooks/use-authentication";
 import {Tweet, TweetDefaultState } from "./interfaces";
 import { get } from "lodash";
-import { isLocationActive } from "../../util";
+import { isLocationActive } from "../../../util";
 
 const UpdateLocation = (props:any) => {
     const [loading, setLoading] = useState<boolean>(true);
