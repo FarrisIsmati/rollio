@@ -2,7 +2,7 @@
 import React from 'react';
 
 // HOOKS
-import useSelectVendorProfile from '../vendor-profile/hooks/use-select-vendor-profile';
+import useSelectVendorProfile from '../vendor-profile-public/hooks/use-select-vendor-profile';
 
 // INTERFACES
 import { MenuLinkProps } from './interfaces';

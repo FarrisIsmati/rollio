@@ -5,7 +5,7 @@ import { useCallbackRef } from 'use-callback-ref';
 import { Scrollbars } from 'react-custom-scrollbars';
 
 // COMPONENTS
-import VendorProfileMobile from '../vendor-profile/vendor-profile-mobile'
+import VendorProfileMobile from '../vendor-profile-public/vendor-profile-mobile'
 import Switch from '../common/other/switch';
 import DashboardGroupSelectMenu from './dashboard-group-select-mobile';
 

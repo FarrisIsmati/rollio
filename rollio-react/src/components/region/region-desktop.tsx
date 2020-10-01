@@ -5,7 +5,7 @@ import React, { useRef } from 'react';
 import DashboardDesktop from '../dashboard-public/dashboard-desktop';
 import Navbar from '../navbar/navbar-desktop';
 import DashboardFilterBar from '../dashboard-public/dashboard-filterbar';
-import VendorProfileDesktopModal from '../vendor-profile/vendor-profile-desktop-modal';
+import VendorProfileDesktopModal from '../vendor-profile-public/vendor-profile-desktop-modal';
 import DashboardGroupSelectDesktopModal from '../dashboard-public/dashboard-group-select-desktop-modal';
 
 // HOOKS

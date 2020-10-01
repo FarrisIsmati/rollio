@@ -2,13 +2,13 @@
 import React from 'react';
 
 // COMPONENTS
-import VendorProfileCategories from '../vendor-profile/vendor-profile-categories';
+import VendorProfileCategories from '../vendor-profile-public/vendor-profile-categories';
 
 // INTERFACES
 import { DashboardCardProps } from './interfaces';
 
 // HOOKS
-import useSelectVendorProfile from '../vendor-profile/hooks/use-select-vendor-profile';
+import useSelectVendorProfile from '../vendor-profile-public/hooks/use-select-vendor-profile';
 
 const DashboardCard = (props:DashboardCardProps) => {
   const { vendor, img, state } = props;
