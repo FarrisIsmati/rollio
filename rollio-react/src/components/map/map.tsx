@@ -30,7 +30,7 @@ const Map = (props: MapProps) => {
   const isMobile = useWindowSize.useIsMobile();
 
   const showMapInfoCard = !state.ui.isMobileMenuExpanded && state.regionMap.currentlySelected.length;
-  const infoCardWidth = 450;
+  const infoCardWidth = isMobile ? 350 : 400;
   const infoCardStyle: DesktopInfoCardProps = {
     width: `${infoCardWidth}px`
   }

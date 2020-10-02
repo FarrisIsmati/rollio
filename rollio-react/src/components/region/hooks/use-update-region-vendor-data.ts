@@ -52,7 +52,7 @@ const useUpdateRegionVendorData = () => {
 
             // Update Twitter Feed (Inserts new tweet if there is one)
             if (tweet) {
-                dispatch(addTweetToSelectedVendorTweetHistory(tweet));
+                dispatch(addTweetToSelectedVendorTweetHistory({...tweet, vendorID }));
             }
         })
 
