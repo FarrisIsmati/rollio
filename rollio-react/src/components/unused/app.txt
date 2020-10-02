@@ -1,0 +1,18 @@
+// UNUSED COMPONENTS
+/*
+import UnapprovedVendorTable from "./unused/admin/unapproved-vendor-table";
+import VendorProfileForm from './unused/profile/vendor-profile';
+import LocationTable from './unused/locations/location-table';
+import TweetTable from './unused/tweets/tweet-table';
+import UserProfileForm from './unused/profile/user-profile';
+import UpdateLocation from './unused/tweets/update-tweet-location';
+import LocationEditor from './unused/locations/location-editor';
+
+<Route exact path="/profile/region/:regionName/vendor/:vendorId?" component={ VendorProfileForm } />
+<Route exact path="/unapproved-vendors" component={ UnapprovedVendorTable } />
+<Route exact path="/locations/:vendorId?" component={ LocationTable } />
+<Route exact path="/tweets/:vendorId?" component={ TweetTable } />
+<Route exact path="/profile/user" component={ UserProfileForm } />
+<Route exact path="/newlocation/:vendorID?/:locationId?" component={ LocationEditor } />
+<Route exact path="/tweets/vendor/:vendorId/tweet/:tweetId" component={ UpdateLocation } />
+*/

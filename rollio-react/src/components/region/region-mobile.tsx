@@ -3,7 +3,7 @@ import React, { useRef } from 'react';
 
 // COMPONENTS
 import Menu from '../menu/menu';
-import DashboardMobile from '../dashboard/dashboard-mobile';
+import DashboardMobile from '../dashboard-public/dashboard-mobile';
 import Navbar from '../navbar/navbar-mobile';
 
 // HOOKS

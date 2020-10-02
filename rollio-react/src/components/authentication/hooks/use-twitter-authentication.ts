@@ -1,6 +1,6 @@
 // DEPENDENCIES
 import {useDispatch} from "react-redux";
-import constants from '../utils/constants';
+import constants from '../../../util/constants';
 
 // REDUX
 import { receiveUser, fetchUserSuccess } from "../../../redux/actions/user-actions";

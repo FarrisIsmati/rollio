@@ -1,0 +1,8 @@
+export default {
+    LOGIN: 'LOGIN',
+    SIGNUP: 'SIGNUP',
+    ACTIVE: 'ACTIVE',
+    REQUESTED: 'REQUESTED',
+    INACTIVE: 'INACTIVE',
+    LOADING_COLOR: '#757575'
+}
