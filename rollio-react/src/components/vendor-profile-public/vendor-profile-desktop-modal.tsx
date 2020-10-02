@@ -44,6 +44,7 @@ const VendorProfileDesktopModal = React.forwardRef((props:any, navbarRef)=> {
       bottom : 'auto',
       marginRight : '-50%',
       transform : 'translate(-50%, -50%)',
+      borderRadius : '12px',
       overflow: 'hidden',
       padding: 0,
     }

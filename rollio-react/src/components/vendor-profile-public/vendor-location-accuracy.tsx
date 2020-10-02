@@ -29,7 +29,7 @@ const VendorProfileContentAccuracy = (props:any) => {
             { accuracyAsyncState[locationID] === accuracyAsyncStateEnum.FAILED ?
               <div className='flex'>
                 <i className='material-icons-outlined'>error_outline</i>
-                <p>Can't vote on a vendor more than once per day</p> 
+                <p>Only one vote per location</p> 
               </div>
               :
               <React.Fragment>

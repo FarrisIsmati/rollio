@@ -4,7 +4,6 @@ import React from 'react';
 // HOOKS
 import useState from '../common/hooks/use-get-app-state';
 import windowSizeEffects from '../common/hooks/use-window-size';
-import { useEffect } from 'react';
 
 const MapOverlay = () => {
     // Effects
