@@ -74,12 +74,6 @@ const DashboardMobile:FC = () => {
         groupVendorsCount = state.regionMap.vendorsDisplayedGroup[state.regionMap.temporarilySelected].vendors.length;
     }
 
-    if (topRef.current !== null) {
-        // @ts-ignore 
-        console.log(topRef.current.clientHeight);
-        console.log(dashboardHeightNormal);
-    }
-
     return (
         // Mobile resize this flex centers
         <div className="dashboard_mobile" style={isDashboardExpanded ? {...expandedDashboardStyle, height: state.ui.isGroupSelectMenuActive ? dashboardHeightGroups : dashboardHeightNormal} : contractedDashboardStyle} >

@@ -167,12 +167,11 @@ export function dataReducer(state = defaultState, action: any) {
                 selectedVendor: {
                     ...state.selectedVendor,
                     // the tweet might already have been in the array, just updated
-                    tweetHistory: uniqBy([
+                    tweetHistory: [
                         action.payload,
                         ...state.selectedVendor.tweetHistory.slice(0, 2)
-                    ], (tweetA:any, tweetB:any) => tweetA._id === tweetB._id).slice(0,3)
+                    ]
                 }
-
             }
         }
 
