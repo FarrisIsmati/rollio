@@ -1,23 +1,10 @@
-import spacy
-import random
-
+# import spacy
+# import random
 
 TRAIN_DATA = [
-                 ("'This is my f**king country': Racist white woman arrested for attacking passengers on New York bus https://t.co/Rfm0jauh72", {'entities': []}),
-                 ("RT @mussie671: Freestyle #3, Fiasco type shiiii https://t.co/0GTJscWORW", {'entities': []}),
-                 ("What you think Cole? @JColeNC @JColeDirect https://t.co/oE4Ipvq6hL", {'entities': []}),
-                 ("⚡️ “Redskins dominate the Raiders on Sunday Night Football ”https://t.co/4VuHWOs1gX", {'entities': []}),
-                 ("RT @NWSSanJuan: 215PM FLASH FLOOD EMERGENCY for A Dam Failure in Isabela Municipality y Quebradillas Municipality in Puerto Rico... #prwx h…", {'entities': []}),
-                 ("Posted @chinatown on the corner of 7th &amp; D st. NW, PERFECT WEATHER TO SLIDE UP!!", {'entities': [(25, 53, 'TRUCK_LOCATION')]}),
-                 ("Good Morning DMV, we are @ChinaTown on the corner of 7th &amp; G st NW. Hand crafted burgers, endless toppings, Hand cut fries,  PULL UP !!!", {'entities': [(43, 70, 'TRUCK_LOCATION')]}),
-                 ("Good Morning DMV, we are @ChinaTown on the corner of 7th &amp; G st. NW serving our delicious hand crafted burgers and Home made fries. PULL UP!", {'entities': [(43, 71, 'TRUCK_LOCATION')]}),
-                 ("Good morning angry burger lovers, we are back in China town, 7th &amp; G st. NW serving our delicious hand crafted burgers and home made fries!!", {'entities': [(61, 79, 'TRUCK_LOCATION')]}),
-                 ("Good Morning Angry burger lovers, we are serving @Chinatown on the corner of 7th and G st NW. See you there!", {'entities': [(67, 92, 'TRUCK_LOCATION')]}),
-                 ("Good morning DMV we are @ChinaTown today, on the corner of 7th and F st NW. COME EAT ‘EM UP!!!", {'entities': [(49, 74, 'TRUCK_LOCATION')]}),
-                 ("Good morning angry burger lovers, we are serving on the corner of 25th &amp; M today, see you there!", {'entities': [(56, 78, 'TRUCK_LOCATION')]}),
-                 ("Good morning DMV, we are serving lunch China town on the corner of 7th &amp; D st NW. Come get you some!!", {'entities': [(57, 84, 'TRUCK_LOCATION')]}),
-                 ("Good morning angry burger lovers, we are @L’enfant plaza serving our delicious burgers and hand cut fries! See you there!", {'entities': []}),
-                 ("Good morning DMV, we will be on the cornor of 19th &amp; L st. NW serving our delicious hand crafted burgers and hand cut fries. SEE YOU THERE!", {'entities': [(36, 65, 'TRUCK_LOCATION')]}),
+                 
+                 
+                 
                  ("Good morning DMV, We are on the corner of 25th &amp; M st NW kicking out our delicious burgers, BMF’s and hand cut fries! Come get you some!!", {'entities': [(32, 54, 'TRUCK_LOCATION')]}),
                  ("Good morning DMV, We will be serving @ 25th &amp; M today. See ya there!", {'entities': [(39, 51, 'TRUCK_LOCATION')]}),
                  ("Good morning DMV, it’s a beautiful day, we’ll be @Chinatown on the corner of 7th &amp; G st. Serving our delicious burgers and hand cut fries!!", {'entities': [(67, 91, 'TRUCK_LOCATION')]}),
@@ -3132,6 +3119,7 @@ TRAIN_DATA = [
                  ("We serving lunch at state department today", {'entities': [(20, 36, 'TRUCK_LOCATION')]}),
                  ("We serving lunch at 12&amp;D today,we start at 11.00 ,see u soon", {'entities': [(20, 28, 'TRUCK_LOCATION')]}),
              ]
+
 
 
 def train_spacy(data,iterations):
