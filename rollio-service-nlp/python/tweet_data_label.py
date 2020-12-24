@@ -124,7 +124,40 @@ train_data = [
 ("Thx @TommyWells for standing up for food trucks!", {'category': [(cat['NULL'], [])], 'time': [(t['NULL'], [])], 'affirmation': [(aff['NULL'], [])] }),
 ("Thanks @VincentOrangeDC for putting forward better food truck regs!", {'category': [(cat['NULL'], [])], 'time': [(t['NULL'], [])], 'affirmation': [(aff['NULL'], [])] }),
 ("Getting ready for the rest of the week. See you all soon.", {'category': [(cat['NULL'], [])], 'time': [(t['NULL'], [])], 'affirmation': [(aff['NULL'], [])] }),
-("We are not serving food, so sorry", {'category': [(cat['NULL'], [])], 'time': [(t['NULL'], [])], 'affirmation': [(aff['NEG'], [0,17])] })
+("We are not serving food, so sorry", {'category': [(cat['NULL'], [])], 'time': [(t['NULL'], [])], 'affirmation': [(aff['NEG'], [0,17])] }),
+
+# Only Affirmation, without location tagging from here on
+
+("Thank you @TommyWells for your strong support for our local food trucks &amp; for your amendment!", {'category': [(cat['NULL'], [])], 'time': [(t['NULL'], [])], 'affirmation': [(aff['NULL'], [])] }),
+("#CrystalCity we'll be serving up warm Cuban sandwiches and cold drinks. Come check us out.", {'category': [(cat['NULL'], [])], 'time': [(t['NULL'], [])], 'affirmation': [(aff['POS'], [])] }),
+("#ballston, balstatonions get ready for the cubanators!!", {'category': [(cat['NULL'], [])], 'time': [(t['NULL'], [])], 'affirmation': [(aff['POS'], [])] }),
+("Gotta take a day off, Tour de Fat was too much fun. See you tomorrow.", {'category': [(cat['NULL'], [])], 'time': [(t['NULL'], [])], 'affirmation': [(aff['NEG'], [])] }),
+("#tour de fat today. Come down to Yards park and try your favorite Cuban speciality paired with New Belgium beer.", {'category': [(cat['NULL'], [])], 'time': [(t['NULL'], [])], 'affirmation': [(aff['POS'], [])] }),
+("Council Committee votes to reject proposed regs! THANK YOU @VincentOrangeDC @JimGrahamWard1 @GrossoAtLarge @CMYMA @marycheh!", {'category': [(cat['NULL'], [])], 'time': [(t['NULL'], [])], 'affirmation': [(aff['NULL'], [])] }),
+("#rossyln, uh oh rosslynators, watch out here comes the Cubanator. 'Get to the choppa'", {'category': [(cat['NULL'], [])], 'time': [(t['NULL'], [])], 'affirmation': [(aff['POS'], [])] }),
+("What's better than fresh Cuban food? Cuban food with a new Belgium beer! See us this weekend at the tour de fat.", {'category': [(cat['NULL'], [])], 'time': [(t['NULL'], [])], 'affirmation': [(aff['NULL'], [])] }),
+("#crystal city, don't forget about the tres leche cake!!!", {'category': [(cat['NULL'], [])], 'time': [(t['NULL'], [])], 'affirmation': [(aff['NULL'], [])] }),
+("Everyone come see us this weekend at the Tour de Fat to try our specialities paired with different beers. Suggestions?", {'category': [(cat['NULL'], [])], 'time': [(t['NULL'], [])], 'affirmation': [(aff['NULL'], [])] }),
+("#arlington courthouse, no signs of rain come try a delicious Cuban!!!", {'category': [(cat['NULL'], [])], 'time': [(t['NULL'], [])], 'affirmation': [(aff['POS'], [])] }),
+("#arlington court house, we will have Cubans and burritos ready to go from 11-2 so if its raining don't worry it will only be just a second", {'category': [(cat['NULL'], [])], 'time': [(t['NULL'], [])], 'affirmation': [(aff['POS'], [])] }),
+("#Rosslyn, don't worry be happy a lo Cubano is here.", {'category': [(cat['NULL'], [])], 'time': [(t['NULL'], [])], 'affirmation': [(aff['POS'], [])] }),
+("our new schedule, mon- rosslyn,tues-Arlington court house, wed-crystal city,Thursday-ballston, fri-rosslyn", {'category': [(cat['NULL'], [])], 'time': [(t['NULL'], [])], 'affirmation': [(aff['NULL'], [])] }),
+("'@StationCDRKelly: Day 121. The #Nile at night is like a jewel. Good night from @Space_Station! #YearInSpace http://t.co/L17WDcvk14'MY PEEPS", {'category': [(cat['NULL'], [])], 'time': [(t['NULL'], [])], 'affirmation': [(aff['NULL'], [])] }),
+("RT @StationCDRKelly: Day 121. The #Nile at night is like a jewel. Good night from @Space_Station! #YearInSpace http://t.co/T6TTkVyiRw", {'category': [(cat['NULL'], [])], 'time': [(t['NULL'], [])], 'affirmation': [(aff['NULL'], [])] }),
+("'@MrTerrificPants: Omg. Why do we put cheese on EVERYTHING?!?' Because it makes it Pretty...", {'category': [(cat['NULL'], [])], 'time': [(t['NULL'], [])], 'affirmation': [(aff['NULL'], [])] }),
+("RT @CapitolRvrFront: Packing ur #FridayNightConcert picnic? Many #CapitolRiverfront options + @Agua301WDC @BabasBigBite @bigcheesetruck! ht…", {'category': [(cat['NULL'], [])], 'time': [(t['NULL'], [])], 'affirmation': [(aff['NULL'], [])] }),
+("Please help this child if you can. Check it out  http://t.co/kiFxsXkMNh", {'category': [(cat['NULL'], [])], 'time': [(t['NULL'], [])], 'affirmation': [(aff['NULL'], [])] }),
+("RT @timelesstrendsb: So excited to have Baba's Big Bite joining us this Saturday for our grand opening in Aldie! Yum yum yum! http://t.co/v…", {'category': [(cat['NULL'], [])], 'time': [(t['NULL'], [])], 'affirmation': [(aff['NULL'], [])] }),
+("RT @BallstonBID: #CourageWall coming to #Ballston tomorrow! Check it out and make an affirmation at Welburn Square starting at 4pm http://t…", {'category': [(cat['NULL'], [])], 'time': [(t['NULL'], [])], 'affirmation': [(aff['NULL'], [])] }),
+("Whats up Rosslyn Baba's Is curbside flipping some Deliciousness.🍔 Come by &amp; Grab a Bite.", {'category': [(cat['NULL'], [])], 'time': [(t['NULL'], [])], 'affirmation': [(aff['POS'], [])] }),
+("Whats up 20th &amp; L st Babas is Curbside serving up some Deliciousness. Its been too long...", {'category': [(cat['NULL'], [])], 'time': [(t['NULL'], [])], 'affirmation': [(aff['POS'], [])] }),
+("'@burgerdays: Burger Days Rated Rookie.  https://t.co/W8yDy3QWGX' LIKE AH BOSS", {'category': [(cat['NULL'], [])], 'time': [(t['NULL'], [])], 'affirmation': [(aff['NULL'], [])] }),
+("RT @burgerdays: Burger Days Rated Rookie.  https://t.co/c96EyuWViY", {'category': [(cat['NULL'], [])], 'time': [(t['NULL'], [])], 'affirmation': [(aff['NULL'], [])] }),
+("We're parked in front of @ABC7News", {'category': [(cat['NULL'], [])], 'time': [(t['NULL'], [])], 'affirmation': [(aff['POS'], [])] }),
+("Whats up Rosslyn Baba's Is curbside serving up some Deliciousness. Its been too long", {'category': [(cat['NULL'], [])], 'time': [(t['NULL'], [])], 'affirmation': [(aff['POS'], [])] }),
+("RT @MensHumor: #math http://t.co/jw5l0DAI6q", {'category': [(cat['NULL'], [])], 'time': [(t['NULL'], [])], 'affirmation': [(aff['NULL'], [])] }),
+("Hey Rosslyn Baba's Is not curbside flipping today Deliciousness. No burgers sorry.", {'category': [(cat['NULL'], [])], 'time': [(t['NULL'], [])], 'affirmation': [(aff['NEG'], [])] }),
+("Bad News! We are not serving today.", {'category': [(cat['NULL'], [])], 'time': [(t['NULL'], [])], 'affirmation': [(aff['NEG'], [])] }),
 ]
 
 # {'category': [(cat['NULL'], [])], 'time': [(t['NULL'], [])], 'affirmation': [(aff['NULL'], [])] }
@@ -164,7 +197,11 @@ def validate_train_data(train_data, show=False):
             if tweet_data['affirmation'][0][0] != t['NULL']:
                 j = 1
                 for affirmation in tweet_data['affirmation']:
-                    print(f'{affirmation[0]}: {tweet[0][affirmation[1][0]:affirmation[1][1]]} ', end = '')
+                    print()
+                    if len(tweet_data['affirmation'][0][1]):   
+                        print(f'{affirmation[0]}: {tweet[0][affirmation[1][0]:affirmation[1][1]]} ', end = '')
+                    else:
+                        print(f'{affirmation[0]}', end = '')
                     j += 1
                 print('')
         
