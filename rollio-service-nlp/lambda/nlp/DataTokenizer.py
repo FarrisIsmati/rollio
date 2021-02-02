@@ -1,5 +1,5 @@
 """
-Description
+Class takes in full training set, cleans it up, and tokenizes it to run NLP Neural Networks
 """
 
 # DEPENDENCIES

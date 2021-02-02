@@ -1,5 +1,5 @@
 """
-Description
+Class sets up prediciton class for the affirmation of a tweet, whether a vendor is stating they will or will not be at a location
 """
 
 # DEPENDENCIES

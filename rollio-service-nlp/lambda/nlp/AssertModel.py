@@ -1,5 +1,5 @@
 """
-Description
+Class asserts predictions of both affirmation model and ner model, returns the results back in a prediction
 """
 
 # DEPENDENCIES

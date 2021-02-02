@@ -1,5 +1,5 @@
 __author__ = 'Farris Ismati'
-from main.LambdaHandler import LambdaHandler
+from src.LambdaHandler import LambdaHandler
 
 def handler(event, context):
     hdl = LambdaHandler()
