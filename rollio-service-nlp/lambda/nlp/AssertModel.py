@@ -3,10 +3,8 @@ Class asserts predictions of both affirmation model and ner model, returns the r
 """
 
 # DEPENDENCIES
-import sys
-sys.path.append('../data')
-import AffirmationModel from AffirmationModel
-import NERModel from NERModel
+import nlp.AffirmationModel
+import nlp.NERModel
 
 class AssertModel:
     def __init__(self):
@@ -35,3 +33,4 @@ class AssertModel:
         }
         
         return result
+

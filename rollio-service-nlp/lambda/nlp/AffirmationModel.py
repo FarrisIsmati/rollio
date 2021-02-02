@@ -3,10 +3,7 @@ Class sets up prediciton class for the affirmation of a tweet, whether a vendor 
 """
 
 # DEPENDENCIES
-import sys
-sys.path.append('../data')
-
-import DataTokenizer from DataTokenizer
+import nlp.DataTokenizer
 
 class AffirmationModel:
     def __init__(self, affirmation_model_path, scaler_data_path, train_data, max_len):

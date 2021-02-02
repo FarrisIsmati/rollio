@@ -1,11 +1,9 @@
 """
-Description
+Main handler function
 """
 
 # DEPENDENCIES
-import sys
-sys.path.append('../data')
-import AssertModel from AssertModel
+from nlp.AssertModel import AssertModel
 
 class LambdaHandler():
     def __init__(self):
