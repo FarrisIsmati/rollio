@@ -3,18 +3,25 @@ Class takes in full training set, cleans it up, and tokenizes it to run NLP Neur
 """
 
 # DEPENDENCIES
-from tensorflow import keras
-from keras.preprocessing.text import Tokenizer
+import spacy
+import warnings
+# Ignore tensorflow warnings
+with warnings.catch_warnings():  
+    warnings.filterwarnings("ignore",category=FutureWarning)
+    from tensorflow import keras
+    from keras.preprocessing.text import Tokenizer
 
 class DataTokenizer:
     def __init__(self, train_data):
+        self.nlp = spacy.load('en_core_web_sm')
         self.tokenizer = Tokenizer()
         self.train_data = train_data
 
         # Sets up tokenizer
         try:
             self.__init_tokenizer()
-        except ModuleNotFoundError:
+        except:
+            print('Error: Failed to setup tokenizer on data')
             raise
 
     # Clean data
@@ -22,7 +29,7 @@ class DataTokenizer:
         lower = []
         text = text.replace('&amp;', 'and')
 
-        for token in nlp(text):
+        for token in self.nlp(text):
             lower.append(token.text.lower())
 
         return lower

@@ -6,32 +6,21 @@ Main handler function
 from nlp.AssertModel import AssertModel
 
 class LambdaHandler():
-    def __init__(self):
-        pass
-
     def handle(self, event, context):
-        assertion = AssertModel()
-        responseBody = assertion(event.body[0].tweet) # Look up SQS message parameters
-        
-        # If successful response
-        if True:
+        try:
+            assertTweet = AssertModel()
+            responseBody = assertTweet.predict('Sorry we are not in chinatown') # Look up SQS message parameters event.body[0].tweet
+
             return {
                 'status': 200,
                 'body': responseBody
             }
-
-        # If failed response
-        if False:
+        except:
             return {
                 'status': 400,
-                'body': responseBody      
+                'body': {'error': 'Error with prediction handler'}      
             }
-         
 
-
-         # FINISH THE NER MODEL
-         # THEN THE REST
-         # THEN TEST LOCALLY
          # PUT ON LAMBDA
          # MAKE CALLS LOCALLY
          # GET IT ALL CONNECTED

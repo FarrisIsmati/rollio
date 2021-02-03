@@ -8,4 +8,6 @@ from src.LambdaHandler import LambdaHandler
 
 def handler(event, context):
     hdl = LambdaHandler()
-    return hdl.handle(event, context)
+    print(hdl.handle(event, context))
+
+handler(1,2)

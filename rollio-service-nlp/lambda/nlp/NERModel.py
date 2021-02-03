@@ -1,6 +1,8 @@
 """
 Class to predict models for Named Entity Recognition, expects the loaded NER model to have B-TRUCK_LOCATION as a custom NER pipe name
 """
+# DEPENDENCIES
+import spacy
 
 class NERModel:
     def __init__(self, ner_model_path):
@@ -11,7 +13,8 @@ class NERModel:
             # assert nlp.get_pipe("ner").move_names == move_names
             if self.nlp_ner.get_pipe('ner').move_names[0] != 'B-TRUCK_LOCATION':
                 print('WARNING: NER Pipe doesn\'t have Truck Location')
-        except ModuleNotFoundError:
+        except:
+            print('Error: Failed to load NER Model')
             raise
             
     def predict(self, text):
