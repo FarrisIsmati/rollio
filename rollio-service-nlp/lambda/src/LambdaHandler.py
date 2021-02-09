@@ -9,7 +9,7 @@ class LambdaHandler():
     def handle(self, event, context):
         try:
             assertTweet = AssertModel()
-            responseBody = assertTweet.predict('Sorry we are not in chinatown') # Look up SQS message parameters event.body[0].tweet
+            responseBody = assertTweet.predict('Today we are in chinatown') # Look up SQS message parameters event.body[0].tweet
 
             return {
                 'status': 200,

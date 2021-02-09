@@ -16,12 +16,10 @@ with warnings.catch_warnings():
 class AffirmationModel:
     def __init__(self, affirmation_model_path, scaler_data_path, train_data, max_len):
         self.max_len = max_len # Max Tweet Length
-
         try:
             self.scaler_data = self.__load_scaler_data(scaler_data_path)
         except:
             print('Error: Failed to load scaler data')
-
         # Sets up tokenizer
         try:
             # Setup Tokenizer

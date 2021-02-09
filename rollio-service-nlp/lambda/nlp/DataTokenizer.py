@@ -5,6 +5,9 @@ Class takes in full training set, cleans it up, and tokenizes it to run NLP Neur
 # DEPENDENCIES
 import spacy
 import warnings
+import numpy as np
+from pathlib import Path
+
 # Ignore tensorflow warnings
 with warnings.catch_warnings():  
     warnings.filterwarnings("ignore",category=FutureWarning)
@@ -13,7 +16,7 @@ with warnings.catch_warnings():
 
 class DataTokenizer:
     def __init__(self, train_data):
-        self.nlp = spacy.load('en_core_web_sm')
+        self.nlp = spacy.load('en_core_web_sm', disable=['parser', 'tagger'])
         self.tokenizer = Tokenizer()
         self.train_data = train_data
 
@@ -34,7 +37,7 @@ class DataTokenizer:
 
         return lower
             
-    # Orginize Tweet Data for tokenizer
+    # Organize Tweet Data for tokenizer
     def __organize_tweet_data(self):
         tweet_sequences = []
 
@@ -45,7 +48,8 @@ class DataTokenizer:
         return tweet_sequences
     
     def __init_tokenizer(self):
-        data = self.__organize_tweet_data()
+        path = Path(__file__).parent.parent / 'model/tweet_affirmation_model/organized_tweet_data.npy'
+        data = np.load(path, None, True)
         self.tokenizer.fit_on_texts(data)
         
     # Tokenization Methods
