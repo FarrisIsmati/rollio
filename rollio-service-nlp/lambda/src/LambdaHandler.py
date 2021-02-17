@@ -7,6 +7,7 @@ from nlp.AssertModel import AssertModel
 
 class LambdaHandler():
     def handle(self, event, context):
+        print(event)
         try:
             assertTweet = AssertModel()
             responseBody = assertTweet.predict('Today we are in chinatown') # Look up SQS message parameters event.body[0].tweet
@@ -20,12 +21,3 @@ class LambdaHandler():
                 'status': 400,
                 'body': {'error': 'Error with prediction handler'}      
             }
-
-         # PUT ON LAMBDA
-         # MAKE CALLS LOCALLY
-         # GET IT ALL CONNECTED
-         # CONFIGURE BACKUP REGEX STUFF
-         # MAKE IMPROVEMENTS TO FRONT END
-         # BUILD VENDOR SEED 
-         # HOST
-         # DONE :)
