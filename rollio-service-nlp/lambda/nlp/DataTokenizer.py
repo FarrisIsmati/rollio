@@ -23,8 +23,9 @@ class DataTokenizer:
         # Sets up tokenizer
         try:
             self.__init_tokenizer()
-        except:
+        except Exception as e:
             print('Error: Failed to setup tokenizer on data')
+            print(e)
             raise
 
     # Clean data

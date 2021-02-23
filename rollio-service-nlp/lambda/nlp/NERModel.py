@@ -13,8 +13,9 @@ class NERModel:
             # assert nlp.get_pipe("ner").move_names == move_names
             if self.nlp_ner.get_pipe('ner').move_names[0] != 'B-TRUCK_LOCATION':
                 print('WARNING: NER Pipe doesn\'t have Truck Location')
-        except:
+        except Exception as e:
             print('Error: Failed to load NER Model')
+            print(e)
             raise
             
     def predict(self, text):

@@ -18,22 +18,24 @@ class AffirmationModel:
         self.max_len = max_len # Max Tweet Length
         try:
             self.scaler_data = self.__load_scaler_data(scaler_data_path)
-        except:
+        except Exception as e:
             print('Error: Failed to load scaler data')
+            print(e)
         # Sets up tokenizer
         try:
             # Setup Tokenizer
             self.DataTokenizer = DataTokenizer(train_data) # Time consuming step (Figure out how to optimize, pretokenized data loaded into lambda?)
             self.tokenizer = self.DataTokenizer.tokenizer
-        except:
+        except Exception as e:
             print('Error: Failed to setup Data Tokenizer')
-
+            print(e)
         try:
             K.clear_session() # Speeds up model loading?
             self.nlp_affirmation = keras.models.load_model(affirmation_model_path, compile=False)
-        except:
+        except Exception as e:
             print('Error: Failed to load keras affirmation model')
-            
+            print(e)
+
     def predict(self,tweet):
         # Predict affirmation
         tokenized_tweets = self.DataTokenizer.tokenize_tweets([self.__tweet_lower(tweet)])

@@ -16,7 +16,8 @@ class LambdaHandler():
                 'status': 200,
                 'body': responseBody
             }
-        except:
+        except Exception as e:
+            print(e)
             return {
                 'status': 400,
                 'body': {'error': 'Error with prediction handler'}      
