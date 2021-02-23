@@ -1,0 +1,30 @@
+service: pydata-workshop
+
+plugins:
+  - serverless-python-requirements
+provider:
+  name: aws
+  runtime: python3.6
+  region: us-east-2
+
+  deploymentBucket:
+    name: pydata-bucket-farris
+
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - s3:GetObject
+      Resource:
+        - "arn:aws:s3:::pydata-bucket-farris/*"
+
+functions:
+  categorize_lambda:
+    name: categorize_lambda
+    description: Yay a lambda prediction function
+    handler: main.lambda_handler
+    events:
+      - http: POST /spamorham
+
+custom:
+  pythonRequirements:
+    slim: true
