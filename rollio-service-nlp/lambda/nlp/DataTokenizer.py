@@ -16,7 +16,7 @@ with warnings.catch_warnings():
 
 class DataTokenizer:
     def __init__(self, train_data):
-        self.nlp = spacy.load('en_core_web_sm', disable=['parser', 'tagger'])
+        self.nlp = spacy.load('en_core_web_md', disable=['parser', 'tagger'])
         self.tokenizer = Tokenizer()
         self.train_data = train_data
 
