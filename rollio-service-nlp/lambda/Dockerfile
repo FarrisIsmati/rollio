@@ -1,8 +1,10 @@
-FROM public.ecr.aws/lambda/python:3.7
+FROM public.ecr.aws/lambda/python:3.6
 
 # Copy function code
 COPY . .
 
+# Upgrade PIP
+RUN pip install --upgrade pip
 # Install python requirements
 RUN pip install -r requirements.txt
 

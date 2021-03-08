@@ -11,8 +11,15 @@ class NERModel:
             
             # Check the classes have loaded back consistently
             # assert nlp.get_pipe("ner").move_names == move_names
-            if self.nlp_ner.get_pipe('ner').move_names[0] != 'B-TRUCK_LOCATION':
-                print('WARNING: NER Pipe doesn\'t have Truck Location')
+            pipe_found = False
+            for pipe in self.nlp_ner.get_pipe('ner').move_names:
+                if pipe == 'B-TRUCK_LOCATION':
+                    pipe_found = True
+                    break
+                    
+            if pipe_found == False:
+                print('NER Pipe doesn\'t have Truck Location')
+
         except Exception as e:
             print('Error: Failed to load NER Model')
             print(e)

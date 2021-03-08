@@ -11,7 +11,9 @@ class LambdaHandler():
         try:
             assertTweet = AssertModel()
             responseBody = assertTweet.predict('Today we are in chinatown') # Look up SQS message parameters event.body[0].tweet
-
+            print('Response')
+            print(responseBody)
+            
             return {
                 'status': 200,
                 'body': responseBody
