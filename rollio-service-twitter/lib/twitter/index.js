@@ -45,13 +45,24 @@ const twitter = {
     });
 
     twitter.stream.on('data', async (e) => {
-      const formattedTweet = await twitter.tweetFormatter(e);
-      const parsedTweet = await tweetParser.scanAddress(formattedTweet);
-      logger.info('Received Tweet');
-      logger.info(parsedTweet);
-      // TODO: Fix later
-      //  this is a temporary hack until tweetParser can decipher multiple locations from one tweet
-      await sendParsedTweet({ ...parsedTweet, newLocations: [parsedTweet.location], location: undefined });
+      // New process
+      /* 
+      If tweet has geolocation
+        * Process tweet and send back to vendor service
+      Else
+        * Send raw tweet to NLP service via SQS
+        * ANOTHER FUNCTION
+          * Recieve NLP processed tweet via SQS
+          * Format tweet
+          * Send to vendor service
+      */
+
+      //// Old Process
+      // const formattedTweet = await twitter.tweetFormatter(e);
+      // const parsedTweet = await tweetParser.scanAddress(formattedTweet);
+      // logger.info('Received Tweet');
+      // logger.info(parsedTweet);
+      // await sendParsedTweet({ ...parsedTweet, newLocations: [parsedTweet.location], location: undefined });
     });
 
     // Exponential backoff upon failure of stream up to 8 retries before shutting down
