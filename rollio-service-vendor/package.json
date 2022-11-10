@@ -60,7 +60,7 @@
     "maildev": "^1.1.0",
     "mailgun-js": "^0.22.0",
     "mjml": "^4.6.3",
-    "mocha": "^5.2.0",
+    "mocha": "^10.1.0",
     "moment": "^2.24.0",
     "mongo-querystring": "^4.1.1",
     "mongodb": "^3.5.9",
